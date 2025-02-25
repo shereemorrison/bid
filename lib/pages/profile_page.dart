@@ -1,8 +1,11 @@
+import 'package:bid/components/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_drawer.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  //login method
 
   @override
   Widget build(BuildContext context) {
@@ -15,42 +18,22 @@ class ProfilePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center, // Centers horizontally
           children: [
             const SizedBox(height: 200),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/login_page'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[600],
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+
+            MyButton(
+              text: "Login",
+              onTap: () {
+                Navigator.pushNamed(context, '/login_page');
+              }
               ),
-              child: const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+
+
             const SizedBox(height: 15), // Adds space between buttons
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/signup_page'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[600],
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+
+            MyButton(
+                text: "Register",
+                onTap: () {
+                  Navigator.pushNamed(context, '/register_page');
+                }
             ),
           ],
         ),

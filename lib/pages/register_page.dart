@@ -3,20 +3,23 @@ import 'package:bid/components/my_drawer.dart';
 import 'package:bid/components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-
-  //text controllers
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
+class RegisterPage extends StatelessWidget {
   final void Function()? onTap;
 
-  LoginPage({
+  RegisterPage({
     super.key,
     required this.onTap});
 
-  //login method
-  void login() {}
+//text controllers
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPwController = TextEditingController();
+
+
+
+  //register method
+  void register() {}
 
   @override
   Widget build(BuildContext context) {
@@ -57,41 +60,46 @@ class LoginPage extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            // Email input field
+            // Username textfield
             MyTextField(
-                hintText: "Email",
-                obscureText: false,
-                controller: emailController,
+              hintText: "Username",
+              obscureText: false,
+              controller: usernameController,
             ),
 
             const SizedBox(height: 10),
 
-            // Password input field
+            // Email textfield
             MyTextField(
-              hintText: "Password",
+              hintText: "Email",
               obscureText: true,
+              controller: emailController,
+            ),
+
+            const SizedBox(height: 10),
+
+            //Password textfield
+            MyTextField(
+              hintText: "Enter Password",
+              obscureText: false,
               controller: passwordController,
             ),
 
             const SizedBox(height: 10),
 
-            //Forgot Password
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Forgot Password?",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary),
-                  ),
-              ],
+            //Confirm Password textfield
+            MyTextField(
+              hintText: "Confirm Password",
+              obscureText: false,
+              controller: confirmPwController,
             ),
+
             const SizedBox(height: 25),
 
-            // Sign In Button
+            // Register
             MyButton(
-                onTap: onTap,
-                text: "Login",
+              onTap: register,
+              text: "Register",
             ),
 
             const SizedBox(height: 10),
@@ -100,7 +108,7 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Don't have an account?",
+                  "Already have an account?",
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary),
                 ),
@@ -108,7 +116,7 @@ class LoginPage extends StatelessWidget {
                 GestureDetector(
                   onTap: onTap,
                   child: Text(
-                    " Register here",
+                    " Login here",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

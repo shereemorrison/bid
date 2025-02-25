@@ -9,11 +9,17 @@ class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+
       drawer: MyDrawer(),
+
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
-        child: Column(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(100.0),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //logo
@@ -50,17 +56,15 @@ class IntroPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+
               MyButton(
+                text: ('Shop'),
                 onTap: () => Navigator.pushNamed(context, '/shop_page'),
-                child: Icon(
-                    Icons.arrow_circle_right_outlined,
-                    size: 40,
-                    color: Colors.grey[800]
                 ),
-              )
             ]
         ),
       ),
+    )
     );
   }
 }

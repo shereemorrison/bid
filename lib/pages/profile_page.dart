@@ -1,4 +1,5 @@
 import 'package:bid/components/my_button.dart';
+import 'package:bid/components/my_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_drawer.dart';
 
@@ -10,8 +11,12 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')), // Added AppBar for context
-      drawer: MyDrawer(),
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text("Profile")
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start, // Centers vertically
@@ -32,9 +37,11 @@ class ProfilePage extends StatelessWidget {
             MyButton(
                 text: "Register",
                 onTap: () {
-                  Navigator.pushNamed(context, '/register_page');
+                  Navigator.pushNamed(context, '/registration_page');
                 }
             ),
+
+
           ],
         ),
       ),

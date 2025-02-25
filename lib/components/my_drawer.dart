@@ -55,7 +55,10 @@ class MyDrawer extends StatelessWidget {
           MyListTile(
             text: "Wishlist",
             icon: Icons.checklist,
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/wishlist_page');
+            },
           ),
 
           MyListTile(

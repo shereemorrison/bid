@@ -1,12 +1,12 @@
 import 'package:bid/components/my_button.dart';
-import 'package:bid/components/my_drawer.dart';
+import 'package:bid/components/my_navbar.dart';
 import 'package:bid/components/my_textfield.dart';
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegistrationPage extends StatelessWidget {
   final void Function()? onTap;
 
-  RegisterPage({
+  RegistrationPage({
     super.key,
     required this.onTap});
 
@@ -26,7 +26,7 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
       ),
-      drawer: MyDrawer(),
+      //drawer: MyDrawer(),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(35.0),

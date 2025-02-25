@@ -1,7 +1,9 @@
+import 'package:bid/components/my_navbar.dart';
 import 'package:bid/models/products.dart';
 import 'package:bid/models/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

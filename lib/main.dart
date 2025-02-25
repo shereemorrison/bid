@@ -3,15 +3,16 @@ import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
 import 'package:bid/pages/login_page.dart';
 import 'package:bid/pages/profile_page.dart';
-import 'package:bid/pages/register_page.dart';
+import 'package:bid/pages/registration_page.dart';
 import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/signup_page.dart';
+import 'package:bid/pages/wishlist_page.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
-import 'package:bid/components/my_button.dart'
-    '';
+import 'package:bid/components/my_button.dart';
 import 'package:provider/provider.dart';
+import 'package:bid/components/my_navbar.dart'; // Import navbar component
 
 void main() {
   runApp(
@@ -27,23 +28,61 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: IntroPage(),
-      theme: lightMode,
-      darkTheme: darkMode,
-      themeMode: ThemeMode.system,
-      routes: {
-        '/intro_page': (context) => const IntroPage(),
-        '/shop_page': (context) => const ShopPage(),
-        '/login_page': (context) => LoginPage(onTap: () {},),
-        '/cart_page' : (context) => const CartPage(),
-        '/profile_page' : (context) => const ProfilePage(),
-        '/signup_page' : (context) => const SignupPage(),
-        '/register_page' : (context) => RegisterPage(onTap: () {  },)
-      },
-
+    return SafeArea(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightMode,
+        darkTheme: darkMode,
+        themeMode: ThemeMode.system,
+        routes: {
+          '/intro_page': (context) => const IntroPage(),
+          '/shop_page': (context) => const ShopPage(),
+          '/login_page': (context) => LoginPage(onTap: () {}), // No navbar here
+          '/cart_page' : (context) => const CartPage(),
+          '/profile_page' : (context) => const ProfilePage(),
+          '/signup_page' : (context) => const SignupPage(),
+          '/registration_page' : (context) => RegistrationPage(onTap: () {}),
+          '/wishlist_page' : (context) => const WishlistPage(),
+        },
+        home: const MyHomePage(),
+      ),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  // Pages for navigation
+  final List<Widget> _pages = [
+    const IntroPage(),
+    const ProfilePage(),
+    const ShopPage(),
+    const WishlistPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your App'),
+        backgroundColor: Colors.blue,
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: MyNavbar(), // Global navbar component
+    );
+  }
+}

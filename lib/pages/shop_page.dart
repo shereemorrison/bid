@@ -1,4 +1,5 @@
 import 'package:bid/components/my_drawer.dart';
+import 'package:bid/components/my_navbar.dart';
 import 'package:bid/components/my_product_tile.dart';
 import 'package:bid/models/shop.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class ShopPage extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: const Text("Shop")
         ),
-        drawer: const MyDrawer(),
+        //drawer: const MyDrawer(),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: ListView(
             children: [

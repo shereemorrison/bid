@@ -1,4 +1,5 @@
 import 'package:bid/components/my_drawer.dart';
+import 'package:bid/components/my_navbar.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class SignupPage extends StatelessWidget {
       appBar: AppBar(
         title: const  Text('Sign Up'),
       ),
-      drawer: const MyDrawer(),
+      //drawer: const MyDrawer(),
     );
   }
 }

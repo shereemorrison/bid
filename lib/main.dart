@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const ProfilePage(),
     const ShopPage(),
     const WishlistPage(),
+    const CartPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your App'),
+        title: const Text('BID'),
         backgroundColor: Colors.blue,
       ),
       body: _pages[_selectedIndex],

@@ -14,28 +14,20 @@ class MyProductTile extends StatelessWidget {
 
   //add to cart button pressed
   void addToCart(BuildContext context) {
+    // Show the dialog with a success message
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: Text("Add this to your cart?"),
-        actions: [
-          //cancel button
-          MaterialButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
-          ),
-
-          //yes button
-          MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.read<Shop>().addToCart(product);
-            },
-            child: Text("Yes"),
-          ),
-        ],
+        content: Text("Item added to cart!"),
       ),
     );
+
+    // Add item to cart
+    context.read<Shop>().addToCart(product);
+
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pop(context);  // Close the dialog after 1 second
+    });
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
 import 'package:bid/pages/profile_page.dart';
 import 'package:bid/pages/shop_page.dart';
@@ -16,7 +17,6 @@ class _MyNavbarState extends State<MyNavbar> {
   int _selectedIndex = 0;
 
   void _navigateBottomBar(int index){
-    print('Navigating to index $index');
     setState(() {
       _selectedIndex = index;
     });
@@ -28,6 +28,7 @@ class _MyNavbarState extends State<MyNavbar> {
     ProfilePage(),
     ShopPage(),
     WishlistPage(),
+    CartPage(),
   ];
 
   @override
@@ -41,9 +42,10 @@ class _MyNavbarState extends State<MyNavbar> {
 
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
-        BottomNavigationBarItem(icon: Icon(Icons.shop), label: 'Shop'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'Shop'),
         BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
       ],
     ));
   }

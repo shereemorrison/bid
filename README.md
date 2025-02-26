@@ -1,16 +1,23 @@
-# bid
+# B.I.D. Apparel
 
-A new Flutter project.
+Description: Clothing app
 
-## Getting Started
+Framework: Flutter
 
-This project is a starting point for a Flutter application.
+IDE: Android Studio Code
 
-A few resources to get you started if this is your first Flutter project:
+Backend: Firebase
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Hosting: TBC (Proposed Vercel)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Payment Processing: TBC (Proposed Stripe)
+
+Analytics: Firebase
+
+Push Notifications: Firebase
+
+AR: TBC (Proposed ARKit/ARCore/Vuforia)
+
+Social Media Integration: Facebook SDK, Instagram API, Twitter API
+
+Project Management: Jira

@@ -12,9 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:provider/provider.dart';
-import 'package:bid/components/my_navbar.dart'; // Import navbar component
+import 'package:bid/components/my_navbar.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => Shop(),

@@ -38,33 +38,33 @@ class CartPage extends StatelessWidget {
     final cart = context.watch<Shop>().cart;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Cart'),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: cart.length,
-              itemBuilder: (context, index) {
-                final item = cart[index];
-                return ListTile(
-                  title: Text(item.name),
-                  subtitle: Text(item.price.toStringAsFixed(2)),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: () => removeItemFromCart(context, item),
-                  ),
-                );
-              },
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('Cart'),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: cart.length,
+                itemBuilder: (context, index) {
+                  final item = cart[index];
+                  return ListTile(
+                    title: Text(item.name),
+                    subtitle: Text(item.price.toStringAsFixed(2)),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () => removeItemFromCart(context, item),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }

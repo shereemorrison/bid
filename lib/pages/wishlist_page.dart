@@ -8,14 +8,14 @@ class WishlistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text("Wishlist")
-      ),
-      //drawer: const MyDrawer(),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      );
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: const Text("Wishlist")
+        ),
+        //drawer: const MyDrawer(),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+    );
   }
 }

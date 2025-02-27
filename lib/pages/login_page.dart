@@ -39,6 +39,16 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text.trim(),
       );
+
+      // Show success snackbar for 1 second
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Login Successful!"),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.black,
+        ),
+      );
+
       // If sign-in is successful, navigate to the ShopPage
       Navigator.push(
         context,

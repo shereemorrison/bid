@@ -1,3 +1,4 @@
+import 'package:bid/components/my_appbar.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
@@ -89,7 +90,7 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_getAppBarTitle())),
+      appBar: MyAppbar(title: _getAppBarTitle()),
       body: _pages[_selectedIndex], // Now correctly inside the state class
       bottomNavigationBar: MyNavbar(
         onItemTapped: _onItemTapped,

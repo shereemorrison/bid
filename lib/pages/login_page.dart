@@ -1,4 +1,5 @@
-
+/*
+import 'package:bid/components/my_appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_textfield.dart';
@@ -72,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const MyAppbar(title: "Login"),
         body: Padding(
           padding: const EdgeInsets.all(35.0),
           child: Column(
@@ -143,6 +145,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-      );
+    );
   }
 }
+*/

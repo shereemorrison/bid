@@ -1,7 +1,5 @@
-import 'package:bid/components/my_drawer.dart';
-import 'package:bid/components/my_navbar.dart';
 import 'package:bid/components/my_product_tile.dart';
-import 'package:bid/models/shop.dart';
+import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,18 +11,12 @@ class ShopPage extends StatelessWidget {
 
     final products = context.watch<Shop>().shop;
     return Scaffold(
-          appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: const Text("Shop")
-          ),
           //drawer: const MyDrawer(),
           backgroundColor: Theme.of(context).colorScheme.surface,
           body: ListView(
               children: [
                 Center(
-                  child:  Text(
+                  child: Text(
                     "F E A T U R E D",
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.inversePrimary),

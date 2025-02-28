@@ -1,3 +1,4 @@
+/*import 'package:bid/components/my_appbar.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:bid/components/my_navbar.dart';
 import 'package:bid/components/my_textfield.dart';
@@ -17,15 +18,12 @@ class RegistrationPage extends StatelessWidget {
   final TextEditingController confirmPwController = TextEditingController();
 
 
-
   //register method
   void register() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
       //drawer: MyDrawer(),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
@@ -130,3 +128,4 @@ class RegistrationPage extends StatelessWidget {
     );
   }
 }
+*/

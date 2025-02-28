@@ -1,5 +1,4 @@
-import 'package:bid/components/my_drawer.dart';
-import 'package:bid/components/my_navbar.dart';
+import 'package:bid/components/my_appbar.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
@@ -8,8 +7,8 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const  Text('Sign Up'),
+      appBar: MyAppbar(
+        title: 'Sign Up',
       ),
       //drawer: const MyDrawer(),
     );

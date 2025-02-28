@@ -1,4 +1,4 @@
-import 'package:bid/models/products.dart';
+import 'package:bid/modals/products.dart';
 import 'package:flutter/cupertino.dart';
 
 class Shop extends ChangeNotifier {

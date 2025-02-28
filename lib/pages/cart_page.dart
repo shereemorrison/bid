@@ -1,13 +1,17 @@
-import 'package:bid/components/my_navbar.dart';
-import 'package:bid/models/products.dart';
-import 'package:bid/models/shop.dart';
+import 'package:bid/modals/products.dart';
+import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   //remove item from cart
   void removeItemFromCart(BuildContext context, Product product) {
     showDialog(
@@ -38,12 +42,6 @@ class CartPage extends StatelessWidget {
     final cart = context.watch<Shop>().cart;
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('Cart'),
-        ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Column(
           children: [
@@ -65,6 +63,6 @@ class CartPage extends StatelessWidget {
             ),
           ],
         ),
-      );
+    );
   }
 }

@@ -1,52 +1,86 @@
+import 'package:bid/components/my_appbar.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:bid/components/my_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_drawer.dart';
+import 'package:bid/modals/loginpage.dart';
+import 'package:bid/modals//registrationpage.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  //login method
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text("Profile")
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person,
+              size: 60,
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            const SizedBox(height: 30),
+            Text("B E L I E V E  I N  D R E A M S"),
+            const SizedBox(height: 30),
+            MyButton(
+              text: "Login",
+              onTap: () {
+                // Show login modal
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return LoginPage(
+                      onTap: () {
+                        // Navigate to RegistrationPage when tapping 'Register here'
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return RegistrationPage(
+                              onTap: () {
+                                Navigator.pop(context); // Close the modal
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 15),
+            MyButton(
+              text: "Register",
+              onTap: () {
+                // Show registration modal
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return RegistrationPage(
+                      onTap: () {
+                        // Navigate to LoginPage when tapping 'Login here'
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return LoginPage(
+                              onTap: () {
+                                Navigator.pop(context); // Close the modal
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start, // Centers vertically
-            crossAxisAlignment: CrossAxisAlignment.center, // Centers horizontally
-            children: [
-              Icon(Icons.person,
-            size: 60,
-            color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-
-            const SizedBox(height: 100),
-
-              MyButton(
-                text: "Login",
-                onTap: () {
-                  Navigator.pushNamed(context, '/login_page');
-                }
-                ),
-
-              const SizedBox(height: 15), // Adds space between buttons
-      
-              MyButton(
-                  text: "Register",
-                  onTap: () {
-                    Navigator.pushNamed(context, '/registration_page');
-                  }
-              ),
-            ],
-          ),
-        ),
+      ),
     );
   }
 }

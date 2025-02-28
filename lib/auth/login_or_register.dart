@@ -1,5 +1,5 @@
-import 'package:bid/modals//loginpage.dart';
-import 'package:bid/modals//registrationpage.dart';
+import 'package:bid/modals//loginmodal.dart';
+import 'package:bid/modals//registrationmodal.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegister extends StatefulWidget {

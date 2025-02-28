@@ -9,7 +9,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        title, // ✅ Use the title passed to MyAppbar
+        title,
         style: TextStyle(
           color: Theme.of(context).colorScheme.inversePrimary,
           fontSize: 15,

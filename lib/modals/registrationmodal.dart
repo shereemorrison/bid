@@ -91,6 +91,7 @@ class RegistrationPage extends StatelessWidget {
                     Text(
                       "Already have an account?",
                       style: TextStyle(
+                        fontSize: 12,
                           color: Theme.of(context).colorScheme.inversePrimary),
                     ),
                     GestureDetector(
@@ -99,6 +100,7 @@ class RegistrationPage extends StatelessWidget {
                         " Login here",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
                       ),
                     ),

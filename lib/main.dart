@@ -13,6 +13,8 @@ import 'package:bid/modals/loginpage.dart';
 import 'package:bid/modals/registrationpage.dart';
 import 'package:bid/components/my_navbar.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -37,35 +39,46 @@ class MyApp extends StatelessWidget {
         darkTheme: darkMode,
         themeMode: ThemeMode.system,
         routes: {
-          '/intro_page': (context) => const IntroPage(),
-          '/shop_page': (context) => const ShopPage(),
-          '/cart_page' : (context) => const CartPage(),
-          '/profile_page' : (context) => const ProfilePage(),
-          '/wishlist_page' : (context) => const WishlistPage(),
+          '/shop_page': (context) => MyHomePage(initialIndex: 2),
+          '/profile_page': (context) => MyHomePage(initialIndex: 1),
+          '/wishlist_page': (context) => MyHomePage(initialIndex: 3),
+          '/cart_page': (context) => MyHomePage(initialIndex: 4),
         },
-        home: const MyHomePage(),
+        navigatorKey: navigatorKey, // Set the global navigator key here
+        home: const MyHomePage(initialIndex: 2), // Set default index
       ),
     );
   }
 }
 
+// ✅ Add this class
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final int initialIndex;
+
+  const MyHomePage({super.key, required this.initialIndex}); // Fix here
 
   @override
   MyHomePageState createState() => MyHomePageState();
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+  late List<Widget> _pages; // Declare the list
 
-  final List<Widget> _pages = [
-    const IntroPage(),
-    const ProfilePage(),
-    const ShopPage(),
-    const WishlistPage(),
-    const CartPage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+
+    // Initialize the list inside initState to avoid static field issues
+    _pages = [
+      const IntroPage(),
+      const ProfilePage(),
+      const ShopPage(),
+      const WishlistPage(),
+      const CartPage(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -77,7 +90,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(_getAppBarTitle())),
-      body: _pages[_selectedIndex],
+      body: _pages[_selectedIndex], // Now correctly inside the state class
       bottomNavigationBar: MyNavbar(
         onItemTapped: _onItemTapped,
         selectedIndex: _selectedIndex,
@@ -86,14 +99,6 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   String _getAppBarTitle() {
-    var currentRoute = ModalRoute.of(context)?.settings.name;
-
-    if (currentRoute == '/login') {
-      return "Login";
-    } else if (currentRoute == '/register') {
-      return "Register";
-    }
-
     switch (_selectedIndex) {
       case 0:
         return "Intro";

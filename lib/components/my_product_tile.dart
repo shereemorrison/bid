@@ -55,7 +55,7 @@ class MyProductTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   width: double.infinity,
-                  padding: EdgeInsets.all((25)),
+                  padding: EdgeInsets.all((10)),
                   child: Image.asset(product.imagePath),
                 ),
               ),
@@ -88,13 +88,16 @@ class MyProductTile extends StatelessWidget {
 
               //add to cart button
               Container(
+                width: 30,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12)
                 ),
                 child: IconButton(
                   onPressed: () => addToCart(context),
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add, size: 20),
+                  padding: EdgeInsets.zero,
                 ),
               )
             ],

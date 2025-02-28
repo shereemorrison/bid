@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bid/modals/loginpage.dart';
-import 'package:bid/modals/registrationpage.dart';
 import 'package:bid/components/my_navbar.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -45,18 +43,17 @@ class MyApp extends StatelessWidget {
           '/wishlist_page': (context) => MyHomePage(initialIndex: 3),
           '/cart_page': (context) => MyHomePage(initialIndex: 4),
         },
-        navigatorKey: navigatorKey, // Set the global navigator key here
-        home: const MyHomePage(initialIndex: 2), // Set default index
+        navigatorKey: navigatorKey,
+        home: const MyHomePage(initialIndex: 2),
       ),
     );
   }
 }
 
-// ✅ Add this class
 class MyHomePage extends StatefulWidget {
   final int initialIndex;
 
-  const MyHomePage({super.key, required this.initialIndex}); // Fix here
+  const MyHomePage({super.key, required this.initialIndex});
 
   @override
   MyHomePageState createState() => MyHomePageState();
@@ -64,14 +61,14 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
   late int _selectedIndex;
-  late List<Widget> _pages; // Declare the list
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
 
-    // Initialize the list inside initState to avoid static field issues
+    // Initialize the list inside initState
     _pages = [
       const IntroPage(),
       const ProfilePage(),
@@ -91,7 +88,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppbar(title: _getAppBarTitle()),
-      body: _pages[_selectedIndex], // Now correctly inside the state class
+      body: _pages[_selectedIndex],
       bottomNavigationBar: MyNavbar(
         onItemTapped: _onItemTapped,
         selectedIndex: _selectedIndex,

@@ -18,6 +18,10 @@ class MyTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(
+          fontSize: 12,
+          color: Colors.grey,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12)
         ),

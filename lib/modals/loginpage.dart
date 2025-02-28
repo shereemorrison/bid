@@ -48,10 +48,8 @@ class _LoginPageState extends State<LoginPage> {
       // Close the modal
       Navigator.pop(context);
 
-      // Show Profile Page
-      Navigator.pushNamed(context, '/shop_page')
-    ; // Navigate to Profile Page
-
+      // Use pushReplacementNamed to navigate and replace the current page
+      Navigator.pushReplacementNamed(context, '/shop_page');
     } catch (e) {
       print("Error signing in: $e");
     }

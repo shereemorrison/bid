@@ -10,32 +10,41 @@ class MyDrawer extends StatelessWidget {
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           //drawer header
-          DrawerHeader(
-            child: Center(
-              child: Image.asset('assets/images/Logo.png',
-                width: 50,
-                height: 50,
+          Opacity(
+            opacity: 0.5,
+            child: Container(
+              child: Center(
+                child: Image.asset('assets/images/Logo.png',
+                  width: 50,
+                  height: 50,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 25),
+
+          Padding(padding: const EdgeInsets.all(8.0),
+          child: Text("B E L I E V E  I N  D R E A M S"),
+          ),
+
+          const SizedBox(height: 10),
 
           //shop tile
           MyListTile(
-              text: "Home",
-              icon: Icons.home,
+              text: "Men",
+              icon: Icons.man,
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/intro_page');
+                Navigator.pushNamed(context, '/shop_page');
               }
           ),
 
           //cart
           MyListTile(
-            text: "Shop",
-            icon: Icons.shopping_bag,
+            text: "Women",
+            icon: Icons.woman,
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/shop_page');
@@ -44,20 +53,20 @@ class MyDrawer extends StatelessWidget {
 
           //login
           MyListTile(
-            text: "Profile",
+            text: "Unisex",
             icon: Icons.person,
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/profile_page');
+              Navigator.pushNamed(context, '/shop_page');
             },
           ),
 
           MyListTile(
-            text: "Wishlist",
-            icon: Icons.checklist,
+            text: "Accessories",
+            icon: Icons.shopping_bag,
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/wishlist_page');
+              Navigator.pushNamed(context, '/shop_page');
             },
           ),
 

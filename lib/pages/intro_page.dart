@@ -1,4 +1,5 @@
 
+import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -7,6 +8,7 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(child: Padding(
           padding: const EdgeInsets.all(125),
@@ -29,7 +31,7 @@ class IntroPage extends StatelessWidget {
       
                 //Title
                 Text(
-                  "Believe in Dreams",
+                  "Welcome to B.I.D.",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,

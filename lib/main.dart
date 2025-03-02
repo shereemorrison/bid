@@ -1,4 +1,5 @@
 import 'package:bid/components/my_appbar.dart';
+import 'package:bid/components/my_drawer.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
@@ -88,6 +89,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppbar(title: _getAppBarTitle()),
+      drawer: MyDrawer(),
       body: _pages[_selectedIndex],
       bottomNavigationBar: MyNavbar(
         onItemTapped: _onItemTapped,

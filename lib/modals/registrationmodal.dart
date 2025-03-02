@@ -29,6 +29,7 @@ class RegistrationPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Text("Sign Up"),
                 Icon(
                   Icons.person,
                   size: 60,
@@ -38,7 +39,7 @@ class RegistrationPage extends StatelessWidget {
                 const SizedBox(height: 25),
 
                 Text(
-                  "B E L E I V E  I N  D R E A M S",
+                  "B E L I E V E  I N  D R E A M S",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[800],

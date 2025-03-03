@@ -93,43 +93,55 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               const SizedBox(height: 15),
+
+
               // Social Login Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Instagram Button
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       // Handle Instagram login
                       print("Instagram login");
                     },
-                    icon: Icon(Icons.camera_alt), // Replace with Instagram logo
-                    iconSize: 30,
-                    color: Colors.purple,
+                    child: Image.asset(
+                      'assets/images/instagram.png',
+                      width: 24,  // Icon size
+                      height: 24, // Icon size
+                    ),
                   ),
-                  const SizedBox(width: 20), // Spacing between buttons
+
+                  // Spacer to reduce space between icons
+                  SizedBox(width: 10), // Adjust width as needed to control spacing
 
                   // Facebook Button
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       // Handle Facebook login
                       print("Facebook login");
                     },
-                    icon: Icon(Icons.facebook), // Replace with Facebook logo
-                    iconSize: 30,
-                    color: Colors.blue,
+                    child: Image.asset(
+                      'assets/images/facebook.png',
+                      width: 24,  // Icon size
+                      height: 24, // Icon size
+                    ),
                   ),
-                  const SizedBox(width: 20), // Spacing between buttons
+
+                  // Spacer to reduce space between icons
+                  SizedBox(width: 10), // Adjust width as needed to control spacing
 
                   // Twitter Button
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       // Handle Twitter login
-                      print("Twitter login");
+                      print("X login");
                     },
-                    icon: Icon(Icons.chat), // Replace with Twitter logo
-                    iconSize: 30,
-                    color: Colors.black,
+                    child: Image.asset(
+                      'assets/images/twitter.png',
+                      width: 24,  // Icon size
+                      height: 24, // Icon size
+                    ),
                   ),
                 ],
               ),

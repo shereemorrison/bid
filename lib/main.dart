@@ -3,7 +3,6 @@ import 'package:bid/components/my_drawer.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
-import 'package:bid/pages/payment_page.dart';
 import 'package:bid/pages/profile_page.dart';
 import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/wishlist_page.dart';
@@ -44,7 +43,6 @@ class MyApp extends StatelessWidget {
           '/profile_page': (context) => MyHomePage(initialIndex: 1),
           '/wishlist_page': (context) => MyHomePage(initialIndex: 3),
           '/cart_page': (context) => MyHomePage(initialIndex: 4),
-          '/payment_page' : (context) => MyHomePage(initialIndex: 5),
         },
         navigatorKey: navigatorKey,
         home: const MyHomePage(initialIndex: 2),

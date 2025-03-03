@@ -2,7 +2,7 @@ import 'package:bid/components/my_product_tile.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bid/components/my_appbar.dart';
+
 
 class ShopPage extends StatelessWidget {
   const ShopPage({super.key});

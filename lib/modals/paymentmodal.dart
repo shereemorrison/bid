@@ -29,10 +29,10 @@ class PaymentScreen extends StatelessWidget {
               onTap: () {
                 showDialog(
                 context: context,
-                builder: (BuildContextcontext) {
+                builder: (buildContext) {
                   return AlertDialog(
                       title: Text('Payment Successful'),
-                      content: Text('Your payment has been sucessfully processed'),
+                      content: Text('Your payment has been successfully processed'),
                       actions: [
                         TextButton(
                           onPressed: () {

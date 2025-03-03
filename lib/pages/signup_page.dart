@@ -10,7 +10,6 @@ class SignupPage extends StatelessWidget {
       appBar: MyAppbar(
         title: 'Sign Up',
       ),
-      //drawer: const MyDrawer(),
     );
   }
 }

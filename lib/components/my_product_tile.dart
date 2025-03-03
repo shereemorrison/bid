@@ -6,10 +6,12 @@ import 'package:provider/provider.dart';
 class MyProductTile extends StatelessWidget {
 
   final Product product;
+  final bool isSmall;
 
   const MyProductTile({
     super.key,
     required this.product,
+    this.isSmall = false
   });
 
   //add to cart button pressed
@@ -53,17 +55,16 @@ class MyProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double imageSize = isSmall ? 80 : 150;
+    double fontSize = isSmall ? 12 : 15;
+    double padding = isSmall ? 5 : 10;
+
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(10),
       width: 200,
       child: Column(
         crossAxisAlignment:CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,6 +83,7 @@ class MyProductTile extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
+
               //product name
               Text(
                 product.name,
@@ -96,12 +98,12 @@ class MyProductTile extends StatelessWidget {
                 product.description,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 10),
+                    fontSize: isSmall ? 8 : 10),
               ),
             ],
           ),
 
-          const SizedBox(height:25),
+          const SizedBox(height:10),
 
           //product price and add to cart
           Row(

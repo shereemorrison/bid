@@ -12,28 +12,31 @@ class ShopPage extends StatelessWidget {
     final products = context.watch<Shop>().shop;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: ListView(
-        children: [
-          Center(
-            child: Text(
-              "F E A T U R E D",
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 50),
+        child: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 32),
+              child: Text(
+                  "F E A T U R E D",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                ),
             ),
-          ),
-          SizedBox(
-            height: 370,
-            child: ListView.builder(
-              itemCount: products.length,
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return MyProductTile(product: product);
-              },
+
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                itemCount: products.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return MyProductTile(product: products[index], isSmall: true);
+                },
+              )
             ),
-          ),
-        ],
+          ]
+        ),
       ),
     );
   }

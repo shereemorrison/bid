@@ -1,6 +1,7 @@
 
 import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -49,6 +50,7 @@ class IntroPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
+
       
               ]
           ),

@@ -30,6 +30,25 @@ class MyProductTile extends StatelessWidget {
     });
   }
 
+  // Add to wishlist button pressed
+  void addToWishlist(BuildContext context) {
+    // Show the dialog with a success message
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text("Item added to wishlist!"),
+      ),
+    );
+
+    // Add item to wishlist
+    context.read<Shop>().addToWishlist(product);
+
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pop(context);  // Close the dialog after 1 second
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,6 +105,25 @@ class MyProductTile extends StatelessWidget {
             children: [
               Text('\$' + product.price.toStringAsFixed(2)),
 
+              Spacer(),
+
+              // Add to wishlist button
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  onPressed: () => addToWishlist(context),
+                  icon: Icon(Icons.favorite_border, size: 20),
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+
+              SizedBox(width: 5),
+
               //add to cart button
               Container(
                 width: 30,
@@ -99,7 +137,7 @@ class MyProductTile extends StatelessWidget {
                   icon: Icon(Icons.add, size: 20),
                   padding: EdgeInsets.zero,
                 ),
-              )
+              ),
             ],
           ),
         ],

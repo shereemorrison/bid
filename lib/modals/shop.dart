@@ -42,14 +42,14 @@ class Shop extends ChangeNotifier {
     ),
   ];
 
-  //user cart
+  //user cart and wishlist
   List<Product> _cart = [];
+  List<Product> _wishlist = [];
 
-  //get product list
+  //getters
   List<Product> get shop => _shop;
-
-  //get user cart
   List<Product> get cart => _cart;
+  List<Product> get wishlist => _wishlist;
 
   // Compute total amount
   double get totalAmount {
@@ -67,5 +67,15 @@ class Shop extends ChangeNotifier {
     _cart.remove(item);
     notifyListeners();
   }
+  // Add item to wishlist
+  void addToWishlist(Product item) {
+    _wishlist.add(item);
+    notifyListeners();
+  }
 
+  // Remove item from wishlist
+  void removeFromWishlist(Product item) {
+    _wishlist.remove(item);
+    notifyListeners();
+  }
 }

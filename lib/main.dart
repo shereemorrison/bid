@@ -3,6 +3,7 @@ import 'package:bid/components/my_drawer.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
+import 'package:bid/pages/payment_page.dart';
 import 'package:bid/pages/profile_page.dart';
 import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/wishlist_page.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           '/profile_page': (context) => MyHomePage(initialIndex: 1),
           '/wishlist_page': (context) => MyHomePage(initialIndex: 3),
           '/cart_page': (context) => MyHomePage(initialIndex: 4),
+          '/payment_page' : (context) => MyHomePage(initialIndex: 5),
         },
         navigatorKey: navigatorKey,
         home: const MyHomePage(initialIndex: 2),
@@ -69,24 +71,30 @@ class MyHomePageState extends State<MyHomePage> {
     super.initState();
     _selectedIndex = widget.initialIndex;
 
-    // Initialize the list inside initState
+    final totalAmount = Provider.of<Shop>(context, listen: false).totalAmount;
+
     _pages = [
       const IntroPage(),
       const ProfilePage(),
       const ShopPage(),
       const WishlistPage(),
       const CartPage(),
+
     ];
   }
 
+
+
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+        _selectedIndex = index;
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: MyAppbar(title: _getAppBarTitle()),
       drawer: MyDrawer(),

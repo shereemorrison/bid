@@ -51,6 +51,11 @@ class Shop extends ChangeNotifier {
   //get user cart
   List<Product> get cart => _cart;
 
+  // Compute total amount
+  double get totalAmount {
+    return _cart.fold(0, (sum, item) => sum + (item.price * item.quantity));
+  }
+
   //add item to cart
   void addToCart(Product item) {
     _cart.add(item);

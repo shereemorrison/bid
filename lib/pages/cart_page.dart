@@ -1,6 +1,7 @@
 import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/products.dart';
 import 'package:bid/modals/shop.dart';
+import 'package:bid/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,9 +11,13 @@ class CartPage extends StatefulWidget {
 
   @override
   State<CartPage> createState() => _CartPageState();
+
 }
 
 class _CartPageState extends State<CartPage> {
+  List<Product> cart = [];
+
+
   //remove item from cart
   void removeItemFromCart(BuildContext context, Product product) {
     showDialog(
@@ -41,15 +46,11 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context
-        .watch<Shop>()
-        .cart;
+    final cart = context.watch<Shop>().cart;
+    double totalAmount = cart.fold(0.0, (sum, item) => sum + item.price);
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: cart.isEmpty
           ? Center(
         child: Text(
@@ -94,10 +95,44 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
 
+                // TOTOAL AMOUNT
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "\$${totalAmount.toStringAsFixed(2)}", // Display the total amount
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 //PAY NOW BUTTON
                 Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: MyButton(onTap: (){}, text: "Pay Now"),
+                  child: MyButton(
+                    text: "Pay Now",
+                      onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentScreen(totalAmount: totalAmount),
+                        ),
+                      );
+                    }
+                  )
                 )
               ],
             ),

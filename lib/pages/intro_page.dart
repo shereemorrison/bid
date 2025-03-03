@@ -11,50 +11,62 @@ class IntroPage extends StatelessWidget {
     return Scaffold(
       drawer: MyDrawer(),
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: SafeArea(child: Padding(
-          padding: const EdgeInsets.all(125),
-          child: Column(
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //logo
                 Opacity(
-                  opacity: 0.5,
+                  opacity: 0.8,
                   child: Image.asset(
-                    'assets/images/Logo.png',
-                    width: 80,
-                    height: 80,
+                    'assets/images/bidlogo.jpg',
+                    width: 200,
+                    height: 200,
                   ),
                 ),
-      
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10
                 ),
-      
+
                 //Title
                 Text(
-                  "Welcome to B.I.D.",
+                  "WELCOME TO B.I.D.",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Colors.grey[800],
-      
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                    letterSpacing: 4.0,
                   ),
+
+                    maxLines: 1,
                 ),
                 //Subtitle?
                 Text(
-                  "Stefan Časić",
+                  "stefan časić",
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[800],
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.primary,
       
                   ),
                 ),
                 const SizedBox(height: 10),
 
-      
+                /*Text(
+                  "ABOUT ME",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                ),*/
+
+
+
               ]
           ),
         ),
+          )
       )
       );
   }

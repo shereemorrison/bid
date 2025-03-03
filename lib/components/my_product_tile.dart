@@ -18,6 +18,7 @@ class MyProductTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         content: Text("Item added to cart!"),
       ),
     );
@@ -36,6 +37,7 @@ class MyProductTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         content: Text("Item added to wishlist!"),
       ),
     );
@@ -84,6 +86,7 @@ class MyProductTile extends StatelessWidget {
               Text(
                 product.name,
                 style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
               ),
@@ -92,6 +95,7 @@ class MyProductTile extends StatelessWidget {
               Text(
                 product.description,
                 style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
                     fontSize: 10),
               ),
             ],
@@ -103,7 +107,9 @@ class MyProductTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('\$' + product.price.toStringAsFixed(2)),
+              Text('\$' + product.price.toStringAsFixed(2),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary)),
 
               Spacer(),
 

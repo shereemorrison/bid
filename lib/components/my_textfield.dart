@@ -20,11 +20,19 @@ class MyTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           fontSize: 12,
-          color: Colors.grey,
+          color: Theme.of(context).colorScheme.primary,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12)
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          borderRadius: BorderRadius.circular(20)
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          )
+        )
       ),
       obscureText: obscureText,
     );

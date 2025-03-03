@@ -8,7 +8,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       elevation: 0,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -17,17 +17,17 @@ class MyDrawer extends StatelessWidget {
             opacity: 0.5,
             child: Container(
               child: Center(
-                child: Image.asset('assets/images/Logo.png',
-                  width: 50,
-                  height: 50,
+                child: Image.asset('assets/images/bidoverlay.png',
+                  width: 150,
+                  height: 150,
                 ),
               ),
             ),
           ),
 
-          Padding(padding: const EdgeInsets.all(8.0),
+          /*Padding(padding: const EdgeInsets.all(8.0),
           child: Text("B E L I E V E  I N  D R E A M S"),
-          ),
+          ),*/
 
           const SizedBox(height: 10),
 

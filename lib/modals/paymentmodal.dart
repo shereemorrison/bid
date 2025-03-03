@@ -21,7 +21,8 @@ class PaymentScreen extends StatelessWidget {
           children: [
             Text(
               "Total Amount: \$${totalAmount.toStringAsFixed(2)}",
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 24,
+              color: Theme.of(context).colorScheme.primary),
             ),
             SizedBox(height: 20),
             MyButton(
@@ -31,8 +32,17 @@ class PaymentScreen extends StatelessWidget {
                 context: context,
                 builder: (buildContext) {
                   return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      )
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                       title: Text('Payment Successful'),
-                      content: Text('Your payment has been successfully processed'),
+                      content: Text('Your payment has been successfully processed',
+                      style: TextStyle(color: Theme.of(context).colorScheme.surface),),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -40,7 +50,7 @@ class PaymentScreen extends StatelessWidget {
                             },
                           child: Text('Ok',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).colorScheme.secondary,
                           ),
                           ),
                         ),

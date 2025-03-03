@@ -36,13 +36,15 @@ class _ProfilePageState extends State<ProfilePage> {
           Icon(
             Icons.person,
             size: 60,
-            color: Theme
-                .of(context)
-                .colorScheme
-                .inversePrimary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(height: 30),
-          Text("B E L I E V E  I N  D R E A M S"),
+          Text(
+              "B E L I E V E  I N  D R E A M S",
+                  style: TextStyle(
+                    fontSize: 20,
+                      color: Theme.of(context).colorScheme.primary)
+          ),
           const SizedBox(height: 30),
           if (isLoggedIn) ...[
             Text("Logged in"), // When logged in
@@ -107,8 +109,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     child: Image.asset(
                       'assets/images/instagram.png',
-                      width: 24,  // Icon size
-                      height: 24, // Icon size
+                      width: 30,  // Icon size
+                      height: 30, // Icon size
                     ),
                   ),
 
@@ -123,8 +125,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     child: Image.asset(
                       'assets/images/facebook.png',
-                      width: 24,  // Icon size
-                      height: 24, // Icon size
+                      width: 30,  // Icon size
+                      height: 30, // Icon size
                     ),
                   ),
 
@@ -139,8 +141,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     child: Image.asset(
                       'assets/images/twitter.png',
-                      width: 24,  // Icon size
-                      height: 24, // Icon size
+                      width: 30,  // Icon size
+                      height: 30, // Icon size
                     ),
                   ),
                 ],

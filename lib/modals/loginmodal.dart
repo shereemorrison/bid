@@ -58,6 +58,10 @@ class _LoginPageState extends State<LoginPage> {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary, // Outline color
+          width: 2,
+        ),
       ),
       child: Container(
         width: 600,
@@ -67,44 +71,56 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Login"),
+                Text("Login",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary)
+                ),
                 Icon(
                   Icons.person,
                   size: 60,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(height: 25),
                 Text(
                   "B E L I E V E  I N  D R E A M S",
                   style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey[800],
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
                 const SizedBox(height: 40),
+
                 MyTextField(
                   hintText: "Email",
                   obscureText: false,
                   controller: emailController,
                 ),
+
                 const SizedBox(height: 10),
+
                 MyTextField(
                   hintText: "Password",
                   obscureText: true,
                   controller: passwordController,
                 ),
-                const SizedBox(height: 10),
+
+
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 25),
+
                 GestureDetector(
                   onTap: signIn,
                   child: MyButton(
@@ -119,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       "Don't have an account?",
                       style: TextStyle(
+                          fontSize: 15,
                           color: Theme.of(context).colorScheme.inversePrimary),
                     ),
                     GestureDetector(
@@ -126,6 +143,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         " Register here",
                         style: TextStyle(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

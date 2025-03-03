@@ -20,6 +20,10 @@ class RegistrationPage extends StatelessWidget {
     return Dialog(
         shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.secondary, // Outline color
+            width: 2,
+          )
         ),
         child: Container(
           width: 600,
@@ -29,11 +33,14 @@ class RegistrationPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Sign Up"),
+                Text("Sign Up",
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary)
+                ),
                 Icon(
                   Icons.person,
                   size: 60,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
 
                 const SizedBox(height: 25),
@@ -41,8 +48,8 @@ class RegistrationPage extends StatelessWidget {
                 Text(
                   "B E L I E V E  I N  D R E A M S",
                   style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey[800],
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
 

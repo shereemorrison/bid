@@ -69,7 +69,6 @@ class MyHomePageState extends State<MyHomePage> {
     super.initState();
     _selectedIndex = widget.initialIndex;
 
-    final totalAmount = Provider.of<Shop>(context, listen: false).totalAmount;
 
     _pages = [
       const IntroPage(),

@@ -1,11 +1,9 @@
-import 'package:bid/components/my_appbar.dart';
-import 'package:bid/components/my_navbar.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_textfield.dart';
 import 'package:bid/components/my_button.dart';
-import 'package:bid/pages/shop_page.dart';
-import 'package:bid/pages/profile_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;

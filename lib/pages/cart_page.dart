@@ -1,9 +1,9 @@
 import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/products.dart';
 import 'package:bid/modals/shop.dart';
-import 'package:bid/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bid/modals/paymentmodal.dart';
 
 
 class CartPage extends StatefulWidget {
@@ -120,19 +120,20 @@ class _CartPageState extends State<CartPage> {
                 ),
 
                 //PAY NOW BUTTON
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: MyButton(
-                    text: "Pay Now",
-                      onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PaymentScreen(totalAmount: totalAmount),
-                        ),
-                      );
-                    }
-                  )
+    Padding(
+    padding: const EdgeInsets.all(25.0),
+    child: MyButton(
+    text: "Pay Now",
+    onTap: () {
+    // Show the Payment modal dialog
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return PaymentScreen(totalAmount: totalAmount);
+    },
+    );
+    },
+    )
                 )
               ],
             ),

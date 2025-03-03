@@ -37,7 +37,7 @@ class MyDrawer extends StatelessWidget {
               icon: Icons.man,
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/shop_page');
+                Navigator.pushNamed(context, '/shop_men');
               }
           ),
 

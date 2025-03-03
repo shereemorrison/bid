@@ -7,7 +7,7 @@ ThemeData lightMode = ThemeData(
     surface: Colors.white,
     primary: Colors.black,
     secondary: Color(0xFFb8b0a4),
-    inversePrimary: Colors.grey.shade500,
+    inversePrimary: Colors.grey.shade300,
   ),
   textTheme: TextTheme(
     displayLarge: GoogleFonts.dmSerifDisplay(fontSize: 32, fontWeight: FontWeight.bold), // Replaces headline1

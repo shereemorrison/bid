@@ -13,7 +13,8 @@ class MyNavbar extends StatelessWidget {
       currentIndex: selectedIndex,
       onTap: onItemTapped,
       type: BottomNavigationBarType.fixed,
-      unselectedItemColor: Colors.white,
+      unselectedItemColor: Theme.of(context).colorScheme.inversePrimary,
+      selectedItemColor: Theme.of(context).colorScheme.surface,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),

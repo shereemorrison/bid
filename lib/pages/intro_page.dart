@@ -1,4 +1,5 @@
 
+import 'package:bid/components/my_appbar.dart';
 import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +23,7 @@ class IntroPage extends StatelessWidget {
                 Opacity(
                   opacity: 0.8,
                   child: Image.asset(
-                    'assets/images/bidlogo.jpg',
+                    'assets/images/Background.png',
                     width: 200,
                     height: 200,
                   ),

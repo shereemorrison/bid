@@ -79,3 +79,4 @@ class Shop extends ChangeNotifier {
     notifyListeners();
   }
 }
+

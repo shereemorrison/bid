@@ -4,6 +4,7 @@ import 'package:bid/modals/shop.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/intro_page.dart';
 import 'package:bid/pages/profile_page.dart';
+import 'package:bid/pages/shop_men.dart';
 import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/wishlist_page.dart';
 import 'package:bid/themes/dark_mode.dart';
@@ -12,6 +13,7 @@ import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bid/components/my_navbar.dart';
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -39,10 +41,11 @@ class MyApp extends StatelessWidget {
         darkTheme: darkMode,
         themeMode: ThemeMode.system,
         routes: {
-          '/shop_page': (context) => MyHomePage(initialIndex: 2),
-          '/profile_page': (context) => MyHomePage(initialIndex: 1),
-          '/wishlist_page': (context) => MyHomePage(initialIndex: 3),
-          '/cart_page': (context) => MyHomePage(initialIndex: 4),
+          '/shop_page': (context) => MyHomePage(initialIndex: 2, pageContent: const ShopPage()),
+          '/profile_page': (context) => MyHomePage(initialIndex: 1, pageContent: const ProfilePage()),
+          '/wishlist_page': (context) => MyHomePage(initialIndex: 3, pageContent: const WishlistPage()),
+          '/cart_page': (context) => MyHomePage(initialIndex: 4, pageContent: const CartPage()),
+          '/shop_men': (context) => MyHomePage(initialIndex: 2, pageContent: const ShopMenPage()),
         },
         navigatorKey: navigatorKey,
         home: const MyHomePage(initialIndex: 2),
@@ -53,8 +56,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final int initialIndex;
+  final Widget ? pageContent;
 
-  const MyHomePage({super.key, required this.initialIndex});
+  const MyHomePage({super.key, required this.initialIndex, this.pageContent});
 
   @override
   MyHomePageState createState() => MyHomePageState();

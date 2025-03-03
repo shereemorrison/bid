@@ -1,3 +1,4 @@
+import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/products.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
@@ -60,21 +61,45 @@ class _CartPageState extends State<CartPage> {
           : Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: cart.length,
-              itemBuilder: (context, index) {
-                final item = cart[index];
-                return ListTile(
-                  leading: Image.asset(
-                      '${item.imagePath}', ),
-                  title: Text(item.name),
-                  subtitle: Text(item.price.toStringAsFixed(2)),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: () => removeItemFromCart(context, item),
+            child: Column(
+
+              //CUSTOMER CART
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.length,
+                    itemBuilder: (context, index) {
+                      final item = cart[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(left:20,top:20,right:20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).colorScheme.secondary,
+
+                          ),
+                          child: ListTile(
+                            leading: Image.asset(
+                                '${item.imagePath}', ),
+                            title: Text(item.name),
+                            subtitle: Text(item.price.toStringAsFixed(2)),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.grey,),
+                              onPressed: () => removeItemFromCart(context, item),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+
+                //PAY NOW BUTTON
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: MyButton(onTap: (){}, text: "Pay Now"),
+                )
+              ],
             ),
           ),
         ],

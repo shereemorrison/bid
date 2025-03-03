@@ -56,7 +56,9 @@ class _CartPageState extends State<CartPage> {
         child: Text(
           "You have nothing in your cart",
           style: TextStyle(
-              fontSize: 15),
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 18
+          ),
         ),
       )
           : Column(
@@ -85,7 +87,7 @@ class _CartPageState extends State<CartPage> {
                             title: Text(item.name),
                             subtitle: Text(item.price.toStringAsFixed(2)),
                             trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.grey,),
+                              icon: const Icon(Icons.delete, color: Colors.black,),
                               onPressed: () => removeItemFromCart(context, item),
                             ),
                           ),
@@ -104,6 +106,7 @@ class _CartPageState extends State<CartPage> {
                       Text(
                         "Total: ",
                         style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -113,6 +116,7 @@ class _CartPageState extends State<CartPage> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ],
@@ -120,20 +124,19 @@ class _CartPageState extends State<CartPage> {
                 ),
 
                 //PAY NOW BUTTON
-    Padding(
-    padding: const EdgeInsets.all(25.0),
-    child: MyButton(
-    text: "Pay Now",
-    onTap: () {
-    // Show the Payment modal dialog
-    showDialog(
-    context: context,
-    builder: (BuildContext context) {
-    return PaymentScreen(totalAmount: totalAmount);
-    },
-    );
-    },
-    )
+                Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: MyButton(
+                      text: "Pay Now",
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return PaymentScreen(totalAmount: totalAmount);
+                            },
+                        );
+                        },
+                    )
                 )
               ],
             ),

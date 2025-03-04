@@ -13,7 +13,7 @@ import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bid/components/my_navbar.dart';
-
+import 'package:bid/auth/auth_provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -22,9 +22,12 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Shop(),
-      child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => Shop()), // Keep Shop provider
+      ],
+      child: MyApp(),
     ),
   );
 }

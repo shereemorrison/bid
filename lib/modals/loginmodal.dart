@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
 
       // Use pushReplacementNamed to navigate and replace the current page
-      Navigator.pushReplacementNamed(context, '/shop_page');
+      Navigator.pushReplacementNamed(context, '/profile_page');
     } catch (e) {
       print("Error signing in: $e");
     }

@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/products.dart';
 import 'package:bid/modals/shop.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/modals/paymentmodal.dart';
 
-
+@RoutePage()
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
 

@@ -1,9 +1,10 @@
+import 'package:auto_route/annotations.dart';
 import 'package:bid/components/my_product_tile.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+@RoutePage()
 class ShopPage extends StatelessWidget {
   const ShopPage({super.key});
 

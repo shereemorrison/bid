@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bid/routes/route.gr.dart';
 
@@ -31,9 +31,9 @@ class MyNavbar extends StatelessWidget {
             context.pushRoute(CartRoute());
         }
       },
-      type: BottomNavigationBarType.fixed,
-      unselectedItemColor: Theme.of(context).colorScheme.inversePrimary,
-      selectedItemColor: Theme.of(context).colorScheme.surface,
+      type: BottomNavigationBarType.shifting,
+      unselectedItemColor: Theme.of(context).colorScheme.primary,
+      selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
@@ -44,3 +44,4 @@ class MyNavbar extends StatelessWidget {
     );
   }
 }
+ */

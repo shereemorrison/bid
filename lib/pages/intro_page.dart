@@ -1,9 +1,10 @@
 
-import 'package:bid/components/my_appbar.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+@RoutePage()
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 

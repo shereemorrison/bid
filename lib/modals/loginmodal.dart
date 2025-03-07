@@ -1,4 +1,6 @@
 
+import 'package:auto_route/auto_route.dart';
+import 'package:bid/routes/route.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_textfield.dart';
@@ -47,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
 
       // Use pushReplacementNamed to navigate and replace the current page
-      Navigator.pushReplacementNamed(context, '/profile_page');
+      context.pushRoute(ProfileRoute());
     } catch (e) {
       print("Error signing in: $e");
     }

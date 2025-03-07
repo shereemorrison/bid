@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/loginmodal.dart';
@@ -5,6 +6,7 @@ import 'package:bid/modals/registrationmodal.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/auth/auth_provider.dart';
 
+@RoutePage()
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 

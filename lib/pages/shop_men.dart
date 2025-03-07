@@ -1,10 +1,12 @@
-import 'package:bid/components/my_appbar.dart';
-import 'package:bid/components/my_navbar.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:bid/components/my_product_tile.dart';
 import 'package:bid/modals/shop.dart';
+import 'package:bid/routes/route.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class ShopMenPage extends StatefulWidget {
   const ShopMenPage({super.key});
 
@@ -13,25 +15,19 @@ class ShopMenPage extends StatefulWidget {
 }
 
 class _ShopMenPageState extends State<ShopMenPage> {
-  // Track the selected index of the bottom navigation bar
   int selectedIndex = 0;
 
-  // Function to handle item taps on the bottom navigation bar
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
 
-    // Add your navigation logic here based on selectedIndex
     if (index == 0) {
-      // Example: Navigate to Home page
-      Navigator.pushNamed(context, '/home');
+     context.pushRoute(IntroRoute());
     } else if (index == 1) {
-      // Example: Navigate to Cart page
-      Navigator.pushNamed(context, '/cart');
+      context.pushRoute(CartRoute());
     } else if (index == 2) {
-      // Example: Navigate to Wishlist page
-      Navigator.pushNamed(context, '/wishlist');
+      context.pushRoute(WishlistRoute());
     }
   }
 

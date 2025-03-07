@@ -1,6 +1,8 @@
 
+import 'package:auto_route/auto_route.dart';
 import 'package:bid/components/my_button.dart';
 import 'package:bid/components/my_textfield.dart';
+import 'package:bid/routes/route.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -67,9 +69,15 @@ class RegistrationPage extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
+
                   // Navigate to the profile page after the user clicks "OK"
-                  Navigator.pushReplacementNamed(context, '/profile_page');  // Change '/profile' to the actual route
+                  Navigator.pop(context);
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                  context.pushRoute(ProfileRoute());
                 },
+
                 child: Text('OK',
                 style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 ),

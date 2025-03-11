@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final int tabIndex; // Pass the active tab index here
+  final String title;
+  final int tabIndex;
 
-  const MyAppbar({super.key, required this.tabIndex});
-
-  // Function to get the app bar title based on the tab index
-  String _getAppBarTitle() {
-    switch (tabIndex) {
-      case 0:
-        return "Intro";
-      case 1:
-        return "Profile";
-      case 2:
-        return "Shop";
-      case 3:
-        return "Wishlist";
-      case 4:
-        return "Cart";
-      default:
-        return "Home";
-    }
-  }
+  const MyAppbar({super.key, required this.title, required this.tabIndex});
 
   @override
   Widget build(BuildContext context) {
+    // Get title based on current tab index
+    String title = 'Home';
+    switch (tabIndex) {
+      case 0:
+        title = 'Home';
+        break;
+      case 1:
+        title = 'Profile';
+        break;
+      case 2:
+        title = 'Shop';
+        break;
+      case 3:
+        title = 'Wishlist';
+        break;
+      case 4:
+        title = 'Cart';
+        break;
+    }
+
     return AppBar(
       title: Text(
-        _getAppBarTitle(), // Get the title based on the active tab
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontSize: 15,
+          (title),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color:Colors.white)),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      iconTheme: const IconThemeData(color: Colors.white),
+      actions: [
+        // Add your app bar actions here
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            // Handle search action
+          },
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ],
     );
   }
 

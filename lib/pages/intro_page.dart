@@ -1,10 +1,9 @@
 
-import 'package:auto_route/annotations.dart';
+
 import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-@RoutePage()
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 
@@ -24,7 +23,7 @@ class IntroPage extends StatelessWidget {
                 Opacity(
                   opacity: 0.8,
                   child: Image.asset(
-                    'assets/images/Background.png',
+                    'assets/images/bidlogo.jpg',
                     width: 200,
                     height: 200,
                   ),
@@ -45,7 +44,7 @@ class IntroPage extends StatelessWidget {
 
                     maxLines: 1,
                 ),
-                //Subtitle?
+
                 Text(
                   "stefan časić",
                   style: TextStyle(
@@ -62,8 +61,6 @@ class IntroPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                 ),*/
-
-
 
               ]
           ),

@@ -1,7 +1,6 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:bid/components/my_list_tile.dart';
-import 'package:bid/routes/route.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:bid/components/my_list_tile.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -17,19 +16,13 @@ class MyDrawer extends StatelessWidget {
           //drawer header
           Opacity(
             opacity: 0.5,
-            child: Container(
-              child: Center(
-                child: Image.asset('assets/images/bidoverlay.png',
-                  width: 150,
-                  height: 150,
-                ),
+            child: Center(
+              child: Image.asset('assets/images/bidoverlay.png',
+                width: 150,
+                height: 150,
               ),
             ),
           ),
-
-          /*Padding(padding: const EdgeInsets.all(8.0),
-          child: Text("B E L I E V E  I N  D R E A M S"),
-          ),*/
 
           const SizedBox(height: 10),
 
@@ -39,7 +32,7 @@ class MyDrawer extends StatelessWidget {
               icon: Icons.man,
               onTap: () {
                 Navigator.pop(context);
-                context.pushRoute(ShopRoute());
+                context.go('/shop_men');
               }
           ),
 
@@ -49,17 +42,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.woman,
             onTap: () {
               Navigator.pop(context);
-              context.pushRoute(ShopRoute());
-            },
-          ),
-
-          //login
-          MyListTile(
-            text: "Unisex",
-            icon: Icons.person,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/shop_page');
+              context.go('/shop_women');
             },
           ),
 
@@ -68,7 +51,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.shopping_bag,
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/shop_page');
+              context.go('/shop_accessories');
             },
           ),
 
@@ -77,7 +60,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.shopping_cart,
             onTap: () {
               Navigator.pop(context);
-              context.pushRoute(CartRoute());
+              context.go('/cart_page');
             },
           )
         ],

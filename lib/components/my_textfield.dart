@@ -16,6 +16,9 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+        obscureText: obscureText,
+        style: TextStyle(
+        color: Theme.of(context).colorScheme.primary,),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(
@@ -34,7 +37,7 @@ class MyTextField extends StatelessWidget {
           )
         )
       ),
-      obscureText: obscureText,
+
     );
   }
 }

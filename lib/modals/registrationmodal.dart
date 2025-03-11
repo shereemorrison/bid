@@ -1,10 +1,11 @@
 
-import 'package:auto_route/auto_route.dart';
+
 import 'package:bid/components/my_button.dart';
 import 'package:bid/components/my_textfield.dart';
-import 'package:bid/routes/route.gr.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 
 class RegistrationPage extends StatelessWidget {
   final void Function()? onTap;
@@ -75,7 +76,7 @@ class RegistrationPage extends StatelessWidget {
                   if (Navigator.canPop(context)) {
                     Navigator.pop(context);
                   }
-                  context.pushRoute(ProfileRoute());
+                  context.go('/profile_page');
                 },
 
                 child: Text('OK',

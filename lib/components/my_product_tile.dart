@@ -28,12 +28,19 @@ class MyProductTile extends StatelessWidget {
     // Add item to cart
     context.read<Shop>().addToCart(product);
 
+    // Ensure we are not trying to pop the last page off the stack
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pop(context);  // Close the dialog after 1 second
+      // Ensure the dialog is still in the widget tree and the context is valid
+      if (context.mounted) {
+        // Close the dialog by using Navigator.pop on the correct context
+        Navigator.of(context, rootNavigator: true).pop();
+      } else {
+        debugPrint('Dialog context is no longer valid or mounted.');
+      }
     });
   }
 
-  // Add to wishlist button pressed
+// Add to wishlist button pressed
   void addToWishlist(BuildContext context) {
     // Show the dialog with a success message
     showDialog(
@@ -47,8 +54,15 @@ class MyProductTile extends StatelessWidget {
     // Add item to wishlist
     context.read<Shop>().addToWishlist(product);
 
+    // Close the dialog after 1 second
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pop(context);  // Close the dialog after 1 second
+      // Ensure the dialog context is still valid
+      if (context.mounted) {
+        // Close the dialog by using Navigator.pop on the correct context
+        Navigator.of(context, rootNavigator: true).pop();
+      } else {
+        debugPrint('Dialog context is no longer valid or mounted.');
+      }
     });
   }
 

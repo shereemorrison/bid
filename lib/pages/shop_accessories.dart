@@ -3,14 +3,14 @@ import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ShopMenPage extends StatefulWidget {
-  const ShopMenPage({super.key});
+class ShopAccessoriesPage extends StatefulWidget {
+  const ShopAccessoriesPage({super.key});
 
   @override
-  _ShopMenPageState createState() => _ShopMenPageState();
+  _ShopAccessoriesPageState createState() => _ShopAccessoriesPageState();
 }
 
-class _ShopMenPageState extends State<ShopMenPage> {
+class _ShopAccessoriesPageState extends State<ShopAccessoriesPage> {
   @override
   Widget build(BuildContext context) {
     final products = context.watch<Shop>().shop;

@@ -3,18 +3,18 @@ import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ShopMenPage extends StatefulWidget {
-  const ShopMenPage({super.key});
+class ShopWomenPage extends StatefulWidget {
+
+  const ShopWomenPage({super.key});
 
   @override
-  _ShopMenPageState createState() => _ShopMenPageState();
+  State<ShopWomenPage> createState() => _ShopWomenPageState();
 }
 
-class _ShopMenPageState extends State<ShopMenPage> {
+class _ShopWomenPageState extends State<ShopWomenPage> {
   @override
   Widget build(BuildContext context) {
     final products = context.watch<Shop>().shop;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(

@@ -36,7 +36,6 @@ class _CartPageState extends State<CartPage> {
                 //yes button
                 MaterialButton(
                   onPressed: () {
-                    Navigator.pop(context);
                     context.read<Shop>().removeFromCart(product);
                   },
                   child: Text("Yes"),

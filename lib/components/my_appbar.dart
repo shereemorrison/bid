@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final int tabIndex; // Pass the active tab index here
+  final int tabIndex;
 
   const MyAppbar({super.key, required this.tabIndex});
 
-  // Function to get the app bar title based on the tab index
   String _getAppBarTitle() {
     switch (tabIndex) {
       case 0:
@@ -27,7 +26,7 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        _getAppBarTitle(), // Get the title based on the active tab
+        _getAppBarTitle(),
         style: TextStyle(
           color: Theme.of(context).colorScheme.secondary,
           fontSize: 15,

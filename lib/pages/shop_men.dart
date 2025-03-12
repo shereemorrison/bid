@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:bid/components/my_product_tile.dart';
 import 'package:bid/modals/shop.dart';
-import 'package:bid/routes/route.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,21 +14,7 @@ class ShopMenPage extends StatefulWidget {
 }
 
 class _ShopMenPageState extends State<ShopMenPage> {
-  int selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-
-    if (index == 0) {
-     context.pushRoute(IntroRoute());
-    } else if (index == 1) {
-      context.pushRoute(CartRoute());
-    } else if (index == 2) {
-      context.pushRoute(WishlistRoute());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

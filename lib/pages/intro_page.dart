@@ -1,6 +1,5 @@
 
 import 'package:auto_route/annotations.dart';
-import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +10,6 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           child: Center(
@@ -24,7 +22,7 @@ class IntroPage extends StatelessWidget {
                 Opacity(
                   opacity: 0.8,
                   child: Image.asset(
-                    'assets/images/Background.png',
+                    'assets/images/bidlogo.jpg',
                     width: 200,
                     height: 200,
                   ),

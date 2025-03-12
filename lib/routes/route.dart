@@ -32,10 +32,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(path: Paths.profile, page: ProfileRoute.page),
         AutoRoute(path: Paths.cart, page: CartRoute.page),
 
-        AutoRoute(
-          path: Paths.shop,
-          initial: true,
-          page: ShopRootRoute.page,
+        AutoRoute(path: Paths.shop, initial: true, page: ShopRootRoute.page,
           maintainState: true,
           children: [
             AutoRoute(path: "", page: ShopRoute.page),

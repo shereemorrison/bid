@@ -1,7 +1,8 @@
-import 'package:auto_route/auto_route.dart';
+/*import 'package:auto_route/auto_route.dart';
 import 'package:bid/components/my_list_tile.dart';
-import 'package:bid/routes/route.gr.dart';
 import 'package:flutter/material.dart';
+
+import '../routes/route.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -39,7 +40,7 @@ class MyDrawer extends StatelessWidget {
               icon: Icons.man,
               onTap: () {
                 Navigator.pop(context);
-                context.pushRoute(ShopRoute());
+                context.router.push(ShopMenRoute());
               }
           ),
 
@@ -49,7 +50,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.woman,
             onTap: () {
               Navigator.pop(context);
-              context.pushRoute(ShopRoute());
+              context.pushRoute(ShopMenRoute());
             },
           ),
 
@@ -59,7 +60,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.person,
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/shop_page');
+              context.pushRoute(ShopMenRoute());
             },
           ),
 
@@ -68,7 +69,7 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.shopping_bag,
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/shop_page');
+              context.pushRoute(ShopMenRoute());
             },
           ),
 
@@ -85,3 +86,4 @@ class MyDrawer extends StatelessWidget {
     );
   }
 }
+*/

@@ -14,9 +14,7 @@ class MyProductTile extends StatelessWidget {
     this.isSmall = false
   });
 
-  //add to cart button pressed
   void addToCart(BuildContext context) {
-    // Show the dialog with a success message
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -29,13 +27,11 @@ class MyProductTile extends StatelessWidget {
     context.read<Shop>().addToCart(product);
 
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pop(context);  // Close the dialog after 1 second
+      Navigator.of(context, rootNavigator: true).pop();
     });
   }
 
-  // Add to wishlist button pressed
   void addToWishlist(BuildContext context) {
-    // Show the dialog with a success message
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -44,11 +40,10 @@ class MyProductTile extends StatelessWidget {
       ),
     );
 
-    // Add item to wishlist
     context.read<Shop>().addToWishlist(product);
 
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pop(context);  // Close the dialog after 1 second
+      Navigator.of(context, rootNavigator: true).pop();  // Close the dialog after 1 second
     });
   }
 
@@ -83,8 +78,6 @@ class MyProductTile extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-
-              //product name
               Text(
                 product.name,
                 style: TextStyle(

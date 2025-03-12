@@ -1,45 +1,136 @@
-import 'package:auto_route/annotations.dart';
-import 'package:bid/components/my_product_tile.dart';
-import 'package:bid/modals/shop.dart';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:bid/routes/route.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:bid/components/category_card.dart';
+
 
 @RoutePage()
-class ShopPage extends StatelessWidget {
+class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
 
   @override
+  State<ShopPage> createState() => _ShopPageState();
+}
+
+class _ShopPageState extends State<ShopPage> {
+
+  @override
   Widget build(BuildContext context) {
-    final products = context.watch<Shop>().shop;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 50),
-        child: ListView(
+      body: SafeArea(
+        child: Column(
           children: [
+            // Search Bar
             Padding(
-              padding: EdgeInsets.only(left: 32),
-              child: Text(
-                  "F E A T U R E D",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary),
-                ),
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(CupertinoIcons.search, color: Colors.black),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search for',
+                                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.grey,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(CupertinoIcons.bell, color: Colors.white),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: const Icon(CupertinoIcons.bag, color: Colors.white,),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
 
-            SizedBox(
-              height: 300,
-              child: ListView.builder(
-                itemCount: products.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return MyProductTile(product: products[index], isSmall: true);
-                },
-              )
+            // Category Grid
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Top Categories
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CategoryCard(
+                              title: 'M E N',
+                              imageUrl: 'assets/images/tshirt3.jpg',
+                              onTap: () {
+                                context.pushRoute(const ShopMenRoute(),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: CategoryCard(
+                              title: 'W O M E N',
+                              imageUrl: 'assets/images/tshirt3.jpg',
+                              onTap: () {
+                                context.pushRoute(ShopMenRoute());
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Banner
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CategoryCard(
+                        title: 'A C C E S S O R I E S',
+                        imageUrl: 'assets/images/hoodie1.jpg',
+                        onTap: () {
+                          context.pushRoute(ShopMenRoute());
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ]
+          ],
         ),
       ),
     );
   }
 }
+
+@RoutePage()
+class ShopRootPage extends StatelessWidget {
+  const ShopRootPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AutoRouter();
+  }
+}
+
+
 

@@ -88,7 +88,7 @@ class ProfilePage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Handle Instagram login
+                    // todo-add insta login
                     print("Instagram login");
                   },
                   child: Image.asset(
@@ -100,7 +100,7 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
-                    // Handle Facebook login
+                    // todo - add facebook login
                     print("Facebook login");
                   },
                   child: Image.asset(
@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
-                    // Handle Twitter login
+                    // todo - add X login
                     print("Twitter login");
                   },
                   child: Image.asset(

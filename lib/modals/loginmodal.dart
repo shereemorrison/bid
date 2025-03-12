@@ -1,10 +1,11 @@
 
 import 'package:auto_route/auto_route.dart';
-import 'package:bid/routes/route.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/my_textfield.dart';
 import 'package:bid/components/my_button.dart';
+
+import '../routes/route.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -47,8 +48,6 @@ class _LoginPageState extends State<LoginPage> {
 
       // Close the modal
       Navigator.pop(context);
-
-      // Use pushReplacementNamed to navigate and replace the current page
       context.pushRoute(ProfileRoute());
     } catch (e) {
       print("Error signing in: $e");

@@ -1,10 +1,8 @@
 import 'package:auto_route/annotations.dart';
-import 'package:bid/components/my_button.dart';
 import 'package:bid/modals/products.dart';
 import 'package:bid/modals/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bid/modals/paymentmodal.dart';
 
 @RoutePage()
 class WishlistPage extends StatefulWidget {
@@ -36,7 +34,7 @@ class _WishlistPageState extends State<WishlistPage> {
                 //yes button
                 MaterialButton(
                   onPressed: () {
-                    Navigator.pop(context);
+
                     context.read<Shop>().removeFromWishlist(product);
                   },
                   child: Text("Yes"),

@@ -1,10 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:bid/components/my_appbar.dart';
-import 'package:bid/components/my_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/components/my_navbar.dart';
-
-import '../routes/route.gr.dart';
+import '../routes/route.dart';
 
 @RoutePage()
 class MainLayoutPage extends StatelessWidget {
@@ -20,15 +16,60 @@ class MainLayoutPage extends StatelessWidget {
         WishlistRoute(),
         CartRoute(),
       ],
+
       appBarBuilder: (_, tabsRouter) {
-        return MyAppbar(tabIndex: tabsRouter.activeIndex);
+        return AppBar(
+          title: Text(
+            _getAppBarTitle(tabsRouter.activeIndex),
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+          automaticallyImplyLeading: tabsRouter.activeIndex != 0, // Hide back button for the first route
+          leading: tabsRouter.canPop()
+              ? IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              tabsRouter.back();
+            },
+          )
+              : null,
+        );
       },
-      drawer: MyDrawer(), // Your custom Drawer
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return MyNavbar(
-          selectedIndex: tabsRouter.activeIndex,
+      bottomNavigationBuilder: (context, tabsRouter) {
+        return BottomNavigationBar(
+          backgroundColor: Colors.black,
+          currentIndex: tabsRouter.activeIndex,
+          onTap: (index) {
+            tabsRouter.setActiveIndex(index);
+          },
+          type: BottomNavigationBarType.fixed,
+          unselectedItemColor: Theme.of(context).colorScheme.primary,
+          selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'Shop'),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          ],
         );
       },
     );
+  }
+}
+
+String _getAppBarTitle(int tabIndex) {
+  switch (tabIndex) {
+    case 0:
+      return "Intro";
+    case 1:
+      return "Profile";
+    case 2:
+      return "Shop";
+    case 3:
+      return "Wishlist";
+    case 4:
+      return "Cart";
+    default:
+      return "Home";
   }
 }

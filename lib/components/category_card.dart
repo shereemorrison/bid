@@ -31,8 +31,8 @@ class CategoryCard extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.white,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

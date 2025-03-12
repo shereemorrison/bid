@@ -55,7 +55,7 @@ class _WishlistPageState extends State<WishlistPage> {
           "You have nothing in your wishlist",
           style: TextStyle(
             color: Theme.of(context).colorScheme.primary,
-              fontSize: 18
+              fontSize: 20
           ),
         ),
       )

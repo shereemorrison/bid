@@ -34,10 +34,10 @@ class IntroPage extends StatelessWidget {
                 //Title
                 Text(
                   "WELCOME TO B.I.D.",
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Theme.of(context).colorScheme.primary,
                     letterSpacing: 4.0,
                   ),
 
@@ -46,10 +46,11 @@ class IntroPage extends StatelessWidget {
                 //Subtitle?
                 Text(
                   "stefan časić",
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: Theme.of(context).colorScheme.primary,
-      
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    letterSpacing: 4.0,
                   ),
                 ),
                 const SizedBox(height: 10),

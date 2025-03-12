@@ -27,16 +27,24 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Text(
-            "B E L I E V E  I N  D R E A M S",
-            style: TextStyle(
-              fontSize: 20,
+            "BELIEVE IN DREAMS",
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              letterSpacing: 4.0,
             ),
           ),
           const SizedBox(height: 30),
           if (authProvider.isLoggedIn) ...[
             // When logged in
-            Text("Logged in as ${authProvider.user?.email ?? 'User'}"),
+            Text("Logged in as ${authProvider.user?.email ?? 'User'}",
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 4.0,
+            ),
+            ),
             const SizedBox(height: 15),
             MyButton(
               text: "Log out",

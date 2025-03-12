@@ -43,7 +43,7 @@ class _ShopPageState extends State<ShopPage> {
                               decoration: InputDecoration(
                                 hintText: 'Search for',
                                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Colors.grey,
+                                  color: Theme.of(context).colorScheme.surface,
                                 ),
                                 border: InputBorder.none,
                               ),
@@ -55,11 +55,11 @@ class _ShopPageState extends State<ShopPage> {
                   ),
                   const SizedBox(width: 16),
                   IconButton(
-                    icon: const Icon(CupertinoIcons.bell, color: Colors.white),
+                    icon: const Icon(Icons.favorite_outline, color: Colors.white),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: const Icon(CupertinoIcons.bag, color: Colors.white,),
+                    icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white,),
                     onPressed: () {},
                   ),
                 ],

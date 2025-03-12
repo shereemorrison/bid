@@ -57,7 +57,7 @@ class _CartPageState extends State<CartPage> {
           "You have nothing in your cart",
           style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
-              fontSize: 18
+              fontSize: 20
           ),
         ),
       )

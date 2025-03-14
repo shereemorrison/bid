@@ -3,10 +3,13 @@ import 'package:bid/pages/welcome_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/intro_page.dart';
 import '../pages/main_layout.dart';
+import '../pages/order_summary_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/shop_men.dart';
 import '../pages/shop_page.dart';
 import '../pages/wishlist_page.dart';
+import '../pages/order_summary_page.dart';
+
 
 part 'route.gr.dart';
 
@@ -19,6 +22,7 @@ class Paths {
   static const String shopMen = 'shop_men';
   static const String wishlist = 'wishlist';
   static const String welcome = 'welcome_page';
+  static const String ordersummary = 'summary_page';
 }
 
 
@@ -32,15 +36,22 @@ class AppRouter extends _$AppRouter {
       children: [
         AutoRoute(path: Paths.welcome, page: WelcomeRoute.page),
         AutoRoute(path: Paths.profile, page: ProfileRoute.page),
-        AutoRoute(path: Paths.cart, page: CartRoute.page),
-        AutoRoute(path: Paths.shop, initial: true, page: ShopRootRoute.page,
-          maintainState: true,
+        AutoRoute(
+          path: Paths.cart,
+          page: CartRootRoute.page,
+          children: [
+            AutoRoute(path: "", page: CartRoute.page),
+            AutoRoute(path: Paths.ordersummary, page: OrderSummaryRoute.page),
+          ],
+        ),
+        AutoRoute(
+          path: Paths.shop,
+          page: ShopRootRoute.page,
           children: [
             AutoRoute(path: "", page: ShopRoute.page),
             AutoRoute(path: Paths.shopMen, page: ShopMenRoute.page),
           ],
         ),
-
         AutoRoute(path: Paths.wishlist, page: WishlistRoute.page),
       ],
     ),

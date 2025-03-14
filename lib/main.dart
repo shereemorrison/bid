@@ -1,5 +1,5 @@
 
-import 'package:bid/modals/shop.dart';
+
 import 'package:bid/routes/route.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,8 @@ import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bid/auth/auth_provider.dart';
+
+import 'models/shop.dart';
 
 
 void main() async {

@@ -1,4 +1,4 @@
-import 'package:bid/components/my_product_tile.dart';
+import 'package:bid/components/SmallProductTile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

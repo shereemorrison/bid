@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:bid/pages/welcome_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/intro_page.dart';
-import '../pages/main_layout.dart';
+import '../layouts/appLayout.dart';
 import '../pages/order_summary_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/shop_men.dart';

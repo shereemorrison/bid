@@ -1,4 +1,4 @@
-import 'package:bid/components/my_button.dart';
+import 'package:bid/components/CustomButton.dart';
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatelessWidget {

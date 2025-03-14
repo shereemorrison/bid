@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icon(
                   Icons.person,
                   size: 60,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                 ),
                 const SizedBox(height: 25),
                 Text(

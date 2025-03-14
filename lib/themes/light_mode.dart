@@ -9,13 +9,12 @@ ThemeData lightMode = ThemeData(
     secondary: Color(0xFFb8b0a4),
     inversePrimary: Colors.grey.shade300,
   ),
+
   textTheme: TextTheme(
     displayLarge: GoogleFonts.dmSerifDisplay(fontSize: 32, fontWeight: FontWeight.bold), // Replaces headline1
     titleLarge: GoogleFonts.dmSerifDisplay(fontSize: 24, fontWeight: FontWeight.w600), // Replaces headline6
     bodyLarge: GoogleFonts.dmSerifDisplay(fontSize: 16),
     bodyMedium: GoogleFonts.dmSerifDisplay(fontSize: 14),
     bodySmall: GoogleFonts.dmSerifDisplay(fontSize: 12),
-  ),
-
-
+  )
 );

@@ -10,7 +10,7 @@ class MainLayoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: const [
-        IntroRoute(),
+        WelcomeRoute(),
         ProfileRoute(),
         ShopRoute(),
         WishlistRoute(),
@@ -60,7 +60,7 @@ class MainLayoutPage extends StatelessWidget {
 String _getAppBarTitle(int tabIndex) {
   switch (tabIndex) {
     case 0:
-      return "Intro";
+      return "Home";
     case 1:
       return "Profile";
     case 2:

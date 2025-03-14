@@ -1,3 +1,4 @@
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../routes/route.dart';
@@ -12,7 +13,7 @@ class MainLayoutPage extends StatelessWidget {
       routes: const [
         WelcomeRoute(),
         ProfileRoute(),
-        ShopRoute(),
+        CategoriesRoute(),
         WishlistRoute(),
         CartRoute(),
       ],
@@ -21,9 +22,11 @@ class MainLayoutPage extends StatelessWidget {
         return AppBar(
           title: Text(
             _getAppBarTitle(tabsRouter.activeIndex),
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontSize: 14),
           ),
-          automaticallyImplyLeading: tabsRouter.activeIndex != 0, // Hide back button for the first route
+          automaticallyImplyLeading: tabsRouter.activeIndex != 0,
           leading: tabsRouter.canPop()
               ? IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),

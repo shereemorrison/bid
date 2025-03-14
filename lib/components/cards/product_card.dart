@@ -1,15 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/products.dart';
-import '../models/shop.dart';
-
+import '../../models/products_model.dart';
+import '../../providers/shop_provider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product; // Product model
   final VoidCallback onAddToCart;
   final VoidCallback removeitemfromWishlist;
-
 
   const ProductCard({
     super.key,

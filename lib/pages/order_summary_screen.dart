@@ -1,13 +1,24 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bid/providers/shop_provider.dart';
+import '../models/products_model.dart';
 
 @RoutePage()
 class OrderSummaryPage extends StatelessWidget {
-  const OrderSummaryPage({Key? key}) : super(key: key);
-
+  const OrderSummaryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Get cart items from the Shop provider
+    final cart = context.watch<Shop>().cart;
+
+    // Calculate totals
+    final double itemsTotal = cart.fold(0.0, (sum, item) => sum + item.price);
+    final double shipping = 10.0; // You can make this dynamic if needed
+    final double tax = itemsTotal * 0.1; // Assuming 10% tax
+    final double total = itemsTotal + shipping + tax;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -31,20 +42,26 @@ class OrderSummaryPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Products
-              _buildProductItem(
-                context,
-                'Denim Jacket',
-                'Size: M',
-                '\$120',
+              // Products from cart
+              const Text(
+                'Products',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(height: 16),
-              _buildProductItem(
-                context,
-                'Slim Jeans',
-                'Size: 32',
-                '\$90',
-              ),
+
+              // Display cart items
+              ...cart.map((product) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _buildProductItem(
+                  context,
+                  product.name,
+                  'Size: M ',
+                  '\$${product.price.toStringAsFixed(2)}',
+                ),
+              )).toList(),
 
               const SizedBox(height: 32),
 
@@ -58,7 +75,7 @@ class OrderSummaryPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildInfoCard(
-                '1234 Maple Ave, Anytown, New York 12345',
+                'Address',
                 onTap: () {},
               ),
 
@@ -85,19 +102,19 @@ class OrderSummaryPage extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // Cost Summary
-              _buildCostItem('Items', '\$210'),
+              // Cost Summary - Now using dynamic values
+              _buildCostItem('Items', '\$${itemsTotal.toStringAsFixed(2)}'),
               const SizedBox(height: 8),
-              _buildCostItem('Shipping', '\$10'),
+              _buildCostItem('Shipping', '\$${shipping.toStringAsFixed(2)}'),
               const SizedBox(height: 8),
-              _buildCostItem('Tax', '\$20'),
+              _buildCostItem('Tax', '\$${tax.toStringAsFixed(2)}'),
 
               const Divider(
                 height: 32,
                 color: Colors.white24,
               ),
 
-              _buildCostItem('Total', '\$240', isTotal: true),
+              _buildCostItem('Total', '\$${total.toStringAsFixed(2)}', isTotal: true),
 
               const SizedBox(height: 40),
 
@@ -306,3 +323,4 @@ class OrderSummaryPage extends StatelessWidget {
     );
   }
 }
+

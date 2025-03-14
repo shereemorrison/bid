@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:bid/pages/welcome_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/intro_page.dart';
 import '../pages/main_layout.dart';
@@ -17,6 +18,7 @@ class Paths {
   static const String shop = 'shop';
   static const String shopMen = 'shop_men';
   static const String wishlist = 'wishlist';
+  static const String welcome = 'welcome_page';
 }
 
 
@@ -28,10 +30,9 @@ class AppRouter extends _$AppRouter {
       path: Paths.root,
       page: MainLayoutRoute.page,
       children: [
-        AutoRoute(path: Paths.intro, page: IntroRoute.page),
+        AutoRoute(path: Paths.welcome, page: WelcomeRoute.page),
         AutoRoute(path: Paths.profile, page: ProfileRoute.page),
         AutoRoute(path: Paths.cart, page: CartRoute.page),
-
         AutoRoute(path: Paths.shop, initial: true, page: ShopRootRoute.page,
           maintainState: true,
           children: [

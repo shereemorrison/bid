@@ -20,7 +20,7 @@ class MyTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           fontSize: 12,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(

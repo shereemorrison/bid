@@ -77,7 +77,7 @@ class _WelcomePageState extends State<WelcomePage> {
     if (user != null) {
       setState(() {
         // Use display name if available, otherwise use email or a default
-        _userName = user.displayName ?? user.email?.split('@')[0] ?? 'Guest';
+        _userName = user.displayName ?? 'Guest';
       });
     }
   }

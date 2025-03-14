@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CartPage(),
       );
     },
+    CartRootRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CartRootPage(),
+      );
+    },
     IntroRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -31,6 +37,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MainLayoutPage(),
+      );
+    },
+    OrderSummaryRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OrderSummaryPage(),
       );
     },
     ProfileRoute.name: (routeData) {
@@ -87,6 +99,20 @@ class CartRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CartRootPage]
+class CartRootRoute extends PageRouteInfo<void> {
+  const CartRootRoute({List<PageRouteInfo>? children})
+      : super(
+          CartRootRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CartRootRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [IntroPage]
 class IntroRoute extends PageRouteInfo<void> {
   const IntroRoute({List<PageRouteInfo>? children})
@@ -110,6 +136,20 @@ class MainLayoutRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MainLayoutRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OrderSummaryPage]
+class OrderSummaryRoute extends PageRouteInfo<void> {
+  const OrderSummaryRoute({List<PageRouteInfo>? children})
+      : super(
+          OrderSummaryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrderSummaryRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

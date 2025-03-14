@@ -1,8 +1,8 @@
-import 'package:bid/models/products.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/shop.dart';
+import '../../models/products_model.dart';
+import '../../providers/shop_provider.dart';
 
 class MyProductTile extends StatelessWidget {
 
@@ -103,7 +103,7 @@ class MyProductTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('\$' + product.price.toStringAsFixed(2),
+              Text('\$${product.price.toStringAsFixed(2)}',
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary)),
 

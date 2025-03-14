@@ -1,8 +1,9 @@
-import 'package:bid/components/SmallProductTile.dart';
+
+import 'package:bid/components/cards/small_product_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/shop.dart';
+import '../providers/shop_provider.dart';
 
 class ShopAccessoriesPage extends StatefulWidget {
   const ShopAccessoriesPage({super.key});

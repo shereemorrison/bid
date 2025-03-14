@@ -1,4 +1,5 @@
-import 'package:bid/models/products.dart';
+
+import 'package:bid/models/products_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,8 @@ final List<Product> _shop = [
   // other products
 ];
 
-List<Product> _cart = [];
-List<Product> _wishlist = [];
+final List<Product> _cart = [];
+final List<Product> _wishlist = [];
 
 List<Product> get shop => _shop;
 List<Product> get cart => _cart;

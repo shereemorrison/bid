@@ -27,6 +27,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CartRootPage(),
       );
     },
+    CategoriesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoriesPage(),
+      );
+    },
+    CategoriesRootRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoriesRootPage(),
+      );
+    },
     IntroRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -108,6 +120,34 @@ class CartRootRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CartRootRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoriesPage]
+class CategoriesRoute extends PageRouteInfo<void> {
+  const CategoriesRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoriesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoriesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoriesRootPage]
+class CategoriesRootRoute extends PageRouteInfo<void> {
+  const CategoriesRootRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoriesRootRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoriesRootRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

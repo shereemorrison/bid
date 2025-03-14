@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bid/pages/appLayout.dart';
-import 'package:bid/pages/intro_page.dart';
+import 'package:bid/pages/intro_screen.dart';
 import 'package:bid/pages/profile_page.dart';
 import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/wishlist_page.dart';
 import 'package:bid/pages/cart_page.dart';
-import 'package:bid/pages/shop_men.dart';
-import 'package:bid/pages/shop_women.dart';
-import 'package:bid/pages/shop_accessories.dart';
+import 'package:bid/pages/shop_men_screen.dart';
+import 'package:bid/pages/shop_women_screen.dart';
+import 'package:bid/pages/shop_accessories_screen.dart';
 
 // Keep track of previous index
 int _lastIndex = 0;

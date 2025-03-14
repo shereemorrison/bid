@@ -1,10 +1,10 @@
-import 'package:bid/components/CustomButton.dart';
+import 'package:bid/components/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatelessWidget {
   final double totalAmount;
 
-  PaymentScreen({required this.totalAmount});
+  const PaymentScreen({super.key, required this.totalAmount});
 
   @override
   Widget build(BuildContext context) {

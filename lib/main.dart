@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bid/auth/auth_provider.dart';
+import 'package:bid/providers/auth_provider.dart';
 
-import 'models/shop.dart';
+import 'providers/shop_provider.dart';
 
 
 void main() async {

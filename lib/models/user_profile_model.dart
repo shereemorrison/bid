@@ -1,3 +1,4 @@
+
 class UserProfile {
   final String id;
   final String? fullName;
@@ -39,7 +40,7 @@ class UserProfile {
     String? avatarUrl,
   }) {
     return UserProfile(
-      id: this.id,
+      id: id,
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
       phone: phone ?? this.phone,

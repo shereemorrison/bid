@@ -1,7 +1,7 @@
 
 import 'package:auto_route/auto_route.dart';
-import 'package:bid/components/my_button.dart';
-import 'package:bid/components/my_textfield.dart';
+import 'package:bid/components/CustomButton.dart';
+import 'package:bid/components/CustomTextfield.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

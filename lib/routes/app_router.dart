@@ -1,7 +1,7 @@
 /*import 'package:bid/modals/paymentmodal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bid/pages/main_layout.dart';
+import 'package:bid/pages/appLayout.dart';
 import 'package:bid/pages/intro_page.dart';
 import 'package:bid/pages/profile_page.dart';
 import 'package:bid/pages/shop_page.dart';

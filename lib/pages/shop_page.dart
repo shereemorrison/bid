@@ -3,7 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:bid/routes/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bid/components/category_card.dart';
+import 'package:bid/components/CategoryCard.dart';
 
 
 @RoutePage()

@@ -1,12 +1,9 @@
 
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:bid/archive/small_product_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/cards/shop_product_card.dart';
-import '../components/widgets/featured_carousel.dart';
 import '../components/widgets/product_grid_item.dart';
 import '../components/widgets/search_bar.dart';
 import '../providers/shop_provider.dart';

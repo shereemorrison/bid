@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
+import '../buttons/shopping_buttons.dart';
 
 class CartItemCard extends StatelessWidget {
   final Product product;
@@ -65,13 +66,14 @@ class CartItemCard extends StatelessWidget {
               ),
             ),
             // Delete Button
-            IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: Colors.grey,
-                size: 20,
-              ),
-              onPressed: onRemove,
+            CustomIconButton(
+              icon: Icons.close,
+              onTap: onRemove,
+              size: 30,
+              iconSize: 20,
+              backgroundColor: Colors.transparent,
+              borderColor: Colors.transparent,
+              iconColor: Colors.grey,
             ),
           ],
         ),
@@ -82,9 +84,9 @@ class CartItemCard extends StatelessWidget {
   Widget _buildProductAttributes() {
     return Row(
       children: [
-        _buildAttributeTag("Size: M"),
+        _buildAttributeTag("Size: "),
         const SizedBox(width: 8),
-        _buildAttributeTag("Qty: 1"),
+        _buildAttributeTag("Qty: "),
       ],
     );
   }

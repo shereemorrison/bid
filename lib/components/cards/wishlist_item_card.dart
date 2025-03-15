@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
+import '../buttons/shopping_buttons.dart';
 
 class WishlistItemCard extends StatelessWidget {
   final Product product;
@@ -62,34 +63,23 @@ class WishlistItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   // Add to Cart Button
-                  ElevatedButton(
-                    onPressed: onAddToCart, // Using the callback passed from parent
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size(120, 30),
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    child: const Text("ADD TO BAG"),
+                  AddToCartButton(
+                    onTap: onAddToCart,
+                    height: 30,
+                    fontSize: 10,
+                    width: 120,
                   ),
                 ],
               ),
             ),
-            // Delete Button
-            IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: Colors.grey,
-                size: 20,
-              ),
-              onPressed: onRemove, // Using the callback passed from parent
+
+            CustomIconButton(
+              icon: Icons.close,
+              onTap: onRemove,
+              size: 30,
+              iconSize: 20,
+              backgroundColor: Colors.transparent,
+              borderColor: Colors.transparent,
             ),
           ],
         ),

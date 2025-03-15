@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../providers/shop_provider.dart';
+import '../buttons/shopping_buttons.dart';
 
 class ProductGridItem extends StatelessWidget {
   final Product product;
@@ -49,7 +50,7 @@ class ProductGridItem extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
           ),
         ],
@@ -63,7 +64,7 @@ class ProductGridItem extends StatelessWidget {
       color: Colors.grey.shade900,
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,7 @@ class ProductGridItem extends StatelessWidget {
           // Product Image
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(2)),
               child: Image.asset(
                 product.imagePath,
                 fit: BoxFit.cover,
@@ -110,48 +111,27 @@ class ProductGridItem extends StatelessWidget {
                   children: [
                     // Add to Cart Button
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: AddToCartButton(
+                        onTap: () {
                           context.read<Shop>().addToCart(product);
                           _showAddToCartDialog(context);
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          minimumSize: const Size(0, 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: const Text("Add to Cart"),
+                        height: 30,
+                        fontSize: 10,
                       ),
                     ),
+
                     const SizedBox(width: 8),
 
                     // Add to Wishlist Button
-                    InkWell(
+                    CustomIconButton(
+                      icon: Icons.favorite_border,
                       onTap: () {
                         context.read<Shop>().addToWishlist(product);
                         _showAddToWishlistDialog(context);
                       },
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade800,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          Icons.favorite_border,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
+                      size: 30,
+                      iconSize: 16,
                     ),
                   ],
                 ),
@@ -163,4 +143,3 @@ class ProductGridItem extends StatelessWidget {
     );
   }
 }
-

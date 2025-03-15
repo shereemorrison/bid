@@ -9,7 +9,6 @@ import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/routes/route.dart';
 import 'package:bid/services/cart_service.dart';
 import '../models/products_model.dart';
-import '../services/cart_service.dart';
 
 
 @RoutePage()

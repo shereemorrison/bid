@@ -1,6 +1,5 @@
 
 import 'package:bid/components/cards/shop_product_card.dart';
-import 'package:bid/archive/small_product_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -151,8 +151,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         child: Text(
                           'ADD TO CART',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.white,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.inversePrimary,
                           ),
                         ),
                       ),

@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
-import '../models/products_model.dart';
 
 @RoutePage()
 class OrderSummaryPage extends StatelessWidget {

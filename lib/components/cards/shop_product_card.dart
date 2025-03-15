@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../providers/shop_provider.dart';
+import '../buttons/shopping_buttons.dart';
 
 
 class ShopProductCard extends StatelessWidget {
@@ -15,10 +16,9 @@ class ShopProductCard extends StatelessWidget {
   });
 
   void addToCart(BuildContext context) {
-    // Add item to cart
+    // Alert for item added to cart
     context.read<Shop>().addToCart(product);
 
-    // Show confirmation dialog instead of snackbar
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -41,10 +41,9 @@ class ShopProductCard extends StatelessWidget {
   }
 
   void addToWishlist(BuildContext context) {
-    // Add item to wishlist
+    // Alert for item added to wishlist
     context.read<Shop>().addToWishlist(product);
 
-    // Show confirmation dialog instead of snackbar
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -133,40 +132,20 @@ class ShopProductCard extends StatelessWidget {
                   children: [
                     // Add to Cart Button
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => addToCart(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: customBeige,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          minimumSize: const Size(0, 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          textStyle: TextStyle(
-                            fontSize: fontSize - 2,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: const Text("ADD"),
+                      child: BaseStyledButton(
+                        text: "ADD",
+                        onTap: () => addToCart(context),
+                        height: 30,
+                        fontSize: fontSize - 2,
                       ),
                     ),
                     const SizedBox(width: 5),
 
-                    // Add to Wishlist Button
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade800,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: IconButton(
-                        onPressed: () => addToWishlist(context),
-                        icon: const Icon(Icons.favorite_border, size: 16),
-                        padding: EdgeInsets.zero,
-                        color: customBeige,
-                      ),
+                    // Add to Wishlist Button (icon button)
+                    CustomIconButton(icon: Icons.favorite_border,
+                      onTap: () => addToWishlist(context),
+                      size: 30,
+                      iconSize: 16,
                     ),
                   ],
                 ),
@@ -178,4 +157,3 @@ class ShopProductCard extends StatelessWidget {
     );
   }
 }
-

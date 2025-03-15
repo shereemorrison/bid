@@ -5,15 +5,14 @@ import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:bid/providers/auth_provider.dart';
-
+import 'package:bid/providers/supabase_auth_provider.dart';
+import 'package:bid/supabase/supabase_config.dart';
 import 'providers/shop_provider.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await SupabaseConfig.initialize();
 
   final appRouter = AppRouter();
 

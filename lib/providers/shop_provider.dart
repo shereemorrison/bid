@@ -6,9 +6,22 @@ import 'package:flutter/material.dart';
 
 class Shop extends ChangeNotifier {
 final List<Product> _shop = [
-  Product(name: "BID OG", price: 99.99, description: "Item Description..", imagePath: 'assets/images/greyhoodie.jpg'),
-  // other products
+  Product(name: "BIDHoodie", price: 99.99, description: "Item Description", imagePath: 'assets/images/BIDHoodie.jpg'),
+  Product(name: "BIDTshirt", price: 99.99, description: "Item Description", imagePath: 'assets/images/BIDTshirt.jpg'),
+  Product(name: "BIDSweater", price: 99.99, description: "Description", imagePath:'assets/images/BIDSweater.jpg'),
+  Product(name: "BIDHoodie2", price: 99.99, description: "Description", imagePath: 'assets/images/BIDHoodie2.jpg'),
+  Product(name: "BIDHoodie3", price: 99.99, description: "Item Description", imagePath: 'assets/images/BIDHoodie3.jpg'),
+  Product(name: "BIDHoodie4", price: 99.99, description: "Item Description", imagePath: 'assets/images/BIDHoodie4.jpg'),
 ];
+
+final List<String> imagePaths = [
+  'assets/images/BIDHoodie2.jpg',
+  'assets/images/BIDHoodie3.jpg',
+  'assets/images/BIDHoodie4.jpg',
+  'assets/images/BIDSweater2.jpg',
+  'assets/images/BIDHoodie4.jpg'
+];
+
 
 final List<Product> _cart = [];
 final List<Product> _wishlist = [];

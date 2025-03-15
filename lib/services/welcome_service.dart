@@ -1,9 +1,10 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../supabase/supabase_config.dart';
 
 class WelcomeService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String userName = '';
   int currentPage = 0;
   Timer? carouselTimer;
@@ -41,9 +42,19 @@ class WelcomeService {
   }
 
   Future<void> getUserName() async {
-    final user = _auth.currentUser;
+    final user = SupabaseConfig.client.auth.currentUser;
     if (user != null) {
-      userName = user.displayName ?? 'Guest';
+      // Try to get user metadata or profile info
+      try {
+        final userMetadata = user.userMetadata;
+        if (userMetadata != null && userMetadata.containsKey('name')) {
+          userName = userMetadata['name'] as String;
+        } else {
+          userName = user.email?.split('@').first ?? 'Guest';
+        }
+      } catch (e) {
+        userName = user.email?.split('@').first ?? 'Guest';
+      }
     } else {
       userName = 'Guest';
     }

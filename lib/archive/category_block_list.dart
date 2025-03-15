@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'category_block_item.dart';
+/*import 'package:flutter/material.dart';
+import '../../archive/category_block_item.dart';
 
 class CategoryBlockList extends StatelessWidget {
   final List<CategoryBlockItem> categories;
@@ -53,7 +53,7 @@ class CategoryBlock extends StatelessWidget {
                 : NetworkImage(category.imageUrl!) as ImageProvider,
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.4),
+              Colors.black,
               BlendMode.darken,
             ),
           )
@@ -72,7 +72,7 @@ class CategoryBlock extends StatelessWidget {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.black.withOpacity(0.7),
+                    Colors.black,
                     Colors.transparent,
                   ],
                 ),
@@ -101,7 +101,7 @@ class CategoryBlock extends StatelessWidget {
                         Text(
                           category.subtitle,
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
+                            color: Colors.white,
                             fontSize: 14,
                           ),
                         ),
@@ -121,4 +121,4 @@ class CategoryBlock extends StatelessWidget {
     );
   }
 }
-
+*/

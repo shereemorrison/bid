@@ -1,53 +1,24 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../components/widgets/category_block_item.dart';
 import '../models/category_model.dart';
 import '../services/category_service.dart';
 import '../routes/route.dart';
 import '../components/widgets/search_bar.dart';
-import '../components/widgets/category_block_list.dart';
+import '../components/widgets/category_list.dart';
+import '../components/widgets/category_item.dart';
 
 @RoutePage()
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
 
   @override
-  State<CategoriesPage> createState() => _CategoriesScreenState();
+  State<CategoriesPage> createState() => _CategoriesPageState();
 }
 
-  @override
-  State<CategoriesPage> createState() => _CategoriesScreenState();
-
-class _CategoriesScreenState extends State<CategoriesPage> {
+class _CategoriesPageState extends State<CategoriesPage> {
   final CategoryService _categoryService = CategoryService();
   List<Category> _categories = [];
   bool _isLoading = false;
-
-  final List<CategoryBlockItem> _categoryBlocks = [
-    CategoryBlockItem(
-      name: 'Men',
-      icon: Icons.man,
-
-    ),
-    CategoryBlockItem(
-      name: 'Women',
-      icon: Icons.woman,
-    ),
-    CategoryBlockItem(
-      name: 'Accessories',
-      icon: Icons.shopping_bag_outlined,
-    ),
-    CategoryBlockItem(
-      name: 'Featured',
-      icon: Icons.favorite_outline_rounded,
-    ),
-    CategoryBlockItem(
-      name: 'Sale',
-      icon: Icons.currency_bitcoin,
-
-    ),
-
-  ];
 
   @override
   void initState() {
@@ -74,8 +45,10 @@ class _CategoriesScreenState extends State<CategoriesPage> {
     }
   }
 
-  void _navigateToCategory(String categoryName) {
-    switch (categoryName) {
+  void _navigateToCategory(Category category) {
+    final route = category.route;
+    if (route == null) return;
+    switch (category.name) {
       case 'Men':
         context.pushRoute(const ShopMenRoute());
         break;
@@ -99,7 +72,7 @@ class _CategoriesScreenState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,9 +89,11 @@ class _CategoriesScreenState extends State<CategoriesPage> {
                   color: Colors.white,
                 ),
               )
-                  : CategoryBlockList(
-                categories: _categoryBlocks,
+                  : CategoryListView(
+                categories: _categories,
                 onCategorySelected: _navigateToCategory,
+                style: CategoryItemStyle.block,
+                maintainState: false, // No selection state for main navigation
               ),
             ),
           ],

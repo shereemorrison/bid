@@ -1,5 +1,5 @@
 
-import 'package:flutter/cupertino.dart';
+/*import 'package:flutter/cupertino.dart';
 
 class CategoryBlockItem {
   final String name;
@@ -15,4 +15,4 @@ class CategoryBlockItem {
     this.imageUrl,
     this.imageAsset,
   });
-}
+}*/

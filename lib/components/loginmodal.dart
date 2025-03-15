@@ -8,7 +8,6 @@ import '../routes/route.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
-
   const LoginPage({super.key, required this.onTap});
 
   @override
@@ -19,15 +18,23 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
+  String? _errorMessage = "Incorrect email or password";
+
+  @override
+  void initState() {
+    super.initState();
+    _errorMessage = null;
+  }
 
   Future<void> signIn() async {
+    setState(() {
+      _errorMessage = null;
+    });
+
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please fill in all fields"),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        _errorMessage = "Please fill in all fields";
+      });
       return;
     }
 
@@ -43,30 +50,13 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Login Successful!"),
-            duration: const Duration(seconds: 1),
-            backgroundColor: Colors.black,
-          ),
-        );
-
-        // Close the modal
-        Navigator.pop(context);
+        Navigator.of(context).pop();
         context.pushRoute(ProfileRoute());
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error signing in: ${e.toString()}"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
         setState(() {
+          _errorMessage = 'Incorrect email or password';
           _isLoading = false;
         });
       }
@@ -123,6 +113,19 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
                 controller: passwordController,
               ),
+
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

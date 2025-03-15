@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../providers/shop_provider.dart';
+import '../../services/dialog_service.dart';
 import '../buttons/shopping_buttons.dart';
 
 class ProductGridItem extends StatelessWidget {
@@ -11,52 +12,6 @@ class ProductGridItem extends StatelessWidget {
     super.key,
     required this.product,
   });
-
-  //Add to cart Helper
-  void _showAddToCartDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        content: Text(
-          "Added ${product.name} to cart",
-          style: TextStyle(color: Theme.of(context).colorScheme.surface),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.surface),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //Wishlist helper
-  void _showAddToWishlistDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        content: Text(
-          "Added ${product.name} to wishlist",
-          style: TextStyle(color: Theme.of(context).colorScheme.surface),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +69,7 @@ class ProductGridItem extends StatelessWidget {
                       child: AddToCartButton(
                         onTap: () {
                           context.read<Shop>().addToCart(product);
-                          _showAddToCartDialog(context);
+                          DialogService.showAddToCartDialog(context, product);
                         },
                         height: 30,
                         fontSize: 10,
@@ -128,7 +83,7 @@ class ProductGridItem extends StatelessWidget {
                       icon: Icons.favorite_border,
                       onTap: () {
                         context.read<Shop>().addToWishlist(product);
-                        _showAddToWishlistDialog(context);
+                        DialogService.showAddToWishlistDialog(context, product);
                       },
                       size: 30,
                       iconSize: 16,

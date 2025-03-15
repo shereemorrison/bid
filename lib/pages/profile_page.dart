@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:bid/components/widgets/profile_header.dart';
 import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/widgets/social_login_row.dart';
-import 'package:bid/components/loginmodal.dart';
-import 'package:bid/components/registrationmodal.dart';
+import 'package:bid/modals/loginmodal.dart';
+import 'package:bid/modals/registrationmodal.dart';
 
 import '../providers/supabase_auth_provider.dart';
 

@@ -1,5 +1,6 @@
 
-import 'package:bid/components/cards/small_product_tile.dart';
+import 'package:bid/components/cards/shop_product_card.dart';
+import 'package:bid/archive/small_product_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,7 @@ class _ShopWomenPageState extends State<ShopWomenPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   itemBuilder: (context, index) {
                     final product = products[index];
-                    return MyProductTile(product: product);
+                    return ShopProductCard(product: product);
                   },
                 ),
               ),

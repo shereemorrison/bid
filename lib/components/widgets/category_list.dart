@@ -5,12 +5,20 @@ import '../widgets/category_item.dart';
 class CategoryListView extends StatefulWidget {
   final List<Category> categories;
   final Function(Category) onCategorySelected;
+  final CategoryItemStyle style;
+  final String? initialSelectedId;
+  final bool maintainState;
+  final Axis scrollDirection;
 
   const CategoryListView({
-    Key? key,
+    super.key,
     required this.categories,
     required this.onCategorySelected,
-  }) : super(key: key);
+    this.style = CategoryItemStyle.list,
+    this.initialSelectedId,
+    this.maintainState = true,
+    this.scrollDirection = Axis.vertical,
+  });
 
   @override
   State<CategoryListView> createState() => _CategoryListViewState();
@@ -20,32 +28,35 @@ class _CategoryListViewState extends State<CategoryListView> {
   String? _selectedCategoryId;
 
   @override
+  void initState() {
+    super.initState();
+    _selectedCategoryId = widget.initialSelectedId;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 300,
-      color: Colors.black,
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
+    return ListView.builder(
+        scrollDirection: widget.scrollDirection,
+        padding:  const EdgeInsets.symmetric(horizontal: 16),
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {
           final category = widget.categories[index];
-          final isSelected = category.id == _selectedCategoryId;
+          final isSelected = widget.maintainState && category.id == _selectedCategoryId;
 
-          return GestureDetector(
+          return CategoryItem(
+              category: category,
+              isSelected: isSelected,
+            style: widget.style,
             onTap: () {
-              setState(() {
-                _selectedCategoryId = category.id;
-              });
+              if (widget.maintainState) {
+                setState(() {
+                  _selectedCategoryId = category.id;
+                });
+              }
               widget.onCategorySelected(category);
             },
-            child: CategoryItem(
-              category: category,
-              isSelected: isSelected, onTap: () { },
-            ),
           );
         },
-      ),
     );
   }
 }

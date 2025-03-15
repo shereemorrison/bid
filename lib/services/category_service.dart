@@ -1,8 +1,8 @@
 import '../models/category_model.dart';
 
-// This service will eventually fetch data from Firebase
+// This service will eventually fetch data from Supabase
 class CategoryService {
-  // Mock data for now - will be replaced with Firebase fetch
+  // Mock data for now - will be replaced with Supabase
   Future<List<Category>> getCategories() async {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 800));

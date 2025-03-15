@@ -1,15 +1,26 @@
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class Category {
   final String id;
   final String name;
-  final String route;
+  final String? subtitle;
+  final String? route;
+  final IconData? icon;
   final String? imageUrl;
+  final String? imageAsset;
+  final Scrollable;
 
   Category({
     required this.id,
     required this.name,
-    required this.route,
+    this.route,
+    this.subtitle = '',
+    this.icon,
     this.imageUrl,
+    this.imageAsset,
+    this.Scrollable,
   });
 
   // Factory method to create a Category from Firebase data
@@ -20,15 +31,5 @@ class Category {
       route: map['route'] ?? '',
       imageUrl: map['imageUrl'],
     );
-  }
-
-  // Convert Category to a Map for Firebase
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'route': route,
-      'imageUrl': imageUrl,
-    };
   }
 }

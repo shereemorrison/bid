@@ -6,15 +6,15 @@ Framework: Flutter
 
 IDE: Android Studio Code
 
-Backend: Firebase
+Backend: Supabase
 
 Hosting: TBC (Proposed Vercel)
 
 Payment Processing: TBC (Proposed Stripe)
 
-Analytics: Firebase
+Analytics: Supabase
 
-Push Notifications: Firebase
+Push Notifications: Supabase
 
 AR: TBC (Proposed ARKit/ARCore/Vuforia)
 

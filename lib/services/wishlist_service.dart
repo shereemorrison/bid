@@ -40,20 +40,29 @@ class WishlistService {
 
   void addToCart(BuildContext context, Product product) {
     context.read<Shop>().addToCart(product);
-    _showSnackBar(context, "${product.name} added to cart");
+    _showAlertDialog(context, "${product.name} added to cart");
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.black87,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+  void _showAlertDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        content: Text(
+          message,
+          style: TextStyle(color: Theme.of(context).colorScheme.surface),
         ),
-        margin: const EdgeInsets.all(16),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "OK",
+              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+

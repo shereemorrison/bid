@@ -1,17 +1,36 @@
-import 'package:bid/components/buttons/custom_button.dart';
+
 import 'package:flutter/material.dart';
+import '../components/buttons/shopping_buttons.dart';
+import '../services/dialog_service.dart';
 
 class PaymentScreen extends StatelessWidget {
   final double totalAmount;
 
   const PaymentScreen({super.key, required this.totalAmount});
 
+  void _showPaymentSuccessDialog(BuildContext context) {
+    DialogService.showConfirmationDialog(
+      context: context,
+      title: "Payment Successful",
+      content: "Your payment has been successfully processed",
+      cancelText: "OK",
+      confirmText: "",
+      isDestructive: false,
+    ).then((_) {
+      Navigator.of(context, rootNavigator: true).pop();
+      // TO DO - ADD Navigate to the profile page
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final customBeige = Theme.of(context).colorScheme.secondary;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: Container(
         width: 600,
         height: 400,
@@ -21,47 +40,21 @@ class PaymentScreen extends StatelessWidget {
           children: [
             Text(
               "Total Amount: \$${totalAmount.toStringAsFixed(2)}",
-              style: TextStyle(fontSize: 24, color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Theme.of(context).colorScheme.primary
+              ),
             ),
-            SizedBox(height: 20),
-            MyButton(
-              text: 'Pay Now',
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (buildContext) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ),
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      title: Text('Payment Successful'),
-                      content: Text(
-                        'Your payment has been successfully processed',
-                        style: TextStyle(color: Theme.of(context).colorScheme.surface),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                            // TO DO - ADD Navigate to the profile page
-                          },
-                          child: Text(
-                            'Ok',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+            const SizedBox(height: 20),
+            // Use the new button style
+            BaseStyledButton(
+              text: 'PAY NOW',
+              onTap: () => _showPaymentSuccessDialog(context),
+              textColor: customBeige,
+              borderColor: customBeige,
+              width: 200,
+              height: 50,
+              fontSize: 16,
             ),
           ],
         ),

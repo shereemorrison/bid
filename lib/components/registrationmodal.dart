@@ -21,8 +21,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPwController = TextEditingController();
   bool _isLoading = false;
+  String ? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _errorMessage = null;
+  }
 
   Future<void> register() async {
+    setState(() {
+      _errorMessage = null;
+    });
+
     // Validate the form fields (email and password)
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -30,24 +41,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     // Check fields complete
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please fill in all fields"),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        _errorMessage = 'Please fill in all fields';
+      });
       return;
     }
 
     // Check if passwords match
     if (password != confirmPassword) {
       // Show an error message if passwords don't match
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Passwords do not match"),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        _errorMessage = 'Passwords don\'t match';
+      });
       return;
     }
 
@@ -61,6 +66,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       await authProvider.signUp(email, password);
 
       if (mounted) {
+        Navigator.of(context).pop();
+
         // Show welcome dialog
         showDialog(
           context: context,
@@ -105,16 +112,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error registering: ${e.toString()}"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
         setState(() {
+          _errorMessage = "Error registering: ${e. toString()}";
           _isLoading = false;
         });
       }
@@ -181,6 +180,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 obscureText: true,
                 controller: confirmPwController,
               ),
+
+              // Add the error message widget here, right after the confirm password field
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+
               const SizedBox(height: 25),
               _isLoading
                   ? CircularProgressIndicator()

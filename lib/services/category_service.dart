@@ -1,37 +1,50 @@
+import 'package:bid/routes/route.dart';
+
 import '../models/category_model.dart';
+import '../supabase/supabase_config.dart';
 
-// This service will eventually fetch data from Supabase
 class CategoryService {
-  // Mock data for now - will be replaced with Supabase
-  Future<List<Category>> getCategories() async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
+  final _supabase = SupabaseConfig.client;
 
-    return [
-      Category(
-        id: '1',
-        name: 'Men',
-        route: '/shop-men',
-        imageUrl: 'assets/images/men_category.jpg',
-      ),
-      Category(
-        id: '2',
-        name: 'Women',
-        route: '/shop-women',
-        imageUrl: 'assets/images/women_category.jpg',
-      ),
-      Category(
-        id: '3',
-        name: 'Accessories',
-        route: '/accessories',
-        imageUrl: 'assets/images/accessories_category.jpg',
-      ),
-      Category(
-        id: '4',
-        name: 'BID Exclusives',
-        route: '/bid-exclusives',
-        imageUrl: 'assets/images/exclusives_category.jpg',
-      ),
-    ];
+  // Fetch categories from Supabase
+  Future<List<Category>> getCategories() async {
+    try {
+      // Simulate network delay for testing
+      await Future.delayed(const Duration(milliseconds: 800));
+
+      final response = await _supabase
+          .from('categories')
+          .select('*')
+          .order('category_id');
+
+      return response.map<Category>((json) => Category.fromJson(json)).toList();
+    } catch (e) {
+      print('Error fetching categories: $e');
+
+      // Fallback to mock data if there's an error
+      return [
+        Category(
+          id: '1',
+          name: 'Men',
+          route: Paths.shopMen,
+        ),
+        Category(
+          id: '2',
+          name: 'Women',
+          route: '/shop-women',
+        ),
+        Category(
+          id: '3',
+          name: 'Accessories',
+          route: '/accessories',
+        ),
+        Category(
+          id: '4',
+          name: 'BID Exclusives',
+          route: '/bid-exclusives',
+        ),
+      ];
+    }
   }
 }
+

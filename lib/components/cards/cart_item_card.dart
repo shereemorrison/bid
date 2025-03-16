@@ -13,6 +13,11 @@ class CartItemCard extends StatelessWidget {
     required this.onRemove,
   });
 
+  // Helper method to check if a path is a URL
+  bool _isUrl(String path) {
+    return path.startsWith('http');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,13 +36,12 @@ class CartItemCard extends StatelessWidget {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: Image.asset(
-                  '${product.imagePath}',
-                  fit: BoxFit.cover,
-                ),
+            child: _buildProductImage(),
               ),
             ),
+
             const SizedBox(width: 16),
+
             // Product Details
             Expanded(
               child: Column(
@@ -81,6 +85,54 @@ class CartItemCard extends StatelessWidget {
     );
   }
 
+  Widget _buildProductImage() {
+    // Check if the image path is a URL
+    if (_isUrl(product.imageUrl)) {
+      return Image.network(
+        product.imageUrl,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            color: Colors.grey.shade800,
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading image: $error');
+          return Container(
+            color: Colors.grey.shade800,
+            child: const Center(
+              child: Icon(Icons.error_outline, color: Colors.white),
+            ),
+          );
+        },
+      );
+    } else {
+      // Use local asset
+      return Image.asset(
+        product.imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading asset: $error');
+          return Container(
+            color: Colors.grey.shade800,
+            child: const Center(
+              child: Icon(Icons.error_outline, color: Colors.white),
+            ),
+          );
+        },
+      );
+    }
+  }
+
   Widget _buildProductAttributes() {
     return Row(
       children: [
@@ -111,3 +163,4 @@ class CartItemCard extends StatelessWidget {
     );
   }
 }
+

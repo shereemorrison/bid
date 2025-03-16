@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../providers/shop_provider.dart';
 import '../../services/dialog_service.dart';
+import '../../services/product_service.dart';
 import '../buttons/shopping_buttons.dart';
 
 class ProductGridItem extends StatelessWidget {
@@ -15,6 +16,9 @@ class ProductGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productService = ProductService();
+    final imageUrl = productService.getImageUrl(product.imageUrl);
+
     return Card(
       color: Colors.grey.shade900,
       elevation: 2,
@@ -28,10 +32,31 @@ class ProductGridItem extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(2)),
-              child: Image.asset(
-                product.imagePath,
+              child: Image.network(
+                imageUrl,
                 fit: BoxFit.cover,
                 width: double.infinity,
+                // Add loading placeholder
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+                // Error handling
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey.shade800,
+                    child: const Center(
+                      child: Icon(Icons.error_outline, color: Colors.white),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -98,3 +123,4 @@ class ProductGridItem extends StatelessWidget {
     );
   }
 }
+

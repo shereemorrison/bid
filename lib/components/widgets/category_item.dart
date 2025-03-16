@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/category_model.dart';
 
-enum CategoryItemStyle {
-  block,  // Large image block style
-  list,   // Simple text list style
-}
+enum CategoryItemStyle { grid, list, block }
 
 class CategoryItem extends StatelessWidget {
   final Category category;
@@ -15,124 +12,126 @@ class CategoryItem extends StatelessWidget {
   const CategoryItem({
     super.key,
     required this.category,
-    this.isSelected = false,
+    required this.isSelected,
     required this.onTap,
-    this.style = CategoryItemStyle.list
+    this.style = CategoryItemStyle.list,
   });
 
   @override
   Widget build(BuildContext context) {
-    return style == CategoryItemStyle.block
-        ? _buildBlockStyle()
-        : _buildListStyle();
+    if (style == CategoryItemStyle.grid) {
+      return _buildGridItem(context);
+    } else if (style == CategoryItemStyle.block) {
+      return _buildBlockItem(context);
+    } else {
+      return _buildListItem(context);
+    }
   }
 
-  Widget _buildListStyle() {
+  Widget _buildGridItem(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          border: Border(
-            bottom: isSelected
-                ? BorderSide(color: Colors.white, width: 2)
-                : BorderSide.none,
-          ),
+          color: Colors.grey.shade900,
+          borderRadius: BorderRadius.circular(12),
+          border: isSelected
+              ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 2)
+              : null,
         ),
-        child: Text(
-          category.name,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey,
-            fontSize: 16,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+        child: Center(
+          child: Text(
+            category.name,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
     );
   }
 
-
-  Widget _buildBlockStyle() {
+  Widget _buildBlockItem(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 100, // Increased height for better visual impact
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        height: 80,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          // Use image if available, otherwise fallback to color
-          image: (category.imageAsset != null || category.imageUrl != null)
-              ? DecorationImage(
-            image: category.imageAsset != null
-                ? AssetImage(category.imageAsset!)
-                : NetworkImage(category.imageUrl!) as ImageProvider,
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black,
-              BlendMode.darken,
-            ),
-          )
-              : null,
-          color: category.imageAsset == null && category.imageUrl == null
-              ? Colors.grey.shade900
-              : null,
-        ),
-        child: Stack(
-          children: [
-            // Gradient overlay
+          color: isSelected
+        ? Theme.of(context).colorScheme.secondary
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(4),
+        border: isSelected
+            ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 2)
+            : null,
+      ),
+      child: Row(
+        children: [
+          // Left accent bar for selected items
+          if (isSelected)
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Colors.black,
-                    Colors.transparent,
-                  ],
-                ),
-              ),
+              width: 4,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-            // Content
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+
+          // Category content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        category.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      if (category.subtitle != null &&
-                          category.subtitle!.isNotEmpty)
-                        Text(
-                          category.subtitle!,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                    ],
+                  // Category name
+                  Text(
+                    category.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
                   ),
-                  const Icon(
-                    Icons.favorite_border,
-                    color: Colors.white70,
-                    size: 22,
+
+                  // Arrow icon
+                  Icon(
+                    Icons.arrow_forward,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey.shade600,
+                    size: 20,
                   ),
                 ],
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    ),
+    );
+  }
+  Widget _buildListItem(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      selected: isSelected,
+      selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+      title: Text(
+        category.name,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onSurface,
         ),
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 16,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }

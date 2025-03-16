@@ -36,7 +36,7 @@ class _ShopMenPageState extends State<ShopMenPage> {
       });
 
       // Get men's products from Supabase
-      final products = await _productService.getProductsByCategory('men');
+      final products = await _productService.getProductsByCategory('1');
 
       setState(() {
         _products = products;

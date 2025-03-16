@@ -60,44 +60,60 @@ class CategoryItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        height: 100,
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        height: 80,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.grey.shade900,
-        ),
-        child: Stack(
-          children: [
-            // Category name
-            Positioned(
-              left: 20,
-              bottom: 20,
-              child: Text(
-                category.name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          color: isSelected
+        ? Theme.of(context).colorScheme.secondary
+            : Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(4),
+        border: isSelected
+            ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 2)
+            : null,
+      ),
+      child: Row(
+        children: [
+          // Left accent bar for selected items
+          if (isSelected)
+            Container(
+              width: 4,
+              color: Theme.of(context).colorScheme.secondary,
             ),
 
-            // Arrow icon
-            Positioned(
-              right: 20,
-              bottom: 20,
-              child: Icon(
-                Icons.arrow_forward,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 24,
+          // Category content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Category name
+                  Text(
+                    category.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+
+                  // Arrow icon
+                  Icon(
+                    Icons.arrow_forward,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey.shade600,
+                    size: 20,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    ),
     );
   }
-
   Widget _buildListItem(BuildContext context) {
     return ListTile(
       onTap: onTap,
@@ -115,7 +131,7 @@ class CategoryItem extends StatelessWidget {
       trailing: Icon(
         Icons.arrow_forward_ios,
         size: 16,
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }

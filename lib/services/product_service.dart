@@ -26,7 +26,7 @@ class ProductService {
       final response = await _supabase
           .from('products')
           .select('*')
-          .eq('category', category)
+          .eq('category_id', category)
           .order('product_id');
 
       return response.map<Product>((json) => Product.fromJson(json)).toList();

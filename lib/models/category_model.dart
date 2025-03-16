@@ -1,35 +1,20 @@
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 class Category {
   final String id;
   final String name;
-  final String? subtitle;
-  final String? route;
-  final IconData? icon;
-  final String? imageUrl;
-  final String? imageAsset;
-  final Scrollable;
+  final String route;
 
   Category({
     required this.id,
     required this.name,
-    this.route,
-    this.subtitle = '',
-    this.icon,
-    this.imageUrl,
-    this.imageAsset,
-    this.Scrollable,
+    required this.route,
   });
 
-  // Factory method to create a Category from Firebase data
-  factory Category.fromMap(Map<String, dynamic> map) {
+  // Factory constructor to create a Category from JSON
+  factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: map['id'] ?? '',
-      name: map['name'] ?? '',
-      route: map['route'] ?? '',
-      imageUrl: map['imageUrl'],
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      route: json['route'] ?? '',
     );
   }
 }

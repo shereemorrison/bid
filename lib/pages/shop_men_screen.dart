@@ -1,4 +1,3 @@
-
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../components/widgets/product_grid_item.dart';
 import '../components/widgets/search_bar.dart';
-import '../providers/shop_provider.dart';
+import '../models/products_model.dart';
+import '../services/product_service.dart';
 
 @RoutePage()
 class ShopMenPage extends StatefulWidget {
@@ -17,19 +17,41 @@ class ShopMenPage extends StatefulWidget {
 }
 
 class _ShopMenPageState extends State<ShopMenPage> {
+  final ProductService _productService = ProductService();
+  List<Product> _products = [];
+  bool _isLoading = true;
+  String? _error;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      // Get men's products from Supabase
+      final products = await _productService.getProductsByCategory('men');
+
+      setState(() {
+        _products = products;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load products: $e';
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final shop = Provider.of<Shop>(context);
-
-    /* TODO - Implement filter products for men's category once database implemented.
-    TODO - Remember to update products.length/index etc to menproducts
-
-    final menProducts = shop.productShop.where((product) =>
-    product.category == 'men' || product.category == 'mens').toList(); */
-
-    final products = context.watch<Shop>().shop;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -51,20 +73,6 @@ class _ShopMenPageState extends State<ShopMenPage> {
 
               // Search Bar
               const CustomSearchBar(),
-
-              /* Featured Products Section
-              Text(
-                "Featured",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // Featured Carousel
-              FeaturedCarousel(products: featuredProduct),*/
               const SizedBox(height: 24),
 
               // All Products Section
@@ -80,17 +88,26 @@ class _ShopMenPageState extends State<ShopMenPage> {
 
               // Grid of Products
               Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.7,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _error != null
+                    ? Center(child: Text(_error!, style: TextStyle(color: Colors.red)))
+                    : _products.isEmpty
+                    ? const Center(child: Text('No products found'))
+                    : RefreshIndicator(
+                  onRefresh: _loadProducts,
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: _products.length,
+                    itemBuilder: (context, index) {
+                      return ProductGridItem(product: _products[index]);
+                    },
                   ),
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return ProductGridItem(product: products[index]);
-                  },
                 ),
               ),
             ],
@@ -100,3 +117,4 @@ class _ShopMenPageState extends State<ShopMenPage> {
     );
   }
 }
+

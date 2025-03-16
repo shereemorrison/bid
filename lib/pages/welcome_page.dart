@@ -1,4 +1,3 @@
-
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/widgets/welcome_header.dart';
@@ -20,11 +19,35 @@ class _WelcomePageState extends State<WelcomePage> {
   final WelcomeService _welcomeService = WelcomeService();
   bool _isDropdownOpen = false;
   final List<String> _categories = ['Men', 'Women', 'Accessories'];
+  bool _isLoading = true; // Add loading state
 
   @override
   void initState() {
     super.initState();
-    _welcomeService.getUserName();
+    _loadData(); // Load data when page initializes
+  }
+
+  // Load data and wait for it to complete
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Get user name
+      await _welcomeService.getUserName();
+
+      print('WelcomePage: Images loaded. Main: ${_welcomeService.mainImagePaths.length}, Secondary: ${_welcomeService.imagePaths.length}');
+    } catch (e) {
+      print('WelcomePage: Error loading data: $e');
+    } finally {
+      // Update UI after loading completes
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -34,7 +57,9 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+            : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -62,7 +87,9 @@ class _WelcomePageState extends State<WelcomePage> {
 
                 const SizedBox(height: 30),
 
-                FeaturedCarousel(
+                // Only show carousel if there are images
+                _welcomeService.mainImagePaths.isNotEmpty
+                    ? FeaturedCarousel(
                   imagePaths: _welcomeService.mainImagePaths,
                   onPageChanged: (index) {
                     setState(() {
@@ -70,8 +97,9 @@ class _WelcomePageState extends State<WelcomePage> {
                     });
                   },
                   currentPage: _welcomeService.currentPage,
-                  customBeige: customBeige,
-                ),
+                  customBeige: customBeige, products: [],
+                )
+                    : Container(), // Empty container if no images
 
                 const SizedBox(height: 30),
 
@@ -86,12 +114,16 @@ class _WelcomePageState extends State<WelcomePage> {
 
                 const SizedBox(height: 15),
 
-                ProductHorizontalList(
+                // Only show product list if there are images
+                _welcomeService.imagePaths.isNotEmpty
+                    ? ProductHorizontalList(
                   imagePaths: _welcomeService.imagePaths,
                   customBeige: customBeige,
-                ),
+                )
+                    : Container(), // Empty container if no images
 
                 const SizedBox(height: 30),
+
               ],
             ),
           ),
@@ -100,3 +132,4 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 }
+

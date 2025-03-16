@@ -14,6 +14,11 @@ class WishlistItemCard extends StatelessWidget {
     required this.onAddToCart,
   });
 
+  // Helper method to check if a path is a URL
+  bool _isUrl(String path) {
+    return path.startsWith('http');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,12 +37,10 @@ class WishlistItemCard extends StatelessWidget {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: Image.asset(
-                  '${product.imagePath}',
-                  fit: BoxFit.cover,
-                ),
+                child: _buildProductImage(context),
               ),
             ),
+
             const SizedBox(width: 16),
             // Product Details
             Expanded(
@@ -85,6 +88,65 @@ class WishlistItemCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Fixed method with proper structure and all return paths
+  Widget _buildProductImage(BuildContext context) {
+    // Check for empty paths
+    if (product.imageUrl.isEmpty && product.imagePath.isEmpty) {
+      return Container(
+        color: Colors.grey,
+        child: const Center(
+          child: Icon(Icons.image_not_supported, color: Colors.white),
+        ),
+      );
+    }
+
+    // Check for URL
+    if (_isUrl(product.imageUrl)) {
+      return Image.network(
+        product.imageUrl,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            color: Colors.grey.shade800,
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading image: $error');
+          return Container(
+            color: Colors.grey.shade800,
+            child: const Center(
+              child: Icon(Icons.error_outline, color: Colors.white),
+            ),
+          );
+        },
+      );
+    } else {
+      // Use local asset as fallback
+      return Image.asset(
+        product.imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print('Error loading asset: $error');
+          return Container(
+            color: Colors.grey.shade800,
+            child: const Center(
+              child: Icon(Icons.error_outline, color: Colors.white),
+            ),
+          );
+        },
+      );
+    }
   }
 }
 

@@ -5,9 +5,9 @@ class Product {
   final String description;
   final String category;
   final String imageUrl;
-  final String imagePath; // Added for backward compatibility
+  final String imagePath;
   final bool isFeatured;
-  final int quantity; // Added for cart functionality
+  final int quantity;
   final Map<String, dynamic>? additionalInfo;
 
   Product({
@@ -25,6 +25,10 @@ class Product {
 
   // Factory constructor to create a Product from JSON
   factory Product.fromJson(Map<String, dynamic> json) {
+
+    final imageUrl = json['image_url'] ?? '';
+    print('Raw image_url from JSON: $imageUrl');
+
     return Product(
       id: json['product_id'].toString(),
       name: json['name'] ?? '',
@@ -32,7 +36,7 @@ class Product {
       description: json['description'] ?? '',
       category: json['category'] ?? '',
       imageUrl: json['image_url'] ?? '',
-      imagePath: json['image_url'] ?? '', // Use image_url as imagePath for compatibility
+      imagePath: json['image_url'] ?? '',
       isFeatured: json['is_featured'] ?? false,
       quantity: json['quantity'] ?? 1,
       additionalInfo: json['additional_info'],

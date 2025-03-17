@@ -1,7 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/widgets/welcome_header.dart';
-import 'package:bid/components/widgets/category_dropdown.dart';
 import 'package:bid/components/widgets/search_bar.dart';
 import 'package:bid/components/widgets/featured_carousel.dart';
 import 'package:bid/components/widgets/product_horizontal_list.dart';
@@ -17,8 +16,6 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> {
   final WelcomeService _welcomeService = WelcomeService();
-  bool _isDropdownOpen = false;
-  final List<String> _categories = ['Men', 'Women', 'Accessories'];
   bool _isLoading = true; // Add loading state
 
   @override
@@ -35,9 +32,9 @@ class _WelcomePageState extends State<WelcomePage> {
 
     try {
       // Get user name
-      await _welcomeService.getUserName();
+      await _welcomeService.loadAllData();
 
-      print('WelcomePage: Images loaded. Main: ${_welcomeService.mainImagePaths.length}, Secondary: ${_welcomeService.imagePaths.length}');
+      print('WelcomePage: Images loaded. Featured: ${_welcomeService.featuredProducts.length}, Most Wanted: ${_welcomeService.mostWantedProducts.length}');
     } catch (e) {
       print('WelcomePage: Error loading data: $e');
     } finally {
@@ -70,16 +67,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 WelcomeHeader(
                   greeting: _welcomeService.getGreeting(),
                   userName: _welcomeService.userName,
-                  isDropdownOpen: _isDropdownOpen,
-                  onToggleDropdown: () {
-                    setState(() {
-                      _isDropdownOpen = !_isDropdownOpen;
-                    });
-                  },
                 ),
-
-                if (_isDropdownOpen)
-                  CategoryDropdown(categories: _categories),
 
                 const SizedBox(height: 20),
 
@@ -88,18 +76,18 @@ class _WelcomePageState extends State<WelcomePage> {
                 const SizedBox(height: 30),
 
                 // Only show carousel if there are images
-                _welcomeService.mainImagePaths.isNotEmpty
-                    ? FeaturedCarousel(
-                  imagePaths: _welcomeService.mainImagePaths,
-                  onPageChanged: (index) {
-                    setState(() {
+                if (_welcomeService.featuredProducts.isNotEmpty)
+                  FeaturedCarousel(
+                    products: _welcomeService.featuredProducts,
+                    getImageUrl: _welcomeService.getImageUrl,
+                    onPageChanged: (index) {
+                      setState(() {
                       _welcomeService.currentPage = index;
                     });
                   },
                   currentPage: _welcomeService.currentPage,
-                  customBeige: customBeige, products: [],
-                )
-                    : Container(), // Empty container if no images
+                  customBeige: customBeige,
+                ),
 
                 const SizedBox(height: 30),
 
@@ -115,15 +103,14 @@ class _WelcomePageState extends State<WelcomePage> {
                 const SizedBox(height: 15),
 
                 // Only show product list if there are images
-                _welcomeService.imagePaths.isNotEmpty
-                    ? ProductHorizontalList(
-                  imagePaths: _welcomeService.imagePaths,
-                  customBeige: customBeige,
-                )
-                    : Container(), // Empty container if no images
+                if (_welcomeService.mostWantedProducts.isNotEmpty)
+                  ProductHorizontalList(
+                    products: _welcomeService.mostWantedProducts,
+                    getImageUrl: _welcomeService.getImageUrl,
+                    customBeige: customBeige,
+                  ),
 
                 const SizedBox(height: 30),
-
               ],
             ),
           ),

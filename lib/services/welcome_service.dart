@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../models/products_model.dart';
 import '../supabase/supabase_config.dart';
 
 class WelcomeService {
@@ -9,19 +10,9 @@ class WelcomeService {
   int currentPage = 0;
   Timer? carouselTimer;
 
-  final List<String> mainImagePaths = [
-    'assets/images/BIDHoodie.jpg',
-    'assets/images/BIDTshirt.jpg',
-    'assets/images/BIDSweater.jpg'
-  ];
-
-  final List<String> imagePaths = [
-    'assets/images/BIDHoodie2.jpg',
-    'assets/images/BIDHoodie3.jpg',
-    'assets/images/BIDHoodie4.jpg',
-    'assets/images/BIDSweater2.jpg',
-    'assets/images/BIDHoodie4.jpg'
-  ];
+  final List<String> collections = ['Winter', 'Holiday', 'Essentials'];
+  List<Product> featuredProducts = [];
+  List<Product> mostWantedProducts = [];
 
   WelcomeService() {
     startCarouselTimer();
@@ -69,5 +60,53 @@ class WelcomeService {
     } else {
       return 'Good evening';
     }
+  }
+
+  Future<void> fetchFeaturedProducts() async {
+    try {
+      final response = await SupabaseConfig.client
+          .from('products')
+          .select('*')
+          .eq('category_id', '1') // Filter for men's products
+          .limit(3) // Limit to 3 products for the main carousel
+          .order('product_id', ascending: true);
+
+      featuredProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
+      print('Fetched ${featuredProducts.length} featured products');
+    } catch (e) {
+      print('Error fetching featured products: $e');
+      featuredProducts = [];
+    }
+  }
+
+  Future<void> fetchMostWantedProducts() async {
+    try {
+      final response = await SupabaseConfig.client
+          .from('products')
+          .select('*')
+          .eq('category_id', '1') // Filter for men's products
+          .limit(5) // Limit to 5 products for the horizontal list
+          .order('product_id', ascending: false); // Newest products first
+
+      mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
+      print('Fetched ${mostWantedProducts.length} most wanted products');
+    } catch (e) {
+      print('Error fetching most wanted products: $e');
+      mostWantedProducts = [];
+    }
+  }
+
+  String getImageUrl(String imagePath) {
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    } else {
+      return SupabaseConfig.client.storage.from('bid-images').getPublicUrl(imagePath);
+    }
+  }
+
+  Future<void> loadAllData() async {
+    await getUserName();
+    await fetchFeaturedProducts();
+    await fetchMostWantedProducts();
   }
 }

@@ -46,5 +46,6 @@ app.*.map.json
 
 #Supabase
 lib/supabase/supabase_credentials.dart
+lib/supabase/supabase_config.dart
 .env
 .env.local

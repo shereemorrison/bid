@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/products_model.dart';
 import '../supabase/supabase_config.dart';
 

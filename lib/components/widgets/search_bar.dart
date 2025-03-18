@@ -25,7 +25,7 @@ class CustomSearchBar extends StatelessWidget {
           Text(
             'Search',
             style: TextStyle(
-              color: greyShade300.withOpacity(0.7),
+              color: greyShade300,
               fontSize: 16,
             ),
           ),

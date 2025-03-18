@@ -7,7 +7,6 @@ import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/widgets/social_login_row.dart';
 import 'package:bid/modals/loginmodal.dart';
 import 'package:bid/modals/registrationmodal.dart';
-import 'package:bid/providers/user_provider.dart';
 import '../providers/supabase_auth_provider.dart';
 
 @RoutePage()

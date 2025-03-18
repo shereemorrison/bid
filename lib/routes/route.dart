@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:bid/pages/welcome_page.dart';
+import '../pages/account_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/categories_page.dart';
 import '../pages/intro_screen.dart';
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_screen.dart';
-import '../pages/profile_page.dart';
 import '../pages/shop_men_screen.dart';
 import '../pages/shop_page.dart';
 import '../pages/wishlist_page.dart';
@@ -16,7 +16,7 @@ part 'route.gr.dart';
 class Paths {
   static const String root = '/';
   static const String intro = 'intro';
-  static const String profile = 'profile';
+  static const String account = 'account';
   static const String cart = 'cart';
   static const String shop = 'shop';
   static const String shopMen = 'shop_men';
@@ -35,8 +35,8 @@ class AppRouter extends _$AppRouter {
       path: Paths.root,
       page: MainLayoutRoute.page,
       children: [
-        AutoRoute(path: Paths.welcome, page: WelcomeRoute.page),
-        AutoRoute(path: Paths.profile, page: ProfileRoute.page),
+        AutoRoute(path: Paths.welcome, page: WelcomeRoute.page, initial: true),
+        AutoRoute(path: Paths.account, page: AccountRoute.page),
         AutoRoute(
           path: Paths.cart,
           page: CartRootRoute.page,

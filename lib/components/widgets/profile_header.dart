@@ -11,13 +11,13 @@ class ProfileHeader extends StatelessWidget {
         Icon(
           Icons.person,
           size: 60,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         const SizedBox(height: 30),
         Text(
           "BELIEVE IN DREAMS",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
             letterSpacing: 4.0,

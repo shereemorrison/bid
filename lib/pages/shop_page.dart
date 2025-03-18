@@ -66,6 +66,7 @@ class _ShopPageState extends State<ShopPage> {
               ),
             ),
 
+            // TODO - CHANGE TO SWITCH STATEMENT
             // Category Grid
             Expanded(
               child: SingleChildScrollView(
@@ -105,6 +106,17 @@ class _ShopPageState extends State<ShopPage> {
                       padding: const EdgeInsets.all(16.0),
                       child: CategoryCard(
                         title: 'A C C E S S O R I E S',
+                        imageUrl: 'assets/images/hoodie1.jpg',
+                        onTap: () {
+                          context.pushRoute(ShopMenRoute());
+                        },
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CategoryCard(
+                        title: 'S A L E',
                         imageUrl: 'assets/images/hoodie1.jpg',
                         onTap: () {
                           context.pushRoute(ShopMenRoute());

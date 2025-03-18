@@ -12,7 +12,7 @@ class MainLayoutPage extends StatelessWidget {
     return AutoTabsScaffold(
       routes: const [
         WelcomeRoute(),
-        ProfileRoute(),
+        AccountRoute(),
         CategoriesRoute(),
         WishlistRoute(),
         CartRoute(),
@@ -20,6 +20,8 @@ class MainLayoutPage extends StatelessWidget {
 
       appBarBuilder: (_, tabsRouter) {
         return AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           title: Text(
             _getAppBarTitle(tabsRouter.activeIndex),
             style: TextStyle(
@@ -65,7 +67,7 @@ String _getAppBarTitle(int tabIndex) {
     case 0:
       return "Home";
     case 1:
-      return "Profile";
+      return "Account";
     case 2:
       return "Shop";
     case 3:

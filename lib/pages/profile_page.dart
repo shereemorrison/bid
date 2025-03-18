@@ -1,5 +1,5 @@
 
-import 'package:auto_route/annotations.dart';
+/*import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/components/widgets/profile_header.dart';
@@ -102,4 +102,4 @@ class ProfilePage extends StatelessWidget {
       },
     );
   }
-}
+}*/

@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (mounted) {
         Navigator.of(context).pop();
-        context.pushRoute(ProfileRoute());
+        context.router.navigate(const AccountRoute());
       }
     } catch (e) {
       if (mounted) {

@@ -14,7 +14,7 @@ class CategoryService {
       final response = await _supabase
           .from('categories')
           .select('*')
-          .order('category_id');
+          .order('category_id', ascending: true);
 
       return response.map<Category>((json) => Category.fromJson(json)).toList();
     } catch (e) {
@@ -26,21 +26,6 @@ class CategoryService {
           id: '1',
           name: 'Men',
           route: Paths.shopMen,
-        ),
-        Category(
-          id: '2',
-          name: 'Women',
-          route: '/shop-women',
-        ),
-        Category(
-          id: '3',
-          name: 'Accessories',
-          route: '/accessories',
-        ),
-        Category(
-          id: '4',
-          name: 'BID Exclusives',
-          route: '/bid-exclusives',
         ),
       ];
     }

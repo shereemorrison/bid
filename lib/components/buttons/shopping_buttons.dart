@@ -38,7 +38,7 @@ class BaseStyledButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
-          // Reduce padding to prevent text from being cut off
+
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         ),
         child: FittedBox(

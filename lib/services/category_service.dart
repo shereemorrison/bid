@@ -9,7 +9,6 @@ class CategoryService {
   // Fetch categories from Supabase
   Future<List<Category>> getCategories() async {
     try {
-      // Simulate network delay for testing
       await Future.delayed(const Duration(milliseconds: 800));
 
       final response = await _supabase
@@ -21,7 +20,7 @@ class CategoryService {
     } catch (e) {
       print('Error fetching categories: $e');
 
-      // Fallback to mock data if there's an error
+      // Fallback if error - TODO - Test to see if this can now be removed
       return [
         Category(
           id: '1',

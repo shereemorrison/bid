@@ -24,17 +24,14 @@ class ProductHorizontalList extends StatelessWidget {
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        // FIXED: Use itemCount variable instead of hardcoded 5
         itemCount: itemCount,
         itemBuilder: (context, index) {
-          // Get product if available
+
           final Product? product = useProducts && index < products!.length ? products![index] : null;
 
-          // Get image URL if product is available
           String? imageUrl;
           if (useProducts && product != null && getImageUrl != null) {
             imageUrl = getImageUrl!(product.imageUrl);
-            print('Product ${index}: Using image URL: $imageUrl');
           }
 
           return Container(
@@ -53,7 +50,6 @@ class ProductHorizontalList extends StatelessWidget {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    // CHANGED: Use Image.network instead of DecorationImage
                     child: imageUrl != null
                         ? Image.network(
                       imageUrl,

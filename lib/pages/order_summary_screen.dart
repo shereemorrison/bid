@@ -101,7 +101,7 @@ class OrderSummaryPage extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // Cost Summary - Now using dynamic values
+              // Cost Summary
               _buildCostItem('Items', '\$${itemsTotal.toStringAsFixed(2)}'),
               const SizedBox(height: 8),
               _buildCostItem('Shipping', '\$${shipping.toStringAsFixed(2)}'),

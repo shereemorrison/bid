@@ -23,7 +23,6 @@ class FeaturedCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     final greyShade300 = Colors.grey.shade300;
 
-    final bool useProducts = products.isNotEmpty;
     final int itemCount = products.length;
 
     return Column(
@@ -53,7 +52,7 @@ class FeaturedCarousel extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: currentPage == index
                       ? customBeige
-                      : greyShade300.withOpacity(0.3),
+                      : greyShade300,
                 ),
               ),
           ),
@@ -98,7 +97,7 @@ class FeaturedCarousel extends StatelessWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.8),
+                    Colors.black,
                     Colors.transparent,
                   ],
                 ),

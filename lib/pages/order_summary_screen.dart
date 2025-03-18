@@ -153,7 +153,7 @@ class OrderSummaryPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -229,7 +229,7 @@ class OrderSummaryPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -283,7 +283,7 @@ class OrderSummaryPage extends StatelessWidget {
           boxShadow: isSelected
               ? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black,
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

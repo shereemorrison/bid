@@ -16,7 +16,6 @@ class ShopProductCard extends StatelessWidget {
   });
 
   void addToCart(BuildContext context) {
-    // Alert for item added to cart
     context.read<Shop>().addToCart(product);
 
     showDialog(
@@ -41,7 +40,6 @@ class ShopProductCard extends StatelessWidget {
   }
 
   void addToWishlist(BuildContext context) {
-    // Alert for item added to wishlist
     context.read<Shop>().addToWishlist(product);
 
     showDialog(

@@ -101,7 +101,7 @@ class OrderSummaryPage extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // Cost Summary - Now using dynamic values
+              // Cost Summary
               _buildCostItem('Items', '\$${itemsTotal.toStringAsFixed(2)}'),
               const SizedBox(height: 8),
               _buildCostItem('Shipping', '\$${shipping.toStringAsFixed(2)}'),
@@ -153,7 +153,7 @@ class OrderSummaryPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -229,7 +229,7 @@ class OrderSummaryPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -283,7 +283,7 @@ class OrderSummaryPage extends StatelessWidget {
           boxShadow: isSelected
               ? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black,
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

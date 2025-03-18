@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/products_model.dart';
 
 class Shop extends ChangeNotifier {
-  // Added _shop list that was missing
   final List<Product> _shop = [];
   final List<Product> _cart = [];
   final List<Product> _wishlist = [];
@@ -22,7 +21,6 @@ class Shop extends ChangeNotifier {
     return _cart.fold(0, (sum, item) => sum + (item.price * item.quantity));
   }
 
-  // Directly modifying lists
   void addToCart(Product product) {
     // Check if product already exists in cart
     final existingIndex = _cart.indexWhere((item) => item.id == product.id);

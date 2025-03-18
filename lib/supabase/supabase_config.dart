@@ -12,6 +12,7 @@ class SupabaseConfig {
     await Supabase.initialize(
       url: SupabaseCredentials.url,
       anonKey: SupabaseCredentials.anonKey,
+        debug: false
     );
   }
 }

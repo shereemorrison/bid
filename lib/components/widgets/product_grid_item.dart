@@ -36,7 +36,7 @@ class ProductGridItem extends StatelessWidget {
                 imageUrl,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                // Add loading placeholder
+                // Loading Placeholder
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Center(

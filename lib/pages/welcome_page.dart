@@ -33,8 +33,6 @@ class _WelcomePageState extends State<WelcomePage> {
     try {
       // Get user name
       await _welcomeService.loadAllData();
-
-      print('WelcomePage: Images loaded. Featured: ${_welcomeService.featuredProducts.length}, Most Wanted: ${_welcomeService.mostWantedProducts.length}');
     } catch (e) {
       print('WelcomePage: Error loading data: $e');
     } finally {

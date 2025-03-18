@@ -19,7 +19,7 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> {
   final WelcomeService _welcomeService = WelcomeService();
-  bool _isLoading = true; // Add loading state
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -58,6 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     final customBeige = const Color(0xFFb8b0a4);
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -102,7 +103,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 Text(
                   'Most Wanted',
                   style: TextStyle(
-                    color: customBeige,
+                    color: isLightMode ? Colors.black : customBeige,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),

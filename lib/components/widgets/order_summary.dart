@@ -14,10 +14,11 @@ class OrderSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.quaternary,
+        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),

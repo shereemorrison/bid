@@ -23,7 +23,6 @@ class FeaturedCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final greyShade300 = Colors.grey.shade300;
-
     final int itemCount = products.length;
 
     return Column(
@@ -65,6 +64,7 @@ class FeaturedCarousel extends StatelessWidget {
   Widget _buildProductCarouselItem(Product product, int index, Color customBeige, Color greyShade300, BuildContext context) {
     // Get the image URL
     final String imageUrl = getImageUrl(product.imageUrl);
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     // Get collection name based on index
     final String collectionName = index < collections.length
@@ -113,7 +113,7 @@ class FeaturedCarousel extends StatelessWidget {
                   Text(
                     collectionName,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: isLightMode ? Colors.white : Theme.of(context).colorScheme.secondary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),

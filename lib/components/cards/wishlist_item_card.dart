@@ -22,10 +22,11 @@ class WishlistItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).colorScheme.quaternary,
+        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),

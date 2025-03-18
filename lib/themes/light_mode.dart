@@ -7,8 +7,8 @@ ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.light(
     // Invert the primary colors
     surface: Colors.white,
-    primary: Colors.grey,
-    secondary: const Color(0xFFb8b0a4),
+    primary: Colors.black,
+    secondary: Colors.grey.shade900,
     inversePrimary: Colors.grey.shade100,
   ),
 

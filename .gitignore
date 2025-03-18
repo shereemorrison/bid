@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#Supabase
+lib/supabase/supabase_credentials.dart
+lib/supabase/supabase_config.dart
+.env
+.env.local

@@ -1,7 +1,4 @@
-
 import 'dart:async';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../models/products_model.dart';
 import '../supabase/supabase_config.dart';
 
@@ -35,11 +32,10 @@ class WelcomeService {
   Future<void> getUserName() async {
     final user = SupabaseConfig.client.auth.currentUser;
     if (user != null) {
-      // Try to get user metadata or profile info
       try {
         final userMetadata = user.userMetadata;
-        if (userMetadata != null && userMetadata.containsKey('name')) {
-          userName = userMetadata['name'] as String;
+        if (userMetadata != null && userMetadata.containsKey('first_name')) {
+          userName = userMetadata['first_name'] as String;
         } else {
           userName = user.email?.split('@').first ?? 'Guest';
         }
@@ -67,14 +63,12 @@ class WelcomeService {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', '1') // Filter for men's products
-          .limit(3) // Limit to 3 products for the main carousel
+          .eq('category_id', '1')
+          .limit(3)
           .order('product_id', ascending: true);
 
       featuredProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
-      print('Fetched ${featuredProducts.length} featured products');
     } catch (e) {
-      print('Error fetching featured products: $e');
       featuredProducts = [];
     }
   }
@@ -84,14 +78,12 @@ class WelcomeService {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', '1') // Filter for men's products
-          .limit(5) // Limit to 5 products for the horizontal list
-          .order('product_id', ascending: false); // Newest products first
+          .eq('category_id', '1')
+          .limit(5)
+          .order('product_id', ascending: false);
 
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
-      print('Fetched ${mostWantedProducts.length} most wanted products');
     } catch (e) {
-      print('Error fetching most wanted products: $e');
       mostWantedProducts = [];
     }
   }
@@ -110,3 +102,4 @@ class WelcomeService {
     await fetchMostWantedProducts();
   }
 }
+

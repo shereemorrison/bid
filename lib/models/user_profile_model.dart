@@ -1,4 +1,3 @@
-
 class UserProfile {
   final String id;
   final String? fullName;
@@ -48,3 +47,4 @@ class UserProfile {
     );
   }
 }
+

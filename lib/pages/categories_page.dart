@@ -46,8 +46,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   void _navigateToCategory(Category category) {
-    final route = category.route;
-    if (route == null) return;
     switch (category.name) {
       case 'Men':
         context.pushRoute(const ShopMenRoute());

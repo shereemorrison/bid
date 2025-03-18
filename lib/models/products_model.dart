@@ -26,9 +26,6 @@ class Product {
   // Factory constructor to create a Product from JSON
   factory Product.fromJson(Map<String, dynamic> json) {
 
-    final imageUrl = json['image_url'] ?? '';
-    print('Raw image_url from JSON: $imageUrl');
-
     return Product(
       id: json['product_id'].toString(),
       name: json['name'] ?? '',

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/products_model.dart';
 
 class DialogService {
-  // Show a standard confirmation dialog
   static Future<bool?> showConfirmationDialog({
     required BuildContext context,
     required String title,
@@ -22,7 +21,7 @@ class DialogService {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: customBeige, // Beige outline like your buttons
+                color: customBeige,
                 width: 2,
               ),
             ),
@@ -119,7 +118,7 @@ class DialogService {
     );
   }
 
-  // Show dialog when adding to cart
+  // Add to cart Dialog
   static void showAddToCartDialog(BuildContext context, Product product) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -189,7 +188,7 @@ class DialogService {
     );
   }
 
-  // Show dialog when adding to wishlist
+  // Add to wishlist dialog
   static void showAddToWishlistDialog(BuildContext context, Product product) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -259,7 +258,7 @@ class DialogService {
     );
   }
 
-  // Show dialog when removing from cart
+  // Removed from cart dialog
   static void showRemoveFromCartDialog(BuildContext context, Product product) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -329,7 +328,7 @@ class DialogService {
     );
   }
 
-  // Show dialog when removing from wishlist
+  // Removed from wishlist dialog
   static void showRemoveFromWishlistDialog(BuildContext context,
       Product product) {
     final theme = Theme.of(context);

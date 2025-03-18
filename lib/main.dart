@@ -1,5 +1,6 @@
 
 
+import 'package:bid/providers/user_provider.dart';
 import 'package:bid/routes/route.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/supabase/supabase_config.dart';
 import 'providers/shop_provider.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => SupabaseAuthProvider()),
         ChangeNotifierProvider(create: (context) => Shop()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MyApp(appRouter: appRouter),
     ),
@@ -35,8 +36,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Autoroute',
+      debugShowCheckedModeBanner: false,
+      title: 'B.I.D.',
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: ThemeMode.system,

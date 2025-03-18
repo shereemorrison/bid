@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:bid/components/buttons/custom_button.dart';
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../components/widgets/profile_header.dart';
@@ -70,21 +71,14 @@ class _AccountPageState extends State<AccountPage> {
                         width: 80,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1E1E1E),
+                          color: Theme.of(context).colorScheme.quaternary,
                           shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Icon(
                             Icons.person,
                             size: 40,
-                            color: Colors.white70,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),
@@ -102,8 +96,8 @@ class _AccountPageState extends State<AccountPage> {
                           const SizedBox(height: 4),
                           Text(
                             userData.email,
-                            style: const TextStyle(
-                              color: Colors.white70,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 14,
                             ),
                           ),
@@ -115,12 +109,12 @@ class _AccountPageState extends State<AccountPage> {
                   const SizedBox(height: 40),
 
                   // Personal Information
-                  const Text(
+                  Text(
                     'Personal Information',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -306,3 +300,4 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 }
+

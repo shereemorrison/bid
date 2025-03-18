@@ -32,7 +32,7 @@ class WelcomeHeader extends StatelessWidget {
             ),
           ],
         ),
-        // Logo
+        /* Logo
         Container(
           width: 40,
           height: 40,
@@ -43,7 +43,7 @@ class WelcomeHeader extends StatelessWidget {
           child: Center(
             child: Image.asset('assets/images/bidlogo.jpg'),
           ),
-        )
+        )*/
       ],
     );
   }

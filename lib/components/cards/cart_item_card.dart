@@ -1,4 +1,5 @@
 
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
 import '../buttons/shopping_buttons.dart';
@@ -23,7 +24,7 @@ class CartItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xFF1E1E1E),
+        color: Theme.of(context).colorScheme.quaternary,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -49,8 +50,8 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -58,14 +59,14 @@ class CartItemCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     "\$${product.price.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildProductAttributes(),
+                  _buildProductAttributes(context),
                 ],
               ),
             ),
@@ -93,7 +94,7 @@ class CartItemCard extends StatelessWidget {
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: Colors.grey.shade800,
+            color: Theme.of(context).colorScheme.senary,
             child: Center(
               child: CircularProgressIndicator(
                 value: loadingProgress.expectedTotalBytes != null
@@ -107,9 +108,9 @@ class CartItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading image: $error');
           return Container(
-            color: Colors.grey.shade800,
-            child: const Center(
-              child: Icon(Icons.error_outline, color: Colors.white),
+            color: Theme.of(context).colorScheme.senary,
+            child: Center(
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
             ),
           );
         },
@@ -121,9 +122,9 @@ class CartItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading asset: $error');
           return Container(
-            color: Colors.grey.shade800,
-            child: const Center(
-              child: Icon(Icons.error_outline, color: Colors.white),
+            color: Theme.of(context).colorScheme.senary,
+            child: Center(
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
             ),
           );
         },
@@ -131,24 +132,24 @@ class CartItemCard extends StatelessWidget {
     }
   }
 
-  Widget _buildProductAttributes() {
+  Widget _buildProductAttributes(context) {
     return Row(
       children: [
-        _buildAttributeTag("Size: "),
+        _buildAttributeTag("Size: ", context),
         const SizedBox(width: 8),
-        _buildAttributeTag("Qty: "),
+        _buildAttributeTag("Qty: ", context),
       ],
     );
   }
 
-  Widget _buildAttributeTag(String text) {
+  Widget _buildAttributeTag(String text, BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 8,
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[700]!),
+        border: Border.all(color: Theme.of(context).colorScheme.septenary!),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

@@ -60,7 +60,7 @@ class _WelcomePageState extends State<WelcomePage> {
     final customBeige = const Color(0xFFb8b0a4);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: _isLoading
             ? const Center(child: CircularProgressIndicator()) // Show loading indicator

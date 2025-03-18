@@ -53,7 +53,7 @@ class CategoryBlock extends StatelessWidget {
                 : NetworkImage(category.imageUrl!) as ImageProvider,
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.black,
+              color: Theme.of(context).colorScheme.primary,
               BlendMode.darken,
             ),
           )
@@ -72,7 +72,7 @@ class CategoryBlock extends StatelessWidget {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.black,
+                    color: Theme.of(context).colorScheme.primary,
                     Colors.transparent,
                   ],
                 ),
@@ -92,7 +92,7 @@ class CategoryBlock extends StatelessWidget {
                       Text(
                         category.name,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
@@ -101,7 +101,7 @@ class CategoryBlock extends StatelessWidget {
                         Text(
                           category.subtitle,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.primary,
                             fontSize: 14,
                           ),
                         ),
@@ -109,7 +109,7 @@ class CategoryBlock extends StatelessWidget {
                   ),
                   const Icon(
                     Icons.favorite_border,
-                    color: Colors.white70,
+                    color: Theme.of(context).colorScheme.primary70,
                     size: 22,
                   ),
                 ],

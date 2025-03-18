@@ -1,3 +1,4 @@
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
 import '../buttons/shopping_buttons.dart';
@@ -24,7 +25,7 @@ class WishlistItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: const Color(0xFF1E1E1E),
+        color: Theme.of(context).colorScheme.quaternary,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -49,8 +50,8 @@ class WishlistItemCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -58,8 +59,8 @@ class WishlistItemCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     "\$${product.price.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -95,8 +96,8 @@ class WishlistItemCard extends StatelessWidget {
     if (product.imageUrl.isEmpty && product.imagePath.isEmpty) {
       return Container(
         color: Colors.grey,
-        child: const Center(
-          child: Icon(Icons.image_not_supported, color: Colors.white),
+        child: Center(
+          child: Icon(Icons.image_not_supported, color: Theme.of(context).colorScheme.primary),
         ),
       );
     }
@@ -108,7 +109,7 @@ class WishlistItemCard extends StatelessWidget {
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: Colors.grey.shade800,
+            color: Theme.of(context).colorScheme.senary,
             child: Center(
               child: CircularProgressIndicator(
                 value: loadingProgress.expectedTotalBytes != null
@@ -122,9 +123,9 @@ class WishlistItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading image: $error');
           return Container(
-            color: Colors.grey.shade800,
-            child: const Center(
-              child: Icon(Icons.error_outline, color: Colors.white),
+            color: Theme.of(context).colorScheme.senary,
+            child: Center(
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
             ),
           );
         },
@@ -136,9 +137,9 @@ class WishlistItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading asset: $error');
           return Container(
-            color: Colors.grey.shade800,
-            child: const Center(
-              child: Icon(Icons.error_outline, color: Colors.white),
+            color: Theme.of(context).colorScheme.senary,
+            child: Center(
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
             ),
           );
         },

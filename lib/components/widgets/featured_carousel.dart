@@ -1,3 +1,4 @@
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
 
@@ -74,7 +75,7 @@ class FeaturedCarousel extends StatelessWidget {
       height: 400,
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: Theme.of(context).colorScheme.quinary,
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: NetworkImage(imageUrl),
@@ -112,7 +113,7 @@ class FeaturedCarousel extends StatelessWidget {
                   Text(
                     collectionName,
                     style: TextStyle(
-                      color: customBeige,
+                      color: Theme.of(context).colorScheme.secondary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),

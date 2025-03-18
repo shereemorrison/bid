@@ -86,7 +86,6 @@ class CartItemCard extends StatelessWidget {
   }
 
   Widget _buildProductImage() {
-    // Check if the image path is a URL
     if (_isUrl(product.imageUrl)) {
       return Image.network(
         product.imageUrl,
@@ -116,7 +115,6 @@ class CartItemCard extends StatelessWidget {
         },
       );
     } else {
-      // Use local asset
       return Image.asset(
         product.imagePath,
         fit: BoxFit.cover,

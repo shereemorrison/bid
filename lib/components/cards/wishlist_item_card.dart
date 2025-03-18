@@ -90,7 +90,6 @@ class WishlistItemCard extends StatelessWidget {
     );
   }
 
-  // Fixed method with proper structure and all return paths
   Widget _buildProductImage(BuildContext context) {
     // Check for empty paths
     if (product.imageUrl.isEmpty && product.imagePath.isEmpty) {
@@ -102,7 +101,6 @@ class WishlistItemCard extends StatelessWidget {
       );
     }
 
-    // Check for URL
     if (_isUrl(product.imageUrl)) {
       return Image.network(
         product.imageUrl,
@@ -132,7 +130,6 @@ class WishlistItemCard extends StatelessWidget {
         },
       );
     } else {
-      // Use local asset as fallback
       return Image.asset(
         product.imagePath,
         fit: BoxFit.cover,

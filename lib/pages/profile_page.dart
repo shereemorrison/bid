@@ -7,7 +7,7 @@ import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/widgets/social_login_row.dart';
 import 'package:bid/modals/loginmodal.dart';
 import 'package:bid/modals/registrationmodal.dart';
-
+import 'package:bid/providers/user_provider.dart';
 import '../providers/supabase_auth_provider.dart';
 
 @RoutePage()
@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<SupabaseAuthProvider>(context);
 
     return Center(
       child: Column(
@@ -35,15 +35,18 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoggedInView(BuildContext context, AuthProvider authProvider) {
+  Widget _buildLoggedInView(BuildContext context, SupabaseAuthProvider authProvider) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          "Logged in as ${authProvider.user?.email ?? 'User'}",
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 4.0,
+        Center(
+          child: Text(
+            "Logged in as ${authProvider.user?.email ?? 'User'}",
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 4.0,
+            ),
           ),
         ),
         const SizedBox(height: 15),
@@ -57,7 +60,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoggedOutView(BuildContext context, AuthProvider authProvider) {
+  Widget _buildLoggedOutView(BuildContext context, SupabaseAuthProvider authProvider) {
     return Column(
       children: [
         AuthButton(
@@ -75,7 +78,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  void _showLoginModal(BuildContext context, AuthProvider authProvider) {
+  void _showLoginModal(BuildContext context, SupabaseAuthProvider authProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -88,7 +91,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  void _showRegistrationModal(BuildContext context, AuthProvider authProvider) {
+  void _showRegistrationModal(BuildContext context, SupabaseAuthProvider authProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

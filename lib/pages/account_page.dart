@@ -1,13 +1,17 @@
+import 'dart:math' as Math;
+
 import 'package:auto_route/annotations.dart';
 import 'package:bid/components/buttons/custom_button.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../components/widgets/order_history_table.dart';
 import '../components/widgets/profile_header.dart';
 import '../components/buttons/auth_button.dart';
 import '../components/widgets/social_login_row.dart';
 import '../modals/loginmodal.dart';
 import '../modals/registrationmodal.dart';
+import '../providers/order_provider.dart';
 import '../providers/supabase_auth_provider.dart';
 import '../providers/user_provider.dart';
 import '../services/user_service.dart';
@@ -27,6 +31,7 @@ class _AccountPageState extends State<AccountPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchUserDataIfNeeded();
+      _fetchOrdersIfNeeded();
     });
   }
 
@@ -39,6 +44,16 @@ class _AccountPageState extends State<AccountPage> {
         !userProvider.isLoading) {
       print('Fetching user data for ID: ${authProvider.user!.id}');
       userProvider.fetchUserData(authProvider.user!.id);
+    }
+  }
+
+  void _fetchOrdersIfNeeded() {
+    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
+    if (authProvider.isLoggedIn && orderProvider.orders == null && !orderProvider.isLoading) {
+      print('Fetching orders for user ID: ${authProvider.user!.id}');
+      orderProvider.fetchUserOrders(authProvider.user!.id);
     }
   }
 
@@ -147,32 +162,53 @@ class _AccountPageState extends State<AccountPage> {
 
                   const SizedBox(height: 10),
 
-                  // Recent Order
+                  //Orders
                   const Text(
                     'Order History',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  // TODO - This is a placeholder - fetch actual order details
-                  _buildInfoItem('Order ID', 'No recent orders'),
+                    ),
+                    const SizedBox(height: 16),
+                    Consumer<OrderProvider>(
+                    builder: (context, orderProvider, child) {
+                      if (orderProvider.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (orderProvider.error != null) {
+                        return Text('Error: ${orderProvider.error}');
+                      }
+
+                      final orders = orderProvider.orders;
+                      if (orders == null || orders.isEmpty) {
+                        return _buildInfoItem('Order ID', 'No recent orders');
+                      }
+
+                      // Use the new OrderHistoryTable component
+                      return OrderHistoryTable(
+                        orders: orders.take(5).toList(), // Show last 5 orders
+                        onViewDetails: (orderId) {
+                          // Navigate to order details page
+                          print('View details for order: $orderId');
+                        },
+                      );
+                    },
+                    ),
 
                   const SizedBox(height: 40),
 
-                  // Edit Profile Button
+                  /*// Edit Profile Button
                   SizedBox(
                     width: double.infinity,
                     child: MyButton(
                       text: "Edit Profile",
                       onTap: () {
-                        // TODO - Navigate to edit profile page
+                        // TODO - Add edit profile ability
                       },
                     ),
-                  ),
-
-                  const SizedBox(height: 16),
+                  ),*/
 
                   // Sign Out Button
                   AuthButton(text: 'Sign Out', onTap: () async {

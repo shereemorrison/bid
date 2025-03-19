@@ -31,10 +31,12 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void _fetchUserDataIfNeeded() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
+    final authProvider = Provider.of<SupabaseAuthProvider>(
+        context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    if (authProvider.isLoggedIn && userProvider.userData == null && !userProvider.isLoading) {
+    if (authProvider.isLoggedIn && userProvider.userData == null &&
+        !userProvider.isLoading) {
       print('Fetching user data for ID: ${authProvider.user!.id}');
       userProvider.fetchUserData(authProvider.user!.id);
     }
@@ -53,7 +55,7 @@ class _AccountPageState extends State<AccountPage> {
           : !authProvider.isLoggedIn
           ? _buildNotLoggedInView(context)
           : userData == null
-          ? _buildNoUserDataView(context, authProvider)
+          ? _buildNoProfileView(context, authProvider)
           : SingleChildScrollView(
         child: Column(
           children: [
@@ -68,17 +70,14 @@ class _AccountPageState extends State<AccountPage> {
                   Row(
                     children: [
                       Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.quaternary,
-                          shape: BoxShape.circle,
-                        ),
                         child: Center(
                           child: Icon(
                             Icons.person,
                             size: 40,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .primary,
                           ),
                         ),
                       ),
@@ -97,7 +96,10 @@ class _AccountPageState extends State<AccountPage> {
                           Text(
                             userData.email,
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .primary,
                               fontSize: 14,
                             ),
                           ),
@@ -114,7 +116,10 @@ class _AccountPageState extends State<AccountPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .primary,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -130,7 +135,10 @@ class _AccountPageState extends State<AccountPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .primary,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -168,14 +176,41 @@ class _AccountPageState extends State<AccountPage> {
 
                   // Sign Out Button
                   AuthButton(text: 'Sign Out', onTap: () async {
-                        await authProvider.signOut();
-                      },
-                    ),
+                    await authProvider.signOut();
+                  },
+                  ),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNoProfileView(BuildContext context, SupabaseAuthProvider authProvider) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const ProfileHeader(),
+          const SizedBox(height: 30),
+
+          Text(
+            'No profile found for this account.',
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+
+          // Sign out button
+          AuthButton(
+            text: "Sign Out",
+            onTap: () async {
+              await authProvider.signOut();
+            },
+          ),
+        ],
       ),
     );
   }
@@ -189,7 +224,10 @@ class _AccountPageState extends State<AccountPage> {
           Text(
             label,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
               fontSize: 14,
             ),
           ),
@@ -197,8 +235,11 @@ class _AccountPageState extends State<AccountPage> {
           Text(
             value,
             style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.primary
+                fontSize: 16,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary
             ),
           ),
         ],
@@ -218,7 +259,10 @@ class _AccountPageState extends State<AccountPage> {
           Text(
             'You need to log in to view your profile',
             style: TextStyle(fontSize: 16,
-            color: Theme.of(context).colorScheme.secondary),
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .secondary),
           ),
           const SizedBox(height: 20),
 
@@ -265,39 +309,4 @@ class _AccountPageState extends State<AccountPage> {
       },
     );
   }
-
-  Widget _buildNoUserDataView(BuildContext context, SupabaseAuthProvider authProvider) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const ProfileHeader(),
-          const SizedBox(height: 30),
-
-          const Text(
-            'No profile data found. Would you like to create a profile?',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 20),
-          AuthButton(
-            text: "Create Profile",
-            onTap: () {
-              // Create a user profile
-              final userService = UserService();
-              userService.createUser(
-                authId: authProvider.user!.id,
-                email: authProvider.user!.email ?? '',
-              ).then((_) {
-                // Refresh the page
-                Provider.of<UserProvider>(context, listen: false)
-                    .fetchUserData(authProvider.user!.id);
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }
-

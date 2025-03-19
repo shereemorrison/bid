@@ -82,9 +82,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
             // Category blocks list
             Expanded(
               child: _isLoading
-                  ? const Center(
+                  ? Center(
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               )
                   : CategoryListView(

@@ -1,3 +1,4 @@
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
@@ -20,7 +21,7 @@ class ProductGridItem extends StatelessWidget {
     final imageUrl = productService.getImageUrl(product.imageUrl);
 
     return Card(
-      color: Colors.grey.shade900,
+      color: Theme.of(context).colorScheme.surface,
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(2),
@@ -51,9 +52,9 @@ class ProductGridItem extends StatelessWidget {
                 // Error handling
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey.shade800,
-                    child: const Center(
-                      child: Icon(Icons.error_outline, color: Colors.white),
+                    color: Theme.of(context).colorScheme.senary,
+                    child: Center(
+                      child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
                     ),
                   );
                 },
@@ -69,8 +70,8 @@ class ProductGridItem extends StatelessWidget {
               children: [
                 Text(
                   product.name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),

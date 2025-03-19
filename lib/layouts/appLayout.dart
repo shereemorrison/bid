@@ -1,6 +1,10 @@
 
 import 'package:auto_route/auto_route.dart';
+import 'package:bid/components/widgets/theme_toggle.dart';
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 import '../routes/route.dart';
 
 @RoutePage()
@@ -20,7 +24,7 @@ class MainLayoutPage extends StatelessWidget {
 
       appBarBuilder: (_, tabsRouter) {
         return AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           title: Text(
             _getAppBarTitle(tabsRouter.activeIndex),
@@ -31,24 +35,27 @@ class MainLayoutPage extends StatelessWidget {
           automaticallyImplyLeading: tabsRouter.activeIndex != 0,
           leading: tabsRouter.canPop()
               ? IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
             onPressed: () {
               tabsRouter.back();
             },
           )
               : null,
+          actions: [
+            ThemeToggle(),
+          ],
         );
       },
       bottomNavigationBuilder: (context, tabsRouter) {
         return BottomNavigationBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           currentIndex: tabsRouter.activeIndex,
           onTap: (index) {
             tabsRouter.setActiveIndex(index);
           },
           type: BottomNavigationBarType.fixed,
           unselectedItemColor: Theme.of(context).colorScheme.primary,
-          selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),

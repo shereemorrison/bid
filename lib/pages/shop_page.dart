@@ -36,7 +36,7 @@ class _ShopPageState extends State<ShopPage> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(CupertinoIcons.search, color: Colors.black),
+                          Icon(CupertinoIcons.search, color: Theme.of(context).colorScheme.primary),
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextField(
@@ -55,11 +55,11 @@ class _ShopPageState extends State<ShopPage> {
                   ),
                   const SizedBox(width: 16),
                   IconButton(
-                    icon: const Icon(Icons.favorite_outline, color: Colors.white),
+                    icon: Icon(Icons.favorite_outline, color: Theme.of(context).colorScheme.primary),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white,),
+                    icon: Icon(Icons.shopping_cart_outlined, color: Theme.of(context).colorScheme.primary,),
                     onPressed: () {},
                   ),
                 ],

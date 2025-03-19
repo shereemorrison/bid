@@ -1,3 +1,4 @@
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/category_model.dart';
 
@@ -35,7 +36,7 @@ class CategoryItem extends StatelessWidget {
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Colors.grey.shade900,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: isSelected
               ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 2)
@@ -44,8 +45,8 @@ class CategoryItem extends StatelessWidget {
         child: Center(
           child: Text(
             category.name,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -63,9 +64,7 @@ class CategoryItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         height: 80,
         decoration: BoxDecoration(
-          color: isSelected
-        ? Theme.of(context).colorScheme.secondary
-            : Colors.grey.shade900,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(4),
         border: isSelected
             ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 2)
@@ -91,7 +90,7 @@ class CategoryItem extends StatelessWidget {
                   Text(
                     category.name,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 18,
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
@@ -118,7 +117,7 @@ class CategoryItem extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       selected: isSelected,
-      selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+      selectedTileColor: Theme.of(context).colorScheme.surface,
       title: Text(
         category.name,
         style: TextStyle(

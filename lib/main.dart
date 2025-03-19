@@ -1,10 +1,12 @@
 
 
+import 'package:bid/providers/theme_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:bid/routes/route.dart';
 import 'package:bid/themes/dark_mode.dart';
-import 'package:flutter/material.dart';
 import 'package:bid/themes/light_mode.dart';
+import 'package:flutter/material.dart';
+import 'package:bid/themes/dark_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/supabase/supabase_config.dart';
@@ -22,6 +24,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => SupabaseAuthProvider()),
         ChangeNotifierProvider(create: (context) => Shop()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: MyApp(appRouter: appRouter),
     ),
@@ -35,13 +38,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'B.I.D.',
-      theme: lightMode,
-      darkTheme: darkMode,
-      themeMode: ThemeMode.system,
-      routerConfig: AppRouter().config(),
+    return Consumer<ThemeProvider>(
+    builder: (conext, themeProvider, child) {
+      return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'B.I.D.',
+        theme: lightMode,
+        darkTheme: darkMode,
+        themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        routerConfig: AppRouter().config(),
+      );
+      },
     );
   }
 }

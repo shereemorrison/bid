@@ -1,3 +1,4 @@
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
 
@@ -38,7 +39,7 @@ class ProductHorizontalList extends StatelessWidget {
             width: 150,
             margin: const EdgeInsets.only(right: 15),
             decoration: BoxDecoration(
-              color: Colors.grey.shade900,
+              color: Theme.of(context).colorScheme.quinary,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(

@@ -63,7 +63,7 @@ class WelcomeService {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', '1')
+          .eq('category_id', 'cat001')
           .limit(3)
           .order('product_id', ascending: true);
 
@@ -78,7 +78,7 @@ class WelcomeService {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', '1')
+          .eq('category_id', 'cat001')
           .limit(5)
           .order('product_id', ascending: false);
 

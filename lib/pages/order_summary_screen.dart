@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
@@ -20,7 +21,7 @@ class OrderSummaryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, size: 20),
@@ -73,7 +74,7 @@ class OrderSummaryPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              _buildInfoCard(
+              _buildInfoCard(context,
                 'Address',
                 onTap: () {},
               ),
@@ -91,11 +92,11 @@ class OrderSummaryPage extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  _buildPaymentOption(Icons.credit_card, isSelected: true),
+                  _buildPaymentOption(context, Icons.credit_card, isSelected: true),
                   const SizedBox(width: 12),
-                  _buildPaymentOption(Icons.add),
+                  _buildPaymentOption(context, Icons.add),
                   const SizedBox(width: 12),
-                  _buildPaymentOption(Icons.person_outline),
+                  _buildPaymentOption(context, Icons.person_outline),
                 ],
               ),
 
@@ -108,9 +109,9 @@ class OrderSummaryPage extends StatelessWidget {
               const SizedBox(height: 8),
               _buildCostItem('Tax', '\$${tax.toStringAsFixed(2)}'),
 
-              const Divider(
+              Divider(
                 height: 32,
-                color: Colors.white24,
+                color: Theme.of(context).colorScheme.primary,
               ),
 
               _buildCostItem('Total', '\$${total.toStringAsFixed(2)}', isTotal: true),
@@ -149,11 +150,11 @@ class OrderSummaryPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Theme.of(context).colorScheme.quaternary,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -165,13 +166,13 @@ class OrderSummaryPage extends StatelessWidget {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: Colors.white10,
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Center(
+            child: Center(
               child: Icon(
                 Icons.image,
-                color: Colors.white30,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),
@@ -190,8 +191,8 @@ class OrderSummaryPage extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    color: Colors.white70,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
                     fontSize: 14,
                   ),
                 ),
@@ -209,9 +210,9 @@ class OrderSummaryPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              const Icon(
+              Icon(
                 Icons.close,
-                color: Colors.white70,
+                color: Theme.of(context).colorScheme.primary,
                 size: 20,
               ),
             ],
@@ -221,15 +222,15 @@ class OrderSummaryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCard(String text, {required VoidCallback onTap}) {
+  Widget _buildInfoCard(BuildContext context, String text, {required VoidCallback onTap}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: Theme.of(context).colorScheme.quaternary,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -248,18 +249,18 @@ class OrderSummaryPage extends StatelessWidget {
           GestureDetector(
             onTap: onTap,
             child: Row(
-              children: const [
+              children: [
                 Text(
                   'Change',
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: Theme.of(context).colorScheme.primary,
                     fontSize: 14,
                   ),
                 ),
                 SizedBox(width: 4),
                 Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.white70,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 14,
                 ),
               ],
@@ -270,12 +271,12 @@ class OrderSummaryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentOption(IconData icon, {bool isSelected = false}) {
+  Widget _buildPaymentOption(BuildContext context, IconData icon, {bool isSelected = false}) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E1E1E),
+          color: Theme.of(context).colorScheme.quaternary,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? Colors.white24 : Colors.transparent,
@@ -283,7 +284,7 @@ class OrderSummaryPage extends StatelessWidget {
           boxShadow: isSelected
               ? [
             BoxShadow(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.primary,
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

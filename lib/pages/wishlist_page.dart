@@ -25,7 +25,7 @@ class _WishlistPageState extends State<WishlistPage> {
     final wishlist = context.watch<Shop>().wishlist;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: wishlist.isEmpty
           ? const EmptyState(
         icon: Icons.favorite_border,

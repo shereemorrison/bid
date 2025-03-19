@@ -59,14 +59,17 @@ class UserService {
           .maybeSingle();
 
       if (data == null) {
+        print('UserService: No user data found for authId: $authId');
         return null;
       }
-
+      print('UserService: User data found: ${data['email']}');
       return UserModel.fromJson(data);
     } catch (e) {
+      print('UserService: Error fetching user data: $e');
       return null;
     }
   }
+
 
   // Get user data from the users table by user_id
   Future<UserModel?> getUserDataById(int userId) async {
@@ -142,4 +145,6 @@ class UserService {
     }
   }
 }
+
+
 

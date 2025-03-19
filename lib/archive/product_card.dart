@@ -25,7 +25,7 @@ class ProductCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF1E1E1E),
+          color: Theme.of(context).colorScheme.quaternary,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -60,12 +60,12 @@ class ProductCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
+                        color: color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.close,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.primary,
                         size: 16,
                       ),
                     ),
@@ -83,7 +83,7 @@ class ProductCard extends StatelessWidget {
                   Text(
                     product.name,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -95,7 +95,7 @@ class ProductCard extends StatelessWidget {
                   Text(
                     "\$${product.price.toStringAsFixed(2)}",
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
@@ -108,8 +108,8 @@ class ProductCard extends StatelessWidget {
                       context.read<Shop>().addToCart(product);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
+                      backgroundcolor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: color: Theme.of(context).colorScheme.primary,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),

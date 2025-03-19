@@ -15,6 +15,7 @@ class WelcomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final customBeige = const Color(0xFFb8b0a4);
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,14 +26,14 @@ class WelcomeHeader extends StatelessWidget {
             Text(
               '$greeting, $userName!',
               style: TextStyle(
-                color: customBeige,
+                color: isLightMode ? Colors.black : customBeige,
                 fontSize: 24,
                 fontWeight: FontWeight.w300,
               ),
             ),
           ],
         ),
-        // Logo
+        /* Logo
         Container(
           width: 40,
           height: 40,
@@ -43,7 +44,7 @@ class WelcomeHeader extends StatelessWidget {
           child: Center(
             child: Image.asset('assets/images/bidlogo.jpg'),
           ),
-        )
+        )*/
       ],
     );
   }

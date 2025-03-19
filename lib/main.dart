@@ -1,5 +1,6 @@
 
 
+import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/theme_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:bid/routes/route.dart';
@@ -25,6 +26,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => Shop()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: MyApp(appRouter: appRouter),
     ),

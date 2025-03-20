@@ -1,8 +1,5 @@
-import 'dart:math' as Math;
 
 import 'package:auto_route/annotations.dart';
-import 'package:bid/components/buttons/custom_button.dart';
-import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../components/widgets/order_history_table.dart';
@@ -14,7 +11,6 @@ import '../modals/registrationmodal.dart';
 import '../providers/order_provider.dart';
 import '../providers/supabase_auth_provider.dart';
 import '../providers/user_provider.dart';
-import '../services/user_service.dart';
 
 @RoutePage()
 class AccountPage extends StatefulWidget {

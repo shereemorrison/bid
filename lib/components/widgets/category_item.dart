@@ -1,4 +1,4 @@
-import 'package:bid/themes/dark_mode.dart';
+
 import 'package:flutter/material.dart';
 import '../../models/category_model.dart';
 

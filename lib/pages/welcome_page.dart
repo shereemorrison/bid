@@ -5,9 +5,6 @@ import 'package:bid/components/widgets/search_bar.dart';
 import 'package:bid/components/widgets/featured_carousel.dart';
 import 'package:bid/components/widgets/product_horizontal_list.dart';
 import 'package:bid/services/welcome_service.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/supabase_auth_provider.dart';
 
 @RoutePage()
 class WelcomePage extends StatefulWidget {
@@ -31,7 +28,6 @@ class _WelcomePageState extends State<WelcomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final authProvider = Provider.of<SupabaseAuthProvider>(context);
   }
 
   // Load data and wait for it to complete

@@ -82,9 +82,7 @@ class DialogService {
                           child: OutlinedButton(
                             onPressed: () => Navigator.pop(context, true),
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: isDestructive ? Colors.red
-                                  .shade900.withOpacity(0.3) : Colors
-                                  .transparent,
+                              backgroundColor: Colors.red,
                               foregroundColor: isDestructive ? Colors.red
                                   .shade300 : customBeige,
                               side: BorderSide(

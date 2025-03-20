@@ -7,7 +7,6 @@ import 'package:bid/routes/route.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/themes/dark_mode.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/supabase/supabase_config.dart';

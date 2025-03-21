@@ -1,3 +1,4 @@
+import 'dart:math';
 import '../models/user_model.dart';
 import '../supabase/supabase_config.dart';
 
@@ -12,6 +13,7 @@ class UserService {
     String? lastName,
     String? phone,
   }) async {
+    print("Attempting to create user with authId: $authId, email: $email");
     try {
       // Check if the user already exists
       final existingUser = await _supabase
@@ -32,19 +34,26 @@ class UserService {
         }).eq('auth_id', authId);
         return;
       }
+      print('Creating new user record');
+
+      final random = Random();
+      final userId = random.nextInt(100) + 1;
 
       // Insert new user
       await _supabase.from('users').insert({
         'auth_id': authId,
         'email': email,
+        'user_id': userId,
         if (firstName != null) 'first_name': firstName,
         if (lastName != null) 'last_name': lastName,
         if (phone != null) 'phone': phone,
         'is_registered': true,
         'created_at': DateTime.now().toIso8601String(),
         'last_login': DateTime.now().toIso8601String(),
-      });
+      }).select();
+      print("User created successfully");
     } catch (e) {
+      print("Error creating user: $e");
       rethrow;
     }
   }

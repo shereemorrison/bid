@@ -4,6 +4,7 @@ import 'package:bid/components/widgets/custom_textfield.dart';
 import 'package:bid/components/buttons/custom_button.dart';
 import 'package:provider/provider.dart';
 import '../providers/supabase_auth_provider.dart';
+import '../providers/user_provider.dart';
 import '../routes/route.dart';
 
 class LoginPage extends StatefulWidget {
@@ -50,6 +51,10 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (mounted) {
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        if (authProvider.isLoggedIn) {
+          userProvider.fetchUserData(authProvider.user!.id);
+        }
         Navigator.of(context).pop();
         context.router.navigate(const AccountRoute());
       }

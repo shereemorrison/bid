@@ -21,19 +21,40 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  SupabaseAuthProvider? _authProvider;
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
+      authProvider.addListener(_onAuthChanged);
       _fetchUserDataIfNeeded();
       _fetchOrdersIfNeeded();
     });
   }
 
+  void _onAuthChanged() {
+    _fetchUserDataIfNeeded();
+    _fetchOrdersIfNeeded();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    if (_authProvider != null) {
+      _authProvider!.removeListener(_onAuthChanged);
+    }
+    super.dispose();
+  }
+
   void _fetchUserDataIfNeeded() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(
-        context, listen: false);
+    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     if (authProvider.isLoggedIn && userProvider.userData == null &&
@@ -208,7 +229,14 @@ class _AccountPageState extends State<AccountPage> {
 
                   // Sign Out Button
                   AuthButton(text: 'Sign Out', onTap: () async {
+                    final userProvider = Provider.of<UserProvider>(context, listen: false);
+                    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
+                    //Sign out
                     await authProvider.signOut();
+
+                    //Clear data after sign out
+                    userProvider.clearUserData();
                   },
                   ),
                 ],

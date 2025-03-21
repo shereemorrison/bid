@@ -50,5 +50,12 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clearUserData() {
+    _userData = null;
+    _isLoading = false;
+    notifyListeners();
+  }
 }
+
 

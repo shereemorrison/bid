@@ -16,6 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseConfig.initialize();
 
+  SupabaseConfig.navigatorKey = GlobalKey<NavigatorState>();
+
   final appRouter = AppRouter();
 
   runApp(

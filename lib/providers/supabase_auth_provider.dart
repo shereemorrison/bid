@@ -195,5 +195,10 @@ class SupabaseAuthProvider with ChangeNotifier {
       rethrow;
     }
   }
+
+  void notifyUserLoggedIn() {
+    notifyListeners();
+  }
+
 }
 

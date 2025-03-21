@@ -45,6 +45,7 @@ dev_dependencies:
     sdk: flutter
   auto_route_generator: ^7.1.1
   build_runner: ^2.4.10
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,15 +70,23 @@ flutter:
     - assets/images/
     - assets/images/Logo.png
 
-  # An image asset can refer to one or more resolution-specific "variants", see
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#ffffff" # only for Android 8.0+
+  adaptive_icon_foreground: "assets/icon/icon_foreground.jpg"
+
+  # An image asset can refer to one or more resolution-specific variants, see
   # https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
   # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
+  # in this flutter section. Each entry in this list should have a
+  # family key with the font family name, and a fonts key with a
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:

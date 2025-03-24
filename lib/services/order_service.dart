@@ -18,9 +18,9 @@ class OrderService {
       // Get orders with basic info only
       final dynamic rawResponse = await _supabase
           .from('orders')
-          .select('*, order_status!status_id(*)')
+          .select('*')
           .eq('user_id', userIdForQuery)
-          .order('order_date', ascending: false);
+          .order('placed_at', ascending: false);
 
       // Print the raw response for debugging
       print('Raw response from Supabase: $rawResponse');
@@ -37,7 +37,6 @@ class OrderService {
     }
   }
 
-  // Add the missing getOrderDetails method
   Future<Map<String, dynamic>?> getOrderDetails(String orderId) async {
     try {
       // Get the order with its items

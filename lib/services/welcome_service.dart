@@ -58,18 +58,33 @@ class WelcomeService {
     }
   }
 
-  Future<void> fetchFeaturedProducts() async {
+  Future<List<Product>> fetchFeaturedProducts() async {
     try {
+      print('Fetching featured products...');
+
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', 'cat001')
-          .limit(3)
-          .order('product_id', ascending: true);
+          .limit(3);
 
-      featuredProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
+      print('Response received: ${response.toString()}');
+      print('Response type: ${response.runtimeType}');
+      print('Response length: ${response is List ? response.length : 'not a list'}');
+
+      if (response is List && response.isNotEmpty) {
+        print('First product: ${response[0]}');
+      }
+
+      // Convert the response to a List<Product>
+      final products = (response as List).map((data) => Product.fromJson(data)).toList();
+
+      print('Converted to ${products.length} Product objects');
+      return products;
+
     } catch (e) {
-      featuredProducts = [];
+      print('Error fetching featured products: $e');
+      print('Error stack trace: ${StackTrace.current}');
+      return []; // Return empty list on error
     }
   }
 
@@ -78,10 +93,10 @@ class WelcomeService {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .eq('category_id', 'cat001')
           .limit(5)
           .order('product_id', ascending: false);
 
+      mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
     } catch (e) {
       mostWantedProducts = [];
@@ -98,7 +113,7 @@ class WelcomeService {
 
   Future<void> loadAllData() async {
     await getUserName();
-    await fetchFeaturedProducts();
+    featuredProducts = await fetchFeaturedProducts();
     await fetchMostWantedProducts();
   }
 }

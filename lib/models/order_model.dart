@@ -6,14 +6,29 @@ class Order {
   final String orderId;
   final DateTime orderDate;
   final String status;
+  final double taxAmount;
+  final double shippingAmount;
+  final double discountAmount;
   final double totalAmount;
+  final String? shippingMethod;
+  final String? trackingNumber;
+  final DateTime? shippedAt;
+  final DateTime? deliveredAt;
+
   final List<OrderItem> items;
 
   Order({
     required this.orderId,
     required this.orderDate,
     required this.status,
+    required this.taxAmount,
+    required this.shippingAmount,
+    required this.discountAmount,
     required this.totalAmount,
+    this.shippingMethod,
+    this.trackingNumber,
+    this.shippedAt,
+    this.deliveredAt,
     required this.items,
   });
 
@@ -45,6 +60,9 @@ class Order {
       orderDate: json['order_date'] != null ? DateTime.parse(json['order_date']) : DateTime.now(),
       status: statusName,
       totalAmount: json['total_amount']?.toDouble() ?? 0.0,
+      taxAmount: json['tax_amount']?.toDouble() ?? 0.0,
+      shippingAmount: json['shippingAmount']?.toDouble() ?? 0.0,
+      discountAmount: json['discountAmount']?.toDoubke() ?? 0.0,
       items: orderItems,
     );
   }

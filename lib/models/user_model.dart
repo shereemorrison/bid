@@ -1,5 +1,5 @@
 class UserModel {
-  final int userId;
+  final String userId;
   final String authId;
   final String email;
   final String? firstName;
@@ -30,8 +30,12 @@ class UserModel {
       lastName: json['last_name'],
       phone: json['phone'],
       isRegistered: json['is_registered'] ?? false,
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      lastLogin: json['last_login'] != null ? DateTime.parse(json['last_login']) : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
+      lastLogin: json['last_login'] != null
+          ? DateTime.parse(json['last_login'])
+          : null,
     );
   }
 

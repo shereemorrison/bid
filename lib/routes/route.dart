@@ -6,8 +6,10 @@ import '../pages/categories_page.dart';
 import '../pages/intro_screen.dart';
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_screen.dart';
+import '../pages/shop_accessories_screen.dart';
 import '../pages/shop_men_screen.dart';
 import '../pages/shop_page.dart';
+import '../pages/shop_women_screen.dart';
 import '../pages/wishlist_page.dart';
 
 
@@ -20,6 +22,8 @@ class Paths {
   static const String cart = 'cart';
   static const String shop = 'shop';
   static const String shopMen = 'shop_men';
+  static const String shopWomen = 'shop_women';
+  static const String shopAccessories = 'shop_accessories';
   static const String wishlist = 'wishlist';
   static const String welcome = 'welcome_page';
   static const String ordersummary = 'summary_page';
@@ -51,6 +55,8 @@ class AppRouter extends _$AppRouter {
           children: [
             AutoRoute(path: "", page: CategoriesRoute.page),
             AutoRoute(path: Paths.shopMen, page: ShopMenRoute.page),
+            AutoRoute(path: Paths.shopWomen, page: ShopWomenRoute.page),
+            AutoRoute(path: Paths.shopAccessories, page: ShopAccessoriesRoute.page)
           ],
         ),
         AutoRoute(path: Paths.wishlist, page: WishlistRoute.page),

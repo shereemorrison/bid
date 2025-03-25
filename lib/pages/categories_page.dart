@@ -51,10 +51,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
         context.pushRoute(const ShopMenRoute());
         break;
       case 'Women':
-        context.pushRoute(const ShopMenRoute());
+        context.pushRoute(const ShopWomenRoute());
         break;
       case 'Accessories':
-        context.pushRoute(const ShopMenRoute());
+        context.pushRoute(const ShopAccessoriesRoute());
         break;
       case 'New Arrivals':
         context.pushRoute(const ShopMenRoute());

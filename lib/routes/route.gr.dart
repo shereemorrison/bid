@@ -63,6 +63,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OrderSummaryPage(),
       );
     },
+    ShopAccessoriesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ShopAccessoriesPage(),
+      );
+    },
     ShopMenRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -79,6 +85,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const ShopRootPage(),
+      );
+    },
+    ShopWomenRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ShopWomenPage(),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -209,6 +221,20 @@ class OrderSummaryRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ShopAccessoriesPage]
+class ShopAccessoriesRoute extends PageRouteInfo<void> {
+  const ShopAccessoriesRoute({List<PageRouteInfo>? children})
+      : super(
+          ShopAccessoriesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ShopAccessoriesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ShopMenPage]
 class ShopMenRoute extends PageRouteInfo<void> {
   const ShopMenRoute({List<PageRouteInfo>? children})
@@ -246,6 +272,20 @@ class ShopRootRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ShopRootRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ShopWomenPage]
+class ShopWomenRoute extends PageRouteInfo<void> {
+  const ShopWomenRoute({List<PageRouteInfo>? children})
+      : super(
+          ShopWomenRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ShopWomenRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

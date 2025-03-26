@@ -5,16 +5,28 @@ import '../buttons/shopping_buttons.dart';
 class OrderSummary extends StatelessWidget {
   final double totalAmount;
   final VoidCallback onCheckout;
+  final double? subtotal;
+  final double? shipping;
+  final double? tax;
 
   const OrderSummary({
     super.key,
     required this.totalAmount,
     required this.onCheckout,
+    this.subtotal,
+    this.shipping,
+    this.tax,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool isLightMode = Theme.of(context).brightness == Brightness.light;
+
+    final double displaySubtotal = subtotal ?? totalAmount;
+    final double displayShipping = shipping ?? 0.0;
+    final double displayTax = tax ?? 0.0;
+    final double displayTotal = subtotal != null ? (displaySubtotal + displayShipping + displayTax) : totalAmount;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -47,7 +59,7 @@ class OrderSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                "\$${totalAmount.toStringAsFixed(2)}",
+                "\$${displayTotal.toStringAsFixed(2)}",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 16,

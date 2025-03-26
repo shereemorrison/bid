@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
+import '../../routes/route.dart';
 
 class ProductHorizontalList extends StatelessWidget {
   final Color customBeige;
@@ -35,7 +37,14 @@ class ProductHorizontalList extends StatelessWidget {
             imageUrl = getImageUrl!(product.imageUrl);
           }
 
-          return Container(
+          return GestureDetector(
+              onTap: () {
+                if (product != null) {
+                  context.pushRoute(ProductDetailRoute(product: product));
+                }
+              },
+
+          child: Container(
             width: 150,
             margin: const EdgeInsets.only(right: 15),
             decoration: BoxDecoration(
@@ -106,6 +115,7 @@ class ProductHorizontalList extends StatelessWidget {
                 ),
               ],
             ),
+          )
           );
         },
       ),

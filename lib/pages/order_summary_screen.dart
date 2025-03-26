@@ -1,10 +1,8 @@
-import 'package:auto_route/annotations.dart';
+
 import 'package:auto_route/auto_route.dart';
-import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
-
 import '../components/buttons/shopping_buttons.dart';
 import '../components/cards/order_info_card.dart';
 import '../components/widgets/order_cost_summary.dart';
@@ -22,7 +20,7 @@ class OrderSummaryPage extends StatelessWidget {
     final cart = context.watch<Shop>().cart;
 
     // Calculate totals
-    final double itemsTotal = cart.fold(0.0, (sum, item) => sum + item.price);
+    final double itemsTotal = cart.fold(0.0, (sum, item) => sum + (item.price*item.quantity));
     final double shipping = 10.0;
     final double tax = itemsTotal * 0.1;
     final double total = itemsTotal + shipping + tax;

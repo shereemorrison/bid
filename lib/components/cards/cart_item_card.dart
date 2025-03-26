@@ -134,11 +134,15 @@ class CartItemCard extends StatelessWidget {
   }
 
   Widget _buildProductAttributes(context) {
+    String size = "M";
+    int quantity = product.quantity > 0 ? product.quantity : 1;
+    String color = "Grey";
+
     return Row(
       children: [
-        _buildAttributeTag("Size: ", context),
+        _buildAttributeTag("Size: $size", context),
         const SizedBox(width: 8),
-        _buildAttributeTag("Qty: ", context),
+        _buildAttributeTag("Qty: $quantity", context),
       ],
     );
   }
@@ -150,7 +154,7 @@ class CartItemCard extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.septenary!),
+        border: Border.all(color: Theme.of(context).colorScheme.septenary),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

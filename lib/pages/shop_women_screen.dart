@@ -1,14 +1,9 @@
 
 import 'package:auto_route/annotations.dart';
-import 'package:auto_route/annotations.dart';
-import 'package:bid/components/cards/shop_product_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../components/widgets/product_grid_item.dart';
 import '../components/widgets/search_bar.dart';
 import '../models/products_model.dart';
-import '../providers/shop_provider.dart';
 import '../services/product_service.dart';
 
 @RoutePage()

@@ -25,7 +25,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<Shop>().cart;
-    double totalAmount = cart.fold(0.0, (sum, item) => sum + item.price);
+    double totalAmount = cart.fold(0.0, (sum, item) => sum + (item.price*item.quantity));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

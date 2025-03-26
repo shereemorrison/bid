@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:bid/pages/welcome_page.dart';
+import 'package:flutter/cupertino.dart';
+import '../models/products_model.dart';
 import '../pages/account_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/categories_page.dart';
 import '../pages/intro_screen.dart';
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_screen.dart';
+import '../pages/product_detail_page.dart';
 import '../pages/shop_accessories_screen.dart';
 import '../pages/shop_men_screen.dart';
 import '../pages/shop_page.dart';
@@ -28,6 +31,7 @@ class Paths {
   static const String welcome = 'welcome_page';
   static const String ordersummary = 'summary_page';
   static const String categories = 'categories_screen';
+  static const String product = 'product';
 }
 
 
@@ -56,11 +60,12 @@ class AppRouter extends _$AppRouter {
             AutoRoute(path: "", page: CategoriesRoute.page),
             AutoRoute(path: Paths.shopMen, page: ShopMenRoute.page),
             AutoRoute(path: Paths.shopWomen, page: ShopWomenRoute.page),
-            AutoRoute(path: Paths.shopAccessories, page: ShopAccessoriesRoute.page)
+            AutoRoute(path: Paths.shopAccessories, page: ShopAccessoriesRoute.page),
+            AutoRoute(path: Paths.product, page: ProductDetailRoute.page),
           ],
         ),
         AutoRoute(path: Paths.wishlist, page: WishlistRoute.page),
-      ],
+  ],
     ),
   ];
 }

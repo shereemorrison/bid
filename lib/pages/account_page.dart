@@ -98,7 +98,7 @@ class _AccountPageState extends State<AccountPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Section with user email and space for avatar - TODO
+                  // Section with user name and email
                   Row(
                     children: [
                       Container(
@@ -106,10 +106,7 @@ class _AccountPageState extends State<AccountPage> {
                           child: Icon(
                             Icons.person,
                             size: 40,
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),
@@ -128,10 +125,7 @@ class _AccountPageState extends State<AccountPage> {
                           Text(
                             userData.email,
                             style: TextStyle(
-                              color: Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .primary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 14,
                             ),
                           ),
@@ -148,40 +142,20 @@ class _AccountPageState extends State<AccountPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Theme
-                          .of(context)
-                          .colorScheme
-                          .primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildInfoItem('First Name', userData.firstName ?? 'Not set'),
                   _buildInfoItem('Last Name', userData.lastName ?? 'Not set'),
                   _buildInfoItem('Phone', userData.phone ?? 'Not set'),
-
-                  const SizedBox(height: 5),
-
-                  // Address Information
-                  Text(
-                    'Address',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Theme
-                          .of(context)
-                          .colorScheme
-                          .primary,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Placeholder - TODO - Fetch addresses
                   _buildInfoItem('Address', 'No address saved'),
 
                   const SizedBox(height: 10),
 
                   //Orders
                   const Text(
-                    'Order History',
+                    'Orders',
                     style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -278,28 +252,25 @@ class _AccountPageState extends State<AccountPage> {
   Widget _buildInfoItem(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .primary,
-              fontSize: 14,
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 14,
+              ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
             style: TextStyle(
-                fontSize: 16,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.primary
             ),
           ),
         ],
@@ -319,10 +290,7 @@ class _AccountPageState extends State<AccountPage> {
           Text(
             'You need to log in to view your profile',
             style: TextStyle(fontSize: 16,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .secondary),
+                color: Theme.of(context).colorScheme.secondary),
           ),
           const SizedBox(height: 20),
 

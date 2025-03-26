@@ -1,5 +1,5 @@
 
-import '../providers/order_provider.dart';
+
 import 'order_item_model.dart';
 
 class Order {

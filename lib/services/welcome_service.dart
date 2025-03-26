@@ -94,7 +94,7 @@ class WelcomeService {
           .from('products')
           .select('*')
           .limit(5)
-          .order('product_id', ascending: false);
+          .order('created_at', ascending: true);
 
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();

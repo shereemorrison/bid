@@ -14,7 +14,7 @@ class CategoryService {
       final response = await _supabase
           .from('categories')
           .select('*')
-          .order('category_id', ascending: true);
+          .order('created_at', ascending: true);
 
       return response.map<Category>((json) => Category.fromJson(json)).toList();
     } catch (e) {

@@ -132,7 +132,7 @@ class OrderProductItem extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.septenary!),
+        border: Border.all(color: Theme.of(context).colorScheme.septenary),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

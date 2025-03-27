@@ -1,17 +1,16 @@
 
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/components/widgets/empty_state.dart';
 import 'package:bid/components/cards/cart_item_card.dart';
 import 'package:bid/components/widgets/order_summary.dart';
 import 'package:bid/providers/shop_provider.dart';
-import 'package:bid/routes/route.dart';
 import 'package:bid/services/cart_service.dart';
 import '../models/products_model.dart';
 
 
-@RoutePage()
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
@@ -43,7 +42,7 @@ class _CartPageState extends State<CartPage> {
           OrderSummary(
             totalAmount: totalAmount,
             onCheckout: () {
-              context.pushRoute(OrderSummaryRoute());
+              context.push('/cart/summary');
             },
           ),
         ],
@@ -66,15 +65,5 @@ class _CartPageState extends State<CartPage> {
         );
       },
     );
-  }
-}
-
-@RoutePage()
-class CartRootPage extends StatelessWidget {
-  const CartRootPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const AutoRouter();
   }
 }

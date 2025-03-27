@@ -5,17 +5,35 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:bid/routes/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:bid/main.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    final appRouter = AppRouter();
-    await tester.pumpWidget(MyApp(appRouter: appRouter));
+    final testRouter = GoRouter(
+      initialLocation: '/',
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('0'),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

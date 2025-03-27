@@ -1,4 +1,4 @@
-import 'package:auto_route/annotations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bid/components/widgets/welcome_header.dart';
 import 'package:bid/components/widgets/search_bar.dart';
@@ -6,7 +6,6 @@ import 'package:bid/components/widgets/featured_carousel.dart';
 import 'package:bid/components/widgets/product_horizontal_list.dart';
 import 'package:bid/services/welcome_service.dart';
 
-@RoutePage()
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
 

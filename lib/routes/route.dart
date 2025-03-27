@@ -1,4 +1,4 @@
-import 'package:auto_route/auto_route.dart';
+/*import 'package:auto_route/auto_route.dart';
 import 'package:bid/pages/welcome_page.dart';
 import 'package:flutter/cupertino.dart';
 import '../models/products_model.dart';
@@ -6,13 +6,13 @@ import '../pages/account_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/categories_page.dart';
 import '../pages/intro_screen.dart';
-import '../layouts/appLayout.dart';
-import '../pages/order_summary_screen.dart';
+import '../layouts/appLayout_autoroute.dart';
+import '../pages/order_summary_page.dart';
 import '../pages/product_detail_page.dart';
-import '../pages/shop_accessories_screen.dart';
-import '../pages/shop_men_screen.dart';
+import '../pages/shop_accessories_page.dart';
+import '../pages/shop_men_page.dart';
 import '../pages/shop_page.dart';
-import '../pages/shop_women_screen.dart';
+import '../pages/shop_women_page.dart';
 import '../pages/wishlist_page.dart';
 
 
@@ -68,4 +68,4 @@ class AppRouter extends _$AppRouter {
   ],
     ),
   ];
-}
+}*/

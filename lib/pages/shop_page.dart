@@ -1,12 +1,9 @@
 
-import 'package:auto_route/auto_route.dart';
-import 'package:bid/routes/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bid/components/cards/category_card.dart';
+import 'package:go_router/go_router.dart';
 
-
-@RoutePage()
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
 
@@ -82,8 +79,7 @@ class _ShopPageState extends State<ShopPage> {
                               title: 'M E N',
                               imageUrl: 'assets/images/tshirt3.jpg',
                               onTap: () {
-                                context.pushRoute(const ShopMenRoute(),
-                                );
+                                context.push('/shop/men');
                               },
                             ),
                           ),
@@ -93,7 +89,7 @@ class _ShopPageState extends State<ShopPage> {
                               title: 'W O M E N',
                               imageUrl: 'assets/images/tshirt3.jpg',
                               onTap: () {
-                                context.pushRoute(ShopMenRoute());
+                                context.push('/shop/women');
                               },
                             ),
                           ),
@@ -108,7 +104,7 @@ class _ShopPageState extends State<ShopPage> {
                         title: 'A C C E S S O R I E S',
                         imageUrl: 'assets/images/hoodie1.jpg',
                         onTap: () {
-                          context.pushRoute(ShopMenRoute());
+                          context.push('/shop/accessories');
                         },
                       ),
                     ),
@@ -119,7 +115,7 @@ class _ShopPageState extends State<ShopPage> {
                         title: 'S A L E',
                         imageUrl: 'assets/images/hoodie1.jpg',
                         onTap: () {
-                          context.pushRoute(ShopMenRoute());
+                          context.push('/shop/men');
                         },
                       ),
                     ),
@@ -131,16 +127,6 @@ class _ShopPageState extends State<ShopPage> {
         ),
       ),
     );
-  }
-}
-
-@RoutePage()
-class ShopRootPage extends StatelessWidget {
-  const ShopRootPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const AutoRouter();
   }
 }
 

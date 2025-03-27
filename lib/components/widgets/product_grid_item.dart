@@ -1,10 +1,10 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../models/products_model.dart';
 import '../../providers/shop_provider.dart';
-import '../../routes/route.dart';
 import '../../services/dialog_service.dart';
 import '../../services/product_service.dart';
 import '../buttons/shopping_buttons.dart';
@@ -25,9 +25,7 @@ class ProductGridItem extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           // Navigate to product detail page
-          context.pushRoute(ProductDetailRoute(product: product));
-
-          print('Navigating to product detail: ${product.name}');
+          context.push('/shop/product', extra: product);
         },
 
     child: Card(

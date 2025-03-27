@@ -44,15 +44,6 @@ redirect: (BuildContext context, GoRouterState state) {
           ),
         ),
 
-        // Account Tab
-        GoRoute(
-          path: '/account',
-          name: 'account',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const AccountPage(),
-          ),
-        ),
 
         // Shop/Categories Tab with nested routes
         GoRoute(
@@ -85,10 +76,19 @@ redirect: (BuildContext context, GoRouterState state) {
                 final product = state.extra as Product;
                 return ProductDetailPage(product: product);
               },
-            ),
+            ),// Account Tab
+
           ],
         ),
 
+        GoRoute(
+          path: '/account',
+          name: 'account',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const AccountPage(),
+          ),
+        ),
         // Wishlist Tab
         GoRoute(
           path: '/wishlist',

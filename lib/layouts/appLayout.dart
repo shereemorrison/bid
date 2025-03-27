@@ -12,22 +12,21 @@ class AppLayout extends StatelessWidget {
     final location = GoRouterState.of(context).uri.path;
     int currentIndex = 0;
 
-    if (location.startsWith('/account')) {
+    if (location.startsWith('/wishlist')) {
       currentIndex = 1;
     } else if (location.startsWith('/shop')) {
       currentIndex = 2;
-    } else if (location.startsWith('/wishlist')) {
-      currentIndex = 3;
     } else if (location.startsWith('/cart')) {
+      currentIndex = 3;
+    }else if (location.startsWith('/account')) {
       currentIndex = 4;
-    }
+      }
 
     final canGoBack = location != '/' &&
-        location != '/account' &&
         location != '/shop' &&
         location != '/wishlist' &&
         location != '/cart';
-
+        location != '/account';
 
     return Scaffold(
       appBar: AppBar(
@@ -62,16 +61,16 @@ class AppLayout extends StatelessWidget {
               context.go('/');
               break;
             case 1:
-              context.go('/account');
+              context.go('/wishlist');
               break;
             case 2:
               context.go('/shop');
               break;
             case 3:
-              context.go('/wishlist');
+              context.go('/cart');
               break;
             case 4:
-              context.go('/cart');
+              context.go('/account');
               break;
           }
         },
@@ -80,10 +79,10 @@ class AppLayout extends StatelessWidget {
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'Shop'),
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Wishlist'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Shop'),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
       ),
     );
@@ -103,10 +102,10 @@ class AppLayout extends StatelessWidget {
     }
     switch (tabIndex) {
       case 0: return "Home";
-      case 1: return "Account";
+      case 1: return "Wishlist";
       case 2: return "Shop";
-      case 3: return "Wishlist";
-      case 4: return "Cart";
+      case 3: return "Cart";
+      case 4: return "Account";
       default: return "Home";
     }
   }

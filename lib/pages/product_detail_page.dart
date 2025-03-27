@@ -1,4 +1,4 @@
-import 'package:auto_route/annotations.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bid/models/products_model.dart';
 import '../components/widgets/add_to_cart_section.dart';
@@ -8,7 +8,6 @@ import '../components/widgets/product_details_section.dart';
 import '../components/widgets/quantity_selector.dart';
 import '../components/widgets/size_selector.dart';
 
-@RoutePage()
 class ProductDetailPage extends StatefulWidget {
   final Product product;
 

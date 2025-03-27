@@ -1,12 +1,12 @@
 class Category {
   final String id;
   final String name;
-  final String route;
+  final String slug;
 
   Category({
     required this.id,
     required this.name,
-    required this.route,
+    required this.slug,
   });
 
   // Factory constructor to create a Category from JSON
@@ -14,7 +14,7 @@ class Category {
     return Category(
       id: json['id'].toString(),
       name: json['name'] ?? '',
-      route: json['route'] ?? '',
+      slug: json['slug'] ?? '',
     );
   }
 }

@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+/*// GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
 // AutoRouterGenerator
@@ -364,3 +364,4 @@ class WishlistRoute extends PageRouteInfo<void> {
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
+*/

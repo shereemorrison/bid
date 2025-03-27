@@ -1,15 +1,12 @@
 
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/components/widgets/empty_state.dart';
 import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/services/wishlist_service.dart';
-
 import '../components/cards/wishlist_item_card.dart';
 import '../models/products_model.dart';
 
-@RoutePage()
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
 

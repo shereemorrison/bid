@@ -22,9 +22,6 @@ class OrderService {
           .eq('user_id', userIdForQuery)
           .order('placed_at', ascending: false);
 
-      // Print the raw response for debugging
-      print('Raw response from Supabase: $rawResponse');
-
       // Convert the response to the correct type
       final List<Map<String, dynamic>> response = List<Map<String, dynamic>>.from(
           (rawResponse as List).map((item) => Map<String, dynamic>.from(item as Map))
@@ -49,9 +46,6 @@ class OrderService {
           ''')
           .eq('order_id', orderId)
           .limit(1);
-
-      // Print the raw response for debugging
-      print('Raw order details response: $rawResponse');
 
       // Convert the response to the correct type
       final List<Map<String, dynamic>> response = List<Map<String, dynamic>>.from(

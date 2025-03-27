@@ -3,7 +3,7 @@
 import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/theme_provider.dart';
 import 'package:bid/providers/user_provider.dart';
-import 'package:bid/routes/route.dart';
+import 'package:bid/routes/app_router.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +18,6 @@ void main() async {
 
   SupabaseConfig.navigatorKey = GlobalKey<NavigatorState>();
 
-  final appRouter = AppRouter();
-
   runApp(
     MultiProvider(
       providers: [
@@ -29,27 +27,25 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
-      child: MyApp(appRouter: appRouter),
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final AppRouter appRouter;
-
-  const MyApp({super.key, required this.appRouter});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
-    builder: (conext, themeProvider, child) {
+    builder: (context, themeProvider, child) {
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'B.I.D.',
         theme: lightMode,
         darkTheme: darkMode,
         themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-        routerConfig: AppRouter().config(),
+        routerConfig: goRouter,
       );
       },
     );

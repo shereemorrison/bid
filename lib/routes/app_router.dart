@@ -1,80 +1,121 @@
-/*import 'package:bid/modals/paymentmodal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bid/pages/appLayout.dart';
-import 'package:bid/pages/intro_screen.dart';
-import 'package:bid/pages/profile_page.dart';
-import 'package:bid/pages/shop_page.dart';
-import 'package:bid/pages/wishlist_page.dart';
+import 'package:bid/models/products_model.dart';
+import 'package:bid/pages/welcome_page.dart';
+import 'package:bid/pages/account_page.dart';
 import 'package:bid/pages/cart_page.dart';
-import 'package:bid/pages/shop_men_screen.dart';
-import 'package:bid/pages/shop_women_screen.dart';
-import 'package:bid/pages/shop_accessories_screen.dart';
+import 'package:bid/pages/categories_page.dart';
+import 'package:bid/pages/wishlist_page.dart';
+import 'package:bid/pages/shop_men_page.dart';
+import 'package:bid/pages/shop_women_page.dart';
+import 'package:bid/pages/shop_accessories_page.dart';
+import 'package:bid/pages/product_detail_page.dart';
 
-// Keep track of previous index
-int _lastIndex = 0;
+import '../layouts/appLayout.dart';
+import '../pages/order_summary_page.dart';
 
-final GoRouter appRouter = GoRouter(
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+
+final goRouter = GoRouter(
+  navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
+  debugLogDiagnostics: true,
+
+redirect: (BuildContext context, GoRouterState state) {
+// Get the current location
+  final location = state.uri.path;
+  return null;
+},
   routes: [
     ShellRoute(
+      navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
-        final location = state.uri.toString();
-        int newIndex = 0;
-
-        if (location.startsWith('/profile_page')) {
-          newIndex = 1;
-        } else if (location.startsWith('/shop_page')) {
-          newIndex = 2;
-        } else if (location.startsWith('/wishlist_page')) {
-          newIndex = 3;
-        } else if (location.startsWith('/cart_page')) {
-          newIndex = 4;
-        }
-
-        return MainLayout(currentIndex: newIndex, child: child);
+        return AppLayout(child: child);
       },
       routes: [
-        GoRoute(path: '/', pageBuilder: (context, state) => _buildPage(state, const IntroPage(), 0)),
-        GoRoute(path: '/profile_page', pageBuilder: (context, state) => _buildPage(state, const ProfilePage(), 1)),
-        GoRoute(path: '/shop_page', pageBuilder: (context, state) => _buildPage(state, const ShopPage(), 2)),
-        GoRoute(path: '/wishlist_page', pageBuilder: (context, state) => _buildPage(state, const WishlistPage(), 3)),
-        GoRoute(path: '/cart_page', pageBuilder: (context, state) => _buildPage(state, const CartPage(), 4)),
-        GoRoute(path: '/shop_men', builder: (context, state) => const ShopMenPage()),
-        GoRoute(path: '/shop_women', builder: (context, state) => const ShopWomenPage()),
-        GoRoute(path: '/shop_accessories', builder: (context, state) => const ShopAccessoriesPage()),
+        // Home Tab
         GoRoute(
-          path: '/paymentmodal',
-          builder: (context, state) {
-            final double totalAmount = state.extra as double;
-            return PaymentScreen(totalAmount: totalAmount);
-          },
+          path: '/',
+          name: 'welcome',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const WelcomePage(),
+          ),
+        ),
+
+        // Account Tab
+        GoRoute(
+          path: '/account',
+          name: 'account',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const AccountPage(),
+          ),
+        ),
+
+        // Shop/Categories Tab with nested routes
+        GoRoute(
+          path: '/shop',
+          name: 'shop',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const CategoriesPage(),
+          ),
+          routes: [
+            GoRoute(
+              path: 'men',
+              name: 'shop_men',
+              builder: (context, state) => const ShopMenPage(),
+            ),
+            GoRoute(
+              path: 'women',
+              name: 'shop_women',
+              builder: (context, state) => const ShopWomenPage(),
+            ),
+            GoRoute(
+              path: 'accessories',
+              name: 'shop_accessories',
+              builder: (context, state) => const ShopAccessoriesPage(),
+            ),
+            GoRoute(
+              path: 'product',
+              name: 'product_detail',
+              builder: (context, state) {
+                final product = state.extra as Product;
+                return ProductDetailPage(product: product);
+              },
+            ),
+          ],
+        ),
+
+        // Wishlist Tab
+        GoRoute(
+          path: '/wishlist',
+          name: 'wishlist',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const WishlistPage(),
+          ),
+        ),
+
+        // Cart Tab with nested routes
+        GoRoute(
+          path: '/cart',
+          name: 'cart',
+          pageBuilder: (context, state) => NoTransitionPage(
+            key: state.pageKey,
+            child: const CartPage(),
+          ),
+          routes: [
+            GoRoute(
+              path: 'summary',
+              name: 'order_summary',
+              builder: (context, state) => const OrderSummaryPage(),
+            ),
+          ],
         ),
       ],
     ),
   ],
 );
-
-Page _buildPage(GoRouterState state, Widget page, int newIndex) {
-  bool isForward = newIndex > _lastIndex;
-
-  const beginRight = Offset(1.0, 0.0);
-  const beginLeft = Offset(-1.0, 0.0);
-  const end = Offset.zero;
-  const curve = Curves.easeInOut;
-
-  var tween = Tween(begin: isForward ? beginRight : beginLeft, end: end)
-      .chain(CurveTween(curve: curve));
-
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    _lastIndex = newIndex;
-  });
-
-  return CustomTransitionPage(
-    key: state.pageKey,
-    child: page,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return SlideTransition(position: animation.drive(tween), child: child);
-    },
-  );
-}*/

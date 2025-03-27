@@ -1,11 +1,11 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:bid/components/buttons/custom_button.dart';
 import 'package:bid/components/widgets/custom_textfield.dart';
 import 'package:bid/modals/loginmodal.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/supabase_auth_provider.dart';
-import '../routes/route.dart';
 
 class RegistrationPage extends StatefulWidget {
   final void Function()? onTap;
@@ -161,7 +161,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
                       }
-                      context.pushRoute(AccountRoute());
+                      context.go('/account');
                     },
                     child: Text(
                       'OK',

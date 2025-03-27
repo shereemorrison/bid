@@ -1,4 +1,3 @@
-import 'package:bid/routes/route.dart';
 
 import '../models/category_model.dart';
 import '../supabase/supabase_config.dart';
@@ -19,15 +18,7 @@ class CategoryService {
       return response.map<Category>((json) => Category.fromJson(json)).toList();
     } catch (e) {
       print('Error fetching categories: $e');
-
-      // Fallback if error - TODO - Test to see if this can now be removed
-      return [
-        Category(
-          id: '1',
-          name: 'Men',
-          route: Paths.shopMen,
-        ),
-      ];
+      return [];
     }
   }
 }

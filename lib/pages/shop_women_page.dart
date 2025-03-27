@@ -1,20 +1,19 @@
 
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import '../components/widgets/product_grid_item.dart';
 import '../components/widgets/search_bar.dart';
 import '../models/products_model.dart';
 import '../services/product_service.dart';
 
-@RoutePage()
-class ShopAccessoriesPage extends StatefulWidget {
-  const ShopAccessoriesPage({super.key});
+class ShopWomenPage extends StatefulWidget {
+
+  const ShopWomenPage({super.key});
 
   @override
-  _ShopAccessoriesPageState createState() => _ShopAccessoriesPageState();
+  State<ShopWomenPage> createState() => _ShopWomenPageState();
 }
 
-class _ShopAccessoriesPageState extends State<ShopAccessoriesPage> {
+class _ShopWomenPageState extends State<ShopWomenPage> {
   final ProductService _productService = ProductService();
   List<Product> _products = [];
   bool _isLoading = true;
@@ -34,7 +33,7 @@ class _ShopAccessoriesPageState extends State<ShopAccessoriesPage> {
       });
 
       // Get men's products from Supabase
-      final products = await _productService.getProductsByCategorySlug('accessories');
+      final products = await _productService.getProductsByCategorySlug('women');
 
       setState(() {
         _products = products;
@@ -60,7 +59,7 @@ class _ShopAccessoriesPageState extends State<ShopAccessoriesPage> {
             children: [
               // Page Title
               Text(
-                "Shop Accessories",
+                "Shop Women",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

@@ -1,13 +1,12 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../models/category_model.dart';
 import '../services/category_service.dart';
-import '../routes/route.dart';
 import '../components/widgets/search_bar.dart';
 import '../components/widgets/category_list.dart';
 import '../components/widgets/category_item.dart';
 
-@RoutePage()
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
 
@@ -46,25 +45,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   void _navigateToCategory(Category category) {
-    switch (category.name) {
-      case 'Men':
-        context.pushRoute(const ShopMenRoute());
-        break;
-      case 'Women':
-        context.pushRoute(const ShopWomenRoute());
-        break;
-      case 'Accessories':
-        context.pushRoute(const ShopAccessoriesRoute());
-        break;
-      case 'New Arrivals':
-        context.pushRoute(const ShopMenRoute());
-        break;
-      case 'On Sale':
-        context.pushRoute(const ShopMenRoute());
-        break;
-      default:
-        break;
-    }
+    final path = '/shop/${category.slug}';
+    print('Navigating to: $path');
+    context.go(path);
   }
 
   @override
@@ -98,15 +81,5 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
       ),
     );
-  }
-}
-
-@RoutePage()
-class CategoriesRootPage extends StatelessWidget {
-  const CategoriesRootPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const AutoRouter();
   }
 }

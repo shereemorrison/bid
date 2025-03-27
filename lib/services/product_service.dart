@@ -22,7 +22,6 @@ class ProductService {
   // Fetch products by category slug
   Future<List<Product>> getProductsByCategorySlug(String slug) async {
     try {
-      print('Fetching products by slug: $slug');
 
       // Use the RPC function we created earlier
       final response = await _supabase
@@ -30,10 +29,6 @@ class ProductService {
         'slug_param': slug,
         'limit_param': null // No limit
       });
-
-      print('Products by slug response received: ${response.toString()}');
-      print('Products by slug response type: ${response.runtimeType}');
-      print('Products by slug response length: ${response is List ? response.length : 'not a list'}');
 
       return response.map<Product>((json) => Product.fromJson(json)).toList();
     } catch (e) {

@@ -60,25 +60,17 @@ class WelcomeService {
 
   Future<List<Product>> fetchFeaturedProducts() async {
     try {
-      print('Fetching featured products...');
-
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
           .limit(3);
 
-      print('Response received: ${response.toString()}');
-      print('Response type: ${response.runtimeType}');
-      print('Response length: ${response is List ? response.length : 'not a list'}');
-
       if (response is List && response.isNotEmpty) {
-        print('First product: ${response[0]}');
       }
 
       // Convert the response to a List<Product>
       final products = (response as List).map((data) => Product.fromJson(data)).toList();
 
-      print('Converted to ${products.length} Product objects');
       return products;
 
     } catch (e) {

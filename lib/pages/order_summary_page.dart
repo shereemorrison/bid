@@ -1,6 +1,6 @@
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
 import '../components/buttons/shopping_buttons.dart';
@@ -8,9 +8,7 @@ import '../components/cards/order_info_card.dart';
 import '../components/widgets/order_cost_summary.dart';
 import '../components/widgets/order_payment.option.dart';
 import '../components/widgets/order_product_item.dart';
-import '../routes/route.dart';
 
-@RoutePage()
 class OrderSummaryPage extends StatelessWidget {
   const OrderSummaryPage({super.key});
 
@@ -120,7 +118,7 @@ class OrderSummaryPage extends StatelessWidget {
                   Expanded(
                     child: BaseStyledButton(
                       text: "CONTINUE SHOPPING",
-                      onTap: () => context.router.pop(),
+                      onTap: () => context.pop(),
                       textColor: Theme.of(context).colorScheme.secondary,
                       borderColor: Theme.of(context).colorScheme.secondary,
                     ),
@@ -130,7 +128,7 @@ class OrderSummaryPage extends StatelessWidget {
                     child: AddToCartButton(
                       text: "CONTINUE",
                       onTap: () {
-                        context.pushRoute(const WelcomeRoute());
+                        context.pop();
                       },
                       textColor: Theme.of(context).colorScheme.secondary,
                       borderColor: Theme.of(context).colorScheme.secondary,

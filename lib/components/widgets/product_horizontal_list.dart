@@ -1,8 +1,8 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../models/products_model.dart';
-import '../../routes/route.dart';
 
 class ProductHorizontalList extends StatelessWidget {
   final Color customBeige;
@@ -40,7 +40,7 @@ class ProductHorizontalList extends StatelessWidget {
           return GestureDetector(
               onTap: () {
                 if (product != null) {
-                  context.pushRoute(ProductDetailRoute(product: product));
+                  context.push('/shop/product', extra: product);
                 }
               },
 

@@ -1,11 +1,11 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bid/components/widgets/custom_textfield.dart';
 import 'package:bid/components/buttons/custom_button.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/supabase_auth_provider.dart';
 import '../providers/user_provider.dart';
-import '../routes/route.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           userProvider.fetchUserData(authProvider.user!.id);
         }
         Navigator.of(context).pop();
-        context.router.navigate(const AccountRoute());
+        context.go('/account');
       }
     } catch (e) {
       if (mounted) {

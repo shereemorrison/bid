@@ -1,13 +1,10 @@
-import 'package:auto_route/annotations.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import '../components/widgets/product_grid_item.dart';
 import '../components/widgets/search_bar.dart';
 import '../models/products_model.dart';
 import '../services/product_service.dart';
 
-@RoutePage()
 class ShopMenPage extends StatefulWidget {
   const ShopMenPage({super.key});
 

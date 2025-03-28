@@ -15,9 +15,8 @@ class QuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = Theme.of(context).colorScheme.secondary;
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    final textColor = isLightMode ? Colors.black : customBeige;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textColor = colorScheme.primary;
 
     return Row(
       children: [

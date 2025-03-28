@@ -1,3 +1,4 @@
+import 'package:bid/services/category_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,12 @@ import 'package:bid/components/widgets/search_bar.dart';
 import 'package:bid/components/widgets/product_horizontal_list.dart';
 import 'package:bid/services/welcome_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../components/widgets/category_chips.dart';
 import '../components/widgets/featured_grid.dart';
-import '../components/widgets/featured_story_section.dart';
+import '../components/widgets/our_story_section.dart';
 import '../components/widgets/hero_section.dart';
 import '../components/widgets/newsletter_section.dart';
+import '../models/category_model.dart';
 
 
 class WelcomePage extends StatefulWidget {
@@ -22,17 +25,19 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   final WelcomeService _welcomeService = WelcomeService();
   final TextEditingController _emailController = TextEditingController();
-  final List<String> _categories = ["ALL", "OUTERWEAR", "BAGS", "ESSENTIALS"];
+  final CategoryService _categoryService = CategoryService();
+
+  List<Category> _categories = [];
+  List<Category> _allCategories = [];
+  List<String> _categoryNames = [];
   bool _isLoading = true;
   int _selectedCategoryIndex = 0;
-
 
   @override
   void initState() {
     super.initState();
     _loadData(); // Load data when page initializes
   }
-
 
   @override
   void dispose() {
@@ -46,6 +51,11 @@ class _WelcomePageState extends State<WelcomePage> {
     super.didChangeDependencies();
   }
 
+  List<String> _getCategories() {
+    // Convert Category objects to strings
+    return _allCategories.map((category) => category.name).toList();
+  }
+
   // Load data and wait for it to complete
   Future<void> _loadData() async {
     setState(() {
@@ -55,6 +65,16 @@ class _WelcomePageState extends State<WelcomePage> {
     try {
       // Load all data including featured products
       await _welcomeService.loadAllData();
+      _categories = await _categoryService.getCategories();
+
+      final allCategory = Category(
+          id: 'all',
+          name: 'ALL',
+          slug: 'all',
+      );
+
+      _allCategories = [allCategory, ..._categories];
+      _categoryNames = _getCategories();
 
       // Make sure featured products are loaded
       if (_welcomeService.featuredProducts.isEmpty) {
@@ -74,6 +94,18 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> filteredProducts = _welcomeService.featuredProducts;
+
+    if (_selectedCategoryIndex > 0 && _selectedCategoryIndex < _allCategories.length) {
+      final selectedCategory = _allCategories[_selectedCategoryIndex];
+      if (selectedCategory.id != 'all') {
+        filteredProducts = _welcomeService.featuredProducts
+            .where((product) => product.categoryId == selectedCategory.id)
+            .toList();
+      }
+    }
+
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -101,7 +133,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'FEATURED COLLECTIONS',
+                      'COLLECTIONS',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Theme.of(context).colorScheme.textPrimary,
                         fontWeight: FontWeight.bold,
@@ -111,24 +143,16 @@ class _WelcomePageState extends State<WelcomePage> {
                     const SizedBox(height: 20),
 
                     // Category Chips
-                    SizedBox(
-                      height: 40,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _categories.length,
-                        itemBuilder: (context, index) {
-                          return _buildCategoryChip(
-                            _categories[index],
-                            index == _selectedCategoryIndex,
-                                () {
-                              setState(() {
-                                _selectedCategoryIndex = index;
-                              });
-                            },
-                          );
-                        },
-                      ),
-                    ),
+
+                  CategoryChips(
+                  categories: _categoryNames,
+                    selectedIndex: _selectedCategoryIndex,
+                    onCategorySelected: (index) {
+                    setState(() {
+                      _selectedCategoryIndex = index;
+          });
+        },
+      ),
 
                     const SizedBox(height: 20),
 

@@ -27,7 +27,7 @@ class FeaturedStorySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "FEATURED STORY",
+            "OUR STORY",
             style: TextStyle(
               color: Theme.of(context).colorScheme.textPrimary,
               fontSize: 18,

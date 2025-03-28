@@ -6,26 +6,27 @@ class CustomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greyShade300 = Colors.grey.shade300;
+    final colorScheme = Theme.of(context).colorScheme;
+    final hintColor = colorScheme.onSurface;
 
     return Container(
       height: 50,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Theme.of(context).colorScheme.secondary)),
+        border: Border.all(color: colorScheme.secondary)),
       child: Row(
         children: [
           const SizedBox(width: 15),
           Icon(
             Icons.search,
-            color: greyShade300,
+            color: hintColor,
           ),
           const SizedBox(width: 10),
           Text(
             'Search',
             style: TextStyle(
-              color: greyShade300,
+              color: hintColor,
               fontSize: 16,
             ),
           ),

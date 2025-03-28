@@ -14,10 +14,9 @@ class SizeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = Theme.of(context).colorScheme.secondary;
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    final textColor = isLightMode ? Colors.black : customBeige;
-    final backgroundColor = isLightMode ? Colors.white : Colors.black;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textColor = colorScheme.primary;
+    final backgroundColor = colorScheme.surface;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -19,6 +19,9 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Stack(
       children: [
         // Background Image
@@ -56,33 +59,28 @@ class HeroSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "THE BID JOURNEY",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
+                style: textTheme.titleLarge?.copyWith
+                  (
+                  color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+
+              Text(
                 "Discover our new collection",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.primary, // Using opacity instead of Colors.white70
                 ),
               ),
               const SizedBox(height: 20),
+
               ElevatedButton(
                 onPressed: onShopNowPressed,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 15,
-                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),

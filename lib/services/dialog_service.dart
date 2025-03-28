@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 import '../models/products_model.dart';
 
@@ -12,7 +13,6 @@ class DialogService {
   }) async {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final customBeige = colorScheme.secondary;
 
     return showDialog<bool>(
       context: context,
@@ -21,7 +21,7 @@ class DialogService {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: customBeige,
+                color: colorScheme.accent,
                 width: 2,
               ),
             ),
@@ -34,7 +34,7 @@ class DialogService {
                   Text(
                     title,
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: customBeige,
+                      color: Theme.of(context).colorScheme.accent,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -57,8 +57,8 @@ class DialogService {
                             onPressed: () => Navigator.pop(context, false),
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.transparent,
-                              foregroundColor: customBeige,
-                              side: BorderSide(color: customBeige, width: 1),
+                              foregroundColor: colorScheme.accent,
+                              side: BorderSide(color: colorScheme.accent, width: 1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4),
                               ),
@@ -84,11 +84,11 @@ class DialogService {
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.red,
                               foregroundColor: isDestructive ? Colors.red
-                                  .shade300 : customBeige,
+                                  .shade300 : colorScheme.accent,
                               side: BorderSide(
                                   color: isDestructive
                                       ? Colors.red.shade300
-                                      : customBeige,
+                                      : colorScheme.accent,
                                   width: 1
                               ),
                               shape: RoundedRectangleBorder(
@@ -129,7 +129,7 @@ class DialogService {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: customBeige, // Beige outline
+                color: colorScheme.accent, // Beige outline
                 width: 2,
               ),
             ),
@@ -142,7 +142,7 @@ class DialogService {
                   Text(
                     "Added to Cart",
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: customBeige,
+                      color: colorScheme.accent,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -162,8 +162,8 @@ class DialogService {
                       onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.transparent,
-                        foregroundColor: customBeige,
-                        side: BorderSide(color: customBeige, width: 1),
+                        foregroundColor: colorScheme.accent,
+                        side: BorderSide(color: colorScheme.accent, width: 1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -190,7 +190,6 @@ class DialogService {
   static void showAddToWishlistDialog(BuildContext context, Product product) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final customBeige = colorScheme.secondary;
 
     showDialog(
       context: context,
@@ -199,7 +198,7 @@ class DialogService {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color: customBeige, // Beige outline
+                color: colorScheme.accent, // Beige outline
                 width: 2,
               ),
             ),
@@ -212,7 +211,7 @@ class DialogService {
                   Text(
                     "Added to Wishlist",
                     style: theme.textTheme.titleLarge?.copyWith(
-                      color: customBeige,
+                      color: colorScheme.accent,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -232,8 +231,8 @@ class DialogService {
                       onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.transparent,
-                        foregroundColor: customBeige,
-                        side: BorderSide(color: customBeige, width: 1),
+                        foregroundColor: colorScheme.accent,
+                        side: BorderSide(color: colorScheme.accent, width: 1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),

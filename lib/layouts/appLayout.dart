@@ -25,7 +25,7 @@ class AppLayout extends StatelessWidget {
     final canGoBack = location != '/' &&
         location != '/shop' &&
         location != '/wishlist' &&
-        location != '/cart';
+        location != '/cart' &&
         location != '/account';
 
     return Scaffold(

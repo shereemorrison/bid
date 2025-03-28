@@ -22,8 +22,8 @@ class OrderProductItem extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
+        borderRadius: BorderRadius.circular(0),
+        color: Theme.of(context).colorScheme.cardBackground,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -32,7 +32,7 @@ class OrderProductItem extends StatelessWidget {
           children: [
             // Product Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(0),
               child: SizedBox(
                 width: 80,
                 height: 80,
@@ -49,18 +49,16 @@ class OrderProductItem extends StatelessWidget {
                 children: [
                   Text(
                     typedProduct.name,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     "\$${typedProduct.price.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -89,9 +87,10 @@ class OrderProductItem extends StatelessWidget {
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.cardBackground,
             child: Center(
               child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.textPrimary,
                 value: loadingProgress.expectedTotalBytes != null
                     ? loadingProgress.cumulativeBytesLoaded /
                     loadingProgress.expectedTotalBytes!
@@ -102,9 +101,9 @@ class OrderProductItem extends StatelessWidget {
         },
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.cardBackground,
             child: Center(
-              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.textPrimary),
             ),
           );
         },
@@ -115,9 +114,9 @@ class OrderProductItem extends StatelessWidget {
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.cardBackground,
             child: Center(
-              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.textPrimary),
             ),
           );
         },
@@ -132,14 +131,13 @@ class OrderProductItem extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.septenary),
-        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Theme.of(context).colorScheme.borderColor),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.grey,
-          fontSize: 12,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).colorScheme.textSecondary,
         ),
       ),
     );

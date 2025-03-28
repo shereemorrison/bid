@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/services/cart_service.dart';
 import 'package:bid/models/products_model.dart';
@@ -16,9 +17,7 @@ class AddToCartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = Theme.of(context).colorScheme.secondary;
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    final textColor = isLightMode ? Colors.black : customBeige;
+    final textColor = Theme.of(context).colorScheme.accent;
     final cartService = CartService();
 
     return AddToCartButton(

@@ -1,4 +1,5 @@
 
+import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
@@ -24,8 +25,8 @@ class CartItemCard extends StatelessWidget {
     final bool isLightMode = Theme.of(context).brightness == Brightness.light;
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
+        borderRadius: BorderRadius.circular(0),
+        color: Theme.of(context).colorScheme.cardBackground,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -34,7 +35,7 @@ class CartItemCard extends StatelessWidget {
           children: [
             // Product Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(0),
               child: SizedBox(
                 width: 100,
                 height: 100,
@@ -51,8 +52,8 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -60,9 +61,8 @@ class CartItemCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     "\$${product.price.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -79,7 +79,7 @@ class CartItemCard extends StatelessWidget {
               iconSize: 20,
               backgroundColor: Colors.transparent,
               borderColor: Colors.transparent,
-              iconColor: Colors.grey,
+              iconColor: Theme.of(context).colorScheme.textSecondary,
             ),
           ],
         ),
@@ -95,7 +95,7 @@ class CartItemCard extends StatelessWidget {
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.cardBackground,
             child: Center(
               child: CircularProgressIndicator(
                 value: loadingProgress.expectedTotalBytes != null
@@ -109,7 +109,7 @@ class CartItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading image: $error');
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.primary,
             child: Center(
               child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
             ),
@@ -123,9 +123,9 @@ class CartItemCard extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           print('Error loading asset: $error');
           return Container(
-            color: Theme.of(context).colorScheme.senary,
+            color: Theme.of(context).colorScheme.cardBackground,
             child: Center(
-              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
+              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.textPrimary),
             ),
           );
         },
@@ -154,14 +154,13 @@ class CartItemCard extends StatelessWidget {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.septenary),
-        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Theme.of(context).colorScheme.borderColor),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.grey,
-          fontSize: 12,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: Theme.of(context).colorScheme.textSecondary,
         ),
       ),
     );

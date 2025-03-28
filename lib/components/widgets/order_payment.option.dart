@@ -22,17 +22,17 @@ class OrderPaymentOption extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
+          borderRadius: BorderRadius.circular(0),
+          color: Theme.of(context).colorScheme.cardBackground,
           border: Border.all(
-            color: isSelected ? Theme.of(context).colorScheme.secondary : Colors.transparent,
+            color: isSelected ? Theme.of(context).colorScheme.accent : Colors.transparent,
           ),
         ),
         child: Icon(
           icon,
           color: isSelected
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.primary.withOpacity(0.7),
+              ? Theme.of(context).colorScheme.accent
+              : Theme.of(context).colorScheme.textSecondary,
         ),
       ),
     );

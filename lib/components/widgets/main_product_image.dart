@@ -17,8 +17,8 @@ class MainProductImage extends StatelessWidget {
       height: 400,
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.quinary,
-        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).colorScheme.cardBackground,
+        borderRadius: BorderRadius.circular(0),
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,

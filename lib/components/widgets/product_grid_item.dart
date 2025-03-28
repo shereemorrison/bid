@@ -1,4 +1,5 @@
 
+import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +33,7 @@ class ProductGridItem extends StatelessWidget {
       color: Theme.of(context).colorScheme.surface,
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,7 @@ class ProductGridItem extends StatelessWidget {
           // Product Image
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(2)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(0)),
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
@@ -50,6 +51,7 @@ class ProductGridItem extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Center(
                     child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                           loadingProgress.expectedTotalBytes!
@@ -60,9 +62,9 @@ class ProductGridItem extends StatelessWidget {
                 // Error handling
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Theme.of(context).colorScheme.senary,
+                    color: Theme.of(context).colorScheme.cardBackground,
                     child: Center(
-                      child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
+                      child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.textPrimary),
                     ),
                   );
                 },
@@ -78,9 +80,8 @@ class ProductGridItem extends StatelessWidget {
               children: [
                 Text(
                   product.name,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 14,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
@@ -89,9 +90,8 @@ class ProductGridItem extends StatelessWidget {
 
                 Text(
                   '\$${product.price.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 14,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.accent,
                   ),
                 ),
 

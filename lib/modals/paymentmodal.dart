@@ -24,7 +24,6 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = Theme.of(context).colorScheme.secondary;
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -50,8 +49,6 @@ class PaymentScreen extends StatelessWidget {
             BaseStyledButton(
               text: 'PAY NOW',
               onTap: () => _showPaymentSuccessDialog(context),
-              textColor: customBeige,
-              borderColor: customBeige,
               width: 200,
               height: 50,
               fontSize: 16,

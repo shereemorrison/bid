@@ -47,23 +47,24 @@ class WelcomeService {
     }
   }
 
-  String getGreeting() {
+  /*String getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good morning';
+      return 'GOOD MORNING';
     } else if (hour < 17) {
-      return 'Good afternoon';
+      return 'GOOD AFTERNOON';
     } else {
-      return 'Good evening';
+      return 'GOOD EVENING';
     }
-  }
+  }*/
 
   Future<List<Product>> fetchFeaturedProducts() async {
     try {
       final response = await SupabaseConfig.client
           .from('products')
           .select('*')
-          .limit(3);
+          .eq('is_featured', true)
+          .limit(4);
 
       if (response is List && response.isNotEmpty) {
       }
@@ -79,6 +80,7 @@ class WelcomeService {
       return []; // Return empty list on error
     }
   }
+
 
   Future<void> fetchMostWantedProducts() async {
     try {
@@ -101,6 +103,16 @@ class WelcomeService {
     } else {
       return SupabaseConfig.client.storage.from('bid-images').getPublicUrl(imagePath);
     }
+  }
+
+  // Get the hero image URL
+  String getHeroImageUrl() {
+    return getImageUrl('products/accessories/training.jpg');
+  }
+
+  // Get the featured story image URL
+  String getFeaturedStoryImageUrl() {
+    return getImageUrl('products/accessories/wraps.jpg');
   }
 
   Future<void> loadAllData() async {

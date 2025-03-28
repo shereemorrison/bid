@@ -22,8 +22,8 @@ class OrderCostSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
-        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.cardBackground,
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Column(
         children: [
@@ -36,7 +36,7 @@ class OrderCostSummary extends StatelessWidget {
           Divider(
             height: 24,
             thickness: 1,
-            color: Theme.of(context).colorScheme.septenary,
+            color: Theme.of(context).colorScheme.borderColor,
           ),
 
           _buildCostItem(context, 'Total', '\$${total.toStringAsFixed(2)}', isTotal: true),
@@ -51,16 +51,16 @@ class OrderCostSummary extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.textPrimary,
             fontSize: isTotal ? 16 : 14,
             fontWeight: isTotal ? FontWeight.w500 : FontWeight.normal,
           ),
         ),
         Text(
           value,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.textPrimary,
             fontSize: isTotal ? 16 : 14,
             fontWeight: isTotal ? FontWeight.w500 : FontWeight.normal,
           ),

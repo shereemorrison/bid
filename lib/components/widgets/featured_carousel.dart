@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../../models/products_model.dart';
@@ -6,7 +7,6 @@ class FeaturedCarousel extends StatelessWidget {
   final List<Product> products;
   final Function(int) onPageChanged;
   final int currentPage;
-  final Color customBeige;
   final String Function(String) getImageUrl;
   final List<String> collections;
 
@@ -14,7 +14,6 @@ class FeaturedCarousel extends StatelessWidget {
     super.key,
     required this.onPageChanged,
     required this.currentPage,
-    required this.customBeige,
     this.products = const [],
     required this.getImageUrl,
     this.collections = const ['Winter', 'Holiday', 'Essentials'],
@@ -22,7 +21,6 @@ class FeaturedCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greyShade300 = Colors.grey.shade300;
     final int itemCount = products.length;
 
     return Column(
@@ -34,7 +32,7 @@ class FeaturedCarousel extends StatelessWidget {
             itemCount: itemCount,
             onPageChanged: onPageChanged,
             itemBuilder: (context, index) {
-              return _buildProductCarouselItem(products[index], index, customBeige, greyShade300, context);
+              return _buildProductCarouselItem(products[index], index, context);
             },
           ),
         ),
@@ -51,8 +49,8 @@ class FeaturedCarousel extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: currentPage == index
-                      ? customBeige
-                      : greyShade300,
+                      ? Theme.of(context).colorScheme.accent
+                      : Theme.of(context).colorScheme.textSecondary,
                 ),
               ),
           ),
@@ -61,7 +59,7 @@ class FeaturedCarousel extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCarouselItem(Product product, int index, Color customBeige, Color greyShade300, BuildContext context) {
+  Widget _buildProductCarouselItem(Product product, int index, BuildContext context) {
     // Get the image URL
     final String imageUrl = getImageUrl(product.imageUrl);
     final bool isLightMode = Theme.of(context).brightness == Brightness.light;
@@ -75,8 +73,8 @@ class FeaturedCarousel extends StatelessWidget {
       height: 400,
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.quinary,
-        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).colorScheme.cardBackground,
+        borderRadius: BorderRadius.circular(0),
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
@@ -98,32 +96,27 @@ class FeaturedCarousel extends StatelessWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black,
+                    Theme.of(context).colorScheme.background,
                     Colors.transparent,
                   ],
                 ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                ),
+                borderRadius: BorderRadius.circular(0)
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     collectionName,
-                    style: TextStyle(
-                      color: isLightMode ? Colors.white : Theme.of(context).colorScheme.secondary,
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     'Shop the latest collection',
-                    style: TextStyle(
-                      color: greyShade300,
-                      fontSize: 14,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.textSecondary,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -142,14 +135,13 @@ class FeaturedCarousel extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: customBeige),
-                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Theme.of(context).colorScheme.accent),
+                        borderRadius: BorderRadius.circular(0),
                       ),
                       child: Text(
                         'SHOP NOW',
-                        style: TextStyle(
-                          color: customBeige,
-                          fontSize: 12,
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.accent,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

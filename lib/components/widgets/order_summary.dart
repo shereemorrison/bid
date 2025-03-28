@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import '../buttons/shopping_buttons.dart';
@@ -30,7 +31,7 @@ class OrderSummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isLightMode ? Colors.white : Theme.of(context).colorScheme.quaternary,
+        color: Theme.of(context).colorScheme.cardBackground,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),

@@ -1,21 +1,20 @@
 
+/*import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeHeader extends StatelessWidget {
-  final String greeting;
+  //final String greeting;
   final String userName;
 
 
   const WelcomeHeader({
     super.key,
-    required this.greeting,
+    //required this.greeting,
     required this.userName,
   });
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = const Color(0xFFb8b0a4);
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -24,10 +23,9 @@ class WelcomeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '$greeting, $userName!',
-              style: TextStyle(
-                color: isLightMode ? Colors.black : customBeige,
-                fontSize: 24,
+              //'$greeting, $userName!',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: Theme.of(context).colorScheme.textPrimary,
                 fontWeight: FontWeight.w300,
               ),
             ),
@@ -48,4 +46,4 @@ class WelcomeHeader extends StatelessWidget {
       ],
     );
   }
-}
+}*/

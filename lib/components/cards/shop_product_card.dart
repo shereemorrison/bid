@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,17 +23,17 @@ class ShopProductCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.cardBackground,
         content: Text(
           "Added ${product.name} to cart",
-          style: TextStyle(color: Theme.of(context).colorScheme.surface),
+          style: TextStyle(color: Theme.of(context).colorScheme.textPrimary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.surface),
+              style: TextStyle(color: Theme.of(context).colorScheme.accent),
             ),
           ),
         ],
@@ -79,8 +80,8 @@ class ShopProductCard extends StatelessWidget {
       width: cardWidth,
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.quinary,
-        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.cardBackground,
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,10 +90,7 @@ class ShopProductCard extends StatelessWidget {
           Container(
             height: imageHeight,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
+              borderRadius: BorderRadius.circular(0),
               image: DecorationImage(
                 image: AssetImage(product.imagePath),
                 fit: BoxFit.cover,
@@ -108,10 +106,10 @@ class ShopProductCard extends StatelessWidget {
               children: [
                 Text(
                   product.name,
-                  style: TextStyle(
-                    color: greyShade300,
-                    fontSize: fontSize,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.textPrimary,
                     fontWeight: FontWeight.bold,
+                    fontSize: fontSize,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

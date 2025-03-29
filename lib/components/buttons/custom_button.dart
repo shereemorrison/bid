@@ -1,4 +1,5 @@
 
+import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
@@ -13,13 +14,15 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.only(left: 50.0, right: 50.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: colorScheme.cardBackground,
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.all(15),
@@ -27,7 +30,7 @@ class MyButton extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),

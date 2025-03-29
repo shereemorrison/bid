@@ -16,7 +16,7 @@ class ProfileHeader extends StatelessWidget {
         const SizedBox(height: 30),
         Text(
           "BELIEVE IN DREAMS",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold,
             fontSize: 20,

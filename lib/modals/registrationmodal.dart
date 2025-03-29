@@ -199,7 +199,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         width: 600,
         height: 650,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -212,13 +212,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 Icon(
                   Icons.person,
                   size: 60,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
 
                 const SizedBox(height: 25),
 
                 Text(
-                  "B E L I E V E  I N  D R E A M S",
+                  "BELIEVE  IN  DREAMS",
                   style: TextStyle(
                     fontSize: 20,
                     color: Theme.of(context).colorScheme.secondary,
@@ -302,7 +302,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       "Already have an account?",
                       style: TextStyle(
                         fontSize: 12,
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     GestureDetector(
@@ -331,7 +331,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       child: Text(
                         " Login here",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),

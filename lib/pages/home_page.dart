@@ -1,4 +1,5 @@
 import 'package:bid/components/category_widgets/category_chips.dart';
+import 'package:bid/components/common_widgets/featured_carousel.dart';
 import 'package:bid/components/common_widgets/featured_grid.dart';
 import 'package:bid/components/home_widgets/hero_section.dart';
 import 'package:bid/components/home_widgets/newsletter_section.dart';
@@ -178,6 +179,21 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(height: 30),
+              
+              //Featured Carousel
+              if (_homeService.featuredProducts.isNotEmpty)
+                FeaturedCarousel(
+                  products: _homeService.featuredProducts,
+                  getImageUrl: _homeService.getImageUrl,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _homeService.currentPage = index;
+                    });
+                  },
+                  currentPage: _homeService.currentPage,
+                ),
+
+              SizedBox(height: 40),
 
               // Most Wanted Section
               Padding(

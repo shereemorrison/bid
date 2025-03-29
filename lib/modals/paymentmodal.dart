@@ -1,7 +1,8 @@
 
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/services/dialog_service.dart';
 import 'package:flutter/material.dart';
-import '../components/buttons/shopping_buttons.dart';
-import '../services/dialog_service.dart';
+
 
 class PaymentScreen extends StatelessWidget {
   final double totalAmount;

@@ -1,11 +1,9 @@
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/models/products_model.dart';
+import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/themes/custom_colors.dart';
-import 'package:bid/themes/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/products_model.dart';
-import '../../providers/shop_provider.dart';
-import '../buttons/shopping_buttons.dart';
-
 
 class ShopProductCard extends StatelessWidget {
   final Product product;
@@ -67,8 +65,7 @@ class ShopProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greyShade300 = Colors.grey.shade300;
-    final customBeige = Theme.of(context).colorScheme.secondary;
+    final colorScheme = Theme.of(context).colorScheme;
 
     // Adjust dimensions based on size
     final double cardWidth = isLarge ? 180.0 : 150.0;
@@ -92,7 +89,7 @@ class ShopProductCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(0),
               image: DecorationImage(
-                image: AssetImage(product.imagePath),
+                image: NetworkImage(product.imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -118,7 +115,7 @@ class ShopProductCard extends StatelessWidget {
                 Text(
                   '\$${product.price.toStringAsFixed(2)}',
                   style: TextStyle(
-                    color: customBeige,
+                    color: colorScheme.primary,
                     fontSize: priceFontSize,
                   ),
                 ),

@@ -1,6 +1,6 @@
+import 'package:bid/components/common_widgets/theme_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../components/widgets/theme_toggle.dart';
 
 class AppLayout extends StatelessWidget {
   final Widget child;
@@ -25,7 +25,7 @@ class AppLayout extends StatelessWidget {
     final canGoBack = location != '/' &&
         location != '/shop' &&
         location != '/wishlist' &&
-        location != '/cart';
+        location != '/cart' &&
         location != '/account';
 
     return Scaffold(

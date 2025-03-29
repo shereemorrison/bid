@@ -1,7 +1,8 @@
 
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/services/dialog_service.dart';
 import 'package:flutter/material.dart';
-import '../components/buttons/shopping_buttons.dart';
-import '../services/dialog_service.dart';
+
 
 class PaymentScreen extends StatelessWidget {
   final double totalAmount;
@@ -24,7 +25,6 @@ class PaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = Theme.of(context).colorScheme.secondary;
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -50,8 +50,6 @@ class PaymentScreen extends StatelessWidget {
             BaseStyledButton(
               text: 'PAY NOW',
               onTap: () => _showPaymentSuccessDialog(context),
-              textColor: customBeige,
-              borderColor: customBeige,
               width: 200,
               height: 50,
               fontSize: 16,

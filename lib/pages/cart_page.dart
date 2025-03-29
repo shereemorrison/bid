@@ -1,14 +1,14 @@
 
 
+import 'package:bid/components/common_widgets/empty_state.dart';
+import 'package:bid/components/order_widgets/order_summary.dart';
+import 'package:bid/models/products_model.dart';
+import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:bid/components/widgets/empty_state.dart';
-import 'package:bid/components/cards/cart_item_card.dart';
-import 'package:bid/components/widgets/order_summary.dart';
 import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/services/cart_service.dart';
-import '../models/products_model.dart';
 
 
 class CartPage extends StatefulWidget {
@@ -24,7 +24,8 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<Shop>().cart;
-    double totalAmount = cart.fold(0.0, (sum, item) => sum + (item.price*item.quantity));
+    double totalAmount = cart.fold(
+        0.0, (sum, item) => sum + (item.price * item.quantity));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -37,7 +38,10 @@ class _CartPageState extends State<CartPage> {
           : Column(
         children: [
           Expanded(
-            child: _buildCartItemsList(cart.cast<Product>()),
+            child: buildCartItemsList(
+                cart.cast<Product>(),
+                    (item) => _cartService.removeFromCart(context, item)
+            ),
           ),
           OrderSummary(
             totalAmount: totalAmount,
@@ -47,23 +51,6 @@ class _CartPageState extends State<CartPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCartItemsList(List<Product> cart) {
-    return ListView.builder(
-      itemCount: cart.length,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemBuilder: (context, index) {
-        final item = cart[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: CartItemCard(
-            product: item,
-            onRemove: () => _cartService.removeFromCart(context, item),
-          ),
-        );
-      },
     );
   }
 }

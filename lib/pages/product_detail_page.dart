@@ -1,12 +1,12 @@
 
+import 'package:bid/components/cart_widgets/add_to_cart_section.dart';
+import 'package:bid/components/product_widgets/color_selector.dart';
+import 'package:bid/components/product_widgets/main_product_image.dart';
+import 'package:bid/components/product_widgets/product_details_section.dart';
+import 'package:bid/components/product_widgets/quantity_selector.dart';
+import 'package:bid/components/product_widgets/size_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/models/products_model.dart';
-import '../components/widgets/add_to_cart_section.dart';
-import '../components/widgets/color_selector.dart';
-import '../components/widgets/main_product_image.dart';
-import '../components/widgets/product_details_section.dart';
-import '../components/widgets/quantity_selector.dart';
-import '../components/widgets/size_selector.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -62,11 +62,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
-    final backgroundColor = isLightMode ? Colors.white : Colors.black;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

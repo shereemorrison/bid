@@ -1,15 +1,16 @@
 
+import 'package:bid/components/buttons/auth_button.dart';
+import 'package:bid/components/common_widgets/profile_header.dart';
+import 'package:bid/components/common_widgets/social_login_row.dart';
+import 'package:bid/components/order_widgets/order_history_table.dart';
+import 'package:bid/modals/loginmodal.dart';
+import 'package:bid/modals/registrationmodal.dart';
+import 'package:bid/providers/order_provider.dart';
+import 'package:bid/providers/supabase_auth_provider.dart';
+import 'package:bid/providers/user_provider.dart';
+import 'package:bid/utils/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../components/widgets/order_history_table.dart';
-import '../components/widgets/profile_header.dart';
-import '../components/buttons/auth_button.dart';
-import '../components/widgets/social_login_row.dart';
-import '../modals/loginmodal.dart';
-import '../modals/registrationmodal.dart';
-import '../providers/order_provider.dart';
-import '../providers/supabase_auth_provider.dart';
-import '../providers/user_provider.dart';
 
 
 class AccountPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+
   SupabaseAuthProvider? _authProvider;
   @override
   void initState() {
@@ -79,6 +81,8 @@ class _AccountPageState extends State<AccountPage> {
     final userProvider = Provider.of<UserProvider>(context);
     final userData = userProvider.userData;
     final isLoading = userProvider.isLoading;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: isLoading
@@ -105,7 +109,7 @@ class _AccountPageState extends State<AccountPage> {
                           child: Icon(
                             Icons.person,
                             size: 40,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: colorScheme.primary,
                           ),
                         ),
                       ),
@@ -124,7 +128,7 @@ class _AccountPageState extends State<AccountPage> {
                           Text(
                             userData.email,
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: colorScheme.primary,
                               fontSize: 14,
                             ),
                           ),
@@ -141,14 +145,14 @@ class _AccountPageState extends State<AccountPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildInfoItem('First Name', userData.firstName ?? 'Not set'),
-                  _buildInfoItem('Last Name', userData.lastName ?? 'Not set'),
-                  _buildInfoItem('Phone', userData.phone ?? 'Not set'),
-                  _buildInfoItem('Address', 'No address saved'),
+                  buildInfoItem(context, 'First Name', userData.firstName ?? 'Not set'),
+                  buildInfoItem(context, 'Last Name', userData.lastName ?? 'Not set'),
+                  buildInfoItem(context, 'Phone', userData.phone ?? 'Not set'),
+                  buildInfoItem(context, 'Address', 'No address saved'),
 
                   const SizedBox(height: 10),
 
@@ -173,10 +177,9 @@ class _AccountPageState extends State<AccountPage> {
 
                       final orders = orderProvider.orders;
                       if (orders == null || orders.isEmpty) {
-                        return _buildInfoItem('Order ID', 'No recent orders');
+                        return buildInfoItem(context, 'Order ID', 'No recent orders');
                       }
 
-                      // Use the new OrderHistoryTable component
                       return OrderHistoryTable(
                         orders: orders.take(5).toList(), // Show last 5 orders
                         onViewDetails: (orderId) {
@@ -249,6 +252,8 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _buildInfoItem(String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -259,7 +264,7 @@ class _AccountPageState extends State<AccountPage> {
             child: Text(
               label,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+                color: colorScheme.secondary,
                 fontSize: 14,
               ),
             ),
@@ -269,7 +274,7 @@ class _AccountPageState extends State<AccountPage> {
             value,
             style: TextStyle(
                 fontSize: 14,
-                color: Theme.of(context).colorScheme.primary
+                color: colorScheme.primary
             ),
           ),
         ],
@@ -278,6 +283,8 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _buildNotLoggedInView(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -289,7 +296,7 @@ class _AccountPageState extends State<AccountPage> {
           Text(
             'You need to log in to view your profile',
             style: TextStyle(fontSize: 16,
-                color: Theme.of(context).colorScheme.secondary),
+                color: colorScheme.secondary),
           ),
           const SizedBox(height: 20),
 

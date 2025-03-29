@@ -1,6 +1,7 @@
+import 'package:bid/models/products_model.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
-import '../models/products_model.dart';
+
 
 class DialogService {
   static Future<bool?> showConfirmationDialog({

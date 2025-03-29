@@ -5,7 +5,7 @@ class OrderService {
 
   Future<List<Map<String, dynamic>>> getUserOrders(String userId) async {
     try {
-      // First, let's check if the user exists and get their numeric ID if needed
+      // Check if user exists and get Id if they do
       final userResponse = await _supabase
           .from('users')
           .select('user_id')

@@ -1,11 +1,11 @@
 
 import 'package:bid/components/buttons/custom_button.dart';
-import 'package:bid/components/widgets/custom_textfield.dart';
+import 'package:bid/components/common_widgets/custom_textfield.dart';
 import 'package:bid/modals/loginmodal.dart';
+import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../providers/supabase_auth_provider.dart';
 
 class RegistrationPage extends StatefulWidget {
   final void Function()? onTap;

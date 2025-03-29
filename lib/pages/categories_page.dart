@@ -1,11 +1,11 @@
 
+import 'package:bid/components/category_widgets/category_item.dart';
+import 'package:bid/components/category_widgets/category_list.dart';
+import 'package:bid/components/common_widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/category_model.dart';
 import '../services/category_service.dart';
-import '../components/widgets/search_bar.dart';
-import '../components/widgets/category_list.dart';
-import '../components/widgets/category_item.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
@@ -52,8 +52,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +70,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               child: _isLoading
                   ? Center(
                 child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                 ),
               )
                   : CategoryListView(

@@ -1,3 +1,4 @@
+import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class BaseStyledButton extends StatelessWidget {
@@ -24,7 +25,6 @@ class BaseStyledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = textColor ?? Theme.of(context).colorScheme.secondary;
 
     return SizedBox(
       width: width,
@@ -33,10 +33,10 @@ class BaseStyledButton extends StatelessWidget {
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          foregroundColor: customBeige,
-          side: BorderSide(color: borderColor ?? customBeige, width: 1),
+          foregroundColor: textColor ?? Theme.of(context).colorScheme.accent,
+          side: BorderSide(color: borderColor ?? Theme.of(context).colorScheme.accent, width: 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.zero, // Square corners
           ),
 
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
@@ -148,7 +148,8 @@ class CustomIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customBeige = iconColor ?? Theme.of(context).colorScheme.secondary;
+    final iconThemeColor = iconColor ?? Theme.of(context).colorScheme.accent;
+    final textColor = Theme.of(context).colorScheme.accent;
 
     return SizedBox(
       width: size,
@@ -156,18 +157,18 @@ class CustomIconButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: customBeige,
-          side: BorderSide(color: borderColor ?? customBeige, width: 1),
+          backgroundColor: Colors.transparent,
+          foregroundColor: textColor ?? Theme.of(context).colorScheme.accent,
+          side: BorderSide(color: borderColor ?? Theme.of(context).colorScheme.accent, width: 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.zero, // Square corners
           ),
           padding: EdgeInsets.zero,
         ),
         child: Icon(
           icon,
           size: iconSize,
-          color: customBeige,
+          color: iconThemeColor,
         ),
       ),
     );

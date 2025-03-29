@@ -1,6 +1,8 @@
 
-import '../models/category_model.dart';
-import '../supabase/supabase_config.dart';
+
+
+import 'package:bid/models/category_model.dart';
+import 'package:bid/supabase/supabase_config.dart';
 
 class CategoryService {
   final _supabase = SupabaseConfig.client;

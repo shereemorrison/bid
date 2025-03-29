@@ -158,7 +158,7 @@ class CustomIconButton extends StatelessWidget {
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          foregroundColor: textColor ?? Theme.of(context).colorScheme.accent,
+          foregroundColor: Theme.of(context).colorScheme.accent,
           side: BorderSide(color: borderColor ?? Theme.of(context).colorScheme.accent, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero, // Square corners

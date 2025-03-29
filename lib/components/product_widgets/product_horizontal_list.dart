@@ -57,15 +57,18 @@ class ProductHorizontalList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(0),
-            child: imageUrl != null
-                ? buildProductImage(context, imageUrl, '')
-                : buildPlaceholderImage(context, Icons.image),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(0),
+                                child: imageUrl != null
+                                    ? buildProductImage(context, imageUrl, '')
+                                    : buildPlaceholderImage(context, Icons.image),
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

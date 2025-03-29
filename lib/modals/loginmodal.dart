@@ -96,11 +96,11 @@ class _LoginPageState extends State<LoginPage> {
               Icon(
                 Icons.person,
                 size: 60,
-                color: Theme.of(context).colorScheme.inversePrimary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               const SizedBox(height: 25),
               Text(
-                "B E L I E V E  I N  D R E A M S",
+                "BELIEVE  IN  DREAMS",
                 style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.secondary,
@@ -162,8 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     "Don't have an account?",
                     style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   GestureDetector(
@@ -171,8 +171,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       " Register here",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

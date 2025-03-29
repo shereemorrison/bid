@@ -1,8 +1,9 @@
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/models/products_model.dart';
 import 'package:bid/themes/custom_colors.dart';
-import 'package:bid/themes/dark_mode.dart';
+import 'package:bid/utils/format_helpers.dart';
+import 'package:bid/utils/image_helpers.dart';
 import 'package:flutter/material.dart';
-import '../../models/products_model.dart';
-import '../buttons/shopping_buttons.dart';
 
 class WishlistItemCard extends StatelessWidget {
   final Product product;
@@ -16,18 +17,15 @@ class WishlistItemCard extends StatelessWidget {
     required this.onAddToCart,
   });
 
-  // Helper method to check if a path is a URL
-  bool _isUrl(String path) {
-    return path.startsWith('http');
-  }
-
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        color: Theme.of(context).colorScheme.cardBackground,
+        color: colorScheme.cardBackground,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -40,11 +38,13 @@ class WishlistItemCard extends StatelessWidget {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: _buildProductImage(context),
+                child: buildProductImage(
+                    context, product.imageUrl, product.imagePath),
               ),
             ),
 
             const SizedBox(width: 16),
+
             // Product Details
             Expanded(
               child: Column(
@@ -52,16 +52,16 @@ class WishlistItemCard extends StatelessWidget {
                 children: [
                   Text(
                     product.name,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.textPrimary,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.textPrimary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "\$${product.price.toStringAsFixed(2)}",
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.textPrimary,
+                    formatPrice(product.price),
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -82,6 +82,7 @@ class WishlistItemCard extends StatelessWidget {
               onTap: onRemove,
               size: 30,
               iconSize: 20,
+              iconColor: colorScheme.textSecondary,
               backgroundColor: Colors.transparent,
               borderColor: Colors.transparent,
             ),
@@ -90,62 +91,4 @@ class WishlistItemCard extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildProductImage(BuildContext context) {
-    // Check for empty paths
-    if (product.imageUrl.isEmpty && product.imagePath.isEmpty) {
-      return Container(
-        color: Theme.of(context).colorScheme.cardBackground,
-        child: Center(
-          child: Icon(Icons.image_not_supported, color: Theme.of(context).colorScheme.textPrimary,),
-        ),
-      );
-    }
-
-    if (_isUrl(product.imageUrl)) {
-      return Image.network(
-        product.imageUrl,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Container(
-            color: Theme.of(context).colorScheme.cardBackground,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.textPrimary,
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            ),
-          );
-        },
-        errorBuilder: (context, error, stackTrace) {
-          print('Error loading image: $error');
-          return Container(
-            color: Theme.of(context).colorScheme.cardBackground,
-            child: Center(
-              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
-            ),
-          );
-        },
-      );
-    } else {
-      return Image.asset(
-        product.imagePath,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          print('Error loading asset: $error');
-          return Container(
-            color: Theme.of(context).colorScheme.cardBackground,
-            child: Center(
-              child: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.primary),
-            ),
-          );
-        },
-      );
-    }
-  }
 }
-

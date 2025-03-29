@@ -18,7 +18,6 @@ class OrderItem {
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
-    // Handle the case where product, color, or size might be null
     String productName = 'Unknown Product';
     String? imageUrl;
     if (json['product'] != null && json['product'] is Map) {

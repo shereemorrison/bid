@@ -1,7 +1,7 @@
+import 'package:bid/models/products_model.dart';
+import 'package:bid/providers/shop_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/products_model.dart';
-import '../providers/shop_provider.dart';
 import 'dialog_service.dart';
 import 'cart_service.dart';
 

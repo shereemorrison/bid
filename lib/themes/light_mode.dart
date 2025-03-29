@@ -14,21 +14,6 @@ ThemeData lightMode = ThemeData(
     onSecondary: Colors.white,
   ),
 
-  // Keep the same font styles
-  /*textTheme: TextTheme(
-    displayLarge: GoogleFonts.dmSerifDisplay(fontSize: 32, fontWeight: FontWeight.bold),
-    titleLarge: GoogleFonts.dmSerifDisplay(fontSize: 24, fontWeight: FontWeight.w600),
-    bodyLarge: GoogleFonts.dmSerifDisplay(fontSize: 16),
-    bodyMedium: GoogleFonts.dmSerifDisplay(fontSize: 14),
-    bodySmall: GoogleFonts.dmSerifDisplay(fontSize: 12),
-  ),
-  // Customize component themes
-  appBarTheme: AppBarTheme(
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.black,
-    elevation: 0,
-  ),
-);*/
 
   textTheme: TextTheme(
     // Large titles

@@ -1,13 +1,13 @@
 
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/components/cards/order_info_card.dart';
+import 'package:bid/components/order_widgets/order_cost_summary.dart';
+import 'package:bid/components/order_widgets/order_payment.option.dart';
+import 'package:bid/components/order_widgets/order_product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
-import '../components/buttons/shopping_buttons.dart';
-import '../components/cards/order_info_card.dart';
-import '../components/widgets/order_cost_summary.dart';
-import '../components/widgets/order_payment.option.dart';
-import '../components/widgets/order_product_item.dart';
 
 class OrderSummaryPage extends StatelessWidget {
   const OrderSummaryPage({super.key});

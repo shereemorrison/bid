@@ -1,5 +1,7 @@
-import '../models/products_model.dart';
-import '../supabase/supabase_config.dart';
+
+
+import 'package:bid/models/products_model.dart';
+import 'package:bid/supabase/supabase_config.dart';
 
 class ProductService {
   final _supabase = SupabaseConfig.client;
@@ -23,7 +25,6 @@ class ProductService {
   Future<List<Product>> getProductsByCategorySlug(String slug) async {
     try {
 
-      // Use the RPC function we created earlier
       final response = await _supabase
           .rpc('get_products_by_slug', params: {
         'slug_param': slug,

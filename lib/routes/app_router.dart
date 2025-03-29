@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bid/models/products_model.dart';
-import 'package:bid/pages/welcome_page.dart';
+import 'package:bid/pages/home_page.dart';
 import 'package:bid/pages/account_page.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/categories_page.dart';
@@ -37,10 +37,10 @@ redirect: (BuildContext context, GoRouterState state) {
         // Home Tab
         GoRoute(
           path: '/',
-          name: 'welcome',
+          name: 'Home',
           pageBuilder: (context, state) => NoTransitionPage(
             key: state.pageKey,
-            child: const WelcomePage(),
+            child: const HomePage(),
           ),
         ),
 

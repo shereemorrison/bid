@@ -1,6 +1,6 @@
+import 'package:bid/components/common_widgets/theme_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../components/widgets/theme_toggle.dart';
 
 class AppLayout extends StatelessWidget {
   final Widget child;

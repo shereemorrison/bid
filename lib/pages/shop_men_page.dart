@@ -1,9 +1,11 @@
 
+import 'package:bid/components/common_widgets/search_bar.dart';
+import 'package:bid/components/product_widgets/product_grid_item.dart';
+import 'package:bid/models/products_model.dart';
+import 'package:bid/services/product_service.dart';
+import 'package:bid/utils/page_helpers.dart';
 import 'package:flutter/material.dart';
-import '../components/widgets/product_grid_item.dart';
-import '../components/widgets/search_bar.dart';
-import '../models/products_model.dart';
-import '../services/product_service.dart';
+
 
 class ShopMenPage extends StatefulWidget {
   const ShopMenPage({super.key});
@@ -50,65 +52,13 @@ class _ShopMenPageState extends State<ShopMenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Page Title
-              Text(
-                "Shop Men",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Search Bar
-              const CustomSearchBar(),
-              const SizedBox(height: 24),
-
-              // All Products Section
-              Text(
-                "All Products",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // Grid of Products
-              Expanded(
-                child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : _error != null
-                    ? Center(child: Text(_error!, style: TextStyle(color: Colors.red)))
-                    : _products.isEmpty
-                    ? const Center(child: Text('No products found'))
-                    : RefreshIndicator(
-                  onRefresh: _loadProducts,
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.7,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: _products.length,
-                    itemBuilder: (context, index) {
-                      return ProductGridItem(product: _products[index]);
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      body: buildShopPageLayout(
+          context,
+          "Shop Men",
+          _products,
+          _isLoading,
+          _error,
+          _loadProducts
       ),
     );
   }

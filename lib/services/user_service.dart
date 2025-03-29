@@ -1,6 +1,7 @@
 import 'dart:math';
-import '../models/user_model.dart';
-import '../supabase/supabase_config.dart';
+import 'package:bid/models/user_model.dart';
+import 'package:bid/supabase/supabase_config.dart';
+
 
 class UserService {
   final _supabase = SupabaseConfig.client;

@@ -13,7 +13,6 @@ class OrderInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return Container(
       padding: const EdgeInsets.all(16),

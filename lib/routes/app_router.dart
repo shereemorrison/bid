@@ -24,7 +24,6 @@ final goRouter = GoRouter(
 
 redirect: (BuildContext context, GoRouterState state) {
 // Get the current location
-  final location = state.uri.path;
   return null;
 },
   routes: [
@@ -43,6 +42,7 @@ redirect: (BuildContext context, GoRouterState state) {
             child: const HomePage(),
           ),
         ),
+
 
 
         // Shop/Categories Tab with nested routes

@@ -9,6 +9,7 @@ Widget buildProductCard(
     String imageUrl,
     VoidCallback onTap,
     ) {
+
   final colorScheme = Theme.of(context).colorScheme;
 
   return GestureDetector(

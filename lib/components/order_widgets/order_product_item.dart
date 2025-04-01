@@ -16,8 +16,6 @@ class OrderProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product typedProduct = product as Product;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       decoration: BoxDecoration(

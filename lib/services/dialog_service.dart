@@ -121,7 +121,6 @@ class DialogService {
   static void showAddToCartDialog(BuildContext context, Product product) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final customBeige = colorScheme.secondary;
 
     showDialog(
       context: context,

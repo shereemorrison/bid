@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+
 import 'package:bid/models/order_model.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:flutter/material.dart';

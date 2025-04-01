@@ -1,6 +1,4 @@
 
-import 'package:bid/components/common_widgets/search_bar.dart';
-import 'package:bid/components/product_widgets/product_grid_item.dart';
 import 'package:bid/models/products_model.dart';
 import 'package:bid/services/product_service.dart';
 import 'package:bid/utils/page_helpers.dart';

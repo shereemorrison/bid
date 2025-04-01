@@ -90,7 +90,6 @@ class CartItemCard extends StatelessWidget {
   Widget _buildProductAttributes(context) {
     String size = "M";
     int quantity = product.quantity > 0 ? product.quantity : 1;
-    String color = "Grey";
 
     return Row(
       children: [

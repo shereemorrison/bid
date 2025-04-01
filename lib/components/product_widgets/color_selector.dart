@@ -1,4 +1,4 @@
-import 'package:bid/themes/custom_colors.dart';
+/*import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class ColorSelector extends StatelessWidget {
@@ -30,8 +30,7 @@ class ColorSelector extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        ...colors.map((color) {
-          final isSelected = selectedColor == color.toString();
+        ..colors.map((color) {
           return Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
@@ -54,5 +53,5 @@ class ColorSelector extends StatelessWidget {
       ],
     );
   }
-}
+}*/
 

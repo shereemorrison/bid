@@ -1,22 +1,22 @@
 
+import 'package:bid/models/category_model.dart';
 import 'package:flutter/material.dart';
 
 class CategoryChips extends StatelessWidget {
-  final List<String> categories;
-  final int selectedIndex;
-  final Function(int) onCategorySelected;
+  final List<Category> categories;
+  final String? selectedCategoryId;
+  final Function(Category) onCategorySelected;
 
   const CategoryChips({
     Key? key,
     required this.categories,
-    required this.selectedIndex,
+    this.selectedCategoryId,
     required this.onCategorySelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
       height: 40,
@@ -24,11 +24,11 @@ class CategoryChips extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          final isSelected = index == selectedIndex;
           final category = categories[index];
+          final isSelected = category.id == selectedCategoryId;
 
           return GestureDetector(
-            onTap: () => onCategorySelected(index),
+            onTap: () => onCategorySelected(category),
             child: Container(
               margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -39,11 +39,11 @@ class CategoryChips extends StatelessWidget {
                 border: Border.all(
                   color: isSelected
                       ? colorScheme.primary
-                      : colorScheme.outline ?? Theme.of(context).dividerColor,
+                      : colorScheme.outline,
                 ),
               ),
               child: Text(
-                categories[index],
+                category.name,
                 style: TextStyle(
                   color: isSelected
                       ? colorScheme.onPrimary

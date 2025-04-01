@@ -1,28 +1,31 @@
+import 'dart:math' as Math;
+
 import 'package:bid/models/products_model.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class FeaturedCarousel extends StatelessWidget {
-  final List<Product> products;
+  final String Function(int) getCollectionImageUrl;
   final Function(int) onPageChanged;
   final int currentPage;
   final String Function(String) getImageUrl;
   final List<String> collections;
+  final List<Product> products;
 
-  const FeaturedCarousel({
+  FeaturedCarousel({
     super.key,
+    required this.getCollectionImageUrl,
     required this.onPageChanged,
     required this.currentPage,
-    this.products = const [],
     required this.getImageUrl,
     this.collections = const ['Winter', 'Holiday', 'Essentials'],
+    this.products = const [],
   });
 
   @override
   Widget build(BuildContext context) {
-    final int itemCount = products.length;
+    final int itemCount = Math.min(products.length, collections.length);
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
@@ -60,16 +63,29 @@ class FeaturedCarousel extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCarouselItem(Product product, int index, BuildContext context) {
+  Widget _buildProductCarouselItem(Product product, int index,
+      BuildContext context) {
     // Get the image URL
-    final String imageUrl = getImageUrl(product.imageUrl);
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
-    // Get collection name based on index
     final String collectionName = index < collections.length
         ? collections[index]
         : 'Collection ${index + 1}';
+
+    // ignore: unnecessary_null_comparison
+    final String collectionImage = getCollectionImageUrl != null
+        ? getCollectionImageUrl(index)
+        : '';
+
+    final String imageUrl = collectionImage.isNotEmpty
+        ? collectionImage
+        : getImageUrl(product.imageUrl);
+
+    final colorScheme = Theme
+        .of(context)
+        .colorScheme;
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
 
     return Container(
       height: 400,

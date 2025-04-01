@@ -1,5 +1,5 @@
 
-import 'package:bid/themes/custom_colors.dart';
+
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/product_helpers.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +21,9 @@ class ProductGrid extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
+        childAspectRatio: 0.7,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
       ),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

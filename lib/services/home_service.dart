@@ -38,10 +38,14 @@ class HomeService {
         if (userMetadata != null && userMetadata.containsKey('first_name')) {
           userName = userMetadata['first_name'] as String;
         } else {
-          userName = user.email?.split('@').first ?? 'Guest';
+          userName = user.email
+              ?.split('@')
+              .first ?? 'Guest';
         }
       } catch (e) {
-        userName = user.email?.split('@').first ?? 'Guest';
+        userName = user.email
+            ?.split('@')
+            .first ?? 'Guest';
       }
     } else {
       userName = 'Guest';
@@ -67,14 +71,14 @@ class HomeService {
           .eq('is_featured', true)
           .limit(4);
 
-      if (response is List && response.isNotEmpty) {
-      }
+      if (response is List && response.isNotEmpty) {}
 
       // Convert the response to a List<Product>
-      final products = (response as List).map((data) => Product.fromJson(data)).toList();
+      final products = (response as List)
+          .map((data) => Product.fromJson(data))
+          .toList();
 
       return products;
-
     } catch (e) {
       print('Error fetching featured products: $e');
       print('Error stack trace: ${StackTrace.current}');
@@ -82,6 +86,13 @@ class HomeService {
     }
   }
 
+  String getCollectionImageUrl(int index) {
+    final collections = ['winter', 'holiday', 'essentials'];
+    if (index >= 0 && index < collections.length) {
+      return getImageUrl('collections/${collections[index]}.jpg');
+    }
+    return '';
+  }
 
   Future<void> fetchMostWantedProducts() async {
     try {
@@ -89,7 +100,7 @@ class HomeService {
           .from('products')
           .select('*')
           .limit(5)
-          .order('created_at', ascending: true);
+          .order('created_at', ascending: false);
 
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();
       mostWantedProducts = response.map<Product>((json) => Product.fromJson(json)).toList();

@@ -27,7 +27,6 @@ String getSupabaseImageUrl(String imagePath) {
 }
 
 Widget buildProductImage(BuildContext context, String imageUrl, String imagePath) {
-  final colorScheme = Theme.of(context).colorScheme;
 
   // Check for empty paths
   if ((imageUrl.isEmpty || imageUrl == "null") && (imagePath.isEmpty || imagePath == "null")) {

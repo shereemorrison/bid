@@ -46,14 +46,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   void _navigateToCategory(Category category) {
     final path = '/shop/${category.slug}';
-    print('Navigating to: $path');
     context.go(path);
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,

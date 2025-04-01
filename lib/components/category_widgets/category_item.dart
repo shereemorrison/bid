@@ -32,7 +32,6 @@ class CategoryItem extends StatelessWidget {
 
   Widget _buildGridItem(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: onTap,
@@ -63,7 +62,6 @@ class CategoryItem extends StatelessWidget {
 
   Widget _buildBlockItem(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: onTap,

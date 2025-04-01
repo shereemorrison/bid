@@ -23,7 +23,7 @@ class ProductGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productService = ProductService();
-    final imageUrl = productService.getImageUrl(product.imageUrl);
+    productService.getImageUrl(product.imageUrl);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -39,75 +39,76 @@ class ProductGridItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Product Image
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(0)),
-              child: buildProductImage(context, product.imageUrl, product.imagePath),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Product Image
+            AspectRatio(
+              aspectRatio: 1,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(0)),
+                child: buildProductImage(context, product.imageUrl, product.imagePath),
+              ),
             ),
-          ),
 
-          // Product Details
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.textPrimary,
-                    fontWeight: FontWeight.bold,
+            // Product Details
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
 
-                Text(
-                  formatPrice(product.price),
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.accent,
+                  Text(
+                    formatPrice(product.price),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.accent,
+                    ),
                   ),
-                ),
 
-                // Action Buttons
-                Row(
-                  children: [
-                    // Add to Cart Button
-                    Expanded(
-                      child: AddToCartButton(
-                        onTap: () {
-                          context.read<Shop>().addToCart(product);
-                          DialogService.showAddToCartDialog(context, product);
-                        },
-                        height: 30,
-                        fontSize: 10,
+                  // Action Buttons
+                  Row(
+                    children: [
+                      // Add to Cart Button
+                      Expanded(
+                        child: AddToCartButton(
+                          onTap: () {
+                            context.read<Shop>().addToCart(product);
+                            DialogService.showAddToCartDialog(context, product);
+                          },
+                          height: 30,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
 
-                    const SizedBox(width: 8),
+                      const SizedBox(width: 8),
 
-                    // Add to Wishlist Button
-                    CustomIconButton(
-                      icon: Icons.favorite_border,
-                      onTap: () {
-                        context.read<Shop>().addToWishlist(product);
-                        DialogService.showAddToWishlistDialog(context, product);
-                      },
-                      size: 30,
-                      iconSize: 16,
-                    ),
-                  ],
-                ),
-              ],
+                      // Add to Wishlist Button
+                      CustomIconButton(
+                        icon: Icons.favorite_border,
+                        onTap: () {
+                          context.read<Shop>().addToWishlist(product);
+                          DialogService.showAddToWishlistDialog(context, product);
+                        },
+                        size: 30,
+                        iconSize: 16,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    )
     );
   }
 }

@@ -82,7 +82,6 @@ class _AccountPageState extends State<AccountPage> {
     final userData = userProvider.userData;
     final isLoading = userProvider.isLoading;
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: isLoading
@@ -206,7 +205,7 @@ class _AccountPageState extends State<AccountPage> {
                   // Sign Out Button
                   AuthButton(text: 'Sign Out', onTap: () async {
                     final userProvider = Provider.of<UserProvider>(context, listen: false);
-                    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+                    Provider.of<OrderProvider>(context, listen: false);
 
                     //Sign out
                     await authProvider.signOut();
@@ -253,7 +252,6 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget _buildInfoItem(String label, String value) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -284,7 +282,6 @@ class _AccountPageState extends State<AccountPage> {
 
   Widget _buildNotLoggedInView(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

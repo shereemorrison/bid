@@ -149,7 +149,7 @@ class CustomIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iconThemeColor = iconColor ?? Theme.of(context).colorScheme.accent;
-    final textColor = Theme.of(context).colorScheme.accent;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return SizedBox(
       width: size,
@@ -158,8 +158,8 @@ class CustomIconButton extends StatelessWidget {
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          foregroundColor: Theme.of(context).colorScheme.accent,
-          side: BorderSide(color: borderColor ?? Theme.of(context).colorScheme.accent, width: 1),
+          foregroundColor: colorScheme.accent,
+          side: BorderSide(color: borderColor ?? colorScheme.accent, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero, // Square corners
           ),

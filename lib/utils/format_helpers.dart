@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // Format price with currency symbol
 String formatPrice(double price, {String currency = '\$'}) {

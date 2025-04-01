@@ -11,7 +11,6 @@ class MainProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return Container(
       height: 400,

@@ -6,12 +6,11 @@ import 'package:bid/components/home_widgets/newsletter_section.dart';
 import 'package:bid/components/home_widgets/our_story_section.dart';
 import 'package:bid/models/category_model.dart';
 import 'package:bid/services/category_service.dart';
+import 'package:bid/services/home_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/product_widgets/product_horizontal_list.dart';
-import 'package:bid/services/home_service.dart';
-
-
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   List<Category> _allCategories = [];
   List<String> _categoryNames = [];
   bool _isLoading = true;
-  int _selectedCategoryIndex = 0;
+  String? _selectedCategoryId = 'all';
 
   @override
   void initState() {
@@ -90,19 +89,33 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // Handle category selection - navigate to category page
+  void _handleCategorySelected(Category category) {
+    if (category.id == 'all') {
+      setState(() {
+        _selectedCategoryId = category.id;
+      });
+    } else {
+      _navigateToCategory(category);
+    }
+  }
+
+  void _navigateToCategory(Category category) {
+    final path = '/shop/${category.slug}';
+    final currentSelectedId = _selectedCategoryId;
+    context.go(path);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     List<dynamic> filteredProducts = _homeService.featuredProducts;
 
-    if (_selectedCategoryIndex > 0 && _selectedCategoryIndex < _allCategories.length) {
-      final selectedCategory = _allCategories[_selectedCategoryIndex];
-      if (selectedCategory.id != 'all') {
+    if (_selectedCategoryId != null && _selectedCategoryId != 'all') {
         filteredProducts = _homeService.featuredProducts
-            .where((product) => product.categoryId == selectedCategory.id)
+            .where((product) => product.categoryId == _selectedCategoryId)
             .toList();
       }
-    }
-
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -143,14 +156,10 @@ class _HomePageState extends State<HomePage> {
                     // Category Chips
 
                   CategoryChips(
-                  categories: _categoryNames,
-                    selectedIndex: _selectedCategoryIndex,
-                    onCategorySelected: (index) {
-                    setState(() {
-                      _selectedCategoryIndex = index;
-          });
-        },
-      ),
+                  categories: _allCategories,
+                    selectedCategoryId: _selectedCategoryId,
+                    onCategorySelected: _handleCategorySelected,
+          ),
 
                     const SizedBox(height: 20),
 
@@ -185,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                 FeaturedCarousel(
                   products: _homeService.featuredProducts,
                   getImageUrl: _homeService.getImageUrl,
+                  getCollectionImageUrl: _homeService.getCollectionImageUrl,
                   onPageChanged: (index) {
                     setState(() {
                       _homeService.currentPage = index;
@@ -257,7 +267,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCategoryChip(String label, bool isSelected, VoidCallback onTap) {
+  /*Widget _buildCategoryChip(String label, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -285,6 +295,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
+  }*/
 }
 

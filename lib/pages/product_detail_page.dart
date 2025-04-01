@@ -5,6 +5,7 @@ import 'package:bid/components/product_widgets/main_product_image.dart';
 import 'package:bid/components/product_widgets/product_details_section.dart';
 import 'package:bid/components/product_widgets/quantity_selector.dart';
 import 'package:bid/components/product_widgets/size_selector.dart';
+import 'package:bid/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/models/products_model.dart';
 
@@ -24,6 +25,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int quantity = 1;
   String? selectedSize;
   String? selectedColor;
+  bool isAccessory = false;
+  bool isLoading = true;
+  final ProductService _productService = ProductService();
 
   // Available sizes
   final List<String> sizes = ['S', 'M', 'L', 'XL'];
@@ -33,6 +37,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     Colors.white70,
     Colors.grey.shade700,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfAccessory();
+  }
+
+  Future<void> _checkIfAccessory() async {
+    final result = await _productService.isProductInCategory(
+        widget.product.categoryId,
+        'accessories'
+    );
+
+    setState(() {
+      isAccessory = result;
+    });
+  }
 
   void _incrementQuantity() {
     setState(() {
@@ -63,7 +84,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
 
@@ -100,22 +120,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     const SizedBox(height: 24),
 
                     // Size Selection
-                    SizeSelector(
-                      sizes: sizes,
-                      selectedSize: selectedSize,
-                      onSizeSelected: _selectSize,
-                    ),
+                  if (!isLoading && !isAccessory) ...[
+                      SizeSelector(
+                        sizes: sizes,
+                        selectedSize: selectedSize,
+                        onSizeSelected: _selectSize,
+                      ),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
+                    ],
 
                     // Color Selection
-                    ColorSelector(
+                    /*ColorSelector(
                       colors: colors,
                       selectedColor: selectedColor,
                       onColorSelected: _selectColor,
                     ),
 
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 32),*/
 
                     // Add to Cart Button
                     AddToCartSection(

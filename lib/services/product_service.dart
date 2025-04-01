@@ -12,7 +12,7 @@ class ProductService {
       final response = await _supabase
           .from('products')
           .select('*')
-          .order('product_id');
+          .order('created_at');
 
       return response.map<Product>((json) => Product.fromJson(json)).toList();
     } catch (e) {
@@ -38,6 +38,26 @@ class ProductService {
       return [];
     }
   }
+
+  // Check if a product belongs to a category by slug
+  Future<bool> isProductInCategory(String productCategoryId, String categorySlug) async {
+    try {
+      // Get the category ID for the given slug
+      final response = await _supabase
+          .from('categories')
+          .select('category_id')
+          .eq('slug', categorySlug)
+          .single();
+
+      // Compare the category IDs
+      return response['category_id'].toString() == productCategoryId;
+    } catch (e) {
+      print('Error checking product category: $e');
+      return false;
+    }
+  }
+
+
 
   // Get public URL for an image in the bid-images bucket
   String getImageUrl(String imagePath) {

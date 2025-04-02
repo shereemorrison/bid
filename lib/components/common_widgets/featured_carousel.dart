@@ -80,18 +80,16 @@ class FeaturedCarousel extends StatelessWidget {
         ? collectionImage
         : getImageUrl(product.imageUrl);
 
-    final colorScheme = Theme
-        .of(context)
-        .colorScheme;
-    final textTheme = Theme
-        .of(context)
-        .textTheme;
+    final textTheme = Theme.of(context).textTheme;
+    const Color titleColor = Colors.white;
+    const Color descriptionColor = Color(0xDDFFFFFF);
+    const Color buttonTextColor = Colors.white;
+    const Color buttonBorderColor = Colors.white;
 
     return Container(
       height: 400,
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: colorScheme.cardBackground,
         borderRadius: BorderRadius.circular(0),
         image: DecorationImage(
           image: NetworkImage(imageUrl),
@@ -110,14 +108,6 @@ class FeaturedCarousel extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    colorScheme.background,
-                    Colors.transparent,
-                  ],
-                ),
                 borderRadius: BorderRadius.circular(0)
               ),
               child: Column(
@@ -126,7 +116,7 @@ class FeaturedCarousel extends StatelessWidget {
                   Text(
                     collectionName,
                     style: textTheme.headlineSmall?.copyWith(
-                      color: colorScheme.textPrimary,
+                      color: titleColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -134,7 +124,7 @@ class FeaturedCarousel extends StatelessWidget {
                   Text(
                     'Shop the latest collection',
                     style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.textSecondary,
+                      color: descriptionColor,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -153,13 +143,13 @@ class FeaturedCarousel extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: colorScheme.accent),
+                        border: Border.all(color: buttonBorderColor),
                         borderRadius: BorderRadius.circular(0),
                       ),
                       child: Text(
                         'SHOP NOW',
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: colorScheme.accent,
+                          color: buttonTextColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

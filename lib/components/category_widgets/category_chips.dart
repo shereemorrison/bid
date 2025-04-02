@@ -43,7 +43,7 @@ class CategoryChips extends StatelessWidget {
                 ),
               ),
               child: Text(
-                category.name,
+                category.name.toUpperCase(),
                 style: TextStyle(
                   color: isSelected
                       ? colorScheme.onPrimary

@@ -2,6 +2,7 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
 import 'package:bid/models/products_model.dart';
 import 'package:bid/themes/custom_colors.dart';
+import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';
 import 'package:bid/utils/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,7 @@ class CartItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        color: Theme
-            .of(context)
-            .colorScheme
-            .cardBackground,
+        color: Theme.of(context).colorScheme.cardBackground,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -59,13 +57,16 @@ class CartItemCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
+
+                  //Price and quantity
                   Text(
-                    "\$${product.price.toStringAsFixed(2)}",
+                    '${formatPrice(product.price)}',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   const SizedBox(height: 12),
                   _buildProductAttributes(context),
                 ],
@@ -88,8 +89,8 @@ class CartItemCard extends StatelessWidget {
   }
 
   Widget _buildProductAttributes(context) {
-    String size = "M";
     int quantity = product.quantity > 0 ? product.quantity : 1;
+    String? size = product.selectedSize;
 
     return Row(
       children: [

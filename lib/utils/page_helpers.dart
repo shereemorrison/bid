@@ -52,7 +52,7 @@ Widget buildProductGrid(
     child: GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.6,
+        childAspectRatio: 0.75,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),

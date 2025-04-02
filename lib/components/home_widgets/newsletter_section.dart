@@ -24,8 +24,8 @@ class NewsletterSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
@@ -35,8 +35,8 @@ class NewsletterSection extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             subtitle,
-            style: const TextStyle(
-              color: Colors.white70,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 14,
               height: 1.5,
             ),

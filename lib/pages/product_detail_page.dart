@@ -4,7 +4,7 @@ import 'package:bid/components/product_widgets/color_selector.dart';
 import 'package:bid/components/product_widgets/main_product_image.dart';
 import 'package:bid/components/product_widgets/product_details_section.dart';
 import 'package:bid/components/product_widgets/quantity_selector.dart';
-import 'package:bid/components/product_widgets/size_selector.dart';
+import 'package:bid/components/product_widgets/product_page_size_selector.dart';
 import 'package:bid/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/models/products_model.dart';
@@ -23,20 +23,13 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int quantity = 1;
-  String? selectedSize;
+  String selectedSize = 'M';
   String? selectedColor;
   bool isAccessory = false;
   bool isLoading = true;
   final ProductService _productService = ProductService();
 
-  // Available sizes
-  final List<String> sizes = ['S', 'M', 'L', 'XL'];
-
-  final List<Color> colors = [
-    Colors.black,
-    Colors.white70,
-    Colors.grey.shade700,
-  ];
+  final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
   @override
   void initState() {
@@ -52,6 +45,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     setState(() {
       isAccessory = result;
+      isLoading = false;
     });
   }
 
@@ -108,16 +102,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       description: widget.product.description,
                     ),
 
-                    const SizedBox(height: 24),
-
-                    // Quantity Selector
-                    QuantitySelector(
-                      quantity: quantity,
-                      onIncrement: _incrementQuantity,
-                      onDecrement: _decrementQuantity,
-                    ),
-
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
                     // Size Selection
                   if (!isLoading && !isAccessory) ...[
@@ -127,8 +112,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         onSizeSelected: _selectSize,
                       ),
 
-                      const SizedBox(height: 24),
-                    ],
+                      const SizedBox(height: 20),
+
+                    // Quantity Selector
+                    QuantitySelector(
+                      quantity: quantity,
+                      onIncrement: _incrementQuantity,
+                      onDecrement: _decrementQuantity,
+                    ),
+                  ],
+
+                    const SizedBox(height: 20),
 
                     // Color Selection
                     /*ColorSelector(
@@ -143,6 +137,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     AddToCartSection(
                       product: widget.product,
                       quantity: quantity,
+                      selectedSize: selectedSize,
                     ),
                   ],
                 ),

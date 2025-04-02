@@ -16,12 +16,13 @@ class OrderProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product typedProduct = product as Product;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        color: Theme
-            .of(context).colorScheme.cardBackground,
+        color: colorScheme.cardBackground,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -48,25 +49,31 @@ class OrderProductItem extends StatelessWidget {
                 children: [
                   Text(
                     typedProduct.name,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.textPrimary,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.textPrimary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
+
                   Text(
                     formatPrice(typedProduct.price),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.textPrimary,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colorScheme.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      buildAttributeTag("Size: M", context),
+                      if (typedProduct.selectedSize != null &&
+                          typedProduct.selectedSize!.isNotEmpty)
+                      buildAttributeTag("Size: ${typedProduct.selectedSize ?? 'N/A'}",
+                          context
+                      ),
                       const SizedBox(width: 8),
-                      buildAttributeTag("Qty: 1", context),
+                      buildAttributeTag("Qty: ${typedProduct.quantity}",
+                          context),
                     ],
                   ),
                 ],

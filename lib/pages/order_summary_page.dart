@@ -23,8 +23,11 @@ class OrderSummaryPage extends StatelessWidget {
     final double tax = itemsTotal * 0.1;
     final double total = itemsTotal + shipping + tax;
 
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -37,7 +40,7 @@ class OrderSummaryPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                 ),
               ),
               const SizedBox(height: 16),
@@ -56,7 +59,7 @@ class OrderSummaryPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                 ),
               ),
               const SizedBox(height: 16),
@@ -73,7 +76,7 @@ class OrderSummaryPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                 ),
               ),
               const SizedBox(height: 16),
@@ -119,8 +122,8 @@ class OrderSummaryPage extends StatelessWidget {
                     child: BaseStyledButton(
                       text: "CONTINUE SHOPPING",
                       onTap: () => context.pop(),
-                      textColor: Theme.of(context).colorScheme.secondary,
-                      borderColor: Theme.of(context).colorScheme.secondary,
+                      textColor: colorScheme.secondary,
+                      borderColor: colorScheme.secondary,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -130,8 +133,8 @@ class OrderSummaryPage extends StatelessWidget {
                       onTap: () {
                         context.pop();
                       },
-                      textColor: Theme.of(context).colorScheme.secondary,
-                      borderColor: Theme.of(context).colorScheme.secondary,
+                      textColor: colorScheme.secondary,
+                      borderColor: colorScheme.secondary,
                     ),
                   ),
                 ],

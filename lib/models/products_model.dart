@@ -12,6 +12,7 @@ class Product {
   final bool isFeatured;
   final int quantity;
   final Map<String, dynamic>? additionalInfo;
+  final String? selectedSize;
 
   Product({
     required this.id,
@@ -27,11 +28,11 @@ class Product {
     this.isFeatured = false,
     this.quantity = 1, // Default quantity
     this.additionalInfo,
+    this.selectedSize,
   });
 
   // Factory constructor to create a Product from JSON
   factory Product.fromJson(Map<String, dynamic> json) {
-
     return Product(
       id: json['product_id'].toString(),
       name: json['name'] ?? '',
@@ -40,12 +41,47 @@ class Product {
       categoryId: json['category_id'] ?? '',
       isActive: json['is_active'],
       createdAt: DateTime.parse(json['created_at']),
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null,
       imageUrl: json['image_url'] ?? '',
       imagePath: json['image_url'] ?? '',
       isFeatured: json['is_featured'] ?? false,
       quantity: json['quantity'] ?? 1,
       additionalInfo: json['additional_info'],
+    );
+  }
+
+  Product copyWith({
+    String? id,
+    String? name,
+    double? price,
+    String? description,
+    String? categoryId,
+    bool? isActive,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? imageUrl,
+    String? imagePath,
+    bool? isFeatured,
+    int? quantity,
+    String? selectedSize,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      description: description ?? this.description,
+      categoryId: categoryId ?? this.categoryId,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      imageUrl: imageUrl ?? this.imageUrl,
+      imagePath: imagePath ?? this.imagePath,
+      isFeatured: isFeatured ?? this.isFeatured,
+      quantity: quantity ?? this.quantity,
+      additionalInfo: additionalInfo ?? this.additionalInfo,
+      selectedSize: selectedSize ?? this.selectedSize,
     );
   }
 
@@ -62,23 +98,4 @@ class Product {
       'image_url': imageUrl,
     };
   }
-
-  // Create a copy of this product with a new quantity
-  Product copyWith({int? quantity}) {
-    return Product(
-      id: id,
-      name: name,
-      price: price,
-      description: description,
-      categoryId: categoryId,
-      isActive: isActive,
-      createdAt: createdAt,
-      imageUrl: imageUrl,
-      imagePath: imagePath,
-      isFeatured: isFeatured,
-      quantity: quantity ?? this.quantity,
-      additionalInfo: additionalInfo,
-    );
-  }
 }
-

@@ -47,7 +47,7 @@ class CategoryItem extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            category.name,
+            category.name.toUpperCase(),
             style: TextStyle(
               color: colorScheme.primary,
               fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class CategoryItem extends StatelessWidget {
                 children: [
                   // Category name
                   Text(
-                    category.name,
+                    category.name.toUpperCase(),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: 18,

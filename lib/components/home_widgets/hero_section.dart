@@ -17,8 +17,13 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+
+    //Fixed colors so they display the same on the image
+    const Color titleColor = Colors.white;
+    const Color descriptionColor = Color(0xDDFFFFFF);
+    const Color buttonTextColor = Colors.white;
+    const Color buttonBorderColor = Colors.white;
 
     return Stack(
       children: [
@@ -61,7 +66,7 @@ class HeroSection extends StatelessWidget {
                 "THE BID JOURNEY",
                 style: textTheme.titleLarge?.copyWith
                   (
-                  color: colorScheme.primary,
+                  color: titleColor,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.5,
                 ),
@@ -71,25 +76,31 @@ class HeroSection extends StatelessWidget {
               Text(
                 "Discover our new collection",
                 style: textTheme.bodyLarge?.copyWith(
-                  color: colorScheme.primary, // Using opacity instead of Colors.white70
+                  color: descriptionColor, // Using opacity instead of Colors.white70
                 ),
               ),
               const SizedBox(height: 20),
 
-              ElevatedButton(
-                onPressed: onShopNowPressed,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
+              GestureDetector(
+                onTap: onShopNowPressed,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: buttonBorderColor),
                     borderRadius: BorderRadius.circular(0),
                   ),
-                ),
                 child: const Text(
                   "SHOP NOW",
                   style: TextStyle(
+                    color: buttonTextColor,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.0,
                   ),
                 ),
+              ),
               ),
             ],
           ),

@@ -21,17 +21,6 @@ class SizeSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Choose Size",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        ),
-
-        const SizedBox(height: 12),
-
         Row(
           children: sizes.map((size) {
             final isSelected = selectedSize == size;

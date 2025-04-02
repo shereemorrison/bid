@@ -1,4 +1,5 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/components/product_widgets/modal_size_selector.dart';
 import 'package:bid/models/products_model.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
@@ -68,7 +69,7 @@ class WishlistItemCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   // Add to Cart Button
                   AddToCartButton(
-                    onTap: onAddToCart,
+                    onTap: () => showSizeSelectorModal(context, product),
                     height: 30,
                     fontSize: 10,
                     width: 120,

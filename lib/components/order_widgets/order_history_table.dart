@@ -100,6 +100,8 @@ class OrderHistoryTable extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: colorScheme.primary
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
 

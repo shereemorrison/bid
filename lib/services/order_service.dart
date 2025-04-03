@@ -18,13 +18,18 @@ class OrderService {
       // Get orders with basic info only
       final dynamic rawResponse = await _supabase
           .from('orders')
-          .select('*')
+          .select('''
+          *,
+          order_status(*)
+          ''')
           .eq('user_id', userIdForQuery)
           .order('placed_at', ascending: false);
 
       // Convert the response to the correct type
-      final List<Map<String, dynamic>> response = List<Map<String, dynamic>>.from(
-          (rawResponse as List).map((item) => Map<String, dynamic>.from(item as Map))
+      final List<Map<String, dynamic>> response = List<
+          Map<String, dynamic>>.from(
+          (rawResponse as List).map((item) =>
+          Map<String, dynamic>.from(item as Map))
       );
 
       return response;
@@ -37,26 +42,17 @@ class OrderService {
   Future<Map<String, dynamic>?> getOrderDetails(String orderId) async {
     try {
       // Get the order with its items
-      final dynamic rawResponse = await _supabase
+      final dynamic orderResponse = await _supabase
           .from('orders')
           .select('''
-            *,
-            order_items(*),
-            order_status!status_id(*)
-          ''')
+          *,
+          order_items(*),
+          order_status(*)
+        ''')
           .eq('order_id', orderId)
-          .limit(1);
+          .single();
 
-      // Convert the response to the correct type
-      final List<Map<String, dynamic>> response = List<Map<String, dynamic>>.from(
-          (rawResponse as List).map((item) => Map<String, dynamic>.from(item as Map))
-      );
-
-      if (response.isEmpty) {
-        return null;
-      }
-
-      return response.first;
+      return orderResponse;
     } catch (e) {
       print('Error fetching order details: $e');
       rethrow;

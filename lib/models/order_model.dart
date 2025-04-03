@@ -1,4 +1,6 @@
 
+import 'package:bid/utils/order_calculator.dart';
+
 import 'order_item_model.dart';
 
 class Order {
@@ -33,6 +35,37 @@ class Order {
     required this.items,
   });
 
+  double get subtotal => OrderCalculator.calculateSubtotal(items);
+
+  // Recalculate the total for validation
+  double get calculatedTotal => OrderCalculator.calculateTotal(
+    subtotal: subtotal,
+    taxAmount: taxAmount,
+    shippingAmount: shipping_amount,
+    discountAmount: discount_amount,
+  );
+
+  bool get isTotalValid => (calculatedTotal - totalAmount).abs() < 0.01;
+
+  void validateTotals() {
+    if (!isTotalValid) {
+      print('WARNING: Order $orderId has inconsistent totals');
+      print('Stored total: $totalAmount');
+      print('Calculated total: $calculatedTotal');
+      print('Subtotal: $subtotal');
+      print('Tax: $taxAmount');
+      print('Shipping: $shipping_amount');
+      print('Discount: $discount_amount');
+
+      // Check if there might be an undocumented discount
+      if (discount_amount == 0 && calculatedTotal > totalAmount) {
+        final possibleDiscount = calculatedTotal - totalAmount;
+        print('Possible undocumented discount: $possibleDiscount');
+      }
+    }
+  }
+
+
   factory Order.fromJson(Map<String, dynamic> json) {
     print('Order data: $json');
     print('Status: ${json['status']}');
@@ -61,15 +94,43 @@ class Order {
       }
     }
 
+    double parseDouble(dynamic value) {
+      if (value == null) return 0.0;
+      if (value is int) return value.toDouble();
+      if (value is double) return value;
+      if (value is String) {
+        try {
+          return double.parse(value);
+        } catch (_) {
+          return 0.0;
+        }
+      }
+      return 0.0;
+    }
+
+    // Parse dates
+    DateTime? parseDate(String? dateStr) {
+      if (dateStr == null) return null;
+      try {
+        return DateTime.parse(dateStr);
+      } catch (_) {
+        return null;
+      }
+    }
+
     return Order(
       orderId: json['order_id'] ?? 'Unknown',
       orderDate: json['order_date'] != null ? DateTime.parse(json['order_date']) : DateTime.now(),
       status: statusName,
       orderStatus: json['order_status'],
-      totalAmount: json['total_amount']?.toDouble() ?? 0.0,
-      taxAmount: json['tax_amount']?.toDouble() ?? 0.0,
-      shipping_amount: json['shippingAmount']?.toDouble() ?? 0.0,
-      discount_amount: json['discountAmount']?.toDouble() ?? 0.0,
+      totalAmount: parseDouble(json['total_amount']),
+      taxAmount: parseDouble(json['tax_amount']),
+      shipping_amount: parseDouble(json['shipping_amount']),
+      discount_amount: parseDouble(json['discount_amount']),
+      shippingMethod: json['shipping_method'],
+      trackingNumber: json['tracking_number'],
+      shippedAt: parseDate(json['shipped_at']),
+      deliveredAt: parseDate(json['delivered_at']),
       items: orderItems,
     );
   }

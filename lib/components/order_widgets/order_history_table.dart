@@ -2,6 +2,7 @@
 import 'package:bid/models/order_model.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OrderHistoryTable extends StatelessWidget {
   final List<Order> orders;
@@ -109,7 +110,10 @@ class OrderHistoryTable extends StatelessWidget {
           SizedBox(
             width: 80,
             child: TextButton(
-              onPressed: () => onViewDetails(order.orderId),
+              onPressed: () => context.goNamed(
+                'order_details',
+                pathParameters: {'orderId': order.orderId},
+              ),
               child: const Text('Details'),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,

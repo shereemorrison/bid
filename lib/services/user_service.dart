@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:bid/models/address_model.dart';
 import 'package:bid/models/user_model.dart';
 import 'package:bid/supabase/supabase_config.dart';
 
@@ -13,6 +14,7 @@ class UserService {
     String? firstName,
     String? lastName,
     String? phone,
+    String? address,
   }) async {
     print("Attempting to create user with authId: $authId, email: $email");
     try {
@@ -32,6 +34,7 @@ class UserService {
           if (phone != null) 'phone': phone,
           'is_registered': true,
           'last_login': DateTime.now().toIso8601String(),
+          if (address != null) 'address': address,
         }).eq('auth_id', authId);
         return;
       }
@@ -72,11 +75,48 @@ class UserService {
         print('UserService: No user data found for authId: $authId');
         return null;
       }
-      print('UserService: User data found: ${data['email']}');
-      return UserModel.fromJson(data);
+
+      UserModel user = UserModel.fromJson(data);
+      final addresses = await getUserAddresses(user.userId);
+
+      // Return a new user model with the addresses
+      return UserModel(
+        userId: user.userId,
+        authId: user.authId,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        address: user.address,
+        addresses: addresses,
+        isRegistered: user.isRegistered,
+        createdAt: user.createdAt,
+        lastLogin: user.lastLogin,
+      );
     } catch (e) {
       print('UserService: Error fetching user data: $e');
       return null;
+    }
+  }
+
+  // Get user addresses
+  Future<List<AddressModel>> getUserAddresses(String userId) async {
+    try {
+      final data = await _supabase
+          .from('addresses') // Assuming your table is named 'addresses'
+          .select()
+          .eq('user_id', userId);
+
+      if (data == null || data.isEmpty) {
+        return [];
+      }
+
+      return List<AddressModel>.from(
+          data.map((address) => AddressModel.fromJson(address))
+      );
+    } catch (e) {
+      print('UserService: Error fetching user addresses: $e');
+      return [];
     }
   }
 
@@ -94,13 +134,31 @@ class UserService {
         return null;
       }
 
-      return UserModel.fromJson(data);
+      UserModel user = UserModel.fromJson(data);
+
+      // Fetch addresses for this user
+      final addresses = await getUserAddresses(user.userId);
+
+      // Return a new user model with the addresses
+      return UserModel(
+        userId: user.userId,
+        authId: user.authId,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        address: user.address,
+        addresses: addresses,
+        isRegistered: user.isRegistered,
+        createdAt: user.createdAt,
+        lastLogin: user.lastLogin,
+      );
     } catch (e) {
       return null;
     }
   }
 
-  // Update user data in the users table
+// Update user data in the users table
   Future<void> updateUserData({
     required String authId,
     String? firstName,

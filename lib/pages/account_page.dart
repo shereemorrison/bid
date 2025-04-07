@@ -151,7 +151,7 @@ class _AccountPageState extends State<AccountPage> {
                   buildInfoItem(context, 'First Name', userData.firstName ?? 'Not set'),
                   buildInfoItem(context, 'Last Name', userData.lastName ?? 'Not set'),
                   buildInfoItem(context, 'Phone', userData.phone ?? 'Not set'),
-                  buildInfoItem(context, 'Address', 'No address saved'),
+                  buildInfoItem(context, 'Address', userData.formattedAddress),
 
                   const SizedBox(height: 10),
 
@@ -268,11 +268,15 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            value,
-            style: TextStyle(
-                fontSize: 14,
-                color: colorScheme.primary
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: colorScheme.primary
+              ),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
           ),
         ],

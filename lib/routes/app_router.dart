@@ -1,3 +1,4 @@
+import 'package:bid/pages/order_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bid/models/products_model.dart';
@@ -88,7 +89,18 @@ redirect: (BuildContext context, GoRouterState state) {
             key: state.pageKey,
             child: const AccountPage(),
           ),
+          routes: [
+            GoRoute(
+            path: 'order/:orderId',
+            name: 'order_details',
+            builder: (context, state) {
+              final orderId = state.pathParameters['orderId']!;
+              return OrderDetailsPage(orderId: orderId);
+            },
+          ),
+          ],
         ),
+
         // Wishlist Tab
         GoRoute(
           path: '/wishlist',

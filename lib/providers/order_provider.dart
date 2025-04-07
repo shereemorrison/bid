@@ -57,4 +57,11 @@ class OrderProvider with ChangeNotifier {
     _selectedOrder = null;
     notifyListeners();
   }
+
+  void clearOrders() {
+    _orders = null;
+    _selectedOrder = null;
+    _error = null;
+    notifyListeners();
+  }
 }

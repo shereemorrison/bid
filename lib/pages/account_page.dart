@@ -205,13 +205,14 @@ class _AccountPageState extends State<AccountPage> {
                   // Sign Out Button
                   AuthButton(text: 'Sign Out', onTap: () async {
                     final userProvider = Provider.of<UserProvider>(context, listen: false);
-                    Provider.of<OrderProvider>(context, listen: false);
+                    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 
                     //Sign out
                     await authProvider.signOut();
 
                     //Clear data after sign out
                     userProvider.clearUserData();
+                    orderProvider.clearOrders();
                   },
                   ),
                 ],

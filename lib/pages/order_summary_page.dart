@@ -4,6 +4,7 @@ import 'package:bid/components/cards/order_info_card.dart';
 import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_payment.option.dart';
 import 'package:bid/components/order_widgets/order_product_item.dart';
+import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +19,16 @@ class OrderSummaryPage extends StatelessWidget {
     final cart = context.watch<Shop>().cart;
 
     // Calculate totals
-    final double itemsTotal = cart.fold(0.0, (sum, item) => sum + (item.price*item.quantity));
+    final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
     final double shipping = 10.0;
-    final double tax = itemsTotal * 0.1;
-    final double total = itemsTotal + shipping + tax;
+    final double discount = 0.0; // Add discount logic if needed
+    final double tax = OrderCalculator.calculateTax(subtotal);
+    final double total = OrderCalculator.calculateTotal(
+      subtotal: subtotal,
+      taxAmount: tax,
+      shippingAmount: shipping,
+      discountAmount: discount,
+    );
 
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -107,7 +114,7 @@ class OrderSummaryPage extends StatelessWidget {
 
               // Cost Summary
               OrderCostSummary(
-                itemsTotal: itemsTotal,
+                itemsTotal: subtotal,
                 shipping: shipping,
                 tax: tax,
                 total: total,

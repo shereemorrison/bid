@@ -42,7 +42,7 @@ class ProductHorizontalList extends StatelessWidget {
           return GestureDetector(
               onTap: () {
                 if (product != null) {
-                  context.push('/shop/product', extra: product);
+                  context.go('/shop/product', extra: product);
                 }
               },
 

@@ -169,8 +169,9 @@ class _HomePageState extends State<HomePage> {
                         products: _homeService.featuredProducts,
                         getImageUrl: _homeService.getImageUrl,
                         onProductTap: (product) {
-                          // Handle product tap
-                          print('Tapped on ${product.name}');
+                          if (product != null) {
+                            context.go('/shop/product', extra: product);
+                          }
                         },
                       )
                     else

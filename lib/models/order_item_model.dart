@@ -1,48 +1,46 @@
 class OrderItem {
+  final String itemId;
   final String productId;
   final String productName;
-  final String? imageUrl;
-  final String color;
-  final String size;
+  final String? variantId;
+  final String? variantName;
+  final double price;
   final int quantity;
-  final double unitPrice;
+  final String? imageUrl;
+  final bool? isReturnable;
+  final String? returnStatus;
 
   OrderItem({
+    required this.itemId,
     required this.productId,
     required this.productName,
-    this.imageUrl,
-    required this.color,
-    required this.size,
+    this.variantId,
+    this.variantName,
+    required this.price,
     required this.quantity,
-    required this.unitPrice,
+    this.imageUrl,
+    this.isReturnable,
+    this.returnStatus,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
-    String productName = 'Unknown Product';
-    String? imageUrl;
-    if (json['product'] != null && json['product'] is Map) {
-      productName = json['product']['name'] ?? 'Unknown Product';
-      imageUrl = json['product']['image_url'];
-    }
+    // Debug the incoming JSON
+    print('OrderItem.fromJson: $json');
 
-    String colorName = 'Default';
-    if (json['color'] != null && json['color'] is Map) {
-      colorName = json['color']['name'] ?? 'Default';
-    }
-
-    String sizeName = 'One Size';
-    if (json['size'] != null && json['size'] is Map) {
-      sizeName = json['size']['name'] ?? 'One Size';
-    }
+    // Get product data if available
+    final product = json['products'];
 
     return OrderItem(
-      productId: json['product_id'] ?? '',
-      productName: productName,
-      imageUrl: imageUrl,
-      color: colorName,
-      size: sizeName,
+      itemId: json['order_item_id'] ?? json['id'] ?? 'Unknown',
+      productId: json['product_id'] ?? 'Unknown',
+      productName: json['product_name'] ?? (product != null ? product['name'] : 'Unknown Product'),
+      variantId: json['variant_id'],
+      variantName: json['variant_name'] ?? json['size'],
+      price: (json['price'] ?? 0.0).toDouble(),
       quantity: json['quantity'] ?? 1,
-      unitPrice: json['unit_price']?.toDouble() ?? 0.0,
+      imageUrl: json['image_url'] ?? (product != null ? product['image_url'] : null),
+      isReturnable: json['is_returnable'] ?? true,
+      returnStatus: json['return_status'],
     );
   }
 }

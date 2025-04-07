@@ -246,18 +246,12 @@ class _HomePageState extends State<HomePage> {
 
               // Newsletter Section
               NewsletterSection(
-                emailController: _emailController,
-                onSubscribePressed: () {
-                  // Handle subscribe button press
-                  final email = _emailController.text;
-                  if (email.isNotEmpty) {
-                    // Process subscription
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Subscribed with email: $email')),
-                    );
-                    _emailController.clear();
-                  }
-                },
+                  onSubscriptionComplete: (success, message) {
+                    if (success) {
+                    } else {
+                      print('Newsletter subscription failed: $message');
+                    }
+                    },
               ),
 
               const SizedBox(height: 30),

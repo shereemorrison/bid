@@ -3,6 +3,7 @@ import 'package:bid/components/buttons/custom_button.dart';
 import 'package:bid/components/common_widgets/custom_textfield.dart';
 import 'package:bid/modals/loginmodal.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
+import 'package:bid/services/newsletter_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController confirmPwController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _subscribeToNewsletter = false; // Add state for newsletter subscription
+  final NewsletterService _newsletterService = NewsletterService(); // Initialize newsletter service
 
   @override
   void initState() {
@@ -73,106 +76,81 @@ class _RegistrationPageState extends State<RegistrationPage> {
         lastName: lastName,
       );
 
-      if (mounted) {
-        if (authProvider.isVerificationRequired && authProvider.user != null && authProvider.user!.emailConfirmedAt == null) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                title: Text(
-                  'Verify Your Email',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'We\'ve sent a verification email to $email. Please check your inbox and click the verification link to complete your registration.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () {
-                        authProvider.resendConfirmationEmail(email);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Verification email resent')),
-                        );
-                      },
-                      child: Text('Resend Verification Email'),
-                    ),
-                  ],
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      if (Navigator.canPop(context)) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Text(
-                      'OK',
-                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                ],
-              );
-            },
+      if (_subscribeToNewsletter) {
+        try {
+          // Get user ID if available
+          String? userId = authProvider.user?.id;
+
+          // Subscribe to newsletter
+          await _newsletterService.subscribeToNewsletter(
+            email,
+            userId: userId,
           );
-        } else {
-          // Welcome dialog - First Name
-          Navigator.of(context).pop();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                title: Text(
-                  'Welcome to B.I.D.${firstName.isNotEmpty ? ', $firstName' : ''}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                content: Text(
-                  'You have successfully registered',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.surface),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      if (Navigator.canPop(context)) {
-                        Navigator.pop(context);
-                      }
-                      context.go('/account');
-                    },
-                    child: Text(
-                      'OK',
-                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
+        } catch (e) {
+          // Don't block registration if newsletter subscription fails
+          print('Newsletter subscription failed: ${e.toString()}');
         }
+      }
+
+      if (mounted) {
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .primary,
+                  width: 2,
+                ),
+              ),
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
+              title: Text(
+                'Welcome to B.I.D.${firstName.isNotEmpty
+                    ? ', $firstName'
+                    : ''}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme
+                    .of(context)
+                    .colorScheme
+                    .onPrimary),
+              ),
+              content: Text(
+                'You have successfully registered',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme
+                    .of(context)
+                    .colorScheme
+                    .surface),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                    context.go('/account');
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Theme
+                        .of(context)
+                        .colorScheme
+                        .onPrimary),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -269,6 +247,42 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   hintText: "Confirm Password",
                   obscureText: true,
                   controller: confirmPwController,
+                ),
+
+                // Newsletter subscription checkbox
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: Checkbox(
+                          value: _subscribeToNewsletter,
+                          onChanged: (value) {
+                            setState(() {
+                              _subscribeToNewsletter = value ?? false;
+                            });
+                          },
+                          activeColor: Theme.of(context).colorScheme.secondary,
+                          checkColor: Theme.of(context).colorScheme.surface,
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          "Subscribe to our newsletter for exclusive offers and updates",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 // Error message

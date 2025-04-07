@@ -74,8 +74,7 @@ class OurStorySection extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 20),
-          OutlinedButton(
+          /*OutlinedButton(
             onPressed: onReadMorePressed,
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: Theme.of(context).colorScheme.primary),
@@ -95,7 +94,7 @@ class OurStorySection extends StatelessWidget {
                 letterSpacing: 1.0,
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

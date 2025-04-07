@@ -395,4 +395,72 @@ class DialogService {
           ),
     );
   }
+
+  // Newsletter subscription confirmation dialog
+  static void showNewsletterSubscriptionDialog(BuildContext context, String email) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: colorScheme.accent, // Beige outline
+            width: 2,
+          ),
+        ),
+        backgroundColor: colorScheme.surface, // Dark background
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Subscription Confirmed",
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: colorScheme.accent,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "Thank you! $email has been successfully subscribed to our newsletter.",
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.primary, // White text
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: colorScheme.accent,
+                    side: BorderSide(color: colorScheme.accent, width: 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

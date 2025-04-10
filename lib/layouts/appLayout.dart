@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AppLayout extends StatelessWidget {
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
-  const AppLayout({Key? key, required this.child}) : super(key: key);
+  const AppLayout({Key? key, required this.navigationShell}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
+    /*final location = GoRouterState.of(context).uri.path;
     int currentIndex = 0;
 
     if (location.startsWith('/wishlist')) {
@@ -26,21 +26,21 @@ class AppLayout extends StatelessWidget {
         location != '/shop' &&
         location != '/wishlist' &&
         location != '/cart' &&
-        location != '/account';
+        location != '/account';*/
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         title: Text(
-          _getAppBarTitle(currentIndex, location),
+          _getAppBarTitle(navigationShell.currentIndex, GoRouterState.of(context).uri.path),
           style: TextStyle(
               color: Theme.of(context).colorScheme.inversePrimary,
               fontSize: 14
           ),
         ),
-        automaticallyImplyLeading: canGoBack,
-        leading: canGoBack
+        automaticallyImplyLeading: _canGoBack(context),
+        leading: _canGoBack(context)
             ? IconButton(
           icon: Icon(Icons.arrow_back,
               color: Theme.of(context).colorScheme.primary),
@@ -51,12 +51,17 @@ class AppLayout extends StatelessWidget {
           ThemeToggle(),
         ],
       ),
-      body: child,
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        currentIndex: currentIndex,
+        currentIndex: navigationShell.currentIndex,
         onTap: (index) {
-          switch (index) {
+    navigationShell.goBranch(
+    index,
+    initialLocation: index == navigationShell.currentIndex,
+    );
+    },
+          /*switch (index) {
             case 0:
               context.go('/');
               break;
@@ -73,7 +78,7 @@ class AppLayout extends StatelessWidget {
               context.go('/account');
               break;
           }
-        },
+        },*/
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Theme.of(context).colorScheme.primary,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
@@ -86,6 +91,17 @@ class AppLayout extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _canGoBack(BuildContext context) {
+    final RouteMatch lastMatch = GoRouter.of(context).routerDelegate.currentConfiguration.last;
+    final String location = lastMatch.matchedLocation;
+
+    return location != '/' &&
+        location != '/wishlist' &&
+        location != '/shop' &&
+        location != '/cart' &&
+        location != '/account';
   }
 
   String _getAppBarTitle(int tabIndex, String location) {

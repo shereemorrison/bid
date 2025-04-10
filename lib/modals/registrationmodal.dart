@@ -137,7 +137,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
                     }
-                    context.go('/account');
+                    context.push('/account');
                   },
                   child: Text(
                     'OK',

@@ -10,7 +10,6 @@ import 'package:bid/providers/order_provider.dart';
 import 'package:bid/services/order_service.dart';
 import 'package:bid/utils/order_helpers.dart';
 import 'package:bid/utils/format_helpers.dart';
-import 'package:bid/utils/ui_helpers.dart';
 import 'package:bid/components/buttons/shopping_buttons.dart';
 
 

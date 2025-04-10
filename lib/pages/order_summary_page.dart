@@ -1,22 +1,52 @@
 
 import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/components/cards/order_info_card.dart';
+import 'package:bid/components/order_widgets/order_address_card.dart';
 import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_payment.option.dart';
 import 'package:bid/components/order_widgets/order_product_item.dart';
+import 'package:bid/providers/address_provider.dart';
+import 'package:bid/providers/supabase_auth_provider.dart';
+import 'package:bid/providers/user_provider.dart';
 import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/providers/shop_provider.dart';
+import 'package:bid/components/address_widgets/address_selector.dart';
 
-class OrderSummaryPage extends StatelessWidget {
+class OrderSummaryPage extends StatefulWidget {
   const OrderSummaryPage({super.key});
 
   @override
+  State<OrderSummaryPage> createState() => _OrderSummaryPageState();
+}
+
+class _OrderSummaryPageState extends State<OrderSummaryPage> {
+  bool _showAddressSelector = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadAddresses();
+    });
+  }
+
+  void _loadAddresses() {
+    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final addressProvider = Provider.of<AddressProvider>(context, listen: false);
+
+    if (authProvider.isLoggedIn && userProvider.userData != null) {
+      addressProvider.fetchUserAddresses(userProvider.userData!.userId);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Get cart items from the Shop provider
     final cart = context.watch<Shop>().cart;
+    final addressProvider = context.watch<AddressProvider>();
 
     // Calculate totals
     final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
@@ -70,10 +100,24 @@ class OrderSummaryPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              OrderInfoCard(
-                text: 'Address',
-                onTap: () {},
-              ),
+
+              if (_showAddressSelector)
+                AddressSelector(
+                  onAddressSelected: (address) {
+                    setState(() {
+                      _showAddressSelector = false;
+                    });
+                  },
+                )
+              else
+                OrderAddressCard(
+                  address: addressProvider.selectedAddress,
+                  onTap: () {
+                    setState(() {
+                      _showAddressSelector = true;
+                    });
+                  },
+                ),
 
               const SizedBox(height: 24),
 

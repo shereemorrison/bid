@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           userProvider.fetchUserData(authProvider.user!.id);
         }
         Navigator.of(context).pop();
-        context.go('/account');
+        context.push('/account');
       }
     } catch (e) {
       if (mounted) {

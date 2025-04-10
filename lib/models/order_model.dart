@@ -50,17 +50,13 @@ class Order {
   void validateTotals() {
     if (!isTotalValid) {
       print('WARNING: Order $orderId has inconsistent totals');
-      print('Stored total: $totalAmount');
-      print('Calculated total: $calculatedTotal');
-      print('Subtotal: $subtotal');
-      print('Tax: $taxAmount');
-      print('Shipping: $shipping_amount');
-      print('Discount: $discount_amount');
+      //print('Stored total: $totalAmount');
+      //print('Calculated total: $calculatedTotal');
 
       // Check if there might be an undocumented discount
       if (discount_amount == 0 && calculatedTotal > totalAmount) {
         final possibleDiscount = calculatedTotal - totalAmount;
-        print('Possible undocumented discount: $possibleDiscount');
+        //print('Possible undocumented discount: $possibleDiscount');
       }
     }
   }

@@ -40,7 +40,7 @@ Widget buildProductImage(BuildContext context, String imageUrl, String imagePath
   final String finalImageUrl = isUrl(pathToUse) ? pathToUse : getSupabaseImageUrl(pathToUse);
 
   // Debug the image URL
-  print('Loading image from: $finalImageUrl');
+  //print('Loading image from: $finalImageUrl');
 
   // If no valid URL could be generated
   if (finalImageUrl.isEmpty) {
@@ -56,7 +56,6 @@ Widget buildProductImage(BuildContext context, String imageUrl, String imagePath
       return buildLoadingIndicator(context, loadingProgress);
     },
     errorBuilder: (context, error, stackTrace) {
-      print('Error loading image: $error for URL: $finalImageUrl');
       return buildPlaceholderImage(context, Icons.error_outline);
     },
   );

@@ -61,13 +61,18 @@ class AddressModel {
   }
 
   String get formattedAddress {
-    final parts = [
-      streetAddress,
-      if (apartment != null && apartment!.isNotEmpty) apartment,
-      city,
-      '$state $postalCode',
-      country,
-    ];
+    final List<String> parts = [];
+    if (apartment != null && apartment!.isNotEmpty) {
+      parts.add('Unit $apartment, $streetAddress');
+    } else {
+      parts.add(streetAddress);
+    }
+
+    parts.add('$city, $state $postalCode');
+
+    if (country != 'Australia') {
+      parts.add(country);
+    }
     return parts.join(', ');
   }
 }

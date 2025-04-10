@@ -15,115 +15,142 @@ import 'package:bid/pages/product_detail_page.dart';
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_page.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+final _wishlistNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'wishlist');
+final _shopNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shop');
+final _cartNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'cart');
+final _accountNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'account');
 
 final goRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
-  debugLogDiagnostics: true,
+  debugLogDiagnostics: false,
 
-redirect: (BuildContext context, GoRouterState state) {
-// Get the current location
-  return null;
-},
   routes: [
-    ShellRoute(
-      navigatorKey: _shellNavigatorKey,
-      builder: (context, state, child) {
-        return AppLayout(child: child);
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return AppLayout(navigationShell: navigationShell);
       },
-      routes: [
+      branches: [
         // Home Tab
-        GoRoute(
-          path: '/',
-          name: 'Home',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const HomePage(),
-          ),
-        ),
-
-
-
-        // Shop/Categories Tab with nested routes
-        GoRoute(
-          path: '/shop',
-          name: 'shop',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const CategoriesPage(),
-          ),
+        StatefulShellBranch(
+          navigatorKey: _homeNavigatorKey,
           routes: [
             GoRoute(
-              path: 'men',
-              name: 'shop_men',
-              builder: (context, state) => const ShopMenPage(),
+              path: '/',
+              name: 'Home',
+              pageBuilder:
+                  (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const HomePage(),
+                  ),
             ),
-            GoRoute(
-              path: 'women',
-              name: 'shop_women',
-              builder: (context, state) => const ShopWomenPage(),
-            ),
-            GoRoute(
-              path: 'accessories',
-              name: 'shop_accessories',
-              builder: (context, state) => const ShopAccessoriesPage(),
-            ),
-            GoRoute(
-              path: 'product',
-              name: 'product_detail',
-              builder: (context, state) {
-                final product = state.extra as Product;
-                return ProductDetailPage(product: product);
-              },
-            ),// Account Tab
-
-          ],
-        ),
-
-        GoRoute(
-          path: '/account',
-          name: 'account',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const AccountPage(),
-          ),
-          routes: [
-            GoRoute(
-            path: 'order/:orderId',
-            name: 'order_details',
-            builder: (context, state) {
-              final orderId = state.pathParameters['orderId']!;
-              return OrderDetailsPage(orderId: orderId);
-            },
-          ),
           ],
         ),
 
         // Wishlist Tab
-        GoRoute(
-          path: '/wishlist',
-          name: 'wishlist',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const WishlistPage(),
-          ),
+        StatefulShellBranch(
+          navigatorKey: _wishlistNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/wishlist',
+              name: 'wishlist',
+              pageBuilder:
+                  (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const WishlistPage(),
+                  ),
+            ),
+          ],
+        ),
+
+        // Shop/Categories Tab with nested routes
+        StatefulShellBranch(
+          navigatorKey: _shopNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/shop',
+              name: 'shop',
+              pageBuilder:
+                  (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const CategoriesPage(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: 'men',
+                  name: 'shop_men',
+                  builder: (context, state) => const ShopMenPage(),
+                ),
+                GoRoute(
+                  path: 'women',
+                  name: 'shop_women',
+                  builder: (context, state) => const ShopWomenPage(),
+                ),
+                GoRoute(
+                  path: 'accessories',
+                  name: 'shop_accessories',
+                  builder: (context, state) => const ShopAccessoriesPage(),
+                ),
+                GoRoute(
+                  path: 'product',
+                  name: 'product_detail',
+                  builder: (context, state) {
+                    final product = state.extra as Product;
+                    return ProductDetailPage(product: product);
+                  },
+                ), // Account Tab
+              ],
+            ),
+          ],
         ),
 
         // Cart Tab with nested routes
-        GoRoute(
-          path: '/cart',
-          name: 'cart',
-          pageBuilder: (context, state) => NoTransitionPage(
-            key: state.pageKey,
-            child: const CartPage(),
-          ),
+        StatefulShellBranch(
+          navigatorKey: _cartNavigatorKey,
           routes: [
             GoRoute(
-              path: 'summary',
-              name: 'order_summary',
-              builder: (context, state) => const OrderSummaryPage(),
+              path: '/cart',
+              name: 'cart',
+              pageBuilder:
+                  (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const CartPage(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: 'summary',
+                  name: 'order_summary',
+                  builder: (context, state) => const OrderSummaryPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        //Account tab
+        StatefulShellBranch(
+          navigatorKey: _accountNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/account',
+              name: 'account',
+              pageBuilder:
+                  (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const AccountPage(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: 'order/:orderId',
+                  name: 'order_details',
+                  builder: (context, state) {
+                    final orderId = state.pathParameters['orderId']!;
+                    return OrderDetailsPage(orderId: orderId);
+                  },
+                ),
+              ],
             ),
           ],
         ),

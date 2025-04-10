@@ -24,8 +24,6 @@ class OrderItem {
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
-    // Debug the incoming JSON
-    print('OrderItem.fromJson: $json');
 
     // Get product data if available
     final product = json['products'];

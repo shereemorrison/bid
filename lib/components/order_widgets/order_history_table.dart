@@ -110,7 +110,7 @@ class OrderHistoryTable extends StatelessWidget {
           SizedBox(
             width: 80,
             child: TextButton(
-              onPressed: () => context.goNamed(
+              onPressed: () => context.pushNamed(
                 'order_details',
                 pathParameters: {'orderId': order.orderId},
               ),

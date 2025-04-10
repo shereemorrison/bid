@@ -1,9 +1,7 @@
 
-import 'package:bid/components/buttons/shopping_buttons.dart';
 import 'package:bid/models/products_model.dart';
 import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/services/dialog_service.dart';
-import 'package:bid/services/product_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';

@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
   void _navigateToCategory(Category category) {
     final path = '/shop/${category.slug}';
     final currentSelectedId = _selectedCategoryId;
-    context.go(path);
+    context.push(path);
   }
 
 
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                         getImageUrl: _homeService.getImageUrl,
                         onProductTap: (product) {
                           if (product != null) {
-                            context.go('/shop/product', extra: product);
+                            context.push('/shop/product', extra: product);
                           }
                         },
                       )

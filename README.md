@@ -16,7 +16,7 @@ Analytics: Supabase
 
 Push Notifications: Supabase
 
-AR: TBC (Proposed ARKit/ARCore/Vuforia)
+AR: TBC (Proposed Blender/Spark AR Studio/Reality Composer)
 
 Social Media Integration: Facebook SDK, Instagram API, Twitter API
 

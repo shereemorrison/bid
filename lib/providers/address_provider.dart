@@ -1,58 +1,71 @@
-import 'package:bid/models/address_model.dart';
-import 'package:bid/services/address_service.dart';
-import 'package:flutter/material.dart';
+// lib/providers/address_provider.dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/address_model.dart';
+import '../services/address_service.dart';
 
-class AddressProvider with ChangeNotifier {
-  final AddressService _addressService = AddressService();
-  List<AddressModel>? _addresses;
-  AddressModel? _selectedAddress;
-  AddressModel? _guestAddress; // For guest users
-  bool _isLoading = false;
-  String? _error;
+// Service provider
+final addressServiceProvider = Provider<AddressService>((ref) {
+  return AddressService();
+});
 
-  List<AddressModel>? get addresses => _addresses;
-  AddressModel? get selectedAddress => _selectedAddress ?? _guestAddress;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
+// State providers
+final addressesProvider = StateProvider<List<AddressModel>?>((ref) => null);
+final selectedAddressProvider = StateProvider<AddressModel?>((ref) => null);
+final guestAddressProvider = StateProvider<AddressModel?>((ref) => null);
+final addressLoadingProvider = StateProvider<bool>((ref) => false);
+final addressErrorProvider = StateProvider<String?>((ref) => null);
+
+// Computed provider for effective selected address (selected or guest)
+final effectiveAddressProvider = Provider<AddressModel?>((ref) {
+  final selectedAddress = ref.watch(selectedAddressProvider);
+  final guestAddress = ref.watch(guestAddressProvider);
+  return selectedAddress ?? guestAddress;
+});
+
+// Controller notifier for complex state management
+class AddressNotifier extends StateNotifier<AsyncValue<void>> {
+  final AddressService _addressService;
+  final Ref _ref;
+
+  AddressNotifier(this._addressService, this._ref) : super(const AsyncValue.data(null));
 
   // Fetch all addresses for a user
   Future<void> fetchUserAddresses(String userId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(addressLoadingProvider.notifier).state = true;
+    _ref.read(addressErrorProvider.notifier).state = null;
 
     try {
-      _addresses = await _addressService.getUserAddresses(userId);
+      final addresses = await _addressService.getUserAddresses(userId);
+
+      _ref.read(addressesProvider.notifier).state = addresses;
 
       // If there's a default shipping address, select it
-      if (_addresses != null && _addresses!.isNotEmpty) {
-        _selectedAddress = _addresses!.firstWhere(
+      if (addresses.isNotEmpty) {
+        final defaultAddress = addresses.firstWhere(
               (address) => address.isDefault && address.addressType == 'shipping',
-          orElse: () => _addresses!.first,
+          orElse: () => addresses.first,
         );
+        _ref.read(selectedAddressProvider.notifier).state = defaultAddress;
       }
     } catch (e) {
-      _error = 'Failed to load addresses';
-      print('AddressProvider: Error fetching addresses: $e');
+      _ref.read(addressErrorProvider.notifier).state = 'Failed to load addresses';
+      print('AddressNotifier: Error fetching addresses: $e');
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(addressLoadingProvider.notifier).state = false;
     }
   }
 
   // Add a new address
   Future<AddressModel?> addAddress(AddressModel address) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(addressLoadingProvider.notifier).state = true;
+    _ref.read(addressErrorProvider.notifier).state = null;
 
     try {
       // Check if this is a guest user
       if (address.userId.startsWith('guest-')) {
         // For guest users, just store the address in memory
-        _guestAddress = address;
-        _isLoading = false;
-        notifyListeners();
+        _ref.read(guestAddressProvider.notifier).state = address;
+        _ref.read(addressLoadingProvider.notifier).state = false;
         return address;
       }
 
@@ -64,35 +77,32 @@ class AddressProvider with ChangeNotifier {
         await fetchUserAddresses(address.userId);
 
         // If this is the default address or we don't have a selected address yet, select it
-        if (address.isDefault || _selectedAddress == null) {
-          _selectedAddress = newAddress;
+        if (address.isDefault || _ref.read(selectedAddressProvider) == null) {
+          _ref.read(selectedAddressProvider.notifier).state = newAddress;
         }
       }
 
       return newAddress;
     } catch (e) {
-      _error = 'Failed to add address';
-      print('AddressProvider: Error adding address: $e');
+      _ref.read(addressErrorProvider.notifier).state = 'Failed to add address';
+      print('AddressNotifier: Error adding address: $e');
       return null;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(addressLoadingProvider.notifier).state = false;
     }
   }
 
   // Update an existing address
   Future<bool> updateAddress(AddressModel address) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(addressLoadingProvider.notifier).state = true;
+    _ref.read(addressErrorProvider.notifier).state = null;
 
     try {
       // Check if this is a guest user
       if (address.userId.startsWith('guest-')) {
         // For guest users, just update the address in memory
-        _guestAddress = address;
-        _isLoading = false;
-        notifyListeners();
+        _ref.read(guestAddressProvider.notifier).state = address;
+        _ref.read(addressLoadingProvider.notifier).state = false;
         return true;
       }
 
@@ -104,37 +114,36 @@ class AddressProvider with ChangeNotifier {
         await fetchUserAddresses(address.userId);
 
         // Update selected address if needed
-        if (_selectedAddress?.addressId == address.addressId) {
-          _selectedAddress = address;
+        final selectedAddress = _ref.read(selectedAddressProvider);
+        if (selectedAddress?.addressId == address.addressId) {
+          _ref.read(selectedAddressProvider.notifier).state = address;
         }
       }
 
       return success;
     } catch (e) {
-      _error = 'Failed to update address';
-      print('AddressProvider: Error updating address: $e');
+      _ref.read(addressErrorProvider.notifier).state = 'Failed to update address';
+      print('AddressNotifier: Error updating address: $e');
       return false;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(addressLoadingProvider.notifier).state = false;
     }
   }
 
   // Delete an address
   Future<bool> deleteAddress(String addressId, String userId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(addressLoadingProvider.notifier).state = true;
+    _ref.read(addressErrorProvider.notifier).state = null;
 
     try {
       // Check if this is a guest user
       if (userId.startsWith('guest-')) {
         // For guest users, just clear the address in memory
-        if (_guestAddress?.addressId == addressId) {
-          _guestAddress = null;
+        final guestAddress = _ref.read(guestAddressProvider);
+        if (guestAddress?.addressId == addressId) {
+          _ref.read(guestAddressProvider.notifier).state = null;
         }
-        _isLoading = false;
-        notifyListeners();
+        _ref.read(addressLoadingProvider.notifier).state = false;
         return true;
       }
 
@@ -146,19 +155,21 @@ class AddressProvider with ChangeNotifier {
         await fetchUserAddresses(userId);
 
         // If we deleted the selected address, select another one
-        if (_selectedAddress?.addressId == addressId) {
-          _selectedAddress = _addresses!.isNotEmpty ? _addresses!.first : null;
+        final selectedAddress = _ref.read(selectedAddressProvider);
+        final addresses = _ref.read(addressesProvider);
+        if (selectedAddress?.addressId == addressId) {
+          _ref.read(selectedAddressProvider.notifier).state =
+          addresses != null && addresses.isNotEmpty ? addresses.first : null;
         }
       }
 
       return success;
     } catch (e) {
-      _error = 'Failed to delete address';
-      print('AddressProvider: Error deleting address: $e');
+      _ref.read(addressErrorProvider.notifier).state = 'Failed to delete address';
+      print('AddressNotifier: Error deleting address: $e');
       return false;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(addressLoadingProvider.notifier).state = false;
     }
   }
 
@@ -166,26 +177,28 @@ class AddressProvider with ChangeNotifier {
   void selectAddress(AddressModel address) {
     // Check if this is a guest user
     if (address.userId.startsWith('guest-')) {
-      _guestAddress = address;
+      _ref.read(guestAddressProvider.notifier).state = address;
     } else {
-      _selectedAddress = address;
+      _ref.read(selectedAddressProvider.notifier).state = address;
     }
-    notifyListeners();
   }
 
   // Clear addresses (e.g., on logout)
   void clearAddresses() {
-    _addresses = null;
-    _selectedAddress = null;
-    // Don't clear _guestAddress here to preserve guest checkout flow
-    _error = null;
-    _isLoading = false;
-    notifyListeners();
+    _ref.read(addressesProvider.notifier).state = null;
+    _ref.read(selectedAddressProvider.notifier).state = null;
+    _ref.read(addressErrorProvider.notifier).state = null;
+    // Don't clear guestAddress here to preserve guest checkout flow
   }
 
   // Clear guest address (e.g., after order completion)
   void clearGuestAddress() {
-    _guestAddress = null;
-    notifyListeners();
+    _ref.read(guestAddressProvider.notifier).state = null;
   }
 }
+
+// Provider for the address notifier
+final addressNotifierProvider = StateNotifierProvider<AddressNotifier, AsyncValue<void>>((ref) {
+  final addressService = ref.watch(addressServiceProvider);
+  return AddressNotifier(addressService, ref);
+});

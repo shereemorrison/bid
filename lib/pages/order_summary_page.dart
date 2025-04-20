@@ -5,23 +5,24 @@ import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_payment.option.dart';
 import 'package:bid/components/order_widgets/order_product_item.dart';
 import 'package:bid/providers/address_provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/providers/user_provider.dart';
+import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/components/address_widgets/address_selector.dart';
 
-class OrderSummaryPage extends StatefulWidget {
+import '../providers/supabase_auth_provider.dart';
+import '../providers/user_provider.dart';
+
+class OrderSummaryPage extends ConsumerStatefulWidget {
   const OrderSummaryPage({super.key});
 
   @override
-  State<OrderSummaryPage> createState() => _OrderSummaryPageState();
+  ConsumerState<OrderSummaryPage> createState() => _OrderSummaryPageState();
 }
 
-class _OrderSummaryPageState extends State<OrderSummaryPage> {
+class _OrderSummaryPageState extends ConsumerState<OrderSummaryPage> {
   bool _showAddressSelector = false;
 
   @override
@@ -34,19 +35,19 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
   }
 
   void _loadAddresses() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final addressProvider = Provider.of<AddressProvider>(context, listen: false);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+    final userData = ref.read(userDataProvider);
 
-    if (authProvider.isLoggedIn && userProvider.userData != null) {
-      addressProvider.fetchUserAddresses(userProvider.userData!.userId);
+    if (isLoggedIn && userData != null) {
+      ref.read(addressNotifierProvider.notifier).fetchUserAddresses(userData.userId);
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<Shop>().cart;
-    final addressProvider = context.watch<AddressProvider>();
+    final cart = ref.watch(cartProvider);
+    final selectedAddress = ref.watch(effectiveAddressProvider);
 
     // Calculate totals
     final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
@@ -111,7 +112,7 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                 )
               else
                 OrderAddressCard(
-                  address: addressProvider.selectedAddress,
+                  address: selectedAddress,
                   onTap: () {
                     setState(() {
                       _showAddressSelector = true;

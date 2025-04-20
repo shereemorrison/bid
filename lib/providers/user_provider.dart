@@ -1,61 +1,80 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_model.dart';
 import '../services/user_service.dart';
 
-class UserProvider with ChangeNotifier {
-  UserModel? _userData;
-  final UserService _userService = UserService();
-  bool _isLoading = false;
+// Service provider
+final userServiceProvider = Provider<UserService>((ref) {
+  return UserService();
+});
 
-  UserModel? get userData => _userData;
-  bool get isLoading => _isLoading;
+// State providers
+final userDataProvider = StateProvider<UserModel?>((ref) => null);
+final userLoadingProvider = StateProvider<bool>((ref) => false);
+final userErrorProvider = StateProvider<String?>((ref) => null);
 
-  Future<void> fetchUserData(String authId) async {
-    _isLoading = true;
-    notifyListeners();
+// Controller notifier for complex state management
+class UserNotifier extends StateNotifier<AsyncValue<void>> {
+  final Ref _ref;
+  final UserService _userService;
 
-    try {
-      _userData = await _userService.getUserData(authId);
-    } catch (e) {
-      //TODO - Add error message for debugging
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+  UserNotifier(this._ref, this._userService) : super(const AsyncValue.data(null));
+
+  // Set user data
+  void setUserData(UserModel userData) {
+    _ref.read(userDataProvider.notifier).state = userData;
   }
 
-  Future<void> updateUserData({
-    required String authId,
-    String? firstName,
-    String? lastName,
-    String? phone,
-  }) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      await _userService.updateUserData(
-        authId: authId,
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-      );
-
-      // Refresh user data after update
-      await fetchUserData(authId);
-    } catch (e) {
-      // Handle error silently
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
+  // Clear user data (e.g., on logout)
   void clearUserData() {
-    _userData = null;
-    _isLoading = false;
-    notifyListeners();
+    _ref.read(userDataProvider.notifier).state = null;
+  }
+
+  // Update user data - fetch from database using userId
+  Future<void> updateUserData(String userId) async {
+    _ref.read(userLoadingProvider.notifier).state = true;
+    _ref.read(userErrorProvider.notifier).state = null;
+
+    try {
+      // Fetch user data from service
+      final userData = await _userService.getUserData(userId);
+
+      if (userData != null) {
+        _ref.read(userDataProvider.notifier).state = userData;
+      } else {
+        _ref.read(userErrorProvider.notifier).state = 'User data not found';
+      }
+    } catch (e) {
+      _ref.read(userErrorProvider.notifier).state = e.toString();
+    } finally {
+      _ref.read(userLoadingProvider.notifier).state = false;
+    }
+  }
+
+  // Update specific user model
+  Future<void> updateUserModel(UserModel userData) async {
+    _ref.read(userLoadingProvider.notifier).state = true;
+    _ref.read(userErrorProvider.notifier).state = null;
+
+    try {
+      // Update user in database
+      final success = await _userService.updateUser(userData);
+
+      if (success) {
+        _ref.read(userDataProvider.notifier).state = userData;
+      } else {
+        _ref.read(userErrorProvider.notifier).state = 'Failed to update user data';
+      }
+    } catch (e) {
+      _ref.read(userErrorProvider.notifier).state = e.toString();
+    } finally {
+      _ref.read(userLoadingProvider.notifier).state = false;
+    }
   }
 }
 
-
+// Provider for the user notifier
+final userNotifierProvider = StateNotifierProvider<UserNotifier, AsyncValue<void>>((ref) {
+  final userService = ref.watch(userServiceProvider);
+  return UserNotifier(ref, userService);
+});

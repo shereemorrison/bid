@@ -5,6 +5,7 @@ import 'order_item_model.dart';
 
 class Order {
   final String orderId;
+  final String userId;
   final DateTime orderDate;
   final String status;
   final Map<String, dynamic>? orderStatus;
@@ -21,6 +22,7 @@ class Order {
 
   Order({
     required this.orderId,
+    required this.userId,
     required this.orderDate,
     this.orderStatus,
     required this.status,
@@ -116,6 +118,7 @@ class Order {
 
     return Order(
       orderId: json['order_id'] ?? 'Unknown',
+      userId: json['user_id']?.toString() ?? 'Unknown',
       orderDate: json['order_date'] != null ? DateTime.parse(json['order_date']) : DateTime.now(),
       status: statusName,
       orderStatus: json['order_status'],

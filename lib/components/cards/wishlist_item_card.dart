@@ -1,12 +1,14 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
 import 'package:bid/components/product_widgets/modal_size_selector.dart';
 import 'package:bid/models/products_model.dart';
+import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WishlistItemCard extends StatelessWidget {
+class WishlistItemCard extends ConsumerWidget {
   final Product product;
   final VoidCallback onRemove;
   final VoidCallback onAddToCart;
@@ -19,7 +21,8 @@ class WishlistItemCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final shop = ref.watch(shopProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -69,7 +72,7 @@ class WishlistItemCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   // Add to Cart Button
                   AddToCartButton(
-                    onTap: () => showSizeSelectorModal(context, product),
+                    onTap: () => showSizeSelectorModal(context, product, ref, shop),
                     height: 30,
                     fontSize: 10,
                     width: 120,

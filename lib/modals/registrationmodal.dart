@@ -5,19 +5,19 @@ import 'package:bid/modals/loginmodal.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/services/newsletter_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-class RegistrationPage extends StatefulWidget {
+class RegistrationPage extends ConsumerStatefulWidget {
   final void Function()? onTap;
 
   const RegistrationPage({super.key, required this.onTap});
 
   @override
-  _RegistrationPageState createState() => _RegistrationPageState();
+  ConsumerState<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _RegistrationPageState extends ConsumerState<RegistrationPage> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -68,8 +68,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     try {
       // Register the user with Supabase
-      final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-      await authProvider.signUp(
+      await ref.read(authNotifierProvider.notifier).signUp(
         email,
         password,
         firstName: firstName,
@@ -79,7 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (_subscribeToNewsletter) {
         try {
           // Get user ID if available
-          String? userId = authProvider.user?.id;
+          String? userId = ref.read(authUserIdProvider);
 
           // Subscribe to newsletter
           await _newsletterService.subscribeToNewsletter(

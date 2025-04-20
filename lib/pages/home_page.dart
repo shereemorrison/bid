@@ -5,88 +5,42 @@ import 'package:bid/components/home_widgets/hero_section.dart';
 import 'package:bid/components/home_widgets/newsletter_section.dart';
 import 'package:bid/components/home_widgets/our_story_section.dart';
 import 'package:bid/models/category_model.dart';
+import 'package:bid/providers/category_provider.dart';
+import 'package:bid/providers/home_provider.dart';
 import 'package:bid/services/category_service.dart';
 import 'package:bid/services/home_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/product_widgets/product_horizontal_list.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
+
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final HomeService _homeService = HomeService();
+class _HomePageState extends ConsumerState<HomePage> {
   final TextEditingController _emailController = TextEditingController();
-  final CategoryService _categoryService = CategoryService();
-
-  List<Category> _categories = [];
-  List<Category> _allCategories = [];
-  List<String> _categoryNames = [];
-  bool _isLoading = true;
   String? _selectedCategoryId = 'all';
 
   @override
   void initState() {
     super.initState();
-    _loadData(); // Load data when page initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeNotifierProvider.notifier).loadAllData();
+      ref.read(categoryNotifierProvider.notifier).loadCategories();
+    }); // Load data when page initializes
   }
 
   @override
   void dispose() {
     _emailController.dispose();
-    _homeService.dispose(); // Make sure to dispose the service
+    ref.read(homeNotifierProvider.notifier).disposeService();
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  List<String> _getCategories() {
-    // Convert Category objects to strings
-    return _allCategories.map((category) => category.name).toList();
-  }
-
-  // Load data and wait for it to complete
-  Future<void> _loadData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Load all data including featured products
-      await _homeService.loadAllData();
-      _categories = await _categoryService.getCategories();
-
-      final allCategory = Category(
-          id: 'all',
-          name: 'ALL',
-          slug: 'all',
-      );
-
-      _allCategories = [allCategory, ..._categories];
-      _categoryNames = _getCategories();
-
-      // Make sure featured products are loaded
-      if (_homeService.featuredProducts.isEmpty) {
-        print('HomePage: No featured products found');
-      }
-    } catch (e) {
-      print('HomePage: Error loading data: $e');
-    } finally {
-      // Update UI after loading completes
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   // Handle category selection - navigate to category page
@@ -106,30 +60,50 @@ class _HomePageState extends State<HomePage> {
     context.push(path);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    List<dynamic> filteredProducts = _homeService.featuredProducts;
+    final featuredProducts = ref.watch(featuredProductsProvider);
+    final mostWantedProducts = ref.watch(mostWantedProductsProvider);
+    final categories = ref.watch(categoriesProvider);
+    final isLoading = ref.watch(homeLoadingProvider);
+    final currentPage = ref.watch(currentPageProvider);
+    final homeService = ref.read(homeServiceProvider);
 
+    // Create allCategories list with "ALL" category
+    final allCategory = Category(
+      id: 'all',
+      name: 'ALL',
+      slug: 'all',
+    );
+    final allCategories = [allCategory, ...categories];
+
+    // Filter products based on selected category
+    List<dynamic> filteredProducts = featuredProducts;
     if (_selectedCategoryId != null && _selectedCategoryId != 'all') {
-        filteredProducts = _homeService.featuredProducts
-            .where((product) => product.categoryId == _selectedCategoryId)
-            .toList();
-      }
+      filteredProducts = featuredProducts
+          .where((product) => product.categoryId == _selectedCategoryId)
+          .toList();
+    }
+
+    final homeNotifier = ref.read(homeNotifierProvider.notifier);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .surface,
       body: SafeArea(
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+        child: isLoading
+            ? const Center(
+            child: CircularProgressIndicator()) // Show loading indicator
             : SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Hero Section with training image
               HeroSection(
-                imageUrl: _homeService.getHeroImageUrl(),
-                userName: _homeService.userName,
+                imageUrl: homeNotifier.getHeroImageUrl(),
+                userName: homeService.userName,
                 onShopNowPressed: () {
                   // Handle shop now button press
                 },
@@ -145,8 +119,15 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'COLLECTIONS',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.textPrimary,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -154,20 +135,19 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 20),
 
                     // Category Chips
-
-                  CategoryChips(
-                  categories: _allCategories,
-                    selectedCategoryId: _selectedCategoryId,
-                    onCategorySelected: _handleCategorySelected,
-          ),
+                    CategoryChips(
+                      categories: allCategories,
+                      selectedCategoryId: _selectedCategoryId,
+                      onCategorySelected: _handleCategorySelected,
+                    ),
 
                     const SizedBox(height: 20),
 
                     // Product Grid using featured products
-                    if (_homeService.featuredProducts.isNotEmpty)
+                    if (featuredProducts.isNotEmpty)
                       ProductGrid(
-                        products: _homeService.featuredProducts,
-                        getImageUrl: _homeService.getImageUrl,
+                        products: filteredProducts,
+                        getImageUrl: homeNotifier.getImageUrl,
                         onProductTap: (product) {
                           if (product != null) {
                             context.push('/shop/product', extra: product);
@@ -189,22 +169,21 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(height: 30),
-              
+
               //Featured Carousel
-              if (_homeService.featuredProducts.isNotEmpty)
+              if (featuredProducts.isNotEmpty)
                 FeaturedCarousel(
-                  products: _homeService.featuredProducts,
-                  getImageUrl: _homeService.getImageUrl,
-                  getCollectionImageUrl: _homeService.getCollectionImageUrl,
+                  products: featuredProducts,
+                  getImageUrl: homeNotifier.getImageUrl,
+                  getCollectionImageUrl: homeNotifier.getCollectionImageUrl,
                   onPageChanged: (index) {
-                    setState(() {
-                      _homeService.currentPage = index;
-                    });
+                    ref.read(homeNotifierProvider.notifier).updateCurrentPage(
+                        index);
                   },
-                  currentPage: _homeService.currentPage,
+                  currentPage: currentPage,
                 ),
 
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
               // Most Wanted Section
               Padding(
@@ -214,8 +193,15 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'MOST WANTED',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.textPrimary,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -223,10 +209,10 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 15),
 
                     // Product Horizontal List
-                    if (_homeService.mostWantedProducts.isNotEmpty)
+                    if (mostWantedProducts.isNotEmpty)
                       ProductHorizontalList(
-                        products: _homeService.mostWantedProducts,
-                        getImageUrl: _homeService.getImageUrl,
+                        products: mostWantedProducts,
+                        getImageUrl: homeNotifier.getImageUrl,
                       ),
                   ],
                 ),
@@ -236,7 +222,7 @@ class _HomePageState extends State<HomePage> {
 
               // Our Story
               OurStorySection(
-                imageUrl: _homeService.getOurStoryImageUrl(),
+                imageUrl: homeNotifier.getOurStoryImageUrl(),
                 onReadMorePressed: () {
                   // Handle read more button press
                 },
@@ -246,12 +232,11 @@ class _HomePageState extends State<HomePage> {
 
               // Newsletter Section
               NewsletterSection(
-                  onSubscriptionComplete: (success, message) {
-                    if (success) {
-                    } else {
-                      print('Newsletter subscription failed: $message');
-                    }
-                    },
+                onSubscriptionComplete: (success, message) {
+                  if (success) {} else {
+                    print('Newsletter subscription failed: $message');
+                  }
+                },
               ),
 
               const SizedBox(height: 30),
@@ -261,6 +246,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
 
   /*Widget _buildCategoryChip(String label, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
@@ -291,5 +277,5 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }*/
-}
+
 

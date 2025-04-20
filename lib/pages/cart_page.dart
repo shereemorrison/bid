@@ -3,27 +3,30 @@
 import 'package:bid/components/common_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_summary.dart';
 import 'package:bid/models/products_model.dart';
+import 'package:bid/services/shop_service.dart';
 import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:bid/providers/shop_provider.dart';
-import 'package:bid/services/cart_service.dart';
+import 'package:bid/archive/cart_service.dart';
+
+import '../providers/shop_provider.dart';
 
 
-class CartPage extends StatefulWidget {
+class CartPage extends ConsumerStatefulWidget {
   const CartPage({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  ConsumerState<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
-  final CartService _cartService = CartService();
+class _CartPageState extends ConsumerState<CartPage> {
+  final ShopService _shopService = ShopService();
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<Shop>().cart;
+    final shop = ref.watch(shopProvider);
+    final cart = shop.cart;
     double totalAmount = cart.fold(
         0.0, (sum, item) => sum + (item.price * item.quantity));
 
@@ -40,7 +43,7 @@ class _CartPageState extends State<CartPage> {
           Expanded(
             child: buildCartItemsList(
                 cart.cast<Product>(),
-                    (item) => _cartService.removeFromCart(context, item)
+                    (item) => _shopService.removeFromCart(context, item, ref)
             ),
           ),
           OrderSummary(

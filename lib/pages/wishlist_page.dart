@@ -1,27 +1,27 @@
 
-// ignore: unused_import
-import 'package:bid/components/cards/wishlist_item_card.dart';
 import 'package:bid/components/common_widgets/empty_state.dart';
 import 'package:bid/models/products_model.dart';
+import 'package:bid/services/shop_service.dart';
 import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
+import 'package:bid/archive/wishlist_service.dart';
 import 'package:bid/providers/shop_provider.dart';
-import 'package:bid/services/wishlist_service.dart';
 
-class WishlistPage extends StatefulWidget {
+class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
 
   @override
-  State<WishlistPage> createState() => _WishlistPageState();
+  ConsumerState<WishlistPage> createState() => _WishlistPageState();
 }
 
-class _WishlistPageState extends State<WishlistPage> {
-  final WishlistService _wishlistService = WishlistService();
+class _WishlistPageState extends ConsumerState<WishlistPage> {
+  final ShopService _shopService = ShopService();
 
   @override
   Widget build(BuildContext context) {
-    final wishlist = context.watch<Shop>().wishlist;
+    final wishlist = ref.watch(shopProvider).wishlist;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -34,8 +34,8 @@ class _WishlistPageState extends State<WishlistPage> {
       // Use the list helper
           : buildWishlistItemsList(
         wishlist.cast<Product>(),
-            (item) => _wishlistService.removeFromWishlist(context, item),
-            (item) => _wishlistService.addToCart(context, item),
+            (item) => _shopService.removeFromWishlist(context, item, ref),
+            (item) => _shopService.addToCart(context, item, ref),
       ),
     );
   }

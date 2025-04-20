@@ -2,46 +2,28 @@
 import 'package:bid/components/category_widgets/category_item.dart';
 import 'package:bid/components/category_widgets/category_list.dart';
 import 'package:bid/components/common_widgets/search_bar.dart';
+import 'package:bid/providers/category_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/category_model.dart';
 import '../services/category_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoriesPage extends StatefulWidget {
+class CategoriesPage extends ConsumerStatefulWidget {
   const CategoriesPage({super.key});
 
   @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
+  ConsumerState<CategoriesPage> createState() => _CategoriesPageState();
 }
 
-class _CategoriesPageState extends State<CategoriesPage> {
-  final CategoryService _categoryService = CategoryService();
-  List<Category> _categories = [];
-  bool _isLoading = false;
+class _CategoriesPageState extends ConsumerState<CategoriesPage> {
 
   @override
   void initState() {
     super.initState();
-    _loadCategories();
-  }
-
-  Future<void> _loadCategories() async {
-    setState(() {
-      _isLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(categoryNotifierProvider.notifier).loadCategories();
     });
-
-    try {
-      final categories = await _categoryService.getCategories();
-      setState(() {
-        _categories = categories;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      debugPrint('Error loading categories: $e');
-    }
   }
 
   void _navigateToCategory(Category category) {
@@ -51,6 +33,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final categories = ref.watch(categoriesProvider);
+    final isLoading = ref.watch(categoryLoadingProvider);
+    final error = ref.watch(categoryErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -65,14 +50,18 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             // Category blocks list
             Expanded(
-              child: _isLoading
+              child: isLoading
                   ? Center(
                 child: CircularProgressIndicator(
                   color: colorScheme.primary,
                 ),
               )
+                  : error != null
+                  ? Center(
+                child: Text('Error: $error'),
+              )
                   : CategoryListView(
-                categories: _categories,
+                categories: categories,
                 onCategorySelected: _navigateToCategory,
                 style: CategoryItemStyle.block,
                 maintainState: false, // No selection state for main navigation

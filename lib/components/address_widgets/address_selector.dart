@@ -4,9 +4,9 @@ import 'package:bid/providers/address_provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddressSelector extends StatefulWidget {
+class AddressSelector extends ConsumerStatefulWidget {
   final Function(AddressModel) onAddressSelected;
 
   const AddressSelector({
@@ -15,10 +15,10 @@ class AddressSelector extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AddressSelector> createState() => _AddressSelectorState();
+  ConsumerState<AddressSelector> createState() => _AddressSelectorState();
 }
 
-class _AddressSelectorState extends State<AddressSelector> {
+class _AddressSelectorState extends ConsumerState<AddressSelector> {
   @override
   void initState() {
     super.initState();
@@ -29,12 +29,11 @@ class _AddressSelectorState extends State<AddressSelector> {
   }
 
   void _loadAddresses() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final addressProvider = Provider.of<AddressProvider>(context, listen: false);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+    final userData = ref.read(userDataProvider);
 
-    if (authProvider.isLoggedIn && userProvider.userData != null) {
-      addressProvider.fetchUserAddresses(userProvider.userData!.userId);
+    if (isLoggedIn && userData != null) {
+      ref.read(addressNotifierProvider.notifier).fetchUserAddresses(userData.userId);
     }
   }
 
@@ -45,12 +44,12 @@ class _AddressSelectorState extends State<AddressSelector> {
         builder: (context) => AddressForm(
           addressToEdit: addressToEdit,
           onSave: (address) {
-            final addressProvider = Provider.of<AddressProvider>(context, listen: false);
+            final addressNotifier = ref.read(addressNotifierProvider.notifier);
 
             if (address.userId.startsWith('guest-') || addressToEdit != null) {
-              addressProvider.updateAddress(address);
+              addressNotifier.updateAddress(address);
             } else {
-              addressProvider.addAddress(address);
+              addressNotifier.addAddress(address);
             }
 
             widget.onAddressSelected(address);
@@ -63,13 +62,13 @@ class _AddressSelectorState extends State<AddressSelector> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final addressProvider = Provider.of<AddressProvider>(context);
 
-    if (addressProvider.isLoading) {
+    final isLoading = ref.watch(addressLoadingProvider);
+    final selectedAddress = ref.watch(effectiveAddressProvider);
+
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    final selectedAddress = addressProvider.selectedAddress;
 
     // If no address is selected, show a simple "Add Address" button
     if (selectedAddress == null) {

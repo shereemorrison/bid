@@ -1,6 +1,5 @@
 
 import 'package:bid/components/cart_widgets/add_to_cart_section.dart';
-import 'package:bid/components/product_widgets/color_selector.dart';
 import 'package:bid/components/product_widgets/main_product_image.dart';
 import 'package:bid/components/product_widgets/product_details_section.dart';
 import 'package:bid/components/product_widgets/quantity_selector.dart';
@@ -69,11 +68,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     });
   }
 
-  void _selectColor(Color color) {
-    setState(() {
-      selectedColor = color.toString();
-    });
-  }
+  // void _selectColor(Color color) {
+  //   setState(() {
+  //     selectedColor = color.toString();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

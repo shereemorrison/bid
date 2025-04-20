@@ -3,17 +3,18 @@ import 'package:bid/components/common_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_item_tile.dart';
 import 'package:bid/components/order_widgets/order_status_badge.dart';
+import 'package:bid/providers/order_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:bid/models/order_model.dart';
-import 'package:bid/providers/order_provider.dart';
 import 'package:bid/services/order_service.dart';
 import 'package:bid/utils/order_helpers.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/components/buttons/shopping_buttons.dart';
 
 
-class OrderDetailsPage extends StatefulWidget {
+class OrderDetailsPage extends ConsumerStatefulWidget {
   final String orderId;
 
   const OrderDetailsPage({
@@ -22,10 +23,10 @@ class OrderDetailsPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<OrderDetailsPage> createState() => _OrderDetailsPageState();
+  ConsumerState<OrderDetailsPage> createState() => _OrderDetailsPageState();
 }
 
-class _OrderDetailsPageState extends State<OrderDetailsPage> {
+class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   final OrderService _orderService = OrderService();
   Set<String> _selectedItemsForReturn = {};
   bool _isSubmittingReturn = false;
@@ -35,7 +36,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     super.initState();
     // Fetch order details when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<OrderProvider>(context, listen: false).fetchOrderDetails(widget.orderId);
+      ref.read(orderNotifierProvider.notifier).fetchOrderDetails(widget.orderId);
     });
   }
 
@@ -73,7 +74,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       );
 
       // Refresh order details to show updated status
-      Provider.of<OrderProvider>(context, listen: false).fetchOrderDetails(widget.orderId);
+      ref.read(orderNotifierProvider.notifier).fetchOrderDetails(widget.orderId);
 
       // Clear selection
       setState(() {
@@ -92,23 +93,23 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<OrderProvider>(
-        builder: (context, orderProvider, child) {
-          if (orderProvider.isLoading) {
+    final isLoading = ref.watch(orderLoadingProvider);
+    final error = ref.watch(orderErrorProvider);
+    final selectedOrder = ref.watch(selectedOrderProvider);
+
+    if (isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (orderProvider.error != null) {
+          if (error != null) {
             return EmptyState(
               icon: Icons.error_outline,
               title: 'Error Loading Order',
-              subtitle: orderProvider.error ?? 'An unknown error occurred',
+              subtitle: error,
             );
           }
 
-          final order = orderProvider.selectedOrder;
-          if (order == null) {
+          if (selectedOrder == null) {
             return const EmptyState(
               icon: Icons.shopping_bag_outlined,
               title: 'Order Not Found',
@@ -117,7 +118,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           }
 
           // Check if order is eligible for returns
-          final bool isReturnEligible = isOrderReturnEligible(order);
+          final bool isReturnEligible = isOrderReturnEligible(selectedOrder);
 
           return SingleChildScrollView(
             child: Padding(
@@ -125,15 +126,15 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildOrderHeader(context, order),
+                  _buildOrderHeader(context, selectedOrder),
                   const SizedBox(height: 24),
-                  _buildOrderItems(context, order, isReturnEligible),
+                  _buildOrderItems(context, selectedOrder, isReturnEligible),
                   const SizedBox(height: 24),
                   OrderCostSummary(
-                    itemsTotal: order.subtotal,
-                    shipping: order.shipping_amount,
-                    tax: order.taxAmount,
-                    total: order.totalAmount,
+                    itemsTotal: selectedOrder.subtotal,
+                    shipping: selectedOrder.shipping_amount,
+                    tax: selectedOrder.taxAmount,
+                    total: selectedOrder.totalAmount,
                   ),
                   const SizedBox(height: 24),
                   if (isReturnEligible && _selectedItemsForReturn.isNotEmpty)
@@ -150,10 +151,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               ),
             ),
           );
-        },
-      ),
-    );
-  }
+        }
 
   Widget _buildOrderHeader(BuildContext context, Order order) {
     return Column(

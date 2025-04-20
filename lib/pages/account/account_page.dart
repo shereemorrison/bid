@@ -5,85 +5,63 @@ import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-class AccountPage extends StatefulWidget {
+class AccountPage extends ConsumerStatefulWidget {
   const AccountPage({super.key});
 
   @override
-  State<AccountPage> createState() => _AccountPageState();
+  ConsumerState<AccountPage> createState() => _AccountPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
-
-  SupabaseAuthProvider? _authProvider;
+class _AccountPageState extends ConsumerState<AccountPage> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-      authProvider.addListener(_onAuthChanged);
       _fetchUserDataIfNeeded();
       _fetchOrdersIfNeeded();
     });
   }
 
-  void _onAuthChanged() {
-    _fetchUserDataIfNeeded();
-    _fetchOrdersIfNeeded();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-  }
-
-  @override
-  void dispose() {
-    if (_authProvider != null) {
-      _authProvider!.removeListener(_onAuthChanged);
-    }
-    super.dispose();
-  }
-
   void _fetchUserDataIfNeeded() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+    final userData = ref.read(userDataProvider);
+    final isLoading = ref.read(userLoadingProvider);
+    final authUserId = ref.read(authUserIdProvider);
 
-    if (authProvider.isLoggedIn && userProvider.userData == null &&
-        !userProvider.isLoading) {
-      print('Fetching user data for ID: ${authProvider.user!.id}');
-      userProvider.fetchUserData(authProvider.user!.id);
+    if (isLoggedIn && userData == null && !isLoading && authUserId != null) {
+      print('Fetching user data for ID: $authUserId');
+      ref.read(userNotifierProvider.notifier).updateUserData(authUserId);
     }
   }
 
   void _fetchOrdersIfNeeded() {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+    final orders = ref.read(ordersProvider);
+    final isLoading = ref.read(orderLoadingProvider);
+    final authUserId = ref.read(authUserIdProvider);
 
-    if (authProvider.isLoggedIn && orderProvider.orders == null && !orderProvider.isLoading) {
-      print('Fetching orders for user ID: ${authProvider.user!.id}');
-      orderProvider.fetchUserOrders(authProvider.user!.id);
+    if (isLoggedIn && orders == null && !isLoading && authUserId != null) {
+      print('Fetching orders for user ID: $authUserId');
+      ref.read(orderNotifierProvider.notifier).fetchUserOrders(authUserId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
-    final userData = userProvider.userData;
-    final isLoading = userProvider.isLoading;
+    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final userData = ref.watch(userDataProvider);
+    final isLoading = ref.watch(userLoadingProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : !authProvider.isLoggedIn
+          : !isLoggedIn
           ? const LoggedOutView()
-          : LoggedInView(userData: userProvider.userData),
+          : LoggedInView(userData: userData),
     );
   }
 }

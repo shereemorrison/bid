@@ -48,7 +48,10 @@ Widget buildProductGrid(
   }
 
   return RefreshIndicator(
-    onRefresh: onRefresh,
+    onRefresh: () async {
+      onRefresh();
+      return Future.value();
+    },
     child: GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

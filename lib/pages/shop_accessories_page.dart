@@ -1,62 +1,49 @@
 
 import 'package:bid/models/products_model.dart';
+import 'package:bid/providers/product_provider.dart';
 import 'package:bid/services/product_service.dart';
 import 'package:bid/utils/page_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-class ShopAccessoriesPage extends StatefulWidget {
+class ShopAccessoriesPage extends ConsumerStatefulWidget {
   const ShopAccessoriesPage({super.key});
 
   @override
-  _ShopAccessoriesPageState createState() => _ShopAccessoriesPageState();
+  ConsumerState<ShopAccessoriesPage> createState() => _ShopAccessoriesPageState();
 }
 
-class _ShopAccessoriesPageState extends State<ShopAccessoriesPage> {
-  final ProductService _productService = ProductService();
-  List<Product> _products = [];
-  bool _isLoading = true;
-  String? _error;
+class _ShopAccessoriesPageState extends ConsumerState<ShopAccessoriesPage> {
+  final String categorySlug = 'accessories';
 
   @override
   void initState() {
     super.initState();
-    _loadProducts();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadProducts();
+    });
   }
 
-  Future<void> _loadProducts() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _error = null;
-      });
-
-      // Get products from Supabase
-      final products = await _productService.getProductsByCategorySlug('accessories');
-
-      setState(() {
-        _products = products;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = 'Failed to load products: $e';
-        _isLoading = false;
-      });
-    }
+  void _loadProducts() {
+    ref.read(productNotifierProvider.notifier).loadProductsByCategory(categorySlug);
   }
 
   @override
   Widget build(BuildContext context) {
+    final products = ref.watch(productsByCategoryProvider(categorySlug));
+    final isLoading = ref.watch(productLoadingProvider);
+    final error = ref.watch(productErrorProvider);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: buildShopPageLayout(
           context,
           "Shop Accessories",
-          _products,
-          _isLoading,
-          _error,
-          _loadProducts
+          products,
+          isLoading,
+          error,
+              () => ref.read(productNotifierProvider.notifier).loadProductsByCategory(categorySlug)
       ),
     );
   }

@@ -8,10 +8,10 @@ import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:bid/services/mapbox_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class AddressForm extends StatefulWidget {
+class AddressForm extends ConsumerStatefulWidget {
   final AddressModel? addressToEdit;
   final Function(AddressModel) onSave;
 
@@ -22,10 +22,10 @@ class AddressForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AddressForm> createState() => _AddressFormState();
+  ConsumerState<AddressForm> createState() => _AddressFormState();
 }
 
-class _AddressFormState extends State<AddressForm> {
+class _AddressFormState extends ConsumerState<AddressForm> {
   final _formKey = GlobalKey<FormState>();
 
   // Form controllers
@@ -75,8 +75,7 @@ class _AddressFormState extends State<AddressForm> {
     } else {
       // Pre-fill with user data if available
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
-        final userData = userProvider.userData;
+        final userData = ref.read(userDataProvider);
         if (userData != null) {
           _firstNameController.text = userData.firstName ?? '';
           _lastNameController.text = userData.lastName ?? '';
@@ -147,13 +146,13 @@ class _AddressFormState extends State<AddressForm> {
 
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
-      final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final isLoggedIn = ref.read(isLoggedInProvider);
+      final userData = ref.read(userDataProvider);
 
       // Get userId if logged in, otherwise use a temporary ID
       String userId = 'guest-${const Uuid().v4()}';
-      if (authProvider.isLoggedIn && userProvider.userData != null) {
-        userId = userProvider.userData!.userId;
+      if (isLoggedIn && userData != null) {
+        userId = userData.userId;
       }
 
       // Create or update the address model
@@ -206,6 +205,7 @@ class _AddressFormState extends State<AddressForm> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -261,30 +261,25 @@ class _AddressFormState extends State<AddressForm> {
 
                 const SizedBox(height: 24),
 
+
                 // Set as default - only show for logged in users
-                Consumer<SupabaseAuthProvider>(
-                  builder: (context, authProvider, child) {
-                    if (authProvider.isLoggedIn) {
-                      return Row(
-                        children: [
-                          Checkbox(
-                            value: _isDefault,
-                            onChanged: (value) {
-                              setState(() {
-                                _isDefault = value ?? false;
-                              });
-                            },
-                          ),
-                          Text(
-                            'Set as default ${_addressType == 'shipping' ? 'shipping' : 'billing'} address',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                if (isLoggedIn)
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _isDefault,
+                        onChanged: (value) {
+                          setState(() {
+                            _isDefault = value ?? false;
+                          });
+                        },
+                      ),
+                      Text(
+                        'Set as default ${_addressType == 'shipping' ? 'shipping' : 'billing'} address',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
 
                 const SizedBox(height: 24),
 

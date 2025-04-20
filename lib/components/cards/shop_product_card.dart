@@ -3,9 +3,9 @@ import 'package:bid/models/products_model.dart';
 import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShopProductCard extends StatelessWidget {
+class ShopProductCard extends ConsumerWidget {
   final Product product;
   final bool isLarge;
 
@@ -15,57 +15,11 @@ class ShopProductCard extends StatelessWidget {
     this.isLarge = false,
   });
 
-  void addToCart(BuildContext context) {
-    context.read<Shop>().addToCart(product);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.cardBackground,
-        content: Text(
-          "Added ${product.name} to cart",
-          style: TextStyle(color: Theme.of(context).colorScheme.textPrimary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.accent),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void addToWishlist(BuildContext context) {
-    context.read<Shop>().addToWishlist(product);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        content: Text(
-          "Added ${product.name} to wishlist",
-          style: TextStyle(color: Theme.of(context).colorScheme.surface),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "OK",
-              style: TextStyle(color: Theme.of(context).colorScheme.surface),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final shop = ref.watch(shopProvider);
+
 
     // Adjust dimensions based on size
     final double cardWidth = isLarge ? 180.0 : 150.0;
@@ -128,7 +82,7 @@ class ShopProductCard extends StatelessWidget {
                     Expanded(
                       child: BaseStyledButton(
                         text: "ADD",
-                        onTap: () => addToCart(context),
+                        onTap: () => shop.addToCartWithFeedback(context, product),
                         height: 30,
                         fontSize: fontSize - 2,
                       ),
@@ -137,7 +91,7 @@ class ShopProductCard extends StatelessWidget {
 
                     // Add to Wishlist Button (icon button)
                     CustomIconButton(icon: Icons.favorite_border,
-                      onTap: () => addToWishlist(context),
+                      onTap: () => shop.addToWishlistWithFeedback(context, product),
                       size: 30,
                       iconSize: 16,
                     ),

@@ -7,9 +7,9 @@ import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoggedInView extends StatelessWidget {
+class LoggedInView extends ConsumerWidget {
   final UserModel? userData;
 
   const LoggedInView({
@@ -18,7 +18,7 @@ class LoggedInView extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
 
     // If userData is null, show a loading indicator
@@ -59,14 +59,14 @@ class LoggedInView extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 // Orders
-                _buildOrdersSection(context),
+                _buildOrdersSection(context,ref),
 
                 const SizedBox(height: 40),
 
                 // Sign Out Button
                 AuthButton(
                   text: 'Sign Out',
-                  onTap: () => _handleSignOut(context),
+                  onTap: () => _handleSignOut(context, ref),
                 ),
               ],
             ),
@@ -113,7 +113,11 @@ class LoggedInView extends StatelessWidget {
     );
   }
 
-  Widget _buildOrdersSection(BuildContext context) {
+  Widget _buildOrdersSection(BuildContext context, WidgetRef ref) {
+    final orders = ref.watch(ordersProvider);
+    final isLoading = ref.watch(orderLoadingProvider);
+    final error = ref.watch(orderErrorProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,44 +129,28 @@ class LoggedInView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Consumer<OrderProvider>(
-          builder: (context, orderProvider, child) {
-            if (orderProvider.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
 
-            if (orderProvider.error != null) {
-              return Text('Error: ${orderProvider.error}');
-            }
-
-            final orders = orderProvider.orders;
-            if (orders == null || orders.isEmpty) {
-              return InfoItem(label: 'Order ID', value: 'No recent orders');
-            }
-
-            return OrderHistoryTable(
+        if (isLoading)
+          const Center(child: CircularProgressIndicator())
+        else if (error != null)
+          Text('Error: $error')
+        else if (orders == null || orders.isEmpty)
+            InfoItem(label: 'Order ID', value: 'No recent orders')
+          else
+            OrderHistoryTable(
               orders: orders.take(5).toList(), // Show last 5 orders
               onViewDetails: (orderId) {
                 // Navigate to order details page
                 print('View details for order: $orderId');
               },
-            );
-          },
-        ),
+            ),
       ],
     );
   }
 
-  void _handleSignOut(BuildContext context) async {
-    final authProvider = Provider.of<SupabaseAuthProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
-    // Sign out
-    await authProvider.signOut();
-
-    // Clear data after sign out
-    userProvider.clearUserData();
-    orderProvider.clearOrders();
+  void _handleSignOut(BuildContext context, WidgetRef ref) async {
+    await ref.read(authNotifierProvider.notifier).signOut();
+    ref.read(userNotifierProvider.notifier).clearUserData();
+    ref.read(orderNotifierProvider.notifier).clearOrders();
   }
 }

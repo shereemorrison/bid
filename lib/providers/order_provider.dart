@@ -1,67 +1,92 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/order_model.dart';
 import '../services/order_service.dart';
 
-class OrderProvider with ChangeNotifier {
+// State providers
+final ordersProvider = StateProvider<List<Order>?>((ref) => null);
+final selectedOrderProvider = StateProvider<Order?>((ref) => null);
+final orderLoadingProvider = StateProvider<bool>((ref) => false);
+final orderErrorProvider = StateProvider<String?>((ref) => null);
+
+// Order state notifier
+class OrderNotifier extends StateNotifier<AsyncValue<void>> {
+  final Ref _ref;
   final OrderService _orderService = OrderService();
 
-  List<Order>? _orders;
-  Order? _selectedOrder;
-  bool _isLoading = false;
-  String? _error;
+  OrderNotifier(this._ref) : super(const AsyncValue.data(null));
 
-  List<Order>? get orders => _orders;
-  Order? get selectedOrder => _selectedOrder;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
-
+  // Fetch user orders
   Future<void> fetchUserOrders(String userId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(orderLoadingProvider.notifier).state = true;
+    _ref.read(orderErrorProvider.notifier).state = null;
 
     try {
+      // Get orders as Map<String, dynamic> and convert to Order objects
       final ordersData = await _orderService.getUserOrders(userId);
-      print('Orders data received: ${ordersData.length} orders');
-      _orders = ordersData.map((order) => Order.fromJson(order)).toList();
+      final orders = ordersData.map((orderData) => Order.fromJson(orderData)).toList();
+      _ref.read(ordersProvider.notifier).state = orders;
     } catch (e) {
-      _error = 'Failed to load orders: $e';
-      print(_error);
+      _ref.read(orderErrorProvider.notifier).state = e.toString();
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(orderLoadingProvider.notifier).state = false;
     }
   }
 
+  // Fetch order details
   Future<void> fetchOrderDetails(String orderId) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+    _ref.read(orderLoadingProvider.notifier).state = true;
+    _ref.read(orderErrorProvider.notifier).state = null;
 
     try {
+      // Get order details as Map<String, dynamic> and convert to Order
       final orderData = await _orderService.getOrderDetails(orderId);
       if (orderData != null) {
-        _selectedOrder = Order.fromJson(orderData);
+        final order = Order.fromJson(orderData);
+        _ref.read(selectedOrderProvider.notifier).state = order;
       } else {
-        _error = 'Order not found';
+        _ref.read(selectedOrderProvider.notifier).state = null;
       }
     } catch (e) {
-      _error = 'Failed to load order details: $e';
+      _ref.read(orderErrorProvider.notifier).state = e.toString();
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _ref.read(orderLoadingProvider.notifier).state = false;
     }
   }
 
-  void clearSelectedOrder() {
-    _selectedOrder = null;
-    notifyListeners();
+  // Create a new order
+  Future<void> createOrder(Order order) async {
+    _ref.read(orderLoadingProvider.notifier).state = true;
+    _ref.read(orderErrorProvider.notifier).state = null;
+
+    try {
+      // Create the order and get the result
+      final newOrder = await _orderService.createOrder(order);
+
+      // Update selected order
+      _ref.read(selectedOrderProvider.notifier).state = newOrder;
+
+      // Update orders list if it exists
+      final currentOrders = _ref.read(ordersProvider);
+      if (currentOrders != null) {
+        _ref.read(ordersProvider.notifier).state = [...currentOrders, newOrder];
+      }
+    } catch (e) {
+      _ref.read(orderErrorProvider.notifier).state = e.toString();
+    } finally {
+      _ref.read(orderLoadingProvider.notifier).state = false;
+    }
   }
 
+  // Clear orders (e.g., on logout)
   void clearOrders() {
-    _orders = null;
-    _selectedOrder = null;
-    _error = null;
-    notifyListeners();
+    _ref.read(ordersProvider.notifier).state = null;
+    _ref.read(selectedOrderProvider.notifier).state = null;
+    _ref.read(orderErrorProvider.notifier).state = null;
   }
 }
+
+// Provider for the order notifier
+final orderNotifierProvider = StateNotifierProvider<OrderNotifier, AsyncValue<void>>((ref) {
+  return OrderNotifier(ref);
+});

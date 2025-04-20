@@ -212,6 +212,26 @@ class UserService {
       return [];
     }
   }
+
+  Future<bool> updateUser(UserModel user) async {
+    try {
+      await _supabase
+          .from('users')
+          .update({
+        'first_name': user.firstName,
+        'last_name': user.lastName,
+        'phone': user.phone,
+        'address': user.address,
+        // Add other fields as needed
+      })
+          .eq('user_id', user.userId);
+
+      return true;
+    } catch (e) {
+      print('Error updating user: $e');
+      return false;
+    }
+  }
 }
 
 

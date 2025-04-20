@@ -1,17 +1,12 @@
 
 
-import 'package:bid/providers/address_provider.dart';
-import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/theme_provider.dart';
-import 'package:bid/providers/user_provider.dart';
 import 'package:bid/routes/app_router.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bid/supabase/supabase_config.dart';
-import 'providers/shop_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,36 +15,26 @@ void main() async {
   SupabaseConfig.navigatorKey = GlobalKey<NavigatorState>();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => SupabaseAuthProvider()),
-        ChangeNotifierProvider(create: (context) => Shop()),
-        ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => OrderProvider()),
-        ChangeNotifierProvider(create: (_) => AddressProvider()),
-      ],
+    const ProviderScope(
       child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-    builder: (context, themeProvider, child) {
+  Widget build(BuildContext context, WidgetRef ref) {
+      final isDarkMode = ref.watch(isDarkModeProvider);
+
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'B.I.D.',
         theme: lightMode,
         darkTheme: darkMode,
-        themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
         routerConfig: goRouter,
       );
-      },
-    );
   }
 }

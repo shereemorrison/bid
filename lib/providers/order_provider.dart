@@ -1,5 +1,6 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/order_model.dart';
 import '../services/order_service.dart';
 
@@ -12,9 +13,11 @@ final orderErrorProvider = StateProvider<String?>((ref) => null);
 // Order state notifier
 class OrderNotifier extends StateNotifier<AsyncValue<void>> {
   final Ref _ref;
-  final OrderService _orderService = OrderService();
+  final OrderService _orderService;
 
-  OrderNotifier(this._ref) : super(const AsyncValue.data(null));
+  OrderNotifier(this._ref) :
+        _orderService = OrderService(Supabase.instance.client),
+        super(const AsyncValue.data(null));
 
   // Fetch user orders
   Future<void> fetchUserOrders(String userId) async {

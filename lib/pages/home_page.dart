@@ -15,7 +15,6 @@ import 'package:bid/components/product_widgets/product_horizontal_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -26,6 +25,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final TextEditingController _emailController = TextEditingController();
   String? _selectedCategoryId = 'all';
+  bool _disposed = false;
 
   @override
   void initState() {
@@ -38,8 +38,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void dispose() {
+    _disposed = true;
     _emailController.dispose();
-    ref.read(homeNotifierProvider.notifier).disposeService();
     super.dispose();
   }
 

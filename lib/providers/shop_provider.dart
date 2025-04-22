@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/products_model.dart';
 
 // State providers
+final cartTabIndexProvider = StateProvider<int>((ref) => 0);
 final cartProvider = StateProvider<List<Product>>((ref) => []);
 final shopLoadingProvider = StateProvider<bool>((ref) => false);
 final shopErrorProvider = StateProvider<String?>((ref) => null);
@@ -105,6 +106,8 @@ final shopProvider = Provider<Shop>((ref) {
     addToCartWithFeedback: shopNotifier.addToCartWithFeedback,
     removeFromCartWithFeedback: shopNotifier.removeFromCartWithFeedback,
 
+    setCartTabIndex: (index) => ref.read(cartTabIndexProvider.notifier).state = index,
+
     addToWishlistWithFeedback: (context, product) {
       shopNotifier.addToWishlist(product);
       DialogService.showAddToWishlistDialog(context, product);
@@ -130,6 +133,7 @@ class Shop {
   final Function(BuildContext, String, Product) removeFromCartWithFeedback;
   final Function(BuildContext, Product) addToWishlistWithFeedback;
   final Function(BuildContext, String, Product) removeFromWishlistWithFeedback;
+  final Function(int) setCartTabIndex;
 
   Shop({
     required this.cart,
@@ -145,5 +149,7 @@ class Shop {
     required this.removeFromCartWithFeedback,
     required this.addToWishlistWithFeedback,
     required this.removeFromWishlistWithFeedback,
+    required this.setCartTabIndex,
+
   });
 }

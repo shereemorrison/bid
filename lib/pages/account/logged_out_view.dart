@@ -1,8 +1,8 @@
+import 'package:bid/components/auth/login_form.dart';
+import 'package:bid/components/auth/register_form.dart';
 import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/common_widgets/profile_header.dart';
 import 'package:bid/components/common_widgets/social_login_row.dart';
-import 'package:bid/modals/loginmodal.dart';
-import 'package:bid/modals/registrationmodal.dart';
 import 'package:flutter/material.dart';
 
 class LoggedOutView extends StatelessWidget {
@@ -46,11 +46,18 @@ class LoggedOutView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return LoginPage(
-          onTap: () {
-            Navigator.pop(context);
-            _showRegistrationModal(context);
+        return Dialog(
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+        ),
+        child: LoginForm(
+        onLoginSuccess: () => Navigator.pop(context),
+        onCancel: () => Navigator.pop(context),
+        onRegisterInstead: () {
+        Navigator.pop(context);
+        _showRegistrationModal(context);
           },
+        ),
         );
       },
     );
@@ -60,11 +67,18 @@ class LoggedOutView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return RegistrationPage(
-          onTap: () {
-            Navigator.pop(context);
-            _showLoginModal(context);
-          },
+        return Dialog(
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+        ),
+        child: RegisterForm(
+        onRegisterSuccess: () => Navigator.pop(context),
+        onCancel: () => Navigator.pop(context),
+        onLoginInstead: () {
+        Navigator.pop(context);
+        _showLoginModal(context);
+          }
+        ),
         );
       },
     );

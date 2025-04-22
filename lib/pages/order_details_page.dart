@@ -27,7 +27,7 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
-  final OrderService _orderService = OrderService();
+  late final OrderService _orderService;
   Set<String> _selectedItemsForReturn = {};
   bool _isSubmittingReturn = false;
 

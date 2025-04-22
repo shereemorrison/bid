@@ -1,6 +1,5 @@
 import 'package:bid/models/address_model.dart';
 import 'package:bid/supabase/supabase_config.dart';
-import 'package:uuid/uuid.dart';
 
 class AddressService {
   final _supabase = SupabaseConfig.client;

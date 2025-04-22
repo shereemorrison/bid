@@ -61,7 +61,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
           ? const Center(child: CircularProgressIndicator())
           : !isLoggedIn
           ? const LoggedOutView()
-          : LoggedInView(userData: userData),
+          : LoggedInView(),
     );
   }
 }

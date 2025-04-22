@@ -49,7 +49,7 @@ class _CartPageState extends ConsumerState<CartPage> {
           OrderSummary(
             totalAmount: totalAmount,
             onCheckout: () {
-              context.push('/cart/summary');
+              context.push('/cart/checkout');
             },
           ),
         ],

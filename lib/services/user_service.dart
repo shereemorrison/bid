@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:bid/models/address_model.dart';
 import 'package:bid/models/user_model.dart';
 import 'package:bid/supabase/supabase_config.dart';
+import 'package:uuid/uuid.dart';
 
 
 class UserService {
@@ -18,15 +19,47 @@ class UserService {
   }) async {
     print("Attempting to create user with authId: $authId, email: $email");
     try {
-      // Check if the user already exists
-      final existingUser = await _supabase
+
+      final session = _supabase.auth.currentSession;
+      String actualEmail = email;
+
+      if (session != null && session.user.id == authId) {
+        actualEmail = session.user.email ?? email;
+        print('Using authenticated email from session: $actualEmail');
+      }
+
+      final existingUserByEmail = email.isNotEmpty ? await _supabase
           .from('users')
-          .select('user_id')
+          .select('user_id, auth_id')
+          .eq('email', email)
+          .maybeSingle() : null;
+
+      final existingUserByAuthId = await _supabase
+          .from('users')
+          .select('user_id, email')
           .eq('auth_id', authId)
           .maybeSingle();
 
-      if (existingUser != null) {
-        // Update existing user
+      // If user exists by email, update record with current auth_id
+      if (existingUserByEmail != null) {
+        print('Found user with matching email but different auth_id. Updating auth_id.');
+        await _supabase.from('users').update({
+          'auth_id': authId,
+          if (firstName != null) 'first_name': firstName,
+          if (lastName != null) 'last_name': lastName,
+          if (phone != null) 'phone': phone,
+          'is_registered': true,
+          'last_login': DateTime.now().toIso8601String(),
+          if (address != null) 'address': address,
+        }).eq('user_id', existingUserByEmail['user_id']);
+        return;
+      }
+
+      print('Creating new user record');
+
+      // If user exists by auth_id but email doesnt match, update the email
+      if (existingUserByAuthId != null) {
+        print('Updating existing user by auth_id');
         await _supabase.from('users').update({
           'email': email,
           if (firstName != null) 'first_name': firstName,
@@ -40,8 +73,11 @@ class UserService {
       }
       print('Creating new user record');
 
-      final random = Random();
-      final userId = random.nextInt(100) + 1;
+      // Only create a new user if no existing user was found by email or auth_id
+      print('No existing user found. Creating new user record with email: $actualEmail');
+
+      // Generate a UUID for user_id
+      final userId = _generateUuid();
 
       // Insert new user
       await _supabase.from('users').insert({
@@ -62,19 +98,59 @@ class UserService {
     }
   }
 
-  // Get user data from the users table by auth_id
+  // Helper method to generate UUID
+  String _generateUuid() {
+    return const Uuid().v4();
+  }
+
   Future<UserModel?> getUserData(String authId) async {
     try {
-      final data = await _supabase
-          .from('users')
-          .select()
-          .eq('auth_id', authId)
-          .maybeSingle();
+      // Get the current authenticated user's email
+      final session = _supabase.auth.currentSession;
+      String? authEmail;
+
+      if (session != null && session.user.id == authId) {
+        authEmail = session.user.email;
+        print('Found authenticated user email for lookup: $authEmail');
+      }
+
+      // First try to find user by email if available (prioritize email lookup)
+      var data;
+      if (authEmail != null) {
+        print('Looking up user by email first: $authEmail');
+        data = await _supabase
+            .from('users')
+            .select()
+            .eq('email', authEmail)
+            .maybeSingle();
+
+        // If found by email but auth_id doesn't match, update the auth_id
+        if (data != null && data['auth_id'] != authId) {
+          print('Found user by email, but auth_id doesn\'t match. Updating auth_id from ${data['auth_id']} to $authId');
+          await _supabase
+              .from('users')
+              .update({'auth_id': authId})
+              .eq('user_id', data['user_id']);
+          print('Updated auth_id for user found by email');
+        }
+      }
+
+      // If not found by email, try by auth_id
+      if (data == null) {
+        print('User not found by email, trying by auth_id: $authId');
+        data = await _supabase
+            .from('users')
+            .select()
+            .eq('auth_id', authId)
+            .maybeSingle();
+      }
 
       if (data == null) {
-        print('UserService: No user data found for authId: $authId');
+        print('UserService: No user data found for authId: $authId or email: $authEmail');
         return null;
       }
+
+      print('Found user data: user_id=${data['user_id']}, auth_id=${data['auth_id']}, email=${data['email']}');
 
       UserModel user = UserModel.fromJson(data);
       final addresses = await getUserAddresses(user.userId);
@@ -230,6 +306,30 @@ class UserService {
     } catch (e) {
       print('Error updating user: $e');
       return false;
+    }
+  }
+
+  // Find user by email - direct method to get user_id by email
+  Future<String?> findUserIdByEmail(String email) async {
+    try {
+      print('Directly looking up user by email: $email');
+      final result = await _supabase
+          .from('users')
+          .select('user_id')
+          .eq('email', email)
+          .maybeSingle();
+
+      if (result != null) {
+        final userId = result['user_id'];
+        print('Found user_id: $userId for email: $email');
+        return userId;
+      }
+
+      print('No user found with email: $email');
+      return null;
+    } catch (e) {
+      print('Error finding user by email: $e');
+      return null;
     }
   }
 }

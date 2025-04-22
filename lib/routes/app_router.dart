@@ -1,3 +1,5 @@
+import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/order_confirmation_page.dart';
 import 'package:bid/pages/order_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +17,23 @@ import 'package:bid/pages/product_detail_page.dart';
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_page.dart';
 
+class RouterNotifier extends ChangeNotifier {
+  bool _shouldRefresh = false;
+
+  void refresh() {
+    _shouldRefresh = true;
+    notifyListeners();
+  }
+
+  bool get shouldRefresh => _shouldRefresh;
+
+  void resetRefresh() {
+    _shouldRefresh = false;
+  }
+}
+
+final routerNotifier = RouterNotifier();
+
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _wishlistNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'wishlist');
@@ -28,6 +47,18 @@ final goRouter = GoRouter(
   debugLogDiagnostics: false,
 
   routes: [
+    GoRoute(
+      path: '/order-confirmation',
+      name: 'order_confirmation',
+      pageBuilder: (context, state) {
+        final orderId = state.uri.queryParameters['order_id'];
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: OrderConfirmationPage(orderId: orderId),
+        );
+      },
+    ),
+
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return AppLayout(navigationShell: navigationShell);
@@ -120,10 +151,11 @@ final goRouter = GoRouter(
                   ),
               routes: [
                 GoRoute(
-                  path: 'summary',
-                  name: 'order_summary',
-                  builder: (context, state) => const OrderSummaryPage(),
+                  path: 'checkout', // Fixed: Removed leading slash
+                  name: 'checkout',
+                  builder: (context, state) => const CheckoutPage(),
                 ),
+
               ],
             ),
           ],

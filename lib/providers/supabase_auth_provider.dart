@@ -1,4 +1,5 @@
 
+import 'package:bid/providers/address_provider.dart';
 import 'package:bid/providers/order_provider.dart';
 import 'package:bid/providers/shop_provider.dart';
 import 'package:bid/providers/user_provider.dart';
@@ -61,7 +62,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<void>> {
         final authId = response.user!.id;
         final userEmail = email; // Use the email they logged in with
 
-        print('Successfully signed in with auth_id: $authId and email: $userEmail');
+        // print('Successfully signed in with auth_id: $authId and email: $userEmail');
 
         _ref.read(isLoggedInProvider.notifier).state = true;
         _ref.read(authUserIdProvider.notifier).state = authId;
@@ -72,7 +73,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<void>> {
         final existingUserId = await userService.findUserIdByEmail(userEmail);
 
         if (existingUserId != null) {
-          print('Found existing user with email $userEmail, updating auth_id');
+          // print('Found existing user with email $userEmail, updating auth_id');
           // Update the existing user's auth_id to match the current session
           await SupabaseConfig.client
               .from('users')
@@ -164,6 +165,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<void>> {
 
         // Clear orders data
         _ref.read(orderNotifierProvider.notifier).clearOrders();
+
+        _ref.read(addressNotifierProvider.notifier).clearAllAddressData();
 
         print('Successfully cleared all user data and cart before logout');
       } catch (e) {

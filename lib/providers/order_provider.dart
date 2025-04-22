@@ -16,7 +16,7 @@ class OrderNotifier extends StateNotifier<AsyncValue<void>> {
   final OrderService _orderService;
 
   OrderNotifier(this._ref) :
-        _orderService = OrderService(Supabase.instance.client),
+        _orderService = _ref.read(orderServiceProvider),
         super(const AsyncValue.data(null));
 
   // Fetch user orders

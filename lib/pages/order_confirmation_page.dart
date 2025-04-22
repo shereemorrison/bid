@@ -8,7 +8,7 @@ import 'package:bid/utils/order_confirmation_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Create a simple state provider for order details
 final orderDetailsProvider = StateProvider.family<Map<String, dynamic>?, String?>((ref, orderId) => null);
@@ -34,6 +34,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
   @override
   void initState() {
     super.initState();
+    print('OrderConfirmationPage initialized with orderId: ${widget.orderId}');
     _loadOrderDetails();
 
     // Clear the cart immediately
@@ -55,17 +56,55 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
     super.dispose();
   }
 
+  // Update the _loadOrderDetails method to handle payment intent IDs
   Future<void> _loadOrderDetails() async {
     if (widget.orderId == null) {
       setState(() {
         _isLoading = false;
+        _errorMessage = 'No order ID provided';
       });
       return;
     }
 
     try {
-      final orderService = ref.read(orderServiceProvider);
-      final orderDetails = await orderService.getOrderDetails(widget.orderId!);
+      print('Loading order details for ID: ${widget.orderId}');
+      final orderQueryService = OrderQueryService(Supabase.instance.client);
+
+      // Try to get order details
+      Map<String, dynamic>? orderDetails;
+      try {
+        // First check if this is a payment intent ID
+        if (widget.orderId!.startsWith('pi_')) {
+          print('This appears to be a payment intent ID, looking up order by payment_intent_id');
+
+          // Try to find the order by payment_intent_id
+          final orderByPaymentIntent = await Supabase.instance.client
+              .from('orders')
+              .select('order_id')
+              .eq('payment_intent_id', widget.orderId)
+              .maybeSingle();
+
+          if (orderByPaymentIntent != null) {
+            print('Found order with payment intent ID: ${orderByPaymentIntent['order_id']}');
+            orderDetails = await orderQueryService.getOrderDetails(orderByPaymentIntent['order_id']);
+          } else {
+            print('No order found with payment intent ID: ${widget.orderId}');
+            throw Exception('No order found with this payment reference');
+          }
+        } else {
+          // Regular order ID lookup
+          orderDetails = await orderQueryService.getOrderDetails(widget.orderId!);
+        }
+      } catch (e) {
+        print('Error fetching order details: $e');
+        // If we can't get order details, create a placeholder
+        orderDetails = {
+          'order_id': widget.orderId,
+          'status': 'PENDING',
+          'total_amount': 0.0,
+          'order_items': [],
+        };
+      }
 
       if (mounted) {
         setState(() {
@@ -237,5 +276,32 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
         ),
       ),
     );
+  }
+}
+
+class OrderQueryService {
+  final SupabaseClient client;
+
+  OrderQueryService(this.client);
+
+  Future<Map<String, dynamic>> getOrderDetails(String orderId) async {
+    try {
+      final response = await client
+          .from('orders')
+          .select('''
+            *,
+            order_items (
+              *,
+              product:product_id (*)
+            )
+          ''')
+          .eq('order_id', orderId)
+          .single();
+
+      return response as Map<String, dynamic>;
+    } catch (e) {
+      print('Error fetching order details: $e');
+      throw Exception('Failed to load order details');
+    }
   }
 }

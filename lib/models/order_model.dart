@@ -65,9 +65,9 @@ class Order {
 
 
   factory Order.fromJson(Map<String, dynamic> json) {
-    print('Order data: $json');
-    print('Status: ${json['status']}');
-    print('Order status: ${json['order_status']}');
+    // print('Order data: $json');
+    // print('Status: ${json['status']}');
+    // print('Order status: ${json['order_status']}');
     // Handle the case where status might be null
     String statusName = 'Unknown';
     if (json['status'] != null && json['status'] is String) {

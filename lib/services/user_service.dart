@@ -117,7 +117,7 @@ class UserService {
       // First try to find user by email if available (prioritize email lookup)
       var data;
       if (authEmail != null) {
-        print('Looking up user by email first: $authEmail');
+        // print('Looking up user by email first: $authEmail');
         data = await _supabase
             .from('users')
             .select()
@@ -137,7 +137,7 @@ class UserService {
 
       // If not found by email, try by auth_id
       if (data == null) {
-        print('User not found by email, trying by auth_id: $authId');
+        // print('User not found by email, trying by auth_id: $authId');
         data = await _supabase
             .from('users')
             .select()
@@ -150,7 +150,7 @@ class UserService {
         return null;
       }
 
-      print('Found user data: user_id=${data['user_id']}, auth_id=${data['auth_id']}, email=${data['email']}');
+      // print('Found user data: user_id=${data['user_id']}, auth_id=${data['auth_id']}, email=${data['email']}');
 
       UserModel user = UserModel.fromJson(data);
       final addresses = await getUserAddresses(user.userId);

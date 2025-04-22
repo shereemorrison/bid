@@ -17,8 +17,20 @@ class ShippingTab extends ConsumerStatefulWidget {
   ConsumerState<ShippingTab> createState() => _ShippingTabState();
 }
 
-class _ShippingTabState extends ConsumerState<ShippingTab> {
+class _ShippingTabState extends ConsumerState<ShippingTab> with AutomaticKeepAliveClientMixin {
   bool _showAddressSelector = false;
+
+  @override
+  bool get wantKeepAlive => false; // Changed to false to prevent keeping state between sessions
+
+  @override
+  void initState() {
+    super.initState();
+    // Ensure addresses are loaded or cleared based on login state
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   ref.read(autoLoadAddressesProvider);
+    // });
+  }
 
   void _handleAddressSelected(dynamic address) {
     setState(() {
@@ -34,6 +46,7 @@ class _ShippingTabState extends ConsumerState<ShippingTab> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Required for AutomaticKeepAliveClientMixin
     final selectedAddress = ref.watch(effectiveAddressProvider);
     final colorScheme = Theme.of(context).colorScheme;
 

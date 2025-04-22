@@ -10,8 +10,7 @@ class PaymentService {
 
   // Initialize Stripe - call this in your app initialization
   static Future<void> initStripe() async {
-    // Get a valid publishable key from your Stripe dashboard
-    Stripe.publishableKey = 'pk_test_YOUR_VALID_KEY';
+    Stripe.publishableKey = 'pk_test_51RG63pBLQQ4dypXtam2LgVa0Z7eqbR2EKEekCIp8iy7X4iiuRP1lGfMMAfsdwqKrsqyUez6Nal6XVeccP9Feug0U00RY0YG5ZI';
     await Stripe.instance.applySettings();
   }
 
@@ -57,53 +56,6 @@ class PaymentService {
       return paymentIntentData;
     } catch (e) {
       print('Payment intent error: $e');
-      rethrow;
-    }
-  }
-
-  // Process payment with direct card confirmation
-  Future<Map<String, dynamic>> processCardPayment({
-    required double amount,
-    required String currency,
-    required String name,
-  }) async {
-    try {
-      // 1. Create payment intent
-      final paymentIntentData = await createPaymentIntent(
-        amount: amount,
-        currency: currency,
-      );
-
-      print('Payment intent data: $paymentIntentData');
-      final clientSecret = paymentIntentData['clientSecret'] as String;
-
-      // 2. Create payment method
-      final paymentMethod = await Stripe.instance.createPaymentMethod(
-        params: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(
-            billingDetails: BillingDetails(name: name),
-          ),
-        ),
-      );
-
-      print('Payment method created: ${paymentMethod.id}');
-
-      // 3. Confirm payment with the card details
-      await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: clientSecret,
-        data: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(
-            billingDetails: BillingDetails(name: name),
-          ),
-        ),
-      );
-
-      print('Payment confirmed successfully');
-
-      // Return success result
-      return {'success': true};
-    } catch (e) {
-      print('Payment processing error: $e');
       rethrow;
     }
   }

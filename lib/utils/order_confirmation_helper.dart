@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/shop_provider.dart';
 import '../../providers/checkout_provider.dart';
 import '../../utils/format_helpers.dart';
+import '../services/checkout_session_manager.dart';
 
 class OrderConfirmationHelper {
   // Clear cart and checkout state

@@ -1,8 +1,8 @@
 import 'package:bid/components/address_widgets/address_form.dart';
 import 'package:bid/models/address_model.dart';
 import 'package:bid/providers/address_provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
 import 'package:bid/providers/user_provider.dart';
+import 'package:bid/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,8 +29,9 @@ class _AddressSelectorState extends ConsumerState<AddressSelector> {
   }
 
   void _loadAddresses() {
-    final isLoggedIn = ref.read(isLoggedInProvider);
-    final userData = ref.read(userDataProvider);
+    final authService = ref.read(authServiceProvider);
+    final isLoggedIn = ref.read(authService.isLoggedInProvider);
+    final userData = ref.read(authService.userProvider);
 
     if (isLoggedIn && userData != null) {
       ref.read(addressNotifierProvider.notifier).fetchUserAddresses(userData.userId);

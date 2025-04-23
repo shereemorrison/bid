@@ -1,5 +1,5 @@
 import 'package:bid/components/cards/order_info_card.dart';
-import 'package:bid/components/common_widgets/empty_state.dart';
+import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_item_tile.dart';
 import 'package:bid/components/order_widgets/order_status_badge.dart';

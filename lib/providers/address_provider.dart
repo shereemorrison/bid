@@ -1,5 +1,6 @@
 // lib/providers/address_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import '../models/address_model.dart';
 import '../services/address_service.dart';
 
@@ -245,36 +246,61 @@ class AddressNotifier extends StateNotifier<AsyncValue<void>> {
 
   // Clear all address data (for logout)
   void clearAddressData() {
-    _ref.read(addressesProvider.notifier).state = [];
-    _ref.read(selectedAddressProvider.notifier).state = null;
-    _ref.read(addressErrorProvider.notifier).state = null;
-    _ref.read(guestAddressProvider.notifier).state = null;
+    _ref
+        .read(addressesProvider.notifier)
+        .state = [];
+    _ref
+        .read(selectedAddressProvider.notifier)
+        .state = null;
+    _ref
+        .read(addressErrorProvider.notifier)
+        .state = null;
+    _ref
+        .read(guestAddressProvider.notifier)
+        .state = null;
   }
 
   // Modify the clearAddresses method to clear ALL address data including guest addresses
   void clearAddresses() {
-    _ref.read(addressesProvider.notifier).state = null;
-    _ref.read(selectedAddressProvider.notifier).state = null;
+    _ref
+        .read(addressesProvider.notifier)
+        .state = null;
+    _ref
+        .read(selectedAddressProvider.notifier)
+        .state = null;
     //_ref.read(guestAddressProvider.notifier).state = null; // IMPORTANT: Clear guest address too
-    _ref.read(addressErrorProvider.notifier).state = null;
+    _ref
+        .read(addressErrorProvider.notifier)
+        .state = null;
     print('All address data cleared');
   }
 
-// Add a new method to clear absolutely everything
-  void clearAllAddressData() {
+  void clearAllAddressData(WidgetRef _ref) {
+    // Assuming these providers exist and are accessible via _ref
+    // Replace with your actual provider names if different
+    final addressesProvider = StateProvider<Address?>((ref) => null); // Example
+    final selectedAddressProvider = StateProvider<Address?>((
+        ref) => null); // Example
+    final guestAddressProvider = StateProvider<Address?>((
+        ref) => null); // Example
+    final addressErrorProvider = StateProvider<String?>((
+        ref) => null); // Example
+
     clearAddresses();
-    //clearGuestAddress();
     // Force invalidate all providers to ensure complete reset
     _ref.invalidate(addressesProvider);
     _ref.invalidate(selectedAddressProvider);
-    //_ref.invalidate(guestAddressProvider);
+    _ref.invalidate(
+        guestAddressProvider); // UNCOMMENTED: Invalidate guest address provider
     _ref.invalidate(addressErrorProvider);
     print('Address providers completely reset');
   }
 }
 
 // Provider for the address notifier
-final addressNotifierProvider = StateNotifierProvider<AddressNotifier, AsyncValue<void>>((ref) {
-  final addressService = ref.watch(addressServiceProvider);
-  return AddressNotifier(addressService, ref);
-});
+  final addressNotifierProvider = StateNotifierProvider<
+      AddressNotifier,
+      AsyncValue<void>>((ref) {
+    final addressService = ref.watch(addressServiceProvider);
+    return AddressNotifier(addressService, ref);
+  });

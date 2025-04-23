@@ -1,39 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/supabase_auth_provider.dart';
-import '../../components/common_widgets/custom_textfield.dart';
-import '../../components/buttons/custom_button.dart';
-import '../../services/newsletter_service.dart';
+import '../../services/guest_to_registered_converter.dart';
+import '../common_widgets/custom_textfield.dart';
+import '../buttons/custom_button.dart';
 
-class RegisterForm extends ConsumerStatefulWidget {
-  final VoidCallback? onRegisterSuccess;
-  final VoidCallback? onCancel;
-  final VoidCallback? onLoginInstead;
-  final bool showBackButton;
+/// A specialized form for converting guest users to registered users
+///
+/// This form:
+/// - Pre-fills data from the guest checkout
+/// - Creates an account without losing checkout progress
+/// - Provides a streamlined experience for guest-to-registered conversion
+class CreateAccountFromGuestForm extends ConsumerStatefulWidget {
+  final String initialFirstName;
+  final String initialLastName;
+  final String initialEmail;
+  final VoidCallback onAccountCreated;
+  final VoidCallback onCancel;
 
-  const RegisterForm({
+  const CreateAccountFromGuestForm({
     Key? key,
-    this.onRegisterSuccess,
-    this.onCancel,
-    this.onLoginInstead,
-    this.showBackButton = false,
+    required this.initialFirstName,
+    required this.initialLastName,
+    required this.initialEmail,
+    required this.onAccountCreated,
+    required this.onCancel,
   }) : super(key: key);
 
   @override
-  ConsumerState<RegisterForm> createState() => _RegisterFormState();
+  ConsumerState<CreateAccountFromGuestForm> createState() =>
+      _CreateAccountFromGuestFormState();
 }
 
-class _RegisterFormState extends ConsumerState<RegisterForm> {
+class _CreateAccountFromGuestFormState extends
+ConsumerState<CreateAccountFromGuestForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController emailController;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPwController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
   bool _subscribeToNewsletter = false;
-  final NewsletterService _newsletterService = NewsletterService();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with pre-filled data
+    firstNameController = TextEditingController(text: widget.initialFirstName);
+    lastNameController = TextEditingController(text: widget.initialLastName);
+    emailController = TextEditingController(text: widget.initialEmail);
+  }
 
   @override
   void dispose() {
@@ -45,7 +62,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     super.dispose();
   }
 
-  Future<void> register() async {
+  Future<void> createAccount() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -56,77 +73,28 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     });
 
     try {
-      // Register the user with Supabase
-      await ref.read(authNotifierProvider.notifier).signUp(
-        emailController.text.trim(),
-        passwordController.text.trim(),
+      // Get the guest to registered converter
+      final converter = ref.read(guestToRegisteredConverterProvider);
+
+      // Convert guest to registered user
+      final success = await converter.convertGuestToRegistered(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
         firstName: firstNameController.text.trim(),
         lastName: lastNameController.text.trim(),
       );
 
-      if (_subscribeToNewsletter) {
-        try {
-          // Get user ID if available
-          String? userId = ref.read(authUserIdProvider);
-
-          // Subscribe to newsletter
-          await _newsletterService.subscribeToNewsletter(
-            emailController.text.trim(),
-            userId: userId,
-          );
-        } catch (e) {
-          // Don't block registration if newsletter subscription fails
-          print('Newsletter subscription failed: ${e.toString()}');
-        }
+      if (!success) {
+        throw Exception("Failed to create account");
       }
 
       if (mounted) {
-        if (widget.onRegisterSuccess != null) {
-          widget.onRegisterSuccess!();
-        } else {
-          Navigator.of(context).pop();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
-                  ),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                title: Text(
-                  'Welcome to B.I.D.${firstNameController.text.isNotEmpty ? ', ${firstNameController.text}' : ''}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                content: Text(
-                  'You have successfully registered',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.surface),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'OK',
-                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        }
+        widget.onAccountCreated();
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = "Error registering: ${e.toString()}";
+          _errorMessage = "Error creating account: ${e.toString()}";
           _isLoading = false;
         });
       }
@@ -150,37 +118,37 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (widget.showBackButton && widget.onCancel != null)
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: widget.onCancel,
-                    ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: widget.onCancel,
                   ),
-
-                Text(
-                  "Sign Up",
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                ),
-                Icon(
-                  Icons.person,
-                  size: 60,
-                  color: Theme.of(context).colorScheme.onSurface,
                 ),
 
-                const SizedBox(height: 25),
-
                 Text(
-                  "BELIEVE  IN  DREAMS",
+                  "Create Your Account",
                   style: TextStyle(
-                    fontSize: 20,
                     color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
 
+                Text(
+                  "Complete your purchase and save your information for next time",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                // Form fields (similar to RegisterForm but pre-filled)
+                // First name and last name
                 Row(
                   children: [
                     Expanded(
@@ -215,6 +183,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
                 const SizedBox(height: 10),
 
+                // Email
                 MyTextField(
                   hintText: "Email",
                   obscureText: false,
@@ -232,8 +201,9 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
                 const SizedBox(height: 10),
 
+                // Password
                 MyTextField(
-                  hintText: "Enter Password",
+                  hintText: "Create Password",
                   obscureText: true,
                   controller: passwordController,
                   validator: (value) {
@@ -249,6 +219,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
                 const SizedBox(height: 10),
 
+                // Confirm password
                 MyTextField(
                   hintText: "Confirm Password",
                   obscureText: true,
@@ -315,37 +286,12 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
                 const SizedBox(height: 25),
 
+                // Create account button
                 _isLoading
                     ? CircularProgressIndicator()
                     : MyButton(
-                  onTap: register,
-                  text: "Register",
-                ),
-
-                const SizedBox(height: 10),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Already have an account?",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: widget.onLoginInstead,
-                      child: Text(
-                        "Login here",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
+                  onTap: createAccount,
+                  text: "Create Account & Continue",
                 ),
               ],
             ),

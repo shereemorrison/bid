@@ -1,14 +1,12 @@
-import 'package:bid/components/auth/auth_modal.dart';
-import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/components/common_widgets/empty_state.dart';
-import 'package:bid/providers/shop_provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/services/order_service.dart';
-import 'package:bid/utils/order_confirmation_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../components/buttons/shopping_buttons.dart';
+import '../components/cart_widgets/empty_state.dart';
+import '../providers/shop_provider.dart';
+import '../services/auth_service.dart';
+import '../utils/order_confirmation_helper.dart';
 
 // Create a simple state provider for order details
 final orderDetailsProvider = StateProvider.family<Map<String, dynamic>?, String?>((ref, orderId) => null);
@@ -56,7 +54,6 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
     super.dispose();
   }
 
-  // Update the _loadOrderDetails method to handle payment intent IDs
   Future<void> _loadOrderDetails() async {
     if (widget.orderId == null) {
       setState(() {
@@ -138,31 +135,30 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
     context.go('/');
   }
 
-  void _showCreateAccountDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AuthModal(
-          initialType: AuthModalType.register,
-          onRegisterSuccess: () {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Account created successfully!'),
-                backgroundColor: Colors.green,
-              ),
-            );
-          },
-          onCancel: () => Navigator.pop(context),
-        );
-      },
-    );
+  void _navigateToCreateAccount() {
+    // Get shipping info from order if available
+    Map<String, dynamic> initialData = {
+      'isGuestCheckout': true,
+    };
+
+    if (_orderDetails != null && _orderDetails!['shipping_address'] != null) {
+      final shippingAddress = _orderDetails!['shipping_address'];
+      initialData['firstName'] = shippingAddress['first_name'] ?? '';
+      initialData['lastName'] = shippingAddress['last_name'] ?? '';
+      initialData['email'] = shippingAddress['email'] ?? '';
+    }
+
+    // Navigate to register page with initial data
+    context.push('/account/register', extra: initialData);
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+
+    // Use the new AuthService
+    final authService = ref.watch(authServiceProvider);
+    final isLoggedIn = ref.watch(authService.isLoggedInProvider);
 
     return WillPopScope(
       // Prevent back navigation with hardware back button
@@ -247,7 +243,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
                 margin: const EdgeInsets.only(bottom: 16),
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: _showCreateAccountDialog,
+                  onPressed: _navigateToCreateAccount,
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: colorScheme.primary),
                     padding: const EdgeInsets.symmetric(vertical: 16),

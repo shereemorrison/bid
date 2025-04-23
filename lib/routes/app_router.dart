@@ -1,6 +1,8 @@
 import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/login_page.dart';
 import 'package:bid/pages/order_confirmation_page.dart';
 import 'package:bid/pages/order_details_page.dart';
+import 'package:bid/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bid/models/products_model.dart';
@@ -16,6 +18,7 @@ import 'package:bid/pages/product_detail_page.dart';
 
 import '../layouts/appLayout.dart';
 import '../pages/order_summary_page.dart';
+import '../services/checkout_session_manager.dart';
 
 class RouterNotifier extends ChangeNotifier {
   bool _shouldRefresh = false;
@@ -55,6 +58,35 @@ final goRouter = GoRouter(
         return NoTransitionPage(
           key: state.pageKey,
           child: OrderConfirmationPage(orderId: orderId),
+        );
+      },
+    ),
+
+    // Auth routes (outside of the bottom navigation)
+    GoRoute(
+      path: '/account/login',
+      name: 'login',
+      pageBuilder: (context, state) {
+        final redirectPath = state.uri.queryParameters['redirect'];
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: LoginPage(redirectPath: redirectPath),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: '/account/register',
+      name: 'register',
+      pageBuilder: (context, state) {
+        final redirectPath = state.uri.queryParameters['redirect'];
+        final initialData = state.extra as Map<String, dynamic>?;
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: RegisterPage(
+            redirectPath: redirectPath,
+            initialData: initialData,
+          ),
         );
       },
     ),

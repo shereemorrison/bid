@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/payment_provider.dart';
+import '../../services/checkout_session_manager.dart';
 import '../../utils/format_helpers.dart';
 import '../../providers/shop_provider.dart';
 import '../../providers/checkout_provider.dart';

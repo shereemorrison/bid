@@ -1,4 +1,6 @@
 import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/services/auth_service.dart';
+import 'package:bid/services/checkout_session_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +11,7 @@ import '../../providers/address_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services/order_service.dart';
 import '../../utils/order_calculator.dart';
+import '../services/guest_to_registered_converter.dart';
 
 class PaymentServiceHelper {
   // Validate payment inputs
@@ -85,8 +88,10 @@ class PaymentServiceHelper {
       final selectedAddress = ref.read(effectiveAddressProvider);
 
       // Check if user is logged in, but don't require it
-      final userData = ref.read(userDataProvider);
-      final isLoggedIn = userData != null;
+      final authService = ref.read(authServiceProvider);
+      final userData = ref.read(authService.userProvider);
+      final isLoggedIn = ref.read(authService.isLoggedInProvider);
+      final userId = ref.read(authService.authUserIdProvider);
 
       // Validate address and cart
       if (selectedAddress == null) {
@@ -116,7 +121,7 @@ class PaymentServiceHelper {
 
       // Use the createOrderFromCheckout method with guest checkout support
       final orderResult = await orderService.createOrderFromCheckout(
-        userId: isLoggedIn ? userData.userId : 'guest',
+        userId: isLoggedIn ? userId ?? 'guest' : 'guest',
         products: cart,
         shippingAddress: selectedAddress,
         subtotal: subtotal,

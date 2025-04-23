@@ -1,5 +1,5 @@
 
-import 'package:bid/components/common_widgets/empty_state.dart';
+import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/models/products_model.dart';
 import 'package:bid/services/shop_service.dart';
 import 'package:bid/utils/list_helpers.dart';

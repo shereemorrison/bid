@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../components/auth/checkout_auth_adapter.dart';
 import '../components/checkout/bag_tab.dart';
 import '../components/checkout/shipping_tab.dart';
 import '../components/checkout/payment_tab.dart';
 import '../providers/shop_provider.dart';
 import '../utils/order_calculator.dart';
+import '../services/checkout_session_manager.dart';
+import '../services/auth_service.dart';
 
 // Provider to track the current checkout step
 final checkoutStepProvider = StateProvider<int>((ref) => 0);
@@ -22,6 +25,7 @@ class CheckoutPage extends ConsumerStatefulWidget {
 class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentIndex = 0;
+  bool _showAuthFlow = false;
 
   @override
   void initState() {
@@ -38,10 +42,35 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
 
       // Reset checkout complete flag when page loads
       ref.read(checkoutCompleteProvider.notifier).state = false;
+
+      // Check auth status
+      _checkAuthStatus();
     });
 
     // Listen to tab changes
     _tabController.addListener(_handleTabChange);
+  }
+
+  void _checkAuthStatus() {
+    // Use the new AuthService
+    final authService = ref.read(authServiceProvider);
+    final isLoggedIn = ref.read(authService.isLoggedInProvider);
+
+    if (!isLoggedIn) {
+      // Show auth flow if user is not logged in
+      setState(() {
+        _showAuthFlow = true;
+      });
+    } else {
+      // Initialize checkout session with logged-in user
+      final authUserId = ref.read(authService.authUserIdProvider);
+      if (authUserId != null) {
+        ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
+          userId: authUserId,
+          isGuestCheckout: false,
+        );
+      }
+    }
   }
 
   void _handleTabChange() {
@@ -51,6 +80,35 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
       });
       ref.read(checkoutStepProvider.notifier).state = _currentIndex;
     }
+  }
+
+  void _handleAuthSuccess() {
+    setState(() {
+      _showAuthFlow = false;
+    });
+
+    // Initialize checkout session with logged-in user
+    // Use the new AuthService
+    final authService = ref.read(authServiceProvider);
+    final authUserId = ref.read(authService.authUserIdProvider);
+
+    if (authUserId != null) {
+      ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
+        userId: authUserId,
+        isGuestCheckout: false,
+      );
+    }
+  }
+
+  void _handleContinueAsGuest() {
+    setState(() {
+      _showAuthFlow = false;
+    });
+
+    // Initialize checkout session as guest
+    ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
+      isGuestCheckout: true,
+    );
   }
 
   @override
@@ -132,7 +190,16 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
           unselectedLabelStyle: textTheme.bodyMedium,
         ),
       ),
-      body: IndexedStack(
+      body: _showAuthFlow
+          ? CheckoutAuthAdapter(
+        onAuthSuccess: _handleAuthSuccess,
+        onContinueAsGuest: _handleContinueAsGuest,
+        onCancel: () {
+          // Handle cancel (e.g., go back to cart)
+          Navigator.of(context).pop();
+        },
+      )
+          : IndexedStack(
         index: _currentIndex,
         children: [
           // Bag tab (Order Summary)
@@ -149,6 +216,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
           // Shipping tab
           ShippingTab(
             onProceed: () {
+              // Save shipping info to session
+              // This would be implemented in your ShippingTab
               setState(() {
                 _currentIndex = 2;
               });

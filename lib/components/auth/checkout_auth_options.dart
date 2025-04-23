@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Options for checkout authentication
 enum CheckoutAuthOption {
   login,
+  register,
   guest,
-  register
 }
 
 class CheckoutAuthOptions extends StatelessWidget {
@@ -22,69 +23,75 @@ class CheckoutAuthOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: colorScheme.secondary,
-          width: 2,
-        ),
-      ),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        constraints: BoxConstraints(
-          maxWidth: 600,
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Header with optional close button
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Checkout Options',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.secondary,
-                  ),
+            Expanded(
+              child: Text(
+                'Checkout Options',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
                 ),
-                if (showCloseButton && onClose != null)
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: onClose,
-                  ),
-              ],
+              ),
             ),
-            const SizedBox(height: 20),
-            _buildOptionButton(
-              context: context,
-              icon: Icons.login,
-              label: 'Sign In',
-              description: 'Already have an account? Sign in for a faster checkout',
-              onTap: () => onOptionSelected(CheckoutAuthOption.login),
-            ),
-            const SizedBox(height: 12),
-            _buildOptionButton(
-              context: context,
-              icon: Icons.person_add_outlined,
-              label: 'Create Account',
-              description: 'Create an account to track orders and save your details',
-              onTap: () => onOptionSelected(CheckoutAuthOption.register),
-            ),
-            const SizedBox(height: 12),
-            _buildOptionButton(
-              context: context,
-              icon: Icons.shopping_bag_outlined,
-              label: 'Checkout as Guest',
-              description: 'Continue without creating an account',
-              onTap: () => onOptionSelected(CheckoutAuthOption.guest),
-            ),
+            if (showCloseButton)
+              IconButton(
+                icon: Icon(Icons.close, color: colorScheme.primary),
+                onPressed: onClose,
+              ),
           ],
         ),
-      ),
+
+        const SizedBox(height: 20),
+
+        Text(
+          'Please select how you would like to proceed:',
+          style: TextStyle(
+            fontSize: 16,
+            color: colorScheme.onSurface,
+          ),
+        ),
+
+        const SizedBox(height: 30),
+
+        // Login option
+        _buildOptionButton(
+          context: context,
+          icon: Icons.login,
+          label: 'Login',
+          description: 'Sign in with your existing account',
+          onTap: () => onOptionSelected(CheckoutAuthOption.login),
+        ),
+
+        const SizedBox(height: 15),
+
+        // Register option
+        _buildOptionButton(
+          context: context,
+          icon: Icons.person_add,
+          label: 'Register',
+          description: 'Create a new account',
+          onTap: () => onOptionSelected(CheckoutAuthOption.register),
+        ),
+
+        const SizedBox(height: 15),
+
+        // Guest checkout option
+        _buildOptionButton(
+          context: context,
+          icon: Icons.shopping_bag,
+          label: 'Guest Checkout',
+          description: 'Continue without an account',
+          onTap: () => onOptionSelected(CheckoutAuthOption.guest),
+        ),
+      ],
     );
   }
 
@@ -102,12 +109,12 @@ class CheckoutAuthOptions extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          border: Border.all(color: colorScheme.secondary.withOpacity(0.3)),
-          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.primary.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           children: [
-            Icon(icon, color: colorScheme.secondary, size: 24),
+            Icon(icon, color: colorScheme.primary, size: 24),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -118,25 +125,21 @@ class CheckoutAuthOptions extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: colorScheme.secondary,
+                      color: colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     description,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: colorScheme.onSurface.withOpacity(0.7),
+                      fontSize: 14,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ],
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: colorScheme.secondary,
-              size: 16,
-            ),
+            Icon(Icons.arrow_forward_ios, color: colorScheme.primary, size: 16),
           ],
         ),
       ),

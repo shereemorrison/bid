@@ -4,8 +4,7 @@ import 'package:bid/components/address_widgets/address_type_toggle.dart';
 import 'package:bid/components/address_widgets/contact_info_form.dart';
 import 'package:bid/config/api_keys.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/providers/user_provider.dart';
+import 'package:bid/services/auth_service.dart';
 import 'package:bid/services/mapbox_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +74,9 @@ class _AddressFormState extends ConsumerState<AddressForm> {
     } else {
       // Pre-fill with user data if available
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final userData = ref.read(userDataProvider);
+        final authService = ref.read(authServiceProvider);
+        final userData = ref.read(authService.userProvider);
+
         if (userData != null) {
           _firstNameController.text = userData.firstName ?? '';
           _lastNameController.text = userData.lastName ?? '';
@@ -146,8 +147,9 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
-      final isLoggedIn = ref.read(isLoggedInProvider);
-      final userData = ref.read(userDataProvider);
+      final authService = ref.read(authServiceProvider);
+      final isLoggedIn = ref.read(authService.isLoggedInProvider);
+      final userData = ref.read(authService.userProvider);
 
       // Get userId if logged in, otherwise use a temporary ID
       String userId = 'guest-${const Uuid().v4()}';
@@ -205,7 +207,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final authService = ref.watch(authServiceProvider);
+    final isLoggedIn = ref.watch(authService.isLoggedInProvider);
 
     return Scaffold(
       body: SingleChildScrollView(

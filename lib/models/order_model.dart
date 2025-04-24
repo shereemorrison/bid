@@ -182,6 +182,8 @@ class Order {
       shippedAt: parseDate(json['shipped_at']),
       deliveredAt: parseDate(json['delivered_at']),
       items: orderItems,
+      shippingAddress: json['shipping_address'],
+      paymentMethod: json['payment_method'],
     );
   }
 }

@@ -19,11 +19,6 @@ class LoggedInView extends ConsumerWidget {
     final orderError = ref.watch(ordersErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    // If userData is null, show a loading indicator
-    if (userData == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     // Fetch orders if needed
     if (orders == null && !isOrderLoading) {
       final authUserId = ref.read(userIdProvider);
@@ -59,10 +54,10 @@ class LoggedInView extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                InfoItem(label: 'First Name', value: userData.firstName ?? 'Not set'),
-                InfoItem(label: 'Last Name', value: userData.lastName ?? 'Not set'),
-                InfoItem(label: 'Phone', value: userData.phone ?? 'Not set'),
-                InfoItem(label: 'Email', value: userData.email),
+                InfoItem(label: 'First Name', value: userData?.firstName ?? 'Not set'),
+                InfoItem(label: 'Last Name', value: userData?.lastName ?? 'Not set'),
+                InfoItem(label: 'Phone', value: userData?.phone ?? 'Not set'),
+                InfoItem(label: 'Email', value: userData!.email),
 
                 const SizedBox(height: 10),
 

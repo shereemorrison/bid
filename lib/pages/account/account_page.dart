@@ -27,11 +27,6 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     final isLoggedIn = ref.read(isLoggedInProvider);
     final userData = ref.read(userDataProvider);
     final authUserId = ref.read(userIdProvider);
-
-    if (isLoggedIn && userData == null && authUserId != null) {
-      print('Fetching user data for ID: $authUserId');
-      ref.read(authProvider.notifier).refreshUserData();
-    }
   }
 
   void _fetchOrdersIfNeeded() {

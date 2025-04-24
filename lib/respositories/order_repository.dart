@@ -188,15 +188,6 @@ class OrderRepository extends BaseRepository {
               ? Map<String, dynamic>.from(rawProduct as Map)
               : null;
 
-          // Check if item has been returned
-          final dynamic returnItems = item['return_items'];
-          String? returnStatus;
-          if (returnItems != null && returnItems is List && returnItems.isNotEmpty) {
-            // Get the latest return status
-            final latestReturn = returnItems.last;
-            returnStatus = latestReturn['status'] ?? 'PENDING';
-          }
-
           // Create a processed item with all needed fields
           final Map<String, dynamic> processedItem = {
             ...item,
@@ -208,7 +199,6 @@ class OrderRepository extends BaseRepository {
             'image_url': product != null
                 ? product['image_url']
                 : item['image_url'],
-            'return_status': returnStatus,
           };
 
           processedItems.add(processedItem);

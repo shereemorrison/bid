@@ -1,6 +1,6 @@
 import 'package:bid/respositories/address_repository.dart';
 import 'package:bid/respositories/category_repository.dart';
-import 'package:bid/respositories/order_repository.dart';
+import 'package:bid/respositories/order_repository.dart' as repo;
 import 'package:bid/respositories/payment_repository.dart';
 import 'package:bid/respositories/product_repository.dart';
 import 'package:bid/respositories/user_repository.dart';
@@ -39,8 +39,8 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
   return UserRepository();
 });
 
-final orderRepositoryProvider = Provider<OrderRepository>((ref) {
-  return OrderRepository();
+final orderRepositoryProvider = Provider<repo.OrderRepository>((ref) {
+  return repo.OrderRepository();
 });
 
 final addressRepositoryProvider = Provider<AddressRepository>((ref) {

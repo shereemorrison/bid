@@ -1,6 +1,4 @@
 
-
-import 'package:bid/providers/theme_provider.dart';
 import 'package:bid/routes/app_router.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:bid/themes/light_mode.dart';
@@ -30,14 +28,13 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-      final isDarkMode = ref.watch(isDarkModeProvider);
 
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'B.I.D.',
         theme: lightMode,
         darkTheme: darkMode,
-        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        themeMode: ThemeMode.dark,
         routerConfig: goRouter,
       );
   }

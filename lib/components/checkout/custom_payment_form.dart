@@ -1,9 +1,19 @@
 import 'package:bid/components/common_widgets/custom_textfield.dart';
+import 'package:bid/providers.dart';
+import 'package:bid/respositories/payment_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:flutter_stripe/flutter_stripe.dart';
-import '../../providers/payment_provider.dart';
 import 'package:go_router/go_router.dart';
+
+final paymentServiceProvider = riverpod.Provider<PaymentRepository>((ref) {
+  return ref.watch(paymentRepositoryProvider);
+});
+
+final paymentResultProvider = riverpod.StateProvider<String?>((ref) {
+  return null;
+});
 
 class CustomPaymentForm extends ConsumerStatefulWidget {
   final double amount;
@@ -31,7 +41,6 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.all(50.0),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class AddressBuilder {
-  static AddressModel buildAddress({
+  static Address buildAddress({
     required String userId,
     required String addressType,
     required bool isDefault,
@@ -18,11 +18,11 @@ class AddressBuilder {
     required TextEditingController stateController,
     required TextEditingController postalCodeController,
     required TextEditingController countryController,
-    AddressModel? existingAddress,
+    Address? existingAddress,
   }) {
     if (existingAddress != null) {
-      return AddressModel(
-        addressId: existingAddress.addressId,
+      return Address(
+        id: existingAddress.id,
         userId: userId,
         addressType: addressType,
         isDefault: isDefault,
@@ -40,8 +40,8 @@ class AddressBuilder {
         updatedAt: DateTime.now(),
       );
     } else {
-      return AddressModel(
-        addressId: const Uuid().v4(),
+      return Address(
+        id: const Uuid().v4(),
         userId: userId,
         addressType: addressType,
         isDefault: isDefault,

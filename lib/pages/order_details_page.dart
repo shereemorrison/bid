@@ -3,12 +3,10 @@ import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/components/order_widgets/order_item_tile.dart';
 import 'package:bid/components/order_widgets/order_status_badge.dart';
-import 'package:bid/providers/order_provider.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:bid/models/order_model.dart';
-import 'package:bid/services/order_service.dart';
 import 'package:bid/utils/order_helpers.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/components/buttons/shopping_buttons.dart';
@@ -27,7 +25,6 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
-  late final OrderService _orderService;
   Set<String> _selectedItemsForReturn = {};
   bool _isSubmittingReturn = false;
 
@@ -36,7 +33,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     super.initState();
     // Fetch order details when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(orderNotifierProvider.notifier).fetchOrderDetails(widget.orderId);
+      ref.read(ordersProvider.notifier).fetchOrderDetails(widget.orderId);
     });
   }
 
@@ -66,7 +63,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
     try {
       // Submit return request to Supabase
-      await _orderService.initiateReturn(widget.orderId, _selectedItemsForReturn.toList());
+      await ref.read(ordersProvider.notifier).initiateReturn(widget.orderId, _selectedItemsForReturn.toList());
 
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,7 +71,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       );
 
       // Refresh order details to show updated status
-      ref.read(orderNotifierProvider.notifier).fetchOrderDetails(widget.orderId);
+      ref.read(ordersProvider.notifier).fetchOrderDetails(widget.orderId);
 
       // Clear selection
       setState(() {
@@ -93,8 +90,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(orderLoadingProvider);
-    final error = ref.watch(orderErrorProvider);
+    final isLoading = ref.watch(ordersLoadingProvider);
+    final error = ref.watch(ordersErrorProvider);
     final selectedOrder = ref.watch(selectedOrderProvider);
 
     if (isLoading) {
@@ -132,7 +129,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   const SizedBox(height: 24),
                   OrderCostSummary(
                     itemsTotal: selectedOrder.subtotal,
-                    shipping: selectedOrder.shipping_amount,
+                    shipping: selectedOrder.shippingAmount,
                     tax: selectedOrder.taxAmount,
                     total: selectedOrder.totalAmount,
                   ),

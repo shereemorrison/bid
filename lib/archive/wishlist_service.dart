@@ -1,4 +1,4 @@
-// import 'package:bid/models/products_model.dart';
+// import 'package:bid/models/product_model.dart';
 // import 'package:bid/providers/shop_provider.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';

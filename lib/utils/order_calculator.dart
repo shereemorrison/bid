@@ -1,5 +1,5 @@
 import 'package:bid/models/order_item_model.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 
 class OrderCalculator {
   /// Calculates the subtotal from order items

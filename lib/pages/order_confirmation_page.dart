@@ -1,11 +1,10 @@
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/buttons/shopping_buttons.dart';
 import '../components/cart_widgets/empty_state.dart';
-import '../providers/shop_provider.dart';
-import '../services/auth_service.dart';
 import '../utils/order_confirmation_helper.dart';
 
 // Create a simple state provider for order details
@@ -46,7 +45,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
     // Make sure we don't have any lingering state
     if (!_hasNavigatedAway) {
       try {
-        ref.read(cartProvider.notifier).state = [];
+        ref.read(cartProvider.notifier).clearCart();
       } catch (e) {
         print('Error clearing cart in dispose: $e');
       }
@@ -123,7 +122,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
   void _navigateToHome() {
     // Clear the cart again just to be sure
     try {
-      ref.read(cartProvider.notifier).state = [];
+      ref.read(cartProvider.notifier).clearCart();
     } catch (e) {
       print('Error clearing cart: $e');
     }
@@ -156,9 +155,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    // Use the new AuthService
-    final authService = ref.watch(authServiceProvider);
-    final isLoggedIn = ref.watch(authService.isLoggedInProvider);
+    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return WillPopScope(
       // Prevent back navigation with hardware back button

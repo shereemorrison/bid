@@ -2,11 +2,10 @@
 import 'package:bid/components/category_widgets/category_item.dart';
 import 'package:bid/components/category_widgets/category_list.dart';
 import 'package:bid/components/common_widgets/search_bar.dart';
-import 'package:bid/providers/category_provider.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/category_model.dart';
-import '../services/category_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoriesPage extends ConsumerStatefulWidget {
@@ -22,7 +21,7 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(categoryNotifierProvider.notifier).loadCategories();
+      ref.read(productsProvider.notifier).loadInitialData();
     });
   }
 
@@ -34,8 +33,8 @@ class _CategoriesPageState extends ConsumerState<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
-    final isLoading = ref.watch(categoryLoadingProvider);
-    final error = ref.watch(categoryErrorProvider);
+    final isLoading = ref.watch(productsLoadingProvider);
+    final error = ref.watch(productsErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(

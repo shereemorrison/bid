@@ -1,8 +1,9 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/services/shop_service.dart';
+import 'package:bid/providers.dart';
+import 'package:bid/services/dialog_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -21,7 +22,7 @@ class AddToCartSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textColor = Theme.of(context).colorScheme.accent;
-    final shopService = ShopService();
+    final cartNotifier = ref.read(cartProvider.notifier);
 
     return AddToCartButton(
       onTap: () {
@@ -30,7 +31,9 @@ class AddToCartSection extends ConsumerWidget {
           quantity: quantity,
         );
 
-        shopService.addToCart(context, productToAdd, ref);
+        cartNotifier.addToCart(productToAdd, quantity: quantity, options: selectedSize != null ? {'size': selectedSize} : null,
+        );
+        DialogService.showAddToCartDialog(context, product);
       },
       width: double.infinity,
       textColor: textColor,

@@ -1,7 +1,7 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
 import 'package:bid/components/product_widgets/modal_size_selector.dart';
-import 'package:bid/models/products_model.dart';
-import 'package:bid/providers/shop_provider.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';
@@ -20,9 +20,10 @@ class WishlistItemCard extends ConsumerWidget {
     required this.onAddToCart,
   });
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shop = ref.watch(shopProvider);
+    ref.watch(cartProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -72,7 +73,7 @@ class WishlistItemCard extends ConsumerWidget {
                   const SizedBox(height: 12),
                   // Add to Cart Button
                   AddToCartButton(
-                    onTap: () => showSizeSelectorModal(context, product, ref, shop),
+                    onTap: () => showSizeSelectorModal(context, product, ref),
                     height: 30,
                     fontSize: 10,
                     width: 120,

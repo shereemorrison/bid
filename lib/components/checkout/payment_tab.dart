@@ -1,20 +1,56 @@
-import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/models/address_model.dart' as app_models; // Use alias to avoid conflict
+import 'package:bid/providers.dart';
+import 'package:bid/respositories/payment_repository.dart';
+import 'package:bid/utils/format_helpers.dart'; // Import for formatPrice
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod; // Use alias to avoid conflict
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
-import '../../providers/payment_provider.dart';
-import '../../services/checkout_session_manager.dart';
-import '../../utils/format_helpers.dart';
-import '../../providers/shop_provider.dart';
-import '../../providers/checkout_provider.dart';
-import '../../services/order_service.dart';
-import '../../providers/address_provider.dart';
 import '../../utils/order_calculator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../services/order_creator_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide Provider; // Hide Provider from Supabase
 
-class PaymentTab extends ConsumerStatefulWidget {
+// Define OrderCreatorService or import it
+class OrderCreatorService {
+
+  final SupabaseClient? client;
+  OrderCreatorService([this.client]);
+
+  Future<Map<String, dynamic>> createOrderFromCheckout({
+    required String userId,
+    required List<dynamic> products,
+    required app_models.Address shippingAddress, // Use aliased type
+    required double subtotal,
+    required double tax,
+    required double shipping,
+    required double total,
+    required String paymentMethod,
+    required String paymentIntentId,
+    required bool isGuestCheckout,
+  }) async {
+    // Implementation would go here
+    // For now, return a mock success response
+    return {
+      'success': true,
+      'order_id': 'mock-order-id-${DateTime.now().millisecondsSinceEpoch}',
+    };
+  }
+}
+
+// Define these providers if they don't exist in your providers.dart
+// Use the riverpod alias for Provider
+final paymentServiceProvider = riverpod.Provider<PaymentRepository>((ref) {
+  return ref.watch(paymentRepositoryProvider);
+});
+
+final effectiveAddressProvider = riverpod.Provider<app_models.Address?>((ref) {
+  return ref.watch(selectedAddressProvider);
+});
+
+final checkoutCompleteProvider = riverpod.StateProvider<bool>((ref) {
+  return false;
+});
+
+class PaymentTab extends riverpod.ConsumerStatefulWidget {
   final double amount;
   final VoidCallback onBack;
 
@@ -25,10 +61,10 @@ class PaymentTab extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState<PaymentTab> createState() => _PaymentTabState();
+  riverpod.ConsumerState<PaymentTab> createState() => _PaymentTabState();
 }
 
-class _PaymentTabState extends ConsumerState<PaymentTab> {
+class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
   bool _isLoading = false;
   String? _errorMessage;
   CardFieldInputDetails? _cardFieldInputDetails;
@@ -57,6 +93,8 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
   }
 
   Future<void> _handlePayment() async {
+    final isLoggedIn = ref.read(isLoggedInProvider);
+
     // Validate inputs
     if (_nameController.text.isEmpty) {
       _setErrorMessage('Please enter the name on the card');
@@ -73,12 +111,11 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
 
     try {
       final paymentService = ref.read(paymentServiceProvider);
-      final orderCreatorService = OrderCreatorService(Supabase.instance.client);
-      final cart = ref.read(cartProvider);
+      final cartState = ref.read(cartProvider);
       final selectedAddress = ref.read(effectiveAddressProvider);
 
       // Validate cart and address
-      if (cart.isEmpty) {
+      if (cartState.items.isEmpty) { // Fixed: Use items.isEmpty instead of isEmpty
         throw Exception('Your cart is empty');
       }
 
@@ -87,7 +124,11 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
       }
 
       // Calculate order totals
-      final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
+      final cartItems = cartState.items;
+      final products = cartItems.map((item) => item.product).toList();
+
+      // Calculate these values here
+      final double subtotal = OrderCalculator.calculateProductSubtotal(products);
       final double shipping = 10.0;
       final double tax = OrderCalculator.calculateTax(subtotal);
       final double total = OrderCalculator.calculateTotal(
@@ -112,11 +153,21 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
       String? stripeError;
 
       try {
+        final paymentMethod = await Stripe.instance.createPaymentMethod(
+          params: PaymentMethodParams.card(
+            paymentMethodData: PaymentMethodData(
+              billingDetails: BillingDetails(
+                name: _nameController.text,
+              ),
+            ),
+          ),
+        );
+
         final paymentResult = await Stripe.instance.confirmPayment(
           paymentIntentClientSecret: clientSecret,
-          data: PaymentMethodParams.card(
-            paymentMethodData: PaymentMethodData(
-              billingDetails: BillingDetails(name: _nameController.text),
+          data: PaymentMethodParams.cardFromMethodId(
+            paymentMethodData: PaymentMethodDataCardFromMethod(
+              paymentMethodId: paymentMethod.id,
             ),
           ),
         );
@@ -139,25 +190,59 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
       if (paymentSuccessful) {
         print('Creating order in Supabase with payment intent ID: $paymentIntentId');
 
-        // Create order in Supabase using your existing OrderCreatorService
-        final orderResult = await orderCreatorService.createOrderFromCheckout(
-          userId: selectedAddress.userId,
-          products: cart,
-          shippingAddress: selectedAddress,
-          subtotal: subtotal,
-          tax: tax,
-          shipping: shipping,
-          total: total,
-          paymentMethod: 'Credit Card',
-          paymentIntentId: paymentIntentId, // Pass the payment intent ID
-          isGuestCheckout: selectedAddress.userId.startsWith('guest-'),
-        );
+        try {
+          // Create order directly in Supabase
+          final orderData = {
+            'user_id': selectedAddress.userId,
+            'payment_intent_id': paymentIntentId,
+            'status': 'PENDING',
+            'subtotal': subtotal,
+            'tax_amount': tax,
+            'shipping_amount': shipping,
+            'discount_amount': 0.0,
+            'total_amount': total,
+            'shipping_address_id': selectedAddress.id,
+            'billing_address_id': selectedAddress.id, // You might want to use a different address if available
+            'shipping_method': 'Standard',
+            'order_number': 'ORD-${DateTime.now().year}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
+            'placed_at': DateTime.now().toIso8601String(),
+          };
 
-        if (orderResult['success']) {
-          print('Order created successfully: ${orderResult['order_id']}');
+          // Insert the order and get the real UUID back
+          final orderResult = await Supabase.instance.client
+              .from('orders')
+              .insert(orderData)
+              .select('order_id')
+              .single();
+
+          final orderId = orderResult['order_id'];
+          print('Order created successfully with real UUID: $orderId');
+
+          // Insert order items
+          final orderItems = cartItems.map((item) => {
+            'order_id': orderId,
+            'product_id': item.productId,
+            'variant_id': null, // No variant in your model
+            'product_name': item.name,
+            'variant_name': item.selectedSize ?? 'Default', // Use selectedSize from options or default
+            'sku': 'SKU-${item.productId.substring(0, 8)}', // Generate a SKU from product ID
+            'quantity': item.quantity,
+            'unit_price': item.price,
+            'subtotal': item.price * item.quantity,
+            'discount_amount': 0.0,
+            'tax_amount': (item.price * item.quantity) * 0.1, // Assuming 10% tax
+            'total': (item.price * item.quantity) * 1.1, // Price + tax
+            'created_at': DateTime.now().toIso8601String(),
+          }).toList();
+
+          await Supabase.instance.client
+              .from('order_items')
+              .insert(orderItems);
+
+          print('Order items created successfully');
 
           // Clear the cart
-          ref.read(cartProvider.notifier).state = [];
+          ref.read(cartProvider.notifier).clearCart();
 
           // Mark checkout as complete
           try {
@@ -166,12 +251,20 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
             print('Note: Checkout provider not available: $e');
           }
 
-          // Navigate to success page with the Supabase order ID (UUID)
+          // Navigate to success page with the real Supabase order ID (UUID)
           if (mounted) {
-            context.go('/order-confirmation?order_id=${orderResult['order_id']}');
+            // Add a small delay before navigation
+            await Future.delayed(const Duration(milliseconds: 100));
+
+            // Check mounted again and navigate
+            if (mounted) {
+              // Use pushReplacement instead of go to avoid the Stripe widget unmounting issue
+              context.pushReplacement('/order-confirmation?order_id=$orderId');
+            }
           }
-        } else {
-          throw Exception('Failed to create order: ${orderResult['message']}');
+        } catch (e) {
+          print('Error creating order: $e');
+          throw Exception('Failed to create order: $e');
         }
       } else {
         throw Exception('Payment failed: ${stripeError ?? "Unknown error"}');
@@ -298,7 +391,7 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
                         children: [
                           const Text('Total'),
                           Text(
-                            formatPrice(widget.amount),
+                            formatPrice(widget.amount), // Use imported formatPrice
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.primary,
@@ -412,7 +505,7 @@ class _PaymentTabState extends ConsumerState<PaymentTab> {
                       ),
                     )
                         : Text(
-                      'PAY ${formatPrice(widget.amount)}',
+                      'PAY ${formatPrice(widget.amount)}', // Use imported formatPrice
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

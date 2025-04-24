@@ -1,5 +1,6 @@
+import 'package:bid/state/cart/cart_state.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 import 'package:bid/components/cards/wishlist_item_card.dart';
 import 'package:bid/components/cards/cart_item_card.dart';
 
@@ -28,8 +29,9 @@ Widget buildWishlistItemsList(
 
 // Helper for building cart items list
 Widget buildCartItemsList(
-    List<Product> cart,
-    Function(Product) onRemove
+    List<CartItem> cart,
+    Function(CartItem) onRemove,
+    {Function(CartItem)? onUpdateQuantity}
     ) {
   return ListView.builder(
     itemCount: cart.length,
@@ -39,7 +41,7 @@ Widget buildCartItemsList(
       return Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: CartItemCard(
-          product: item,
+          cartItem: item,
           onRemove: () => onRemove(item),
         ),
       );

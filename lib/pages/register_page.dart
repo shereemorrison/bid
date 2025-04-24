@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../services/auth_service.dart';
+import 'package:bid/providers.dart';
+
+import '../respositories/user_repository.dart' as authRepository;
 
 class RegisterPage extends ConsumerStatefulWidget {
   final VoidCallback? onRegisterSuccess;
@@ -60,6 +62,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     super.dispose();
   }
 
+  // Replace the _register method with this:
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -73,17 +76,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     });
 
     try {
-      // Use the new AuthService instead of AuthManager
-      final authService = ref.read(authServiceProvider);
-
       // Check if we're converting from guest checkout
       final isGuestCheckout = widget.initialData != null &&
           widget.initialData!.containsKey('isGuestCheckout') &&
           widget.initialData!['isGuestCheckout'] == true;
 
       if (isGuestCheckout) {
-        // Convert guest to registered user
-        final success = await authService.convertGuestToRegistered(
+        // Use the repository directly for guest conversion
+        final authRepository = ref.read(userRepositoryProvider);
+        final success = await authRepository.convertGuestToRegistered(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
           firstName: _firstNameController.text.trim(),
@@ -100,23 +101,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           throw Exception('Failed to create account');
         }
       } else {
-        // Regular registration
-        final response = await authService.signUpWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
+        // Regular registration - use the updated signUp method
+        await ref.read(authProvider.notifier).signUp(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           phone: _phoneController.text.trim(),
-          additionalData: {
-            'subscribe_newsletter': _subscribeToNewsletter,
-          },
         );
 
-        if (!mounted) return;
-
-        if (response.user == null) {
-          throw Exception('Failed to create account');
-        }
+        // No need for separate profile update - it's handled in signUp now
       }
 
       // Handle success

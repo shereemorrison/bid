@@ -1,6 +1,6 @@
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../services/auth_service.dart';
 
 class CheckoutRegisterView extends ConsumerStatefulWidget {
   final VoidCallback onRegisterSuccess;
@@ -59,6 +59,7 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
     super.dispose();
   }
 
+  // Replace the _register method with this:
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -72,49 +73,29 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
     });
 
     try {
-      final authService = ref.read(authServiceProvider);
+      final authNotifier = ref.read(authProvider.notifier);
 
       // Check if we're converting from guest checkout
       final isGuestCheckout = widget.initialData != null &&
           widget.initialData!.containsKey('isGuestCheckout') &&
           widget.initialData!['isGuestCheckout'] == true;
 
-      if (isGuestCheckout) {
-        // Convert guest to registered user
-        final success = await authService.convertGuestToRegistered(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          phone: _phoneController.text.trim(),
-          additionalData: {
-            'subscribe_newsletter': _subscribeToNewsletter,
-          },
-        );
+      // Use the updated signUp method that includes firstName and lastName
+      await authNotifier.signUp(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        phone: _phoneController.text.trim(),
+      );
 
-        if (!mounted) return;
+      // No need for separate profile update - it's handled in signUp now
 
-        if (!success) {
-          throw Exception('Failed to create account');
-        }
-      } else {
-        // Regular registration
-        final response = await authService.signUpWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          phone: _phoneController.text.trim(),
-          additionalData: {
-            'subscribe_newsletter': _subscribeToNewsletter,
-          },
-        );
-
-        if (!mounted) return;
-
-        if (response.user == null) {
-          throw Exception('Failed to create account');
-        }
+      // For newsletter subscription, we still need to update the profile
+      if (ref.read(isLoggedInProvider) && _subscribeToNewsletter) {
+        await authNotifier.updateProfile({
+          'subscribe_newsletter': _subscribeToNewsletter,
+        });
       }
 
       // Handle success

@@ -4,11 +4,12 @@ import 'package:bid/components/product_widgets/main_product_image.dart';
 import 'package:bid/components/product_widgets/product_details_section.dart';
 import 'package:bid/components/product_widgets/quantity_selector.dart';
 import 'package:bid/components/product_widgets/product_page_size_selector.dart';
-import 'package:bid/services/product_service.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductDetailPage extends StatefulWidget {
+class ProductDetailPage extends ConsumerStatefulWidget {
   final Product product;
 
   const ProductDetailPage({
@@ -17,16 +18,15 @@ class ProductDetailPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  ConsumerState<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   int quantity = 1;
   String selectedSize = 'M';
   String? selectedColor;
   bool isAccessory = false;
   bool isLoading = true;
-  final ProductService _productService = ProductService();
 
   final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
@@ -37,16 +37,37 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Future<void> _checkIfAccessory() async {
-    final result = await _productService.isProductInCategory(
-        widget.product.categoryId,
-        'accessories'
-    );
+    // Get the product repository from the provider
+    final productRepository = ref.read(productRepositoryProvider);
 
-    setState(() {
-      isAccessory = result;
-      isLoading = false;
-    });
+    // Get the category details for this product
+    final categoryId = widget.product.categoryId;
+
+    // Check if the product's category is an accessory category
+    try {
+      // Get products by category to check if it exists
+      final categoryProducts = await productRepository.getProductsByCategory(categoryId);
+
+      // Determine if it's an accessory based on category ID or other logic
+      final result = categoryId.toLowerCase().contains('accessory') ||
+          categoryId.toLowerCase().contains('accessories');
+
+      if (mounted) {
+        setState(() {
+          isAccessory = result;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+      print('Error checking if product is accessory: $e');
+    }
   }
+
 
   void _incrementQuantity() {
     setState(() {

@@ -1,16 +1,15 @@
 import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/shop_provider.dart';
-import '../../providers/checkout_provider.dart';
 import '../../utils/format_helpers.dart';
-import '../services/checkout_session_manager.dart';
 
 class OrderConfirmationHelper {
   // Clear cart and checkout state
   static void clearCartAndCheckoutState(WidgetRef ref) {
     try {
-      ref.read(cartProvider.notifier).state = [];
+      // Use clearCart() method instead of trying to set state directly
+      ref.read(cartProvider.notifier).clearCart();
     } catch (e) {
       print('Error clearing cart: $e');
     }

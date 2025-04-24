@@ -1,4 +1,5 @@
-import 'package:bid/providers/address_provider.dart';
+
+import 'package:bid/components/checkout/payment_tab.dart';
 import 'package:bid/utils/shipping_tab_ui_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,6 +1,6 @@
 
 import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/state/cart/cart_state.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';
@@ -9,18 +9,20 @@ import 'package:flutter/material.dart';
 
 
 class CartItemCard extends StatelessWidget {
-  final Product product;
+  final CartItem cartItem;
   final VoidCallback onRemove;
 
   const CartItemCard({
     super.key,
-    required this.product,
+    required this.cartItem,
     required this.onRemove,
   });
 
 
   @override
   Widget build(BuildContext context) {
+    final product = cartItem.product;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
@@ -89,8 +91,8 @@ class CartItemCard extends StatelessWidget {
   }
 
   Widget _buildProductAttributes(context) {
-    int quantity = product.quantity > 0 ? product.quantity : 1;
-    String? size = product.selectedSize;
+    int quantity = cartItem.quantity > 0 ? cartItem.quantity : 1;
+    String? size = cartItem.selectedSize;
 
     return Row(
       children: [

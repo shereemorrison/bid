@@ -1,5 +1,5 @@
-class AddressModel {
-  final String addressId;
+class Address {
+  final String id;
   final String userId;
   final String addressType;
   final bool isDefault;
@@ -16,8 +16,8 @@ class AddressModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  AddressModel({
-    required this.addressId,
+  Address({
+    required this.id,
     required this.userId,
     required this.addressType,
     required this.isDefault,
@@ -35,9 +35,9 @@ class AddressModel {
     this.updatedAt,
   });
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) {
-    return AddressModel(
-      addressId: json['address_id'],
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      id: json['address_id'] ?? json['id'],
       userId: json['user_id'],
       addressType: json['address_type'],
       isDefault: json['is_default'] == 'true' || json['is_default'] == true,
@@ -58,6 +58,25 @@ class AddressModel {
           ? DateTime.parse(json['updated_at'])
           : null,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'address_id': id,
+      'user_id': userId,
+      'address_type': addressType,
+      'is_default': isDefault,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone': phone,
+      'email': email,
+      'street_address': streetAddress,
+      'apartment': apartment,
+      'city': city,
+      'state': state,
+      'postal_code': postalCode,
+      'country': country,
+    };
   }
 
   String get formattedAddress {

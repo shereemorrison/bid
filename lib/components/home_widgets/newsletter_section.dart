@@ -1,6 +1,6 @@
 
+import 'package:bid/respositories/newsletter_repository.dart';
 import 'package:bid/services/dialog_service.dart';
-import 'package:bid/services/newsletter_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,7 +22,7 @@ class NewsletterSection extends StatefulWidget {
 
 class _NewsletterSectionState extends State<NewsletterSection> {
   final TextEditingController _emailController = TextEditingController();
-  final NewsletterService _newsletterService = NewsletterService();
+  final NewsletterRepository _newsletterRepository = NewsletterRepository();
   bool _isLoading = false;
 
   @override
@@ -51,8 +51,7 @@ class _NewsletterSectionState extends State<NewsletterSection> {
       if (user != null) {
         userId = user.id;
       }
-
-      final success = await _newsletterService.subscribeToNewsletter(
+      final success = await _newsletterRepository.subscribeToNewsletter(
           email,
           userId: userId
       );

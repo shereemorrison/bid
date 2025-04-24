@@ -1,4 +1,4 @@
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/dialog_helpers.dart';
 import 'package:flutter/material.dart';

@@ -5,15 +5,35 @@ import 'package:bid/components/home_widgets/hero_section.dart';
 import 'package:bid/components/home_widgets/newsletter_section.dart';
 import 'package:bid/components/home_widgets/our_story_section.dart';
 import 'package:bid/models/category_model.dart';
-import 'package:bid/providers/category_provider.dart';
-import 'package:bid/providers/home_provider.dart';
-import 'package:bid/services/category_service.dart';
-import 'package:bid/services/home_service.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/themes/custom_colors.dart';
+import 'package:bid/utils/image_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:bid/components/product_widgets/product_horizontal_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+final homeLoadingProvider = StateProvider<bool>((ref) => true);
+final currentPageProvider = StateProvider<int>((ref) => 0);
+
+// Provider for featured products
+final featuredProductsProvider = FutureProvider<List<Product>>((ref) async {
+  final productRepo = ref.read(productRepositoryProvider);
+  return await productRepo.getFeaturedProducts();
+});
+
+// Provider for most wanted products
+final mostWantedProductsProvider = FutureProvider<List<Product>>((ref) async {
+  final productRepo = ref.read(productRepositoryProvider);
+  return await productRepo.getMostWantedProducts();
+});
+
+// Provider for categories
+final categoriesProvider = FutureProvider<List<Category>>((ref) async {
+  final categoryRepo = ref.read(categoryRepositoryProvider);
+  return await categoryRepo.getAllCategories();
+});
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,10 +51,28 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(homeNotifierProvider.notifier).loadAllData();
-      ref.read(categoryNotifierProvider.notifier).loadCategories();
+      _loadInitialData();
     }); // Load data when page initializes
   }
+
+  Future<void> _loadInitialData() async {
+    ref
+        .read(homeLoadingProvider.notifier)
+        .state = true;
+
+    // Trigger the loading of data through the providers
+    await Future.wait([
+      ref.read(featuredProductsProvider.future),
+      ref.read(mostWantedProductsProvider.future),
+      ref.read(categoriesProvider.future),
+    ]);
+
+    if (!mounted) return;
+    ref
+        .read(homeLoadingProvider.notifier)
+        .state = false;
+  }
+
 
   @override
   void dispose() {
@@ -62,12 +100,17 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final featuredProducts = ref.watch(featuredProductsProvider);
-    final mostWantedProducts = ref.watch(mostWantedProductsProvider);
-    final categories = ref.watch(categoriesProvider);
+    final featuredProductsAsync = ref.watch(featuredProductsProvider);
+    final mostWantedProductsAsync = ref.watch(mostWantedProductsProvider);
+    final categoriesAsync = ref.watch(categoriesProvider);
     final isLoading = ref.watch(homeLoadingProvider);
     final currentPage = ref.watch(currentPageProvider);
-    final homeService = ref.read(homeServiceProvider);
+
+    // Extract data from async values
+    final featuredProducts = featuredProductsAsync.value ?? [];
+    final mostWantedProducts = mostWantedProductsAsync.value ?? [];
+    final categories = categoriesAsync.value ?? [];
+
 
     // Create allCategories list with "ALL" category
     final allCategory = Category(
@@ -75,7 +118,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       name: 'ALL',
       slug: 'all',
     );
-    final allCategories = [allCategory, ...categories];
+
+    final List<Category> allCategories = [allCategory, ...categories];
 
     // Filter products based on selected category
     List<dynamic> filteredProducts = featuredProducts;
@@ -85,7 +129,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           .toList();
     }
 
-    final homeNotifier = ref.read(homeNotifierProvider.notifier);
 
     return Scaffold(
       backgroundColor: Theme
@@ -102,8 +145,8 @@ class _HomePageState extends ConsumerState<HomePage> {
             children: [
               // Hero Section with training image
               HeroSection(
-                imageUrl: homeNotifier.getHeroImageUrl(),
-                userName: homeService.userName,
+                imageUrl: getHeroImageUrl(),
+                userName: "",
                 onShopNowPressed: () {
                   // Handle shop now button press
                 },
@@ -147,7 +190,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     if (featuredProducts.isNotEmpty)
                       ProductGrid(
                         products: filteredProducts,
-                        getImageUrl: homeNotifier.getImageUrl,
+                        getImageUrl: getSupabaseImageUrl,
                         onProductTap: (product) {
                           if (product != null) {
                             context.push('/shop/product', extra: product);
@@ -174,11 +217,12 @@ class _HomePageState extends ConsumerState<HomePage> {
               if (featuredProducts.isNotEmpty)
                 FeaturedCarousel(
                   products: featuredProducts,
-                  getImageUrl: homeNotifier.getImageUrl,
-                  getCollectionImageUrl: homeNotifier.getCollectionImageUrl,
+                  getImageUrl: getSupabaseImageUrl,
+                  getCollectionImageUrl: getCollectionImageUrl,
                   onPageChanged: (index) {
-                    ref.read(homeNotifierProvider.notifier).updateCurrentPage(
-                        index);
+                    ref
+                        .read(currentPageProvider.notifier)
+                        .state = index;
                   },
                   currentPage: currentPage,
                 ),
@@ -212,7 +256,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     if (mostWantedProducts.isNotEmpty)
                       ProductHorizontalList(
                         products: mostWantedProducts,
-                        getImageUrl: homeNotifier.getImageUrl,
+                        getImageUrl: getSupabaseImageUrl,
                       ),
                   ],
                 ),
@@ -222,7 +266,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
               // Our Story
               OurStorySection(
-                imageUrl: homeNotifier.getOurStoryImageUrl(),
+                imageUrl: getOurStoryImageUrl(),
                 onReadMorePressed: () {
                   // Handle read more button press
                 },
@@ -247,6 +291,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 }
+
 
   /*Widget _buildCategoryChip(String label, bool isSelected, VoidCallback onTap) {
     return GestureDetector(

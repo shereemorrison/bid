@@ -1,13 +1,11 @@
 import 'package:bid/components/address_widgets/address_form.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/providers/address_provider.dart';
-import 'package:bid/providers/user_provider.dart';
-import 'package:bid/services/auth_service.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddressSelector extends ConsumerStatefulWidget {
-  final Function(AddressModel) onAddressSelected;
+  final Function(Address) onAddressSelected;
 
   const AddressSelector({
     Key? key,
@@ -29,23 +27,22 @@ class _AddressSelectorState extends ConsumerState<AddressSelector> {
   }
 
   void _loadAddresses() {
-    final authService = ref.read(authServiceProvider);
-    final isLoggedIn = ref.read(authService.isLoggedInProvider);
-    final userData = ref.read(authService.userProvider);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+    final userData = ref.read(userDataProvider);
 
     if (isLoggedIn && userData != null) {
-      ref.read(addressNotifierProvider.notifier).fetchUserAddresses(userData.userId);
+      ref.read(addressProvider.notifier).fetchUserAddresses(userData.userId);
     }
   }
 
-  void _navigateToAddressForm({AddressModel? addressToEdit}) {
+  void _navigateToAddressForm({Address? addressToEdit}) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AddressForm(
           addressToEdit: addressToEdit,
           onSave: (address) {
-            final addressNotifier = ref.read(addressNotifierProvider.notifier);
+            final addressNotifier = ref.read(addressProvider.notifier);
 
             if (address.userId.startsWith('guest-') || addressToEdit != null) {
               addressNotifier.updateAddress(address);
@@ -63,9 +60,8 @@ class _AddressSelectorState extends ConsumerState<AddressSelector> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
-    final isLoading = ref.watch(addressLoadingProvider);
-    final selectedAddress = ref.watch(effectiveAddressProvider);
+    final isLoading = ref.watch(addressProvider).isLoading;
+    final selectedAddress = ref.watch(selectedAddressProvider);
 
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());

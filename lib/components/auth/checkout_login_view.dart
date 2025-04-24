@@ -1,6 +1,6 @@
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../services/auth_service.dart';
 
 class CheckoutLoginView extends ConsumerStatefulWidget {
   final VoidCallback onLoginSuccess;
@@ -43,15 +43,10 @@ class _CheckoutLoginViewState extends ConsumerState<CheckoutLoginView> {
     });
 
     try {
-      final authService = ref.read(authServiceProvider);
-      final response = await authService.signInWithEmailAndPassword(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      ref.read(authProvider.notifier);
+      final authState = ref.read(authProvider);
 
-      if (!mounted) return;
-
-      if (response.user != null) {
+      if (authState.isLoggedIn) {
         widget.onLoginSuccess();
       } else {
         setState(() {

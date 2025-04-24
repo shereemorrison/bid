@@ -1,7 +1,7 @@
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../services/auth_service.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   final VoidCallback? onLoginSuccess;
@@ -45,8 +45,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     try {
       // Use the new AuthService instead of AuthManager
-      final authService = ref.read(authServiceProvider);
-      final response = await authService.signInWithEmailAndPassword(
+      final response = await ref.read(userRepositoryProvider).signInWithEmail(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );

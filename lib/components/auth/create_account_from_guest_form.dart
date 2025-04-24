@@ -1,8 +1,8 @@
+import 'package:bid/components/buttons/custom_button.dart';
+import 'package:bid/components/common_widgets/custom_textfield.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../services/guest_to_registered_converter.dart';
-import '../common_widgets/custom_textfield.dart';
-import '../buttons/custom_button.dart';
 
 /// A specialized form for converting guest users to registered users
 ///
@@ -74,17 +74,20 @@ ConsumerState<CreateAccountFromGuestForm> {
 
     try {
       // Get the guest to registered converter
-      final converter = ref.read(guestToRegisteredConverterProvider);
+      final authNotifier = ref.read(authProvider.notifier);
 
-      // Convert guest to registered user
-      final success = await converter.convertGuestToRegistered(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-        firstName: firstNameController.text.trim(),
-        lastName: lastNameController.text.trim(),
+      await authNotifier.signUp(
+        emailController.text.trim(),
+        passwordController.text.trim(),
       );
 
-      if (!success) {
+      if (ref.read(isLoggedInProvider)) {
+        await authNotifier.updateProfile({
+          'first_name': firstNameController.text.trim(),
+          'last_name': lastNameController.text.trim(),
+          'subscribe_newsletter': _subscribeToNewsletter,
+        });
+      } else {
         throw Exception("Failed to create account");
       }
 

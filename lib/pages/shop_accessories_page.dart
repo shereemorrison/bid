@@ -1,7 +1,6 @@
 
-import 'package:bid/models/products_model.dart';
-import 'package:bid/providers/product_provider.dart';
-import 'package:bid/services/product_service.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/utils/page_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,14 +25,18 @@ class _ShopAccessoriesPageState extends ConsumerState<ShopAccessoriesPage> {
   }
 
   void _loadProducts() {
-    ref.read(productNotifierProvider.notifier).loadProductsByCategory(categorySlug);
+    ref.read(productsProvider.notifier).loadProductsByCategorySlug(categorySlug);
   }
 
   @override
   Widget build(BuildContext context) {
-    final products = ref.watch(productsByCategoryProvider(categorySlug));
-    final isLoading = ref.watch(productLoadingProvider);
-    final error = ref.watch(productErrorProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final List<Product> products = (selectedCategory?.slug == categorySlug)
+        ? ref.watch(allProductsProvider)
+        : <Product>[];
+
+    final isLoading = ref.watch(productsLoadingProvider);
+    final error = ref.watch(productsErrorProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -43,7 +46,7 @@ class _ShopAccessoriesPageState extends ConsumerState<ShopAccessoriesPage> {
           products,
           isLoading,
           error,
-              () => ref.read(productNotifierProvider.notifier).loadProductsByCategory(categorySlug)
+              () => ref.read(productsProvider.notifier).loadProductsByCategorySlug(categorySlug)
       ),
     );
   }

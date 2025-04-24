@@ -1,6 +1,6 @@
 import 'package:bid/models/address_model.dart';
 
-class UserModel {
+class UserData {
   final String userId;
   final String authId;
   final String email;
@@ -8,12 +8,12 @@ class UserModel {
   final String? lastName;
   final String? phone;
   final String? address;
-  final List<AddressModel> addresses;
+  final List<Address> addresses;
   final bool isRegistered;
   final DateTime? createdAt;
   final DateTime? lastLogin;
 
-  UserModel({
+  UserData({
     required this.userId,
     required this.authId,
     required this.email,
@@ -27,9 +27,17 @@ class UserModel {
     this.lastLogin,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      userId: json['user_id'],
+  factory UserData.fromJson(Map<String, dynamic> json) {
+
+    List<Address> addressList = [];
+    if (json['addresses'] != null && json['addresses'] is List) {
+      addressList = (json['addresses'] as List)
+          .map((addr) => Address.fromJson(addr))
+          .toList();
+    }
+
+    return UserData(
+      userId: json['user_id'] ?? json['id'],
       authId: json['auth_id'],
       email: json['email'],
       firstName: json['first_name'],
@@ -60,7 +68,7 @@ class UserModel {
     }
   }
 
-  AddressModel? get defaultAddress {
+  Address? get defaultAddress {
     if (addresses.isEmpty) return null;
 
     // Try to find default address

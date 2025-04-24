@@ -1,9 +1,11 @@
+import 'package:bid/components/order_widgets/order_cost_summary.dart';
+import 'package:bid/components/order_widgets/order_product_item.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
+import 'package:bid/state/cart/cart_state.dart';
+import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../components/order_widgets/order_cost_summary.dart';
-import '../../components/order_widgets/order_product_item.dart';
-import '../../providers/shop_provider.dart';
-import '../../utils/order_calculator.dart';
 
 class BagTab extends ConsumerStatefulWidget {
   final VoidCallback onProceed;
@@ -20,18 +22,20 @@ class BagTab extends ConsumerStatefulWidget {
 class _BagTabState extends ConsumerState<BagTab> {
   @override
   Widget build(BuildContext context) {
-    final cart = ref.watch(cartProvider);
+    final cartItems = ref.watch(cartItemsProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    // ADDED: Check if cart is empty
-    if (cart.isEmpty) {
+    if (cartItems.isEmpty) {
       return _buildEmptyCart(colorScheme);
     }
 
-    // Calculate totals
-    final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
+    // Convert CartItems to Products for the OrderCalculator
+    final List<Product> products = cartItems.map((item) => _convertCartItemToProduct(item)).toList();
+
+    // Calculate totals using the converted list
+    final double subtotal = OrderCalculator.calculateProductSubtotal(products);
     final double shipping = 10.0;
-    final double discount = 0.0; // Add discount logic if needed
+    final double discount = 0.0;
     final double tax = OrderCalculator.calculateTax(subtotal);
     final double total = OrderCalculator.calculateTotal(
       subtotal: subtotal,
@@ -60,11 +64,11 @@ class _BagTabState extends ConsumerState<BagTab> {
                 ),
                 const SizedBox(height: 16),
 
-                // Display cart items
-                ...cart.map((product) =>
+                // Display cart items - convert CartItem to Product for OrderProductItem
+                ...cartItems.map((item) =>
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: OrderProductItem(product: product),
+                      child: OrderProductItem(product: _convertCartItemToProduct(item)),
                     )
                 ).toList(),
 
@@ -121,7 +125,29 @@ class _BagTabState extends ConsumerState<BagTab> {
     );
   }
 
-  // ADDED: Method to build empty cart view
+  // Helper method to convert CartItem to Product
+  Product _convertCartItemToProduct(CartItem item) {
+    // Extract size from options if available
+    String? selectedSize;
+    if (item.options != null && item.options!.containsKey('size')) {
+      selectedSize = item.options!['size'] as String?;
+    }
+
+    return Product(
+      id: item.productId,
+      name: item.name,
+      price: item.price,
+      description: '', // Default empty description
+      categoryId: '', // Default empty categoryId
+      isActive: true, // Default to active
+      createdAt: DateTime.now(), // Default to current time
+      imageUrl: item.imageUrl ?? '',
+      quantity: item.quantity,
+      selectedSize: selectedSize,
+    );
+  }
+
+  // Build empty cart view
   Widget _buildEmptyCart(ColorScheme colorScheme) {
     return Center(
       child: Column(

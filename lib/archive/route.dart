@@ -1,7 +1,7 @@
 /*import 'package:auto_route/auto_route.dart';
 import 'package:bid/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
-import '../models/products_model.dart';
+import '../models/product_model.dart';
 import '../pages/account_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/categories_page.dart';

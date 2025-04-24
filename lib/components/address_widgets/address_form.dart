@@ -4,15 +4,15 @@ import 'package:bid/components/address_widgets/address_type_toggle.dart';
 import 'package:bid/components/address_widgets/contact_info_form.dart';
 import 'package:bid/config/api_keys.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/services/auth_service.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/services/mapbox_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
-  final AddressModel? addressToEdit;
-  final Function(AddressModel) onSave;
+  final Address? addressToEdit;
+  final Function(Address) onSave;
 
   const AddressForm({
     Key? key,
@@ -74,8 +74,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
     } else {
       // Pre-fill with user data if available
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final authService = ref.read(authServiceProvider);
-        final userData = ref.read(authService.userProvider);
+        final userData = ref.read(userDataProvider);
 
         if (userData != null) {
           _firstNameController.text = userData.firstName ?? '';
@@ -147,9 +146,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
-      final authService = ref.read(authServiceProvider);
-      final isLoggedIn = ref.read(authService.isLoggedInProvider);
-      final userData = ref.read(authService.userProvider);
+      final isLoggedIn = ref.read(isLoggedInProvider);
+      final userData = ref.read(userDataProvider);
 
       // Get userId if logged in, otherwise use a temporary ID
       String userId = 'guest-${const Uuid().v4()}';
@@ -159,8 +157,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
       // Create or update the address model
       final address = widget.addressToEdit != null
-          ? AddressModel(
-        addressId: widget.addressToEdit!.addressId,
+          ? Address(
+        id: widget.addressToEdit!.id,
         userId: userId,
         addressType: _addressType,
         isDefault: _isDefault,
@@ -177,8 +175,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         createdAt: widget.addressToEdit!.createdAt,
         updatedAt: DateTime.now(),
       )
-          : AddressModel(
-        addressId: const Uuid().v4(),
+          : Address(
+        id: const Uuid().v4(),
         userId: userId,
         addressType: _addressType,
         isDefault: _isDefault,
@@ -207,8 +205,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final authService = ref.watch(authServiceProvider);
-    final isLoggedIn = ref.watch(authService.isLoggedInProvider);
+    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return Scaffold(
       body: SingleChildScrollView(

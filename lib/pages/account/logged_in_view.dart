@@ -1,25 +1,22 @@
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/buttons/auth_button.dart';
 import '../../components/common_widgets/info_item.dart';
 import '../../components/common_widgets/profile_header.dart';
 import '../../components/order_widgets/order_history_table.dart';
 import '../../models/order_model.dart'; // Import your Order model
-import '../../providers/order_provider.dart';
-import '../../services/auth_service.dart';
 
 class LoggedInView extends ConsumerWidget {
   const LoggedInView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authService = ref.watch(authServiceProvider);
-    final userData = ref.watch(authService.userProvider);
-    final orders = ref.watch(ordersProvider);
-    final isOrderLoading = ref.watch(orderLoadingProvider);
-    final orderError = ref.watch(orderErrorProvider);
+    final userData = ref.watch(userDataProvider);
+    final orders = ref.watch(userOrdersProvider);
+    final isOrderLoading = ref.watch(ordersLoadingProvider);
+    final orderError = ref.watch(ordersErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     // If userData is null, show a loading indicator
@@ -29,10 +26,10 @@ class LoggedInView extends ConsumerWidget {
 
     // Fetch orders if needed
     if (orders == null && !isOrderLoading) {
-      final authUserId = ref.read(authService.authUserIdProvider);
+      final authUserId = ref.read(userIdProvider);
       if (authUserId != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(orderNotifierProvider.notifier).fetchUserOrders(authUserId);
+          ref.read(ordersProvider.notifier).fetchUserOrders(authUserId);
         });
       }
     }
@@ -170,10 +167,7 @@ class LoggedInView extends ConsumerWidget {
       print('Signing out...');
 
       // Get the auth service
-      final authService = ref.read(authServiceProvider);
-
-      // Sign out
-      await authService.signOut();
+      await ref.read(authProvider.notifier).signOut();
 
       print('Sign out complete');
 

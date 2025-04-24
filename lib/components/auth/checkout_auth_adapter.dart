@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/checkout_auth_state.dart';
-import '../../services/auth_service.dart';
-import '../../services/checkout_session_manager.dart';
-import 'checkout_auth_options.dart';
-import 'checkout_login_view.dart';
-import 'checkout_register_view.dart';
-import 'create_account_from_guest_form.dart';
+
+// Assume these providers and widgets are defined elsewhere in your project
+// For example:
+// import 'package:your_app/providers/checkout_provider.dart';
+// import 'package:your_app/widgets/create_account_from_guest_form.dart';
+
+enum CheckoutAuthState {
+  initial,
+  guest,
+  createAccount,
+  completed,
+}
+
+final checkoutAuthStateProvider = StateProvider<CheckoutAuthState>((ref) => CheckoutAuthState.initial);
 
 class CheckoutAuthAdapter extends ConsumerStatefulWidget {
-  final VoidCallback onAuthSuccess;
-  final VoidCallback onContinueAsGuest;
-  final VoidCallback? onCancel;
-
   const CheckoutAuthAdapter({
     Key? key,
     required this.onAuthSuccess,
     required this.onContinueAsGuest,
-    this.onCancel,
   }) : super(key: key);
+
+  final VoidCallback onAuthSuccess;
+  final VoidCallback onContinueAsGuest;
 
   @override
   ConsumerState<CheckoutAuthAdapter> createState() => _CheckoutAuthAdapterState();
@@ -26,144 +31,69 @@ class CheckoutAuthAdapter extends ConsumerStatefulWidget {
 
 class _CheckoutAuthAdapterState extends ConsumerState<CheckoutAuthAdapter> {
   @override
-  void initState() {
-    super.initState();
-    // Reset the auth state when the widget is initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.options;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Watch the current auth state
     final authState = ref.watch(checkoutAuthStateProvider);
 
-    // Get the auth service
-    final authService = ref.watch(authServiceProvider);
-
-    // Check if user is logged in - using the centralized auth service
-    final isLoggedIn = ref.watch(authService.isLoggedInProvider);
-
-    // If user is logged in, call onAuthSuccess
-    if (isLoggedIn) {
-      // Use a post-frame callback to avoid calling during build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.onAuthSuccess();
-      });
-    }
-
-    return WillPopScope(
-      // Prevent accidental back navigation
-      onWillPop: () async {
-        if (authState != CheckoutAuthState.options && widget.onCancel != null) {
-          ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.options;
-          return false;
-        }
-        return true;
-      },
-      child: Container(
-        color: Colors.black,
-        constraints: BoxConstraints(
-          minHeight: 100,
-          maxHeight: MediaQuery.of(context).size.height * 0.9,
-        ),
-        child: Center(
-          child: Container(
-            width: double.infinity,
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: SingleChildScrollView(
-              child: _buildCurrentView(authState),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCurrentView(CheckoutAuthState state) {
-    switch (state) {
-      case CheckoutAuthState.options:
-        return _buildAuthOptions();
-      case CheckoutAuthState.login:
-        return _buildLoginView();
-      case CheckoutAuthState.register:
-        return _buildRegisterView();
-      case CheckoutAuthState.createAccountFromGuest:
+    switch (authState) {
+      case CheckoutAuthState.initial:
+        return _buildInitialState();
+      case CheckoutAuthState.guest:
+        return _buildGuestCheckout();
+      case CheckoutAuthState.createAccount:
         return _buildCreateAccountFromGuest();
-      case CheckoutAuthState.guestCheckout:
-      // Handle in parent widget
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          widget.onContinueAsGuest();
-        });
-        return const Center(child: CircularProgressIndicator());
       case CheckoutAuthState.completed:
-      // Handle in parent widget
-        return const SizedBox.shrink();
+        return const Center(child: Text('Checkout Completed!')); // Replace with actual completion UI
     }
   }
 
-  Widget _buildAuthOptions() {
-    return CheckoutAuthOptions(
-      onOptionSelected: (option) {
-        switch (option) {
-          case CheckoutAuthOption.login:
-            ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.login;
-            break;
-          case CheckoutAuthOption.register:
-            ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.register;
-            break;
-          case CheckoutAuthOption.guest:
-            ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.guestCheckout;
-            break;
-        }
-      },
-      showCloseButton: widget.onCancel != null,
-      onClose: widget.onCancel,
+  Widget _buildInitialState() {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.createAccount;
+          },
+          child: const Text('Create Account & Checkout'),
+        ),
+        TextButton(
+          onPressed: () {
+            ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.guest;
+            widget.onContinueAsGuest();
+          },
+          child: const Text('Continue as Guest'),
+        ),
+      ],
     );
   }
 
-  Widget _buildLoginView() {
-    return CheckoutLoginView(
-      onLoginSuccess: () {
-        ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.completed;
-        widget.onAuthSuccess();
-      },
-      onBackToOptions: () {
-        ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.options;
-      },
-    );
-  }
-
-  Widget _buildRegisterView() {
-    return CheckoutRegisterView(
-      onRegisterSuccess: () {
-        ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.completed;
-        widget.onAuthSuccess();
-      },
-      onBackToOptions: () {
-        ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.options;
-      },
-    );
+  Widget _buildGuestCheckout() {
+    return const Center(child: Text('Guest Checkout Form Here')); // Replace with actual guest checkout form
   }
 
   Widget _buildCreateAccountFromGuest() {
     // Get the current checkout session
-    final sessionManager = ref.read(checkoutSessionManagerProvider);
-    final sessionData = sessionManager.getCurrentSession();
+    final checkoutState = ref.read(checkoutProvider);
 
     // Pre-fill form with data from checkout session
-    final shippingAddress = sessionData?.shippingAddress ?? {};
+    final shippingAddress = checkoutState.shippingAddress ?? {};
+    String firstName = '';
+    String lastName = '';
+    String email = '';
+
+    if (shippingAddress is Map) {
+      firstName = shippingAddress['firstName'] ?? '';
+      lastName = shippingAddress['lastName'] ?? '';
+      email = shippingAddress['email'] ?? '';
+    } else if (shippingAddress != null) {
+      firstName = shippingAddress.firstName ?? '';
+      lastName = shippingAddress.lastName ?? '';
+      email = shippingAddress.email ?? '';
+    }
 
     return CreateAccountFromGuestForm(
-      initialFirstName: shippingAddress['firstName'] ?? '',
-      initialLastName: shippingAddress['lastName'] ?? '',
-      initialEmail: shippingAddress['email'] ?? '',
+      initialFirstName: firstName,
+      initialLastName: lastName,
+      initialEmail: email,
       onAccountCreated: () {
         ref.read(checkoutAuthStateProvider.notifier).state = CheckoutAuthState.completed;
         widget.onAuthSuccess();
@@ -173,5 +103,34 @@ class _CheckoutAuthAdapterState extends ConsumerState<CheckoutAuthAdapter> {
         widget.onContinueAsGuest();
       },
     );
+  }
+}
+
+// Dummy implementations for dependencies
+final checkoutProvider = Provider((ref) => CheckoutState());
+
+class CheckoutState {
+  dynamic shippingAddress;
+}
+
+class CreateAccountFromGuestForm extends StatelessWidget {
+  const CreateAccountFromGuestForm({
+    Key? key,
+    required this.initialFirstName,
+    required this.initialLastName,
+    required this.initialEmail,
+    required this.onAccountCreated,
+    required this.onCancel,
+  }) : super(key: key);
+
+  final String initialFirstName;
+  final String initialLastName;
+  final String initialEmail;
+  final VoidCallback onAccountCreated;
+  final VoidCallback onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Placeholder(); // Replace with actual form
   }
 }

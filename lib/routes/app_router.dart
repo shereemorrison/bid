@@ -5,7 +5,7 @@ import 'package:bid/pages/order_details_page.dart';
 import 'package:bid/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 import 'package:bid/pages/home_page.dart';
 import 'package:bid/pages/account/account_page.dart';
 import 'package:bid/pages/cart_page.dart';
@@ -15,10 +15,9 @@ import 'package:bid/pages/shop_men_page.dart';
 import 'package:bid/pages/shop_women_page.dart';
 import 'package:bid/pages/shop_accessories_page.dart';
 import 'package:bid/pages/product_detail_page.dart';
-
 import '../layouts/appLayout.dart';
-import '../pages/order_summary_page.dart';
-import '../services/checkout_session_manager.dart';
+
+
 
 class RouterNotifier extends ChangeNotifier {
   bool _shouldRefresh = false;

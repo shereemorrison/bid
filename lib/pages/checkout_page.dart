@@ -1,13 +1,12 @@
+import 'package:bid/components/checkout/payment_tab.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../components/auth/checkout_auth_adapter.dart';
-import '../components/checkout/bag_tab.dart';
+import '../components/auth/checkout_auth_adapter.dart' hide checkoutProvider;
 import '../components/checkout/shipping_tab.dart';
-import '../components/checkout/payment_tab.dart';
-import '../providers/shop_provider.dart';
 import '../utils/order_calculator.dart';
-import '../services/checkout_session_manager.dart';
-import '../services/auth_service.dart';
+import 'package:bid/components/checkout/bag_tab.dart';
+
 
 // Provider to track the current checkout step
 final checkoutStepProvider = StateProvider<int>((ref) => 0);
@@ -53,20 +52,19 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
 
   void _checkAuthStatus() {
     // Use the new AuthService
-    final authService = ref.read(authServiceProvider);
-    final isLoggedIn = ref.read(authService.isLoggedInProvider);
+    final isLoggedIn = ref.read(isLoggedInProvider);
+
 
     if (!isLoggedIn) {
-      // Show auth flow if user is not logged in
       setState(() {
         _showAuthFlow = true;
       });
     } else {
       // Initialize checkout session with logged-in user
-      final authUserId = ref.read(authService.authUserIdProvider);
+      final authUserId = ref.read(userIdProvider);
       if (authUserId != null) {
-        ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
-          userId: authUserId,
+        ref.read(checkoutProvider.notifier).initCheckout(
+          ref.read(cartItemsProvider),
           isGuestCheckout: false,
         );
       }
@@ -89,12 +87,11 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
 
     // Initialize checkout session with logged-in user
     // Use the new AuthService
-    final authService = ref.read(authServiceProvider);
-    final authUserId = ref.read(authService.authUserIdProvider);
+    final authUserId = ref.read(userIdProvider);
 
     if (authUserId != null) {
-      ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
-        userId: authUserId,
+      ref.read(checkoutProvider.notifier).initCheckout(
+        ref.read(cartItemsProvider),
         isGuestCheckout: false,
       );
     }
@@ -106,7 +103,8 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
     });
 
     // Initialize checkout session as guest
-    ref.read(checkoutSessionManagerProvider).initializeCheckoutSession(
+    ref.read(checkoutProvider.notifier).initCheckout(
+      ref.read(cartItemsProvider),
       isGuestCheckout: true,
     );
   }
@@ -129,7 +127,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    final cart = ref.watch(cartProvider);
+    final cartState = ref.watch(cartProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isCheckoutComplete = ref.watch(checkoutCompleteProvider);
@@ -142,7 +140,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
     }
 
     // Calculate totals for display
-    final double subtotal = OrderCalculator.calculateProductSubtotal(cart);
+    final double subtotal = cartState.subtotal;
     final double shipping = 10.0;
     final double tax = OrderCalculator.calculateTax(subtotal);
     final double total = OrderCalculator.calculateTotal(
@@ -194,10 +192,6 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
           ? CheckoutAuthAdapter(
         onAuthSuccess: _handleAuthSuccess,
         onContinueAsGuest: _handleContinueAsGuest,
-        onCancel: () {
-          // Handle cancel (e.g., go back to cart)
-          Navigator.of(context).pop();
-        },
       )
           : IndexedStack(
         index: _currentIndex,

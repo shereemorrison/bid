@@ -26,6 +26,23 @@ String getSupabaseImageUrl(String imagePath) {
   }
 }
 
+// Special image methods from the old HomeService
+String getHeroImageUrl() {
+  return getSupabaseImageUrl('products/accessories/training.jpg');
+}
+
+String getOurStoryImageUrl() {
+  return getSupabaseImageUrl('products/accessories/wraps.jpg');
+}
+
+String getCollectionImageUrl(int index) {
+  final collections = ['winter', 'holiday', 'essentials'];
+  if (index >= 0 && index < collections.length) {
+    return getSupabaseImageUrl('collections/${collections[index]}.jpg');
+  }
+  return '';
+}
+
 Widget buildProductImage(BuildContext context, String imageUrl, String imagePath) {
 
   // Check for empty paths

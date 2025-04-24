@@ -1,16 +1,12 @@
 
-
 import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_summary.dart';
-import 'package:bid/models/products_model.dart';
-import 'package:bid/services/shop_service.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bid/archive/cart_service.dart';
-
-import '../providers/shop_provider.dart';
 
 
 class CartPage extends ConsumerStatefulWidget {
@@ -21,12 +17,10 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class _CartPageState extends ConsumerState<CartPage> {
-  final ShopService _shopService = ShopService();
 
   @override
   Widget build(BuildContext context) {
-    final shop = ref.watch(shopProvider);
-    final cart = shop.cart;
+    final cart = ref.watch(cartItemsProvider);
     double totalAmount = cart.fold(
         0.0, (sum, item) => sum + (item.price * item.quantity));
 
@@ -42,8 +36,8 @@ class _CartPageState extends ConsumerState<CartPage> {
         children: [
           Expanded(
             child: buildCartItemsList(
-                cart.cast<Product>(),
-                    (item) => _shopService.removeFromCart(context, item, ref)
+                cart,
+                    (item) => ref.read(cartProvider.notifier).removeFromCart(item.id)
             ),
           ),
           OrderSummary(

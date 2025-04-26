@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Options for checkout authentication
 enum CheckoutAuthOption {
   login,
   register,
@@ -27,7 +26,7 @@ class CheckoutAuthOptions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Header with optional close button
+        // Header
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

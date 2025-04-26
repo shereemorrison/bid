@@ -1,21 +1,35 @@
+import 'package:bid/models/user_model.dart';
 import 'package:flutter/foundation.dart';
-import '../../models/user_model.dart';
+import '../base/base_state.dart';
 
 @immutable
-class AuthState {
+class AuthState extends BaseState {
   final bool isLoggedIn;
-  final bool isLoading;
-  final String? error;
   final UserData? userData;
   final String? userId;
 
   const AuthState({
     this.isLoggedIn = false,
-    this.isLoading = false,
-    this.error,
+    bool isLoading = false,
+    String? error,
     this.userData,
     this.userId,
-  });
+  }) : super(isLoading: isLoading, error: error);
+
+  @override
+  AuthState copyWithBase({
+    bool? isLoading,
+    String? error,
+    bool clearError = false,
+  }) {
+    return AuthState(
+      isLoggedIn: isLoggedIn,
+      isLoading: isLoading ?? this.isLoading,
+      error: clearError ? null : error ?? this.error,
+      userData: userData,
+      userId: userId,
+    );
+  }
 
   AuthState copyWith({
     bool? isLoggedIn,

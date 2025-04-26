@@ -60,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         .read(homeLoadingProvider.notifier)
         .state = true;
 
-    // Trigger the loading of data through the providers
+    // Loading of data through the providers
     await Future.wait([
       ref.read(featuredProductsProvider.future),
       ref.read(mostWantedProductsProvider.future),
@@ -291,36 +291,4 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 }
-
-
-  /*Widget _buildCategoryChip(String label, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(right: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.surface,
-          border: Border.all(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.outline,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.textPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-          ),
-        ),
-      ),
-    );
-  }*/
-
 

@@ -48,7 +48,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
       // Get products by category to check if it exists
       final categoryProducts = await productRepository.getProductsByCategory(categoryId);
 
-      // Determine if it's an accessory based on category ID or other logic
+      // Determine if it's an accessory based on category ID
       final result = categoryId.toLowerCase().contains('accessory') ||
           categoryId.toLowerCase().contains('accessories');
 
@@ -89,6 +89,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     });
   }
 
+  // TODO - Implement when product variants are available
   // void _selectColor(Color color) {
   //   setState(() {
   //     selectedColor = color.toString();

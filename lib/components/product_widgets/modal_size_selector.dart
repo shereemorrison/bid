@@ -1,6 +1,5 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
 import 'package:bid/models/product_model.dart';
-import 'package:bid/providers.dart';
 import 'package:bid/utils/cart_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

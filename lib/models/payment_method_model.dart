@@ -62,7 +62,6 @@ class PaymentMethod {
       return '';
     }
 
-    // Assuming expiryDate is in format MM/YY
     return expiryDate!;
   }
 

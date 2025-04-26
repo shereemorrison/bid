@@ -1,4 +1,6 @@
 import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/guest_order_details_page.dart';
+import 'package:bid/pages/guest_orders_page.dart';
 import 'package:bid/pages/login_page.dart';
 import 'package:bid/pages/order_confirmation_page.dart';
 import 'package:bid/pages/order_details_page.dart';
@@ -16,8 +18,6 @@ import 'package:bid/pages/shop_women_page.dart';
 import 'package:bid/pages/shop_accessories_page.dart';
 import 'package:bid/pages/product_detail_page.dart';
 import '../layouts/appLayout.dart';
-
-
 
 class RouterNotifier extends ChangeNotifier {
   bool _shouldRefresh = false;
@@ -86,6 +86,27 @@ final goRouter = GoRouter(
             redirectPath: redirectPath,
             initialData: initialData,
           ),
+        );
+      },
+    ),
+
+    // In app_router.dart
+    GoRoute(
+      path: '/guest-orders',
+      name: 'guest_orders',
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        child: const GuestOrdersPage(),
+      ),
+    ),
+    GoRoute(
+      path: '/guest-orders/:orderId',
+      name: 'guest_order_details',
+      pageBuilder: (context, state) {
+        final orderId = state.pathParameters['orderId']!;
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: GuestOrderDetailsPage(orderId: orderId),
         );
       },
     ),

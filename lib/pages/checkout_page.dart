@@ -1,10 +1,10 @@
+import 'package:bid/components/auth/checkout_auth_adapter.dart';
 import 'package:bid/components/checkout/payment_tab.dart';
+import 'package:bid/components/checkout/shipping_tab.dart';
 import 'package:bid/providers.dart';
+import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../components/auth/checkout_auth_adapter.dart' hide checkoutProvider;
-import '../components/checkout/shipping_tab.dart';
-import '../utils/order_calculator.dart';
 import 'package:bid/components/checkout/bag_tab.dart';
 
 

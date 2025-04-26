@@ -2,7 +2,6 @@ import 'package:bid/models/category_model.dart' as app_category;
 import 'package:bid/respositories/base_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class CategoryRepository extends BaseRepository {
   CategoryRepository({SupabaseClient? client}) : super(client: client);
 

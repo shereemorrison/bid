@@ -1,17 +1,16 @@
 import 'package:bid/models/category_model.dart' as app_category;
 import 'package:bid/models/product_model.dart';
 import 'package:flutter/foundation.dart';
+import '../base/base_state.dart';
 
 @immutable
-class ProductsState {
+class ProductsState extends BaseState {
   final List<Product> products;
   final List<Product> featuredProducts;
   final List<Product> mostWantedProducts;
   final List<app_category.Category> categories;
   final Product? selectedProduct;
   final app_category.Category? selectedCategory;
-  final bool isLoading;
-  final String? error;
 
   const ProductsState({
     this.products = const [],
@@ -20,9 +19,27 @@ class ProductsState {
     this.categories = const [],
     this.selectedProduct,
     this.selectedCategory,
-    this.isLoading = false,
-    this.error,
-  });
+    bool isLoading = false,
+    String? error,
+  }) : super(isLoading: isLoading, error: error);
+
+  @override
+  ProductsState copyWithBase({
+    bool? isLoading,
+    String? error,
+    bool clearError = false,
+  }) {
+    return ProductsState(
+      products: products,
+      featuredProducts: featuredProducts,
+      mostWantedProducts: mostWantedProducts,
+      categories: categories,
+      selectedProduct: selectedProduct,
+      selectedCategory: selectedCategory,
+      isLoading: isLoading ?? this.isLoading,
+      error: clearError ? null : error ?? this.error,
+    );
+  }
 
   ProductsState copyWith({
     List<Product>? products,

@@ -1,25 +1,28 @@
+import 'package:bid/models/address_model.dart';
+import 'package:bid/models/payment_method_model.dart';
+import 'package:bid/state/cart/cart_state.dart';
 import 'package:flutter/foundation.dart';
-import '../../models/address_model.dart';
-import '../../models/payment_method_model.dart';
-import '../cart/cart_state.dart';
+import '../base/base_state.dart';
 
 enum CheckoutStep {
   cart,
   shipping,
   payment,
-  confirmation
+  confirmation,
+  success,
 }
 
 @immutable
-class CheckoutState {
+class CheckoutState extends BaseState {
   final CheckoutStep currentStep;
   final List<CartItem> items;
   final Address? shippingAddress;
   final PaymentMethod? paymentMethod;
   final String? orderId;
-  final bool isLoading;
-  final String? error;
   final bool isGuestCheckout;
+  final String? guestEmail;
+  final String? guestOrderId;
+  final bool isOrderSavedLocally;
 
   const CheckoutState({
     this.currentStep = CheckoutStep.cart,
@@ -27,19 +30,39 @@ class CheckoutState {
     this.shippingAddress,
     this.paymentMethod,
     this.orderId,
-    this.isLoading = false,
-    this.error,
+    bool isLoading = false,
+    String? error,
     this.isGuestCheckout = false,
-  });
+    this.guestEmail,
+    this.guestOrderId,
+    this.isOrderSavedLocally = false,
+  }) : super(isLoading: isLoading, error: error);
 
-  double get subtotal => items.fold(
-      0, (sum, item) => sum + (item.price * item.quantity));
-
+  double get subtotal => items.fold(0, (sum, item) => sum + (item.price * item.quantity));
   double get tax => subtotal * 0.08; // 8% tax rate
-
   double get shipping => 10.0; // Flat shipping rate
-
   double get total => subtotal + tax + shipping;
+
+  @override
+  CheckoutState copyWithBase({
+    bool? isLoading,
+    String? error,
+    bool clearError = false,
+  }) {
+    return CheckoutState(
+      currentStep: currentStep,
+      items: items,
+      shippingAddress: shippingAddress,
+      paymentMethod: paymentMethod,
+      orderId: orderId,
+      isLoading: isLoading ?? this.isLoading,
+      error: clearError ? null : error ?? this.error,
+      isGuestCheckout: isGuestCheckout,
+      guestEmail: guestEmail,
+      guestOrderId: guestOrderId,
+      isOrderSavedLocally: isOrderSavedLocally,
+    );
+  }
 
   CheckoutState copyWith({
     CheckoutStep? currentStep,
@@ -50,6 +73,9 @@ class CheckoutState {
     bool? isLoading,
     String? error,
     bool? isGuestCheckout,
+    String? guestEmail,
+    String? guestOrderId,
+    bool? isOrderSavedLocally,
     bool clearError = false,
   }) {
     return CheckoutState(
@@ -61,6 +87,9 @@ class CheckoutState {
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : error ?? this.error,
       isGuestCheckout: isGuestCheckout ?? this.isGuestCheckout,
+      guestEmail: guestEmail ?? this.guestEmail,
+      guestOrderId: guestOrderId ?? this.guestOrderId,
+      isOrderSavedLocally: isOrderSavedLocally ?? this.isOrderSavedLocally,
     );
   }
 
@@ -71,6 +100,7 @@ class CheckoutState {
       isLoading: false,
       error: null,
       isGuestCheckout: false,
+      isOrderSavedLocally: false,
     );
   }
 }

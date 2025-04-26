@@ -2,7 +2,6 @@ import 'package:bid/models/product_model.dart';
 import 'package:bid/respositories/base_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class ProductRepository extends BaseRepository {
   ProductRepository({SupabaseClient? client}) : super(client: client);
 

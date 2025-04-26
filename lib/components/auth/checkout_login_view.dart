@@ -43,11 +43,21 @@ class _CheckoutLoginViewState extends ConsumerState<CheckoutLoginView> {
     });
 
     try {
-      ref.read(authProvider.notifier);
+      // Call signin method with email and password
+      await ref.read(authProvider.notifier).signIn(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      // Check if login was successful
       final authState = ref.read(authProvider);
 
       if (authState.isLoggedIn) {
         widget.onLoginSuccess();
+      } else if (authState.error != null) {
+        setState(() {
+          _errorMessage = authState.error;
+        });
       } else {
         setState(() {
           _errorMessage = 'Login failed. Please try again.';

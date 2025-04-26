@@ -12,6 +12,7 @@ class UserData {
   final bool isRegistered;
   final DateTime? createdAt;
   final DateTime? lastLogin;
+  final String? userType;
 
   UserData({
     required this.userId,
@@ -25,6 +26,7 @@ class UserData {
     this.isRegistered = false,
     this.createdAt,
     this.lastLogin,
+    this.userType,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class UserData {
       lastLogin: json['last_login'] != null
           ? DateTime.parse(json['last_login'])
           : null,
+      userType: json['user_type']
     );
   }
 

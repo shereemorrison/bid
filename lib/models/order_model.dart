@@ -1,6 +1,5 @@
 
 import 'package:bid/utils/order_calculator.dart';
-
 import 'order_item_model.dart';
 
 class Order {

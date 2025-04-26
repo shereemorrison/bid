@@ -1,43 +1,15 @@
-import 'package:bid/models/address_model.dart' as app_models; // Use alias to avoid conflict
+import 'package:bid/models/address_model.dart' as app_models;
 import 'package:bid/providers.dart';
 import 'package:bid/respositories/payment_repository.dart';
-import 'package:bid/utils/format_helpers.dart'; // Import for formatPrice
+import 'package:bid/utils/format_helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod; // Use alias to avoid conflict
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod; // Alias to avoid conflict
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import '../../utils/order_calculator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider; // Hide Provider from Supabase
 
-// Define OrderCreatorService or import it
-class OrderCreatorService {
 
-  final SupabaseClient? client;
-  OrderCreatorService([this.client]);
-
-  Future<Map<String, dynamic>> createOrderFromCheckout({
-    required String userId,
-    required List<dynamic> products,
-    required app_models.Address shippingAddress, // Use aliased type
-    required double subtotal,
-    required double tax,
-    required double shipping,
-    required double total,
-    required String paymentMethod,
-    required String paymentIntentId,
-    required bool isGuestCheckout,
-  }) async {
-    // Implementation would go here
-    // For now, return a mock success response
-    return {
-      'success': true,
-      'order_id': 'mock-order-id-${DateTime.now().millisecondsSinceEpoch}',
-    };
-  }
-}
-
-// Define these providers if they don't exist in your providers.dart
-// Use the riverpod alias for Provider
 final paymentServiceProvider = riverpod.Provider<PaymentRepository>((ref) {
   return ref.watch(paymentRepositoryProvider);
 });
@@ -69,6 +41,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
   String? _errorMessage;
   CardFieldInputDetails? _cardFieldInputDetails;
   final TextEditingController _nameController = TextEditingController(text: 'Test User');
+  bool _isNavigating = false;
 
   @override
   void dispose() {
@@ -93,6 +66,9 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
   }
 
   Future<void> _handlePayment() async {
+    // Prevent multiple payment attempts
+    if (_isLoading || _isNavigating) return;
+
     final isLoggedIn = ref.read(isLoggedInProvider);
 
     // Validate inputs
@@ -115,12 +91,17 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
       final selectedAddress = ref.read(effectiveAddressProvider);
 
       // Validate cart and address
-      if (cartState.items.isEmpty) { // Fixed: Use items.isEmpty instead of isEmpty
+      if (cartState.items.isEmpty) {
         throw Exception('Your cart is empty');
       }
 
       if (selectedAddress == null) {
         throw Exception('Please select a shipping address');
+      }
+
+      // Verify the address has a valid ID
+      if (selectedAddress.id.isEmpty || selectedAddress.id == 'new') {
+        throw Exception('Invalid shipping address. Please go back and select a valid address.');
       }
 
       // Calculate order totals
@@ -138,17 +119,17 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
         discountAmount: 0.0,
       );
 
-      // 1. Create payment intent - Use AUD currency
+      // Create payment intent
       final paymentIntentData = await paymentService.createPaymentIntent(
         amount: widget.amount,
-        currency: 'aud', // Use AUD currency
+        currency: 'aud',
       );
 
       print('Payment intent created: $paymentIntentData');
       final clientSecret = paymentIntentData['clientSecret'] as String;
       final paymentIntentId = paymentIntentData['id'] as String? ?? '';
 
-      // 2. Confirm payment with the card details from CardField
+      // Confirm payment with the card details from CardField
       bool paymentSuccessful = false;
       String? stripeError;
 
@@ -170,6 +151,9 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
               paymentMethodId: paymentMethod.id,
             ),
           ),
+          options: const PaymentMethodOptions(
+            setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
+          ),
         );
 
         print('Payment confirmation result: $paymentResult');
@@ -181,17 +165,14 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
         print('Error during payment confirmation: $e');
         stripeError = e.toString();
 
-        // Even if there's an error in the Flutter app, the payment might have succeeded on Stripe
-        // We'll check with the payment intent ID later
-        paymentSuccessful = true; // Assume success and let the order creation determine the outcome
+        paymentSuccessful = true; // Assume payment success true and let order creation determine outcome
       }
 
-      // 3. If payment was successful (or we think it might be), create the order in Supabase
+      // Create order in Supabase
       if (paymentSuccessful) {
         print('Creating order in Supabase with payment intent ID: $paymentIntentId');
 
         try {
-          // Create order directly in Supabase
           final orderData = {
             'user_id': selectedAddress.userId,
             'payment_intent_id': paymentIntentId,
@@ -218,19 +199,31 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
           final orderId = orderResult['order_id'];
           print('Order created successfully with real UUID: $orderId');
 
+          // Create order payment record - Using payment_intent_id as the primary key
+          await Supabase.instance.client
+              .from('order_payments')
+              .insert({
+            'order_id': orderId,
+            'payment_intent_id': paymentIntentId,
+            'amount': total,
+            'is_refund': false,
+            'created_at': DateTime.now().toIso8601String(),
+          });
+          print('Order payment record created with payment_intent_id: $paymentIntentId');
+
           // Insert order items
           final orderItems = cartItems.map((item) => {
             'order_id': orderId,
             'product_id': item.productId,
-            'variant_id': null, // No variant in your model
+            'variant_id': null, // No variant - TODO - connect product_variants table
             'product_name': item.name,
             'variant_name': item.selectedSize ?? 'Default', // Use selectedSize from options or default
-            'sku': 'SKU-${item.productId.substring(0, 8)}', // Generate a SKU from product ID
+            'sku': 'SKU-${item.productId.substring(0, 8)}', // TODO - take SKU from product_variants table once implemented. For now, just using a generate a SKU from product ID
             'quantity': item.quantity,
             'unit_price': item.price,
             'subtotal': item.price * item.quantity,
             'discount_amount': 0.0,
-            'tax_amount': (item.price * item.quantity) * 0.1, // Assuming 10% tax
+            'tax_amount': (item.price * item.quantity) * 0.1, // 10% tax TODO - confirm with Stefan how he wants this displayed
             'total': (item.price * item.quantity) * 1.1, // Price + tax
             'created_at': DateTime.now().toIso8601String(),
           }).toList();
@@ -244,6 +237,9 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
           // Clear the cart
           ref.read(cartProvider.notifier).clearCart();
 
+          // Reset checkout state
+          ref.read(checkoutProvider.notifier).reset();
+
           // Mark checkout as complete
           try {
             ref.read(checkoutCompleteProvider.notifier).state = true;
@@ -251,15 +247,18 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
             print('Note: Checkout provider not available: $e');
           }
 
-          // Navigate to success page with the real Supabase order ID (UUID)
+          // Prevent multiple navigations
+          if (_isNavigating) return;
+          _isNavigating = true;
+
+          // Navigate to success page with Supabase order ID (UUID)
           if (mounted) {
-            // Add a small delay before navigation
-            await Future.delayed(const Duration(milliseconds: 100));
+            // Delay before navigation to allow Stripe widget to clean up
+            await Future.delayed(const Duration(milliseconds: 300));
 
             // Check mounted again and navigate
             if (mounted) {
-              // Use pushReplacement instead of go to avoid the Stripe widget unmounting issue
-              context.pushReplacement('/order-confirmation?order_id=$orderId');
+              context.go('/order-confirmation?order_id=$orderId');
             }
           }
         } catch (e) {
@@ -443,7 +442,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
             color: colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black,
                 blurRadius: 10,
                 offset: const Offset(0, -5),
               ),
@@ -457,7 +456,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
                 child: SizedBox(
                   height: 50,
                   child: OutlinedButton(
-                    onPressed: widget.onBack,
+                    onPressed: _isLoading || _isNavigating ? null : widget.onBack,
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: colorScheme.primary),
                       shape: RoundedRectangleBorder(
@@ -485,7 +484,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
                 child: SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading || _cardFieldInputDetails?.complete != true
+                    onPressed: _isLoading || _isNavigating || _cardFieldInputDetails?.complete != true
                         ? null
                         : _handlePayment,
                     style: ElevatedButton.styleFrom(

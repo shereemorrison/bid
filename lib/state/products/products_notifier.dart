@@ -1,9 +1,10 @@
 import 'package:bid/respositories/category_repository.dart';
 import 'package:bid/respositories/product_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../base/base_notifier.dart';
 import 'products_state.dart';
 
-class ProductsNotifier extends StateNotifier<ProductsState> {
+class ProductsNotifier extends BaseNotifier<ProductsState> {
   final ProductRepository _productRepository;
   final CategoryRepository _categoryRepository;
 
@@ -15,7 +16,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         super(ProductsState.initial());
 
   Future<void> loadInitialData() async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       // Load categories
@@ -31,36 +32,30 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         categories: categories,
         featuredProducts: featuredProducts,
         mostWantedProducts: mostWantedProducts,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load initial data: $e',
-        isLoading: false,
-      );
+      handleError('loading initial data', e);
     }
   }
 
   Future<void> loadAllProducts() async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final products = await _productRepository.getAllProducts();
 
       state = state.copyWith(
         products: products,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load products: $e',
-        isLoading: false,
-      );
+      handleError('loading products', e);
     }
   }
 
   Future<void> loadProductsByCategory(String categoryId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final products = await _productRepository.getProductsByCategory(categoryId);
@@ -69,46 +64,37 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       state = state.copyWith(
         products: products,
         selectedCategory: category,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load products by category: $e',
-        isLoading: false,
-      );
+      handleError('loading products by category', e);
     }
   }
+
   Future<void> loadProductsByCategorySlug(String slug) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final category = await _categoryRepository.getCategoryBySlug(slug);
 
       if (category != null) {
-        // Use the RPC function instead of getProductsByCategory
         final products = await _productRepository.getProductsByCategorySlug(slug);
 
         state = state.copyWith(
           products: products,
           selectedCategory: category,
-          isLoading: false,
         );
+        endLoading();
       } else {
-        state = state.copyWith(
-          error: 'Category not found',
-          isLoading: false,
-        );
+        handleError('loading products by category slug', 'Category not found');
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load products by category slug: $e',
-        isLoading: false,
-      );
+      handleError('loading products by category slug', e);
     }
   }
 
   Future<void> loadProductDetails(String productId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final product = await _productRepository.getProductDetails(productId);
@@ -116,19 +102,13 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       if (product != null) {
         state = state.copyWith(
           selectedProduct: product,
-          isLoading: false,
         );
+        endLoading();
       } else {
-        state = state.copyWith(
-          error: 'Product not found',
-          isLoading: false,
-        );
+        handleError('loading product details', 'Product not found');
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load product details: $e',
-        isLoading: false,
-      );
+      handleError('loading product details', e);
     }
   }
 
@@ -138,20 +118,17 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       return;
     }
 
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final products = await _productRepository.searchProducts(query);
 
       state = state.copyWith(
         products: products,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to search products: $e',
-        isLoading: false,
-      );
+      handleError('searching products', e);
     }
   }
 

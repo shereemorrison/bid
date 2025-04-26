@@ -164,14 +164,11 @@ class PaymentTabUIHelper {
 
   (
 
-  double
-
-  amount
+  doubleamount
 
   )
-
-  ,
 }) {
+
 final colorScheme = Theme.of(context).colorScheme;
 
 return Row(

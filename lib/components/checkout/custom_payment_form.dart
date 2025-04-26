@@ -44,7 +44,7 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
 
     return Container(
       padding: const EdgeInsets.all(50.0),
-      // Make the form take up more space
+      // Form space - TODO - work out how big Stefan wants this
       height: MediaQuery.of(context).size.height * 0.7,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -94,7 +94,6 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
 
           const SizedBox(height: 10),
 
-          // Name on card field using your custom text field
           MyTextField(
             hintText: 'Name on Card',
             obscureText: false,
@@ -103,7 +102,6 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
 
           const SizedBox(height: 10),
 
-          // Card details label
           const Text(
             'Card Information',
             style: TextStyle(
@@ -114,12 +112,11 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
 
           const SizedBox(height: 8),
 
-          // Card input field with better styling but without the problematic decoration
           Container(
             height: 40,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(20), // Match your custom text field
+              borderRadius: BorderRadius.circular(20),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CardField(
@@ -128,7 +125,6 @@ class _CustomPaymentFormState extends ConsumerState<CustomPaymentForm> {
                   _cardFieldInputDetails = details;
                 });
               },
-              // No decoration property, just use the default
             ),
           ),
 

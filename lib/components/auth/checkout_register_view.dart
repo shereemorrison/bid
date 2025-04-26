@@ -33,7 +33,7 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with pre-filled data if available
+    // Initialise controllers with pre-filled data if available
     _firstNameController = TextEditingController(
       text: widget.initialData?['firstName'] ?? '',
     );
@@ -59,7 +59,6 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
     super.dispose();
   }
 
-  // Replace the _register method with this:
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -75,12 +74,11 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
     try {
       final authNotifier = ref.read(authProvider.notifier);
 
-      // Check if we're converting from guest checkout
+      // Check if converting from guest checkout
       final isGuestCheckout = widget.initialData != null &&
           widget.initialData!.containsKey('isGuestCheckout') &&
           widget.initialData!['isGuestCheckout'] == true;
 
-      // Use the updated signUp method that includes firstName and lastName
       await authNotifier.signUp(
         _emailController.text.trim(),
         _passwordController.text.trim(),
@@ -89,9 +87,7 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
         phone: _phoneController.text.trim(),
       );
 
-      // No need for separate profile update - it's handled in signUp now
-
-      // For newsletter subscription, we still need to update the profile
+      // Newsletter subscription update
       if (ref.read(isLoggedInProvider) && _subscribeToNewsletter) {
         await authNotifier.updateProfile({
           'subscribe_newsletter': _subscribeToNewsletter,
@@ -165,7 +161,6 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // First name and last name
               Row(
                 children: [
                   Expanded(

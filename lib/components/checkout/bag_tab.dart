@@ -23,6 +23,7 @@ class _BagTabState extends ConsumerState<BagTab> {
   @override
   Widget build(BuildContext context) {
     final cartItems = ref.watch(cartItemsProvider);
+    final isLoggedIn = ref.watch(authProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     if (cartItems.isEmpty) {

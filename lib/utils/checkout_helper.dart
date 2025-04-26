@@ -1,5 +1,5 @@
 import 'package:bid/components/checkout/custom_payment_form.dart';
-import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/checkout_page.dart' hide checkoutCompleteProvider;
 import 'package:bid/providers.dart';
 import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +146,6 @@ class PaymentServiceHelper {
       }
 
       // Navigate to success page with order ID - use go instead of push
-      // This replaces the current screen instead of adding to the stack
       GoRouter.of(context).go('/order-confirmation?order_id=${orderResult['order_id']}');
     } catch (e) {
       print('Payment error: $e');

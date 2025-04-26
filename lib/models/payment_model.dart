@@ -1,11 +1,11 @@
-// Create a new file: lib/models/payment_method_model.dart
+
 class PaymentMethod {
   final String id;
   final String userId;
-  final String type; // e.g., 'CREDIT_CARD', 'PAYPAL', etc.
+  final String type; // TODO - Add types
   final String name; // e.g., 'Visa ending in 1234'
   final bool isDefault;
-  final Map<String, dynamic>? details; // Card details, etc.
+  final Map<String, dynamic>? details; //
   final DateTime? createdAt;
   final DateTime? updatedAt;
 

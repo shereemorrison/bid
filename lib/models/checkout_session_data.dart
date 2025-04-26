@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Data model for storing checkout session information
+// Data model for storing checkout session information
 class CheckoutSessionData {
   final String sessionId;
   final Map<String, dynamic> shippingAddress;

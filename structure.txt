@@ -1,0 +1,3266 @@
+.
+├── analysis_options.yaml
+├── android
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   ├── google-services.json
+│   │   └── src
+│   │       ├── debug
+│   │       │   └── AndroidManifest.xml
+│   │       ├── main
+│   │       │   ├── AndroidManifest.xml
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── flutter
+│   │       │   │           └── plugins
+│   │       │   │               └── GeneratedPluginRegistrant.java
+│   │       │   ├── kotlin
+│   │       │   │   └── com
+│   │       │   │       └── example
+│   │       │   │           └── bid
+│   │       │   │               └── MainActivity.kt
+│   │       │   └── res
+│   │       │       ├── drawable
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-hdpi
+│   │       │       │   └── ic_launcher_foreground.png
+│   │       │       ├── drawable-mdpi
+│   │       │       │   └── ic_launcher_foreground.png
+│   │       │       ├── drawable-v21
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-xhdpi
+│   │       │       │   └── ic_launcher_foreground.png
+│   │       │       ├── drawable-xxhdpi
+│   │       │       │   └── ic_launcher_foreground.png
+│   │       │       ├── drawable-xxxhdpi
+│   │       │       │   └── ic_launcher_foreground.png
+│   │       │       ├── mipmap-anydpi-v26
+│   │       │       │   └── launcher_icon.xml
+│   │       │       ├── mipmap-hdpi
+│   │       │       │   ├── ic_launcher.png
+│   │       │       │   └── launcher_icon.png
+│   │       │       ├── mipmap-mdpi
+│   │       │       │   ├── ic_launcher.png
+│   │       │       │   └── launcher_icon.png
+│   │       │       ├── mipmap-xhdpi
+│   │       │       │   ├── ic_launcher.png
+│   │       │       │   └── launcher_icon.png
+│   │       │       ├── mipmap-xxhdpi
+│   │       │       │   ├── ic_launcher.png
+│   │       │       │   └── launcher_icon.png
+│   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   ├── ic_launcher.png
+│   │       │       │   └── launcher_icon.png
+│   │       │       ├── values
+│   │       │       │   ├── colors.xml
+│   │       │       │   └── styles.xml
+│   │       │       └── values-night
+│   │       │           └── styles.xml
+│   │       └── profile
+│   │           └── AndroidManifest.xml
+│   ├── bid_android.iml
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   └── settings.gradle.kts
+├── Android studio access.rtf
+├── assets
+│   ├── icon
+│   │   ├── icon_foreground.jpg
+│   │   └── icon.jpg
+│   └── images
+│       ├── Background.png
+│       ├── BIDHoodie.jpg
+│       ├── BIDHoodie2.jpg
+│       ├── BIDHoodie3.jpg
+│       ├── BIDHoodie4.jpg
+│       ├── bidlogo.jpg
+│       ├── bidoverlay.png
+│       ├── BIDSweater.jpg
+│       ├── BIDSweater2.jpg
+│       ├── BIDTshirt.jpg
+│       ├── blackduffle.jpg
+│       ├── bluebag.jpg
+│       ├── brownbag.jpg
+│       ├── facebook.png
+│       ├── greyhoodie.jpg
+│       ├── greytshirt.jpg
+│       ├── hoodie1.jpg
+│       ├── instagram.png
+│       ├── instalogo.png
+│       ├── leatherbag.jpg
+│       ├── Logo.png
+│       ├── logoplaceholder.png
+│       ├── Screenshot 2025-03-27 at 5.32.03 pm.png
+│       ├── tanduffle.jpg
+│       ├── training.jpg
+│       ├── tshirt.jpg
+│       ├── tshirt3.jpg
+│       ├── twitter.png
+│       ├── women.jpeg
+│       └── wraps.jpg
+├── bid.iml
+├── dataconnect
+│   ├── connector
+│   │   ├── connector.yaml
+│   │   ├── mutations.gql
+│   │   └── queries.gql
+│   ├── dataconnect.yaml
+│   └── schema
+│       └── schema.gql
+├── dataconnect-generated
+│   └── dart
+├── devtools_options.yaml
+├── firebase.json
+├── ios
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── Debug.xcconfig
+│   │   ├── flutter_export_environment.sh
+│   │   ├── Flutter.podspec
+│   │   ├── Generated.xcconfig
+│   │   └── Release.xcconfig
+│   ├── Podfile
+│   ├── Podfile.lock
+│   ├── Pods
+│   │   ├── Headers
+│   │   ├── Local Podspecs
+│   │   │   ├── app_links.podspec.json
+│   │   │   ├── Flutter.podspec.json
+│   │   │   ├── path_provider_foundation.podspec.json
+│   │   │   ├── shared_preferences_foundation.podspec.json
+│   │   │   ├── sign_in_with_apple.podspec.json
+│   │   │   ├── stripe_ios.podspec.json
+│   │   │   ├── url_launcher_ios.podspec.json
+│   │   │   └── webview_flutter_wkwebview.podspec.json
+│   │   ├── Manifest.lock
+│   │   ├── Pods.xcodeproj
+│   │   │   ├── project.pbxproj
+│   │   │   └── xcuserdata
+│   │   │       └── shereeemorrison.xcuserdatad
+│   │   │           └── xcschemes
+│   │   │               ├── app_links-app_links_ios_privacy.xcscheme
+│   │   │               ├── app_links.xcscheme
+│   │   │               ├── Flutter.xcscheme
+│   │   │               ├── path_provider_foundation-path_provider_foundation_privacy.xcscheme
+│   │   │               ├── path_provider_foundation.xcscheme
+│   │   │               ├── Pods-Runner.xcscheme
+│   │   │               ├── Pods-RunnerTests.xcscheme
+│   │   │               ├── shared_preferences_foundation-shared_preferences_foundation_privacy.xcscheme
+│   │   │               ├── shared_preferences_foundation.xcscheme
+│   │   │               ├── sign_in_with_apple.xcscheme
+│   │   │               ├── stripe_ios.xcscheme
+│   │   │               ├── Stripe-Stripe.xcscheme
+│   │   │               ├── Stripe.xcscheme
+│   │   │               ├── StripeApplePay.xcscheme
+│   │   │               ├── StripeCore-StripeCore.xcscheme
+│   │   │               ├── StripeCore.xcscheme
+│   │   │               ├── StripeFinancialConnections-StripeFinancialConnections.xcscheme
+│   │   │               ├── StripeFinancialConnections.xcscheme
+│   │   │               ├── StripePayments-Stripe3DS2.xcscheme
+│   │   │               ├── StripePayments-StripePayments.xcscheme
+│   │   │               ├── StripePayments.xcscheme
+│   │   │               ├── StripePaymentSheet-StripePaymentSheet.xcscheme
+│   │   │               ├── StripePaymentSheet.xcscheme
+│   │   │               ├── StripePaymentsUI-StripePaymentsUI.xcscheme
+│   │   │               ├── StripePaymentsUI.xcscheme
+│   │   │               ├── StripeUICore-StripeUICore.xcscheme
+│   │   │               ├── StripeUICore.xcscheme
+│   │   │               ├── url_launcher_ios-url_launcher_ios_privacy.xcscheme
+│   │   │               ├── url_launcher_ios.xcscheme
+│   │   │               ├── webview_flutter_wkwebview-webview_flutter_wkwebview_privacy.xcscheme
+│   │   │               ├── webview_flutter_wkwebview.xcscheme
+│   │   │               └── xcschememanagement.plist
+│   │   ├── Stripe
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   └── Stripe
+│   │   │       └── StripeiOS
+│   │   │           ├── Resources
+│   │   │           │   ├── Localizations
+│   │   │           │   │   ├── bg-BG.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ca-ES.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── cs-CZ.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── da.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── de.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── el-GR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en-GB.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es-419.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── et-EE.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fil.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr-CA.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hu.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── id.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── it.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ja.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ko.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lt-LT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lv-LV.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ms-MY.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── mt.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nb.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nl.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nn-NO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pl-PL.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-BR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-PT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ro-RO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ru.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sk-SK.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sl-SI.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sv.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tk.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── vi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hans.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hant.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   └── zh-HK.lproj
+│   │   │           │   │       └── Localizable.strings
+│   │   │           │   └── StripeiOS.xcassets
+│   │   │           │       ├── Cards
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_card_form_amex_cvc.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_card_form_amex_cvc.png
+│   │   │           │       │   │   ├── stp_card_form_amex_cvc@2x.png
+│   │   │           │       │   │   └── stp_card_form_amex_cvc@3x.png
+│   │   │           │       │   ├── stp_card_form_back.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_card_form_back.png
+│   │   │           │       │   │   ├── stp_card_form_back@2x.png
+│   │   │           │       │   │   └── stp_card_form_back@3x.png
+│   │   │           │       │   └── stp_card_form_front.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       ├── stp_card_form_front.png
+│   │   │           │       │       ├── stp_card_form_front@2x.png
+│   │   │           │       │       └── stp_card_form_front@3x.png
+│   │   │           │       ├── Contents.json
+│   │   │           │       ├── FPX
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_bank_fpx_affin_bank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_affin_bank.png
+│   │   │           │       │   │   ├── stp_bank_fpx_affin_bank@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_affin_bank@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_alliance_bank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_alliance_bank.png
+│   │   │           │       │   │   ├── stp_bank_fpx_alliance_bank@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_alliance_bank@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_ambank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_ambank.png
+│   │   │           │       │   │   ├── stp_bank_fpx_ambank@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_ambank@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_bank_islam.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_islam.png
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_islam@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_bank_islam@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_bank_muamalat.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_muamalat.png
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_muamalat@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_bank_muamalat@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_bank_rakyat.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_rakyat.png
+│   │   │           │       │   │   ├── stp_bank_fpx_bank_rakyat@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_bank_rakyat@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_bsn.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_bsn.png
+│   │   │           │       │   │   ├── stp_bank_fpx_bsn@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_bsn@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_cimb.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_cimb.png
+│   │   │           │       │   │   ├── stp_bank_fpx_cimb@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_cimb@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_hong_leong_bank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_hong_leong_bank.png
+│   │   │           │       │   │   ├── stp_bank_fpx_hong_leong_bank@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_hong_leong_bank@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_hsbc.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_hsbc.png
+│   │   │           │       │   │   ├── stp_bank_fpx_hsbc@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_hsbc@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_kfh.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_kfh.png
+│   │   │           │       │   │   ├── stp_bank_fpx_kfh@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_kfh@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_maybank2e.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_maybank2e.png
+│   │   │           │       │   │   ├── stp_bank_fpx_maybank2e@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_maybank2e@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_maybank2u.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_maybank2u.png
+│   │   │           │       │   │   ├── stp_bank_fpx_maybank2u@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_maybank2u@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_ocbc.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_ocbc.png
+│   │   │           │       │   │   ├── stp_bank_fpx_ocbc@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_ocbc@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_public_bank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_public_bank.png
+│   │   │           │       │   │   ├── stp_bank_fpx_public_bank@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_public_bank@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_rhb.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_rhb.png
+│   │   │           │       │   │   ├── stp_bank_fpx_rhb@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_rhb@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_standard_chartered.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_standard_chartered.png
+│   │   │           │       │   │   ├── stp_bank_fpx_standard_chartered@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_standard_chartered@3x.png
+│   │   │           │       │   ├── stp_bank_fpx_uob.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_bank_fpx_uob.png
+│   │   │           │       │   │   ├── stp_bank_fpx_uob@2x.png
+│   │   │           │       │   │   └── stp_bank_fpx_uob@3x.png
+│   │   │           │       │   ├── stp_fpx_big_logo.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_fpx_big_logo.png
+│   │   │           │       │   │   ├── stp_fpx_big_logo@2x.png
+│   │   │           │       │   │   └── stp_fpx_big_logo@3x.png
+│   │   │           │       │   └── stp_fpx_logo.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       ├── stp_fpx_logo.png
+│   │   │           │       │       ├── stp_fpx_logo@2x.png
+│   │   │           │       │       └── stp_fpx_logo@3x.png
+│   │   │           │       ├── stp_icon_add.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_icon_add.png
+│   │   │           │       │   ├── stp_icon_add@2x.png
+│   │   │           │       │   └── stp_icon_add@3x.png
+│   │   │           │       ├── stp_icon_bank.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_icon_bank.png
+│   │   │           │       │   ├── stp_icon_bank@2x.png
+│   │   │           │       │   └── stp_icon_bank@3x.png
+│   │   │           │       ├── stp_icon_checkmark.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_icon_checkmark.png
+│   │   │           │       │   ├── stp_icon_checkmark@2x.png
+│   │   │           │       │   └── stp_icon_checkmark@3x.png
+│   │   │           │       └── stp_shipping_form.imageset
+│   │   │           │           ├── Contents.json
+│   │   │           │           ├── stp_shipping_form.png
+│   │   │           │           ├── stp_shipping_form@2x.png
+│   │   │           │           └── stp_shipping_form@3x.png
+│   │   │           └── Source
+│   │   │               ├── Enums+CustomStringConvertible.swift
+│   │   │               ├── PKAddPaymentPassRequest+Stripe_Error.swift
+│   │   │               ├── PKPaymentAuthorizationViewController+Stripe_Blocks.swift
+│   │   │               ├── STPAddCardViewController.swift
+│   │   │               ├── STPAddress+BasicUI.swift
+│   │   │               ├── STPAddressFieldTableViewCell.swift
+│   │   │               ├── STPAddressViewModel.swift
+│   │   │               ├── STPAnalyticsClient+BasicUI.swift
+│   │   │               ├── STPAnalyticsClient+Payments.swift
+│   │   │               ├── STPAPIClient+BasicUI.swift
+│   │   │               ├── STPAPIClient+PushProvisioning.swift
+│   │   │               ├── STPApplePayContextDelegate.swift
+│   │   │               ├── STPApplePayPaymentOption.swift
+│   │   │               ├── STPBackendAPIAdapter.swift
+│   │   │               ├── STPBankSelectionTableViewCell.swift
+│   │   │               ├── STPBankSelectionViewController.swift
+│   │   │               ├── STPBlocks.swift
+│   │   │               ├── STPCameraView.swift
+│   │   │               ├── STPCard+BasicUI.swift
+│   │   │               ├── STPCardScanner.swift
+│   │   │               ├── STPCardScannerTableViewCell.swift
+│   │   │               ├── STPCardValidationState.swift
+│   │   │               ├── STPCoreScrollViewController.swift
+│   │   │               ├── STPCoreTableViewController.swift
+│   │   │               ├── STPCoreViewController.swift
+│   │   │               ├── STPCustomerContext.swift
+│   │   │               ├── STPEphemeralKey.swift
+│   │   │               ├── STPEphemeralKeyManager.swift
+│   │   │               ├── STPEphemeralKeyProvider.swift
+│   │   │               ├── STPFakeAddPaymentPassViewController.swift
+│   │   │               ├── STPFPXBankStatusResponse.swift
+│   │   │               ├── STPImageLibrary.swift
+│   │   │               ├── STPIntentActionLinkAuthenticateAccount.swift
+│   │   │               ├── STPLocalizedString.swift
+│   │   │               ├── STPPaymentActivityIndicatorView.swift
+│   │   │               ├── STPPaymentCardTextFieldCell.swift
+│   │   │               ├── STPPaymentConfiguration.swift
+│   │   │               ├── STPPaymentContext.swift
+│   │   │               ├── STPPaymentContextAmountModel.swift
+│   │   │               ├── STPPaymentIntentParams+BasicUI.swift
+│   │   │               ├── STPPaymentMethod+BasicUI.swift
+│   │   │               ├── STPPaymentMethodParams+BasicUI.swift
+│   │   │               ├── STPPaymentOption.swift
+│   │   │               ├── STPPaymentOptionsInternalViewController.swift
+│   │   │               ├── STPPaymentOptionsViewController.swift
+│   │   │               ├── STPPaymentOptionTableViewCell.swift
+│   │   │               ├── STPPaymentOptionTuple.swift
+│   │   │               ├── STPPaymentResult.swift
+│   │   │               ├── STPPinManagementService.swift
+│   │   │               ├── STPPushProvisioningContext.swift
+│   │   │               ├── STPPushProvisioningDetails.swift
+│   │   │               ├── STPPushProvisioningDetailsParams.swift
+│   │   │               ├── STPSectionHeaderView.swift
+│   │   │               ├── STPShippingAddressViewController.swift
+│   │   │               ├── STPShippingMethodsViewController.swift
+│   │   │               ├── STPShippingMethodTableViewCell.swift
+│   │   │               ├── STPSource+BasicUI.swift
+│   │   │               ├── STPTheme.swift
+│   │   │               ├── STPUserInformation.swift
+│   │   │               ├── String+Localized.swift
+│   │   │               ├── Stripe+Exports.swift
+│   │   │               ├── StripeBundleLocator.swift
+│   │   │               ├── UIBarButtonItem+Stripe.swift
+│   │   │               ├── UINavigationBar+Stripe_Theme.swift
+│   │   │               ├── UINavigationController+Stripe_Completion.swift
+│   │   │               ├── UITableViewCell+Stripe_Borders.swift
+│   │   │               ├── UIToolbar+Stripe_InputAccessory.swift
+│   │   │               ├── UIView+Helpers.swift
+│   │   │               ├── UIView+Stripe_FirstResponder.swift
+│   │   │               ├── UIView+Stripe_SafeAreaBounds.swift
+│   │   │               ├── UIViewController+Stripe_KeyboardAvoiding.swift
+│   │   │               ├── UIViewController+Stripe_NavigationItemProxy.swift
+│   │   │               ├── UIViewController+Stripe_ParentViewController.swift
+│   │   │               └── UserDefaults+Stripe.swift
+│   │   ├── StripeApplePay
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   └── StripeApplePay
+│   │   │       └── StripeApplePay
+│   │   │           └── Source
+│   │   │               ├── ApplePayContext
+│   │   │               │   ├── STPAPIClient+ApplePay.swift
+│   │   │               │   ├── STPApplePayContext.swift
+│   │   │               │   └── STPApplePayContext+LegacySupport.swift
+│   │   │               ├── Blocks.swift
+│   │   │               ├── Extensions
+│   │   │               │   ├── BillingDetails+ApplePay.swift
+│   │   │               │   ├── PKContact+Stripe.swift
+│   │   │               │   └── PKPayment+Stripe.swift
+│   │   │               ├── PaymentsCore
+│   │   │               │   ├── Analytics
+│   │   │               │   │   ├── STPAnalyticsClient+Payments.swift
+│   │   │               │   │   └── STPAnalyticsClient+PaymentsAPI.swift
+│   │   │               │   ├── API
+│   │   │               │   │   ├── Models
+│   │   │               │   │   │   ├── Address.swift
+│   │   │               │   │   │   ├── BillingDetails.swift
+│   │   │               │   │   │   ├── CardBrand.swift
+│   │   │               │   │   │   ├── PaymentIntent.swift
+│   │   │               │   │   │   ├── PaymentIntentParams.swift
+│   │   │               │   │   │   ├── PaymentMethod.swift
+│   │   │               │   │   │   ├── PaymentMethodParams.swift
+│   │   │               │   │   │   ├── SetupIntent.swift
+│   │   │               │   │   │   ├── SetupIntentParams.swift
+│   │   │               │   │   │   ├── ShippingDetails.swift
+│   │   │               │   │   │   └── Token.swift
+│   │   │               │   │   ├── PaymentIntent+API.swift
+│   │   │               │   │   ├── PaymentMethod+API.swift
+│   │   │               │   │   ├── SetupIntent+API.swift
+│   │   │               │   │   └── Token+API.swift
+│   │   │               │   └── Categories
+│   │   │               │       └── STPAPIClient+PaymentsCore.swift
+│   │   │               └── StripeCore+Import.swift
+│   │   ├── StripeCore
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   └── StripeCore
+│   │   │       └── StripeCore
+│   │   │           ├── Resources
+│   │   │           │   └── Localizations
+│   │   │           │       ├── bg-BG.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ca-ES.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── cs-CZ.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── da.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── de.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── el-GR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en-GB.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es-419.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── et-EE.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fil.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr-CA.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hu.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── id.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── it.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ja.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ko.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lt-LT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lv-LV.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ms-MY.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── mt.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nb.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nl.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nn-NO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pl-PL.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-BR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-PT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ro-RO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ru.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sk-SK.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sl-SI.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sv.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── tr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── vi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hans.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hant.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       └── zh-HK.lproj
+│   │   │           │           └── Localizable.strings
+│   │   │           └── Source
+│   │   │               ├── Analytics
+│   │   │               │   ├── Analytic.swift
+│   │   │               │   ├── AnalyticLoggableError.swift
+│   │   │               │   ├── AnalyticsClientV2.swift
+│   │   │               │   ├── NetworkDetector.swift
+│   │   │               │   ├── PluginDetector.swift
+│   │   │               │   ├── STPAnalyticEvent.swift
+│   │   │               │   └── STPAnalyticsClient.swift
+│   │   │               ├── API Bindings
+│   │   │               │   ├── Models
+│   │   │               │   │   ├── EmptyResponse.swift
+│   │   │               │   │   └── StripeFile.swift
+│   │   │               │   ├── STPAPIClient.swift
+│   │   │               │   ├── STPAPIClient+FileUpload.swift
+│   │   │               │   ├── STPAppInfo.swift
+│   │   │               │   ├── STPMultipartFormDataEncoder.swift
+│   │   │               │   ├── STPMultipartFormDataPart.swift
+│   │   │               │   ├── StripeAPI.swift
+│   │   │               │   ├── StripeAPIConfiguration.swift
+│   │   │               │   ├── StripeAPIConfiguration+Version.swift
+│   │   │               │   ├── StripeError.swift
+│   │   │               │   └── StripeServiceError.swift
+│   │   │               ├── Categories
+│   │   │               │   ├── Decimal+StripeCore.swift
+│   │   │               │   ├── Dictionary+Stripe.swift
+│   │   │               │   ├── Enums+CustomStringConvertible.swift
+│   │   │               │   ├── Locale+StripeCore.swift
+│   │   │               │   ├── NSArray+Stripe.swift
+│   │   │               │   ├── NSBundle+Stripe_AppName.swift
+│   │   │               │   ├── NSCharacterSet+StripeCore.swift
+│   │   │               │   ├── NSError+Stripe.swift
+│   │   │               │   ├── NSError+StripeCore.swift
+│   │   │               │   ├── NSMutableURLRequest+Stripe.swift
+│   │   │               │   ├── NSURLComponents+Stripe.swift
+│   │   │               │   ├── String+StripeCore.swift
+│   │   │               │   └── UIImage+StripeCore.swift
+│   │   │               ├── Coder
+│   │   │               │   ├── StripeCodable.swift
+│   │   │               │   ├── StripeJSONDecoder.swift
+│   │   │               │   ├── StripeJSONEncoder.swift
+│   │   │               │   ├── StripeJSONShared.swift
+│   │   │               │   └── UnknownFields.swift
+│   │   │               ├── Connections Bindings
+│   │   │               │   └── ConnectionsSDKInterface.swift
+│   │   │               ├── DownloadManager
+│   │   │               │   └── DownloadManager.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── Async.swift
+│   │   │               │   ├── BundleLocatorProtocol.swift
+│   │   │               │   ├── FileDownloader.swift
+│   │   │               │   ├── InstallMethod.swift
+│   │   │               │   ├── PaymentsSDKVariant.swift
+│   │   │               │   ├── ServerErrorMapper.swift
+│   │   │               │   ├── STPDeviceUtils.swift
+│   │   │               │   ├── STPDispatchFunctions.swift
+│   │   │               │   ├── STPError.swift
+│   │   │               │   ├── STPNumericStringValidator.swift
+│   │   │               │   ├── STPURLCallbackHandler.swift
+│   │   │               │   ├── StripeCoreBundleLocator.swift
+│   │   │               │   ├── URLEncoder.swift
+│   │   │               │   └── URLSession+Retry.swift
+│   │   │               ├── Localization
+│   │   │               │   ├── STPLocalizationUtils.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   └── String+Localized.swift
+│   │   │               ├── Telemetry
+│   │   │               │   ├── FraudDetectionData.swift
+│   │   │               │   ├── STPTelemetryClient.swift
+│   │   │               │   └── UserDefaults+PaymentsCore.swift
+│   │   │               └── UI
+│   │   │                   ├── UIActivityIndicatorView+Stripe.swift
+│   │   │                   └── UIFont+Stripe.swift
+│   │   ├── StripeFinancialConnections
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   └── StripeFinancialConnections
+│   │   │       └── StripeFinancialConnections
+│   │   │           ├── Resources
+│   │   │           │   ├── Images
+│   │   │           │   │   ├── add@3x.png
+│   │   │           │   │   ├── arrow_right@3x.png
+│   │   │           │   │   ├── back_arrow@3x.png
+│   │   │           │   │   ├── bank_check@2x.png
+│   │   │           │   │   ├── bank@3x.png
+│   │   │           │   │   ├── brandicon_default@3x.png
+│   │   │           │   │   ├── bullet@3x.png
+│   │   │           │   │   ├── cancel_circle@3x.png
+│   │   │           │   │   ├── check@3x.png
+│   │   │           │   │   ├── chevron_down@3x.png
+│   │   │           │   │   ├── close@3x.png
+│   │   │           │   │   ├── ellipsis@3x.png
+│   │   │           │   │   ├── generic_error@3x.png
+│   │   │           │   │   ├── prepane_phone_background@3x.png
+│   │   │           │   │   ├── search@3x.png
+│   │   │           │   │   ├── spinner@3x.png
+│   │   │           │   │   ├── stripe_logo@3x.png
+│   │   │           │   │   ├── warning_circle@3x.png
+│   │   │           │   │   └── warning_triangle@3x.png
+│   │   │           │   └── Localizations
+│   │   │           │       ├── bg-BG.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ca-ES.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── cs-CZ.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── da.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── de.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── el-GR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en-GB.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es-419.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── et-EE.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fil.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr-CA.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hu.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── id.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── it.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ja.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ko.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lt-LT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lv-LV.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ms-MY.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── mt.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nb.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nl.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nn-NO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pl-PL.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-BR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-PT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ro-RO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ru.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sk-SK.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sl-SI.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sv.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── tr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── vi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hans.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hant.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       └── zh-HK.lproj
+│   │   │           │           └── Localizable.strings
+│   │   │           └── Source
+│   │   │               ├── Analytics
+│   │   │               │   ├── FinancialConnectionsAnalyticsClient.swift
+│   │   │               │   └── FinancialConnectionsSheetAnalytics.swift
+│   │   │               ├── API Bindings
+│   │   │               │   ├── APIPollingHelper.swift
+│   │   │               │   ├── APIVersion.swift
+│   │   │               │   ├── FinancialConnectionsAPIClient.swift
+│   │   │               │   └── Models
+│   │   │               │       ├── BankAccountToken.swift
+│   │   │               │       ├── ConsumerSession
+│   │   │               │       │   └── ConsumerSessionModels.swift
+│   │   │               │       ├── FinancialConnectionsAccount.swift
+│   │   │               │       ├── FinancialConnectionsAuthSession.swift
+│   │   │               │       ├── FinancialConnectionsBulletPoint.swift
+│   │   │               │       ├── FinancialConnectionsConsent.swift
+│   │   │               │       ├── FinancialConnectionsDataAccessNotice.swift
+│   │   │               │       ├── FinancialConnectionsImage.swift
+│   │   │               │       ├── FinancialConnectionsInstitution.swift
+│   │   │               │       ├── FinancialConnectionsInstitutionSearchResultResource.swift
+│   │   │               │       ├── FinancialConnectionsLegalDetailsNotice.swift
+│   │   │               │       ├── FinancialConnectionsMixedOAuthParams.swift
+│   │   │               │       ├── FinancialConnectionsNetworkedAccountsResponse.swift
+│   │   │               │       ├── FinancialConnectionsNetworkingLinkSignup.swift
+│   │   │               │       ├── FinancialConnectionsOAuthPrepane.swift
+│   │   │               │       ├── FinancialConnectionsPartnerAccount.swift
+│   │   │               │       ├── FinancialConnectionsPaymentAccountResource.swift
+│   │   │               │       ├── FinancialConnectionsPaymentMethodType.swift
+│   │   │               │       ├── FinancialConnectionsSession.swift
+│   │   │               │       ├── FinancialConnectionsSessionManifest.swift
+│   │   │               │       └── FinancialConnectionsSynchronize.swift
+│   │   │               ├── Common
+│   │   │               │   ├── ExperimentHelper.swift
+│   │   │               │   ├── FinancialConnectionsCustomManualEntryRequiredError.swift
+│   │   │               │   ├── FinancialConnectionsNavigationController.swift
+│   │   │               │   ├── FlowRouter.swift
+│   │   │               │   ├── HostController.swift
+│   │   │               │   ├── HostViewController.swift
+│   │   │               │   ├── LoadingView.swift
+│   │   │               │   └── ModalPresentationWrapperViewController.swift
+│   │   │               ├── FinancialConnectionsSDK
+│   │   │               │   └── FinancialConnectionsSDKImplementation.swift
+│   │   │               ├── FinancialConnectionsSheet.swift
+│   │   │               ├── FinancialConnectionsSheetError.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── FinancialConnectionsEvent+Extensions.swift
+│   │   │               │   ├── FinancialConnectionsFont.swift
+│   │   │               │   ├── Helpers.swift
+│   │   │               │   ├── Image.swift
+│   │   │               │   ├── Locale+Extensions.swift
+│   │   │               │   ├── NSAttributedString+Extensions.swift
+│   │   │               │   ├── PaymentAccount+Extensions.swift
+│   │   │               │   ├── ScreenNativeScale.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   ├── String+Extensions.swift
+│   │   │               │   ├── String+Localized.swift
+│   │   │               │   ├── StripeFinancialConnectionsBundleLocator.swift
+│   │   │               │   ├── UIColor+Extensions.swift
+│   │   │               │   └── UIViewController+Extensions.swift
+│   │   │               ├── Native
+│   │   │               │   ├── AccountPicker
+│   │   │               │   │   ├── AccountPickerAccountLoadErrorView.swift
+│   │   │               │   │   ├── AccountPickerDataSource.swift
+│   │   │               │   │   ├── AccountPickerFooterView.swift
+│   │   │               │   │   ├── AccountPickerHelpers.swift
+│   │   │               │   │   ├── AccountPickerLabelRowView.swift
+│   │   │               │   │   ├── AccountPickerNoAccountEligibleErrorView.swift
+│   │   │               │   │   ├── AccountPickerSelectionListView.swift
+│   │   │               │   │   ├── AccountPickerSelectionRowView.swift
+│   │   │               │   │   ├── AccountPickerSelectionView.swift
+│   │   │               │   │   ├── AccountPickerViewController.swift
+│   │   │               │   │   ├── CheckboxView.swift
+│   │   │               │   │   ├── LinkingAccountsLoadingView.swift
+│   │   │               │   │   └── RadioButtonView.swift
+│   │   │               │   ├── AttachLinkedPaymentAccount
+│   │   │               │   │   ├── AccountNumberRetrievalErrorView.swift
+│   │   │               │   │   ├── AttachLinkedPaymentAccountDataSource.swift
+│   │   │               │   │   └── AttachLinkedPaymentAccountViewController.swift
+│   │   │               │   ├── Consent
+│   │   │               │   │   ├── ConsentBodyView.swift
+│   │   │               │   │   ├── ConsentDataSource.swift
+│   │   │               │   │   ├── ConsentFooterView.swift
+│   │   │               │   │   ├── ConsentLogoView.swift
+│   │   │               │   │   └── ConsentViewController.swift
+│   │   │               │   ├── InstitutionPicker
+│   │   │               │   │   ├── FeaturedInstitutionGridCell.swift
+│   │   │               │   │   ├── FeaturedInstitutionGridView.swift
+│   │   │               │   │   ├── InstitutionDataSource.swift
+│   │   │               │   │   ├── InstitutionPickerViewController.swift
+│   │   │               │   │   ├── InstitutionSearchBar.swift
+│   │   │               │   │   ├── InstitutionSearchFooterView.swift
+│   │   │               │   │   ├── InstitutionSearchTableView.swift
+│   │   │               │   │   └── InstitutionSearchTableViewCell.swift
+│   │   │               │   ├── LinkAccountPicker
+│   │   │               │   │   ├── LinkAccountPickerBodyView.swift
+│   │   │               │   │   ├── LinkAccountPickerDataSource.swift
+│   │   │               │   │   ├── LinkAccountPickerFooterView.swift
+│   │   │               │   │   ├── LinkAccountPickerNewAccountRowView.swift
+│   │   │               │   │   ├── LinkAccountPickerRowView.swift
+│   │   │               │   │   └── LinkAccountPickerViewController.swift
+│   │   │               │   ├── ManualEntry
+│   │   │               │   │   ├── ManualEntryCheckView.swift
+│   │   │               │   │   ├── ManualEntryDataSource.swift
+│   │   │               │   │   ├── ManualEntryErrorView.swift
+│   │   │               │   │   ├── ManualEntryFooterView.swift
+│   │   │               │   │   ├── ManualEntryFormView.swift
+│   │   │               │   │   ├── ManualEntryTextField.swift
+│   │   │               │   │   ├── ManualEntryValidator.swift
+│   │   │               │   │   └── ManualEntryViewController.swift
+│   │   │               │   ├── ManualEntrySuccess
+│   │   │               │   │   ├── ManualEntrySuccessTransactionTableView.swift
+│   │   │               │   │   └── ManualEntrySuccessViewController.swift
+│   │   │               │   ├── NativeFlowController.swift
+│   │   │               │   ├── NativeFlowDataManager.swift
+│   │   │               │   ├── NetworkingLinkLoginWarmup
+│   │   │               │   │   ├── NetworkingLinkLoginWarmupBodyView.swift
+│   │   │               │   │   ├── NetworkingLinkLoginWarmupDataSource.swift
+│   │   │               │   │   └── NetworkingLinkLoginWarmupViewController.swift
+│   │   │               │   ├── NetworkingLinkSignupPane
+│   │   │               │   │   ├── LinkEmailElement.swift
+│   │   │               │   │   ├── NetworkingLinkSignupBodyFormView.swift
+│   │   │               │   │   ├── NetworkingLinkSignupBodyView.swift
+│   │   │               │   │   ├── NetworkingLinkSignupDataSource.swift
+│   │   │               │   │   ├── NetworkingLinkSignupFooterView.swift
+│   │   │               │   │   └── NetworkingLinkSignupViewController.swift
+│   │   │               │   ├── NetworkingLinkStepUpVerification
+│   │   │               │   │   ├── NetworkingLinkStepUpVerificationBodyView.swift
+│   │   │               │   │   ├── NetworkingLinkStepUpVerificationDataSource.swift
+│   │   │               │   │   └── NetworkingLinkStepUpVerificationViewController.swift
+│   │   │               │   ├── NetworkingLinkVerification
+│   │   │               │   │   ├── NetworkingLinkVerificationBodyView.swift
+│   │   │               │   │   ├── NetworkingLinkVerificationDataSource.swift
+│   │   │               │   │   └── NetworkingLinkVerificationViewController.swift
+│   │   │               │   ├── NetworkingSaveToLinkVerification
+│   │   │               │   │   ├── NetworkingSaveToLinkBodyView.swift
+│   │   │               │   │   ├── NetworkingSaveToLinkFooterView.swift
+│   │   │               │   │   ├── NetworkingSaveToLinkVerificationDataSource.swift
+│   │   │               │   │   └── NetworkingSaveToLinkVerificationViewController.swift
+│   │   │               │   ├── PartnerAuth
+│   │   │               │   │   ├── PartnerAuthDataSource.swift
+│   │   │               │   │   ├── PartnerAuthViewController.swift
+│   │   │               │   │   ├── PrepaneImageView.swift
+│   │   │               │   │   └── PrepaneView.swift
+│   │   │               │   ├── Placeholder
+│   │   │               │   │   └── PlaceholderViewController.swift
+│   │   │               │   ├── ResetFlow
+│   │   │               │   │   ├── ResetFlowDataSource.swift
+│   │   │               │   │   └── ResetFlowViewController.swift
+│   │   │               │   ├── Shared
+│   │   │               │   │   ├── AlwaysTemplateImageView.swift
+│   │   │               │   │   ├── AttributedLabel.swift
+│   │   │               │   │   ├── AttributedTextView.swift
+│   │   │               │   │   ├── AuthFlowHelpers.swift
+│   │   │               │   │   ├── BulletPointLabelView.swift
+│   │   │               │   │   ├── Button+Extensions.swift
+│   │   │               │   │   ├── CloseConfirmationAlertHandler.swift
+│   │   │               │   │   ├── ConsentBottomSheetModel.swift
+│   │   │               │   │   ├── ConsentBottomSheetView.swift
+│   │   │               │   │   ├── ConsentBottomSheetViewController.swift
+│   │   │               │   │   ├── HitTestStackView.swift
+│   │   │               │   │   ├── HitTestView.swift
+│   │   │               │   │   ├── InstitutionIconView.swift
+│   │   │               │   │   ├── MerchantDataAccessView.swift
+│   │   │               │   │   ├── NetworkingOTPView
+│   │   │               │   │   │   ├── NetworkingOTPDataSource.swift
+│   │   │               │   │   │   └── NetworkingOTPView.swift
+│   │   │               │   │   ├── PaneLayoutView.swift
+│   │   │               │   │   ├── PaneWithCustomHeaderLayoutView.swift
+│   │   │               │   │   ├── PaneWithHeaderLayoutView.swift
+│   │   │               │   │   ├── ReusableInformationView.swift
+│   │   │               │   │   ├── SFSafariViewController+Extensions.swift
+│   │   │               │   │   ├── SpinnerIconView.swift
+│   │   │               │   │   ├── SuccessIconView.swift
+│   │   │               │   │   ├── TimeInterval+Extensions.swift
+│   │   │               │   │   ├── UIImage+Extensions.swift
+│   │   │               │   │   ├── UIImageView+Extensions.swift
+│   │   │               │   │   ├── UITableView+Extensions.swift
+│   │   │               │   │   └── UIViewController+KeyboardAvoiding.swift
+│   │   │               │   ├── Success
+│   │   │               │   │   ├── SuccessAccountListView.swift
+│   │   │               │   │   ├── SuccessBodyView.swift
+│   │   │               │   │   ├── SuccessDataSource.swift
+│   │   │               │   │   ├── SuccessFooterView.swift
+│   │   │               │   │   └── SuccessViewController.swift
+│   │   │               │   └── TerminalError
+│   │   │               │       └── TerminalErrorViewController.swift
+│   │   │               ├── Placeholder.swift
+│   │   │               ├── StripeCore+Import.swift
+│   │   │               └── Web
+│   │   │                   ├── AuthenticationSessionManager.swift
+│   │   │                   ├── ContinueStateView.swift
+│   │   │                   ├── FinancialConnectionsAccountFetcher.swift
+│   │   │                   ├── FinancialConnectionsSessionFetcher.swift
+│   │   │                   └── FinancialConnectionsWebFlowViewController.swift
+│   │   ├── StripePayments
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   ├── Stripe3DS2
+│   │   │   │   └── Stripe3DS2
+│   │   │   │       ├── include
+│   │   │   │       │   ├── STDSAlreadyInitializedException.h
+│   │   │   │       │   ├── STDSAlreadyInitializedException.m
+│   │   │   │       │   ├── STDSAuthenticationRequestParameters.h
+│   │   │   │       │   ├── STDSAuthenticationRequestParameters.m
+│   │   │   │       │   ├── STDSAuthenticationResponse.h
+│   │   │   │       │   ├── STDSButtonCustomization.h
+│   │   │   │       │   ├── STDSButtonCustomization.m
+│   │   │   │       │   ├── STDSChallengeParameters.h
+│   │   │   │       │   ├── STDSChallengeParameters.m
+│   │   │   │       │   ├── STDSChallengeStatusReceiver.h
+│   │   │   │       │   ├── STDSCompletionEvent.h
+│   │   │   │       │   ├── STDSCompletionEvent.m
+│   │   │   │       │   ├── STDSConfigParameters.h
+│   │   │   │       │   ├── STDSConfigParameters.m
+│   │   │   │       │   ├── STDSCustomization.h
+│   │   │   │       │   ├── STDSCustomization.m
+│   │   │   │       │   ├── STDSErrorMessage.h
+│   │   │   │       │   ├── STDSErrorMessage.m
+│   │   │   │       │   ├── STDSException.h
+│   │   │   │       │   ├── STDSException.m
+│   │   │   │       │   ├── STDSFooterCustomization.h
+│   │   │   │       │   ├── STDSFooterCustomization.m
+│   │   │   │       │   ├── STDSInvalidInputException.h
+│   │   │   │       │   ├── STDSInvalidInputException.m
+│   │   │   │       │   ├── STDSJSONDecodable.h
+│   │   │   │       │   ├── STDSJSONEncodable.h
+│   │   │   │       │   ├── STDSJSONEncoder.h
+│   │   │   │       │   ├── STDSJSONEncoder.m
+│   │   │   │       │   ├── STDSLabelCustomization.h
+│   │   │   │       │   ├── STDSLabelCustomization.m
+│   │   │   │       │   ├── STDSNavigationBarCustomization.h
+│   │   │   │       │   ├── STDSNavigationBarCustomization.m
+│   │   │   │       │   ├── STDSNotInitializedException.h
+│   │   │   │       │   ├── STDSNotInitializedException.m
+│   │   │   │       │   ├── STDSProtocolErrorEvent.h
+│   │   │   │       │   ├── STDSProtocolErrorEvent.m
+│   │   │   │       │   ├── STDSRuntimeErrorEvent.h
+│   │   │   │       │   ├── STDSRuntimeErrorEvent.m
+│   │   │   │       │   ├── STDSRuntimeException.h
+│   │   │   │       │   ├── STDSRuntimeException.m
+│   │   │   │       │   ├── STDSSelectionCustomization.h
+│   │   │   │       │   ├── STDSSelectionCustomization.m
+│   │   │   │       │   ├── STDSStripe3DS2Error.h
+│   │   │   │       │   ├── STDSStripe3DS2Error.m
+│   │   │   │       │   ├── STDSSwiftTryCatch.h
+│   │   │   │       │   ├── STDSSwiftTryCatch.m
+│   │   │   │       │   ├── STDSTextFieldCustomization.h
+│   │   │   │       │   ├── STDSTextFieldCustomization.m
+│   │   │   │       │   ├── STDSThreeDS2Service.h
+│   │   │   │       │   ├── STDSThreeDS2Service.m
+│   │   │   │       │   ├── STDSThreeDSProtocolVersion.h
+│   │   │   │       │   ├── STDSTransaction.h
+│   │   │   │       │   ├── STDSTransaction.m
+│   │   │   │       │   ├── STDSUICustomization.h
+│   │   │   │       │   ├── STDSUICustomization.m
+│   │   │   │       │   ├── STDSWarning.h
+│   │   │   │       │   ├── STDSWarning.m
+│   │   │   │       │   └── Stripe3DS2.h
+│   │   │   │       ├── NSData+JWEHelpers.h
+│   │   │   │       ├── NSData+JWEHelpers.m
+│   │   │   │       ├── NSDictionary+DecodingHelpers.h
+│   │   │   │       ├── NSDictionary+DecodingHelpers.m
+│   │   │   │       ├── NSError+Stripe3DS2.h
+│   │   │   │       ├── NSError+Stripe3DS2.m
+│   │   │   │       ├── NSLayoutConstraint+LayoutSupport.h
+│   │   │   │       ├── NSLayoutConstraint+LayoutSupport.m
+│   │   │   │       ├── NSString+EmptyChecking.h
+│   │   │   │       ├── NSString+EmptyChecking.m
+│   │   │   │       ├── NSString+JWEHelpers.h
+│   │   │   │       ├── NSString+JWEHelpers.m
+│   │   │   │       ├── Resources
+│   │   │   │       │   ├── bg-BG.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ca-ES.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── cs-CZ.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── da.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── de.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── el-GR.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── en-GB.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── en.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── es-419.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── es.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── et-EE.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── fi.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── fil.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── fr-CA.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── fr.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── hr.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── hu.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── id.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── it.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ja.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ko.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── lt-LT.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── lv-LV.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ms-MY.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── mt.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── nb.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── nl.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── nn-NO.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── pl-PL.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── pt-BR.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── pt-PT.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ro-RO.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── ru.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── sk-SK.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── sl-SI.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── Stripe3DS2.xcassets
+│   │   │   │       │   │   ├── amex-logo.imageset
+│   │   │   │       │   │   │   ├── american-express@1x.pdf
+│   │   │   │       │   │   │   └── Contents.json
+│   │   │   │       │   │   ├── cartes-bancaires-logo.imageset
+│   │   │   │       │   │   │   ├── cartes-bancaires-logo.png
+│   │   │   │       │   │   │   └── Contents.json
+│   │   │   │       │   │   ├── Chevron.imageset
+│   │   │   │       │   │   │   ├── Chevron@1x.png
+│   │   │   │       │   │   │   ├── Chevron@2x.png
+│   │   │   │       │   │   │   ├── Chevron@3x.png
+│   │   │   │       │   │   │   └── Contents.json
+│   │   │   │       │   │   ├── Contents.json
+│   │   │   │       │   │   ├── discover-logo.imageset
+│   │   │   │       │   │   │   ├── Contents.json
+│   │   │   │       │   │   │   └── discover@1x.png
+│   │   │   │       │   │   ├── error.imageset
+│   │   │   │       │   │   │   ├── Contents.json
+│   │   │   │       │   │   │   ├── error@1x.png
+│   │   │   │       │   │   │   ├── error@2x.png
+│   │   │   │       │   │   │   └── error@3x.png
+│   │   │   │       │   │   ├── mastercard-logo.imageset
+│   │   │   │       │   │   │   ├── Contents.json
+│   │   │   │       │   │   │   └── mastercard@1x.pdf
+│   │   │   │       │   │   ├── visa-logo.imageset
+│   │   │   │       │   │   │   ├── Contents.json
+│   │   │   │       │   │   │   └── visa@1x.pdf
+│   │   │   │       │   │   └── visa-white-logo.imageset
+│   │   │   │       │   │       ├── Contents.json
+│   │   │   │       │   │       └── visa-white@1x.pdf
+│   │   │   │       │   ├── sv.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── tr.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── vi.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── zh-Hans.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   ├── zh-Hant.lproj
+│   │   │   │       │   │   └── Localizable.strings
+│   │   │   │       │   └── zh-HK.lproj
+│   │   │   │       │       └── Localizable.strings
+│   │   │   │       ├── STDSACSNetworkingManager.h
+│   │   │   │       ├── STDSACSNetworkingManager.m
+│   │   │   │       ├── STDSAuthenticationResponseObject.h
+│   │   │   │       ├── STDSAuthenticationResponseObject.m
+│   │   │   │       ├── STDSBrandingView.h
+│   │   │   │       ├── STDSBrandingView.m
+│   │   │   │       ├── STDSBundleLocator.h
+│   │   │   │       ├── STDSBundleLocator.m
+│   │   │   │       ├── STDSChallengeInformationView.h
+│   │   │   │       ├── STDSChallengeInformationView.m
+│   │   │   │       ├── STDSChallengeRequestParameters.h
+│   │   │   │       ├── STDSChallengeRequestParameters.m
+│   │   │   │       ├── STDSChallengeResponse.h
+│   │   │   │       ├── STDSChallengeResponseImage.h
+│   │   │   │       ├── STDSChallengeResponseImageObject.h
+│   │   │   │       ├── STDSChallengeResponseImageObject.m
+│   │   │   │       ├── STDSChallengeResponseMessageExtension.h
+│   │   │   │       ├── STDSChallengeResponseMessageExtensionObject.h
+│   │   │   │       ├── STDSChallengeResponseMessageExtensionObject.m
+│   │   │   │       ├── STDSChallengeResponseObject.h
+│   │   │   │       ├── STDSChallengeResponseObject.m
+│   │   │   │       ├── STDSChallengeResponseSelectionInfo.h
+│   │   │   │       ├── STDSChallengeResponseSelectionInfoObject.h
+│   │   │   │       ├── STDSChallengeResponseSelectionInfoObject.m
+│   │   │   │       ├── STDSChallengeResponseViewController.h
+│   │   │   │       ├── STDSChallengeResponseViewController.m
+│   │   │   │       ├── STDSChallengeSelectionView.h
+│   │   │   │       ├── STDSChallengeSelectionView.m
+│   │   │   │       ├── STDSDebuggerChecker.h
+│   │   │   │       ├── STDSDebuggerChecker.m
+│   │   │   │       ├── STDSDeviceInformation.h
+│   │   │   │       ├── STDSDeviceInformation.m
+│   │   │   │       ├── STDSDeviceInformationManager.h
+│   │   │   │       ├── STDSDeviceInformationManager.m
+│   │   │   │       ├── STDSDeviceInformationParameter.h
+│   │   │   │       ├── STDSDeviceInformationParameter.m
+│   │   │   │       ├── STDSDeviceInformationParameter+Private.h
+│   │   │   │       ├── STDSDirectoryServer.h
+│   │   │   │       ├── STDSDirectoryServerCertificate.h
+│   │   │   │       ├── STDSDirectoryServerCertificate.m
+│   │   │   │       ├── STDSDirectoryServerCertificate+Internal.h
+│   │   │   │       ├── STDSEllipticCurvePoint.h
+│   │   │   │       ├── STDSEllipticCurvePoint.m
+│   │   │   │       ├── STDSEphemeralKeyPair.h
+│   │   │   │       ├── STDSEphemeralKeyPair.m
+│   │   │   │       ├── STDSEphemeralKeyPair+Testing.h
+│   │   │   │       ├── STDSErrorMessage+Internal.h
+│   │   │   │       ├── STDSErrorMessage+Internal.m
+│   │   │   │       ├── STDSException+Internal.h
+│   │   │   │       ├── STDSExpandableInformationView.h
+│   │   │   │       ├── STDSExpandableInformationView.m
+│   │   │   │       ├── STDSImageLoader.h
+│   │   │   │       ├── STDSImageLoader.m
+│   │   │   │       ├── STDSIntegrityChecker.h
+│   │   │   │       ├── STDSIntegrityChecker.m
+│   │   │   │       ├── STDSIPAddress.h
+│   │   │   │       ├── STDSIPAddress.m
+│   │   │   │       ├── STDSJailbreakChecker.h
+│   │   │   │       ├── STDSJailbreakChecker.m
+│   │   │   │       ├── STDSJSONWebEncryption.h
+│   │   │   │       ├── STDSJSONWebEncryption.m
+│   │   │   │       ├── STDSJSONWebSignature.h
+│   │   │   │       ├── STDSJSONWebSignature.m
+│   │   │   │       ├── STDSLocalizedString.h
+│   │   │   │       ├── STDSOSVersionChecker.h
+│   │   │   │       ├── STDSOSVersionChecker.m
+│   │   │   │       ├── STDSProcessingView.h
+│   │   │   │       ├── STDSProcessingView.m
+│   │   │   │       ├── STDSProgressViewController.h
+│   │   │   │       ├── STDSProgressViewController.m
+│   │   │   │       ├── STDSSecTypeUtilities.h
+│   │   │   │       ├── STDSSecTypeUtilities.m
+│   │   │   │       ├── STDSSelectionButton.h
+│   │   │   │       ├── STDSSelectionButton.m
+│   │   │   │       ├── STDSSimulatorChecker.h
+│   │   │   │       ├── STDSSimulatorChecker.m
+│   │   │   │       ├── STDSSpacerView.h
+│   │   │   │       ├── STDSSpacerView.m
+│   │   │   │       ├── STDSStackView.h
+│   │   │   │       ├── STDSStackView.m
+│   │   │   │       ├── STDSSynchronousLocationManager.h
+│   │   │   │       ├── STDSSynchronousLocationManager.m
+│   │   │   │       ├── STDSTextChallengeView.h
+│   │   │   │       ├── STDSTextChallengeView.m
+│   │   │   │       ├── STDSThreeDSProtocolVersion.m
+│   │   │   │       ├── STDSThreeDSProtocolVersion+Private.h
+│   │   │   │       ├── STDSTransaction+Private.h
+│   │   │   │       ├── STDSVisionSupport.h
+│   │   │   │       ├── STDSWebView.h
+│   │   │   │       ├── STDSWebView.m
+│   │   │   │       ├── STDSWhitelistView.h
+│   │   │   │       ├── STDSWhitelistView.m
+│   │   │   │       ├── Stripe3DS2-Bridging-Header.h
+│   │   │   │       ├── UIButton+CustomInitialization.h
+│   │   │   │       ├── UIButton+CustomInitialization.m
+│   │   │   │       ├── UIColor+DefaultColors.h
+│   │   │   │       ├── UIColor+DefaultColors.m
+│   │   │   │       ├── UIColor+ThirteenSupport.h
+│   │   │   │       ├── UIColor+ThirteenSupport.m
+│   │   │   │       ├── UIFont+DefaultFonts.h
+│   │   │   │       ├── UIFont+DefaultFonts.m
+│   │   │   │       ├── UIView+LayoutSupport.h
+│   │   │   │       ├── UIView+LayoutSupport.m
+│   │   │   │       ├── UIViewController+Stripe3DS2.h
+│   │   │   │       └── UIViewController+Stripe3DS2.m
+│   │   │   └── StripePayments
+│   │   │       └── StripePayments
+│   │   │           ├── Resources
+│   │   │           │   └── Localizations
+│   │   │           │       ├── bg-BG.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ca-ES.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── cs-CZ.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── da.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── de.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── el-GR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en-GB.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── en.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es-419.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── es.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── et-EE.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fil.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr-CA.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── fr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── hu.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── id.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── it.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ja.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ko.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lt-LT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── lv-LV.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ms-MY.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── mt.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nb.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nl.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── nn-NO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pl-PL.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-BR.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── pt-PT.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ro-RO.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── ru.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sk-SK.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sl-SI.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── sv.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── tk.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── tr.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── vi.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hans.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       ├── zh-Hant.lproj
+│   │   │           │       │   └── Localizable.strings
+│   │   │           │       └── zh-HK.lproj
+│   │   │           │           └── Localizable.strings
+│   │   │           └── Source
+│   │   │               ├── API Bindings
+│   │   │               │   ├── Legacy Compatability
+│   │   │               │   │   ├── StripeAPI+Deprecated.swift
+│   │   │               │   │   ├── StripeApplePay+Import.swift
+│   │   │               │   │   └── StripeCore+Import.swift
+│   │   │               │   ├── Models
+│   │   │               │   │   ├── ACH
+│   │   │               │   │   │   ├── LinkAccountSession.swift
+│   │   │               │   │   │   └── STPCollectBankAccountParams.swift
+│   │   │               │   │   ├── PaymentIntents
+│   │   │               │   │   │   ├── STPConfirmAlipayOptions.swift
+│   │   │               │   │   │   ├── STPConfirmBLIKOptions.swift
+│   │   │               │   │   │   ├── STPConfirmCardOptions.swift
+│   │   │               │   │   │   ├── STPConfirmKonbiniOptions.swift
+│   │   │               │   │   │   ├── STPConfirmPaymentMethodOptions.swift
+│   │   │               │   │   │   ├── STPConfirmUSBankAccountOptions.swift
+│   │   │               │   │   │   ├── STPConfirmWeChatPayOptions.swift
+│   │   │               │   │   │   ├── STPPaymentIntent.swift
+│   │   │               │   │   │   ├── STPPaymentIntentAction.swift
+│   │   │               │   │   │   ├── STPPaymentIntentActionRedirectToURL.swift
+│   │   │               │   │   │   ├── STPPaymentIntentEnums.swift
+│   │   │               │   │   │   ├── STPPaymentIntentLastPaymentError.swift
+│   │   │               │   │   │   ├── STPPaymentIntentParams.swift
+│   │   │               │   │   │   ├── STPPaymentIntentShippingDetails.swift
+│   │   │               │   │   │   ├── STPPaymentIntentShippingDetailsAddress.swift
+│   │   │               │   │   │   ├── STPPaymentIntentShippingDetailsAddressParams.swift
+│   │   │               │   │   │   ├── STPPaymentIntentShippingDetailsParams.swift
+│   │   │               │   │   │   ├── STPPaymentIntentSourceAction.swift
+│   │   │               │   │   │   └── STPPaymentIntentSourceActionAuthorizeWithURL.swift
+│   │   │               │   │   ├── PaymentMethods
+│   │   │               │   │   │   ├── STPPaymentMethod.swift
+│   │   │               │   │   │   ├── STPPaymentMethodAddress.swift
+│   │   │               │   │   │   ├── STPPaymentMethodBillingDetails.swift
+│   │   │               │   │   │   ├── STPPaymentMethodEnums.swift
+│   │   │               │   │   │   ├── STPPaymentMethodParams.swift
+│   │   │               │   │   │   ├── STPPaymentMethodUpdateParams.swift
+│   │   │               │   │   │   └── Types
+│   │   │               │   │   │       ├── STPPaymentMethodAffirm.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAffirmParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAfterpayClearpay.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAfterpayClearpayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAlipay.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAlipayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAUBECSDebit.swift
+│   │   │               │   │   │       ├── STPPaymentMethodAUBECSDebitParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBacsDebit.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBacsDebitParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBancontact.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBancontactParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBLIK.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBLIKParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBoleto.swift
+│   │   │               │   │   │       ├── STPPaymentMethodBoletoParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCard.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardChecks.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardNetworks.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardNetworksParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardPresent.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardWallet.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardWalletMasterpass.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCardWalletVisaCheckout.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCashApp.swift
+│   │   │               │   │   │       ├── STPPaymentMethodCashAppParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodEPS.swift
+│   │   │               │   │   │       ├── STPPaymentMethodEPSParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodFPX.swift
+│   │   │               │   │   │       ├── STPPaymentMethodFPXParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodGiropay.swift
+│   │   │               │   │   │       ├── STPPaymentMethodGiropayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodGrabPay.swift
+│   │   │               │   │   │       ├── STPPaymentMethodGrabPayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodiDEAL.swift
+│   │   │               │   │   │       ├── STPPaymentMethodiDEALParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodKlarna.swift
+│   │   │               │   │   │       ├── STPPaymentMethodKlarnaParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodLink.swift
+│   │   │               │   │   │       ├── STPPaymentMethodLinkParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodMobilePayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodNetBanking.swift
+│   │   │               │   │   │       ├── STPPaymentMethodNetBankingParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodOXXO.swift
+│   │   │               │   │   │       ├── STPPaymentMethodOXXOParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodPayPal.swift
+│   │   │               │   │   │       ├── STPPaymentMethodPayPalParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodPrzelewy24.swift
+│   │   │               │   │   │       ├── STPPaymentMethodPrzelewy24Params.swift
+│   │   │               │   │   │       ├── STPPaymentMethodRevolutPay.swift
+│   │   │               │   │   │       ├── STPPaymentMethodRevolutPayParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSEPADebit.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSEPADebitParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSofort.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSofortParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSwish.swift
+│   │   │               │   │   │       ├── STPPaymentMethodSwishParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodThreeDSecureUsage.swift
+│   │   │               │   │   │       ├── STPPaymentMethodUPI.swift
+│   │   │               │   │   │       ├── STPPaymentMethodUPIParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodUSBankAccount.swift
+│   │   │               │   │   │       ├── STPPaymentMethodUSBankAccountParams.swift
+│   │   │               │   │   │       ├── STPPaymentMethodWeChatPay.swift
+│   │   │               │   │   │       └── STPPaymentMethodWeChatPayParams.swift
+│   │   │               │   │   ├── SetupIntents
+│   │   │               │   │   │   ├── STPSetupIntent.swift
+│   │   │               │   │   │   ├── STPSetupIntentConfirmParams.swift
+│   │   │               │   │   │   ├── STPSetupIntentEnums.swift
+│   │   │               │   │   │   └── STPSetupIntentLastSetupError.swift
+│   │   │               │   │   ├── Shared
+│   │   │               │   │   │   ├── LinkSettings.swift
+│   │   │               │   │   │   ├── STPIntentAction.swift
+│   │   │               │   │   │   ├── STPIntentActionAlipayHandleRedirect.swift
+│   │   │               │   │   │   ├── STPIntentActionBoletoDisplayDetails.swift
+│   │   │               │   │   │   ├── STPIntentActionCashAppRedirectToApp.swift
+│   │   │               │   │   │   ├── STPIntentActionKonbiniDisplayDetails.swift
+│   │   │               │   │   │   ├── STPIntentActionOXXODisplayDetails.swift
+│   │   │               │   │   │   ├── STPIntentActionPayNowDisplayQrCode.swift
+│   │   │               │   │   │   ├── STPIntentActionPromptPayDisplayQrCode.swift
+│   │   │               │   │   │   ├── STPIntentActionRedirectToURL.swift
+│   │   │               │   │   │   ├── STPIntentActionSwishHandleRedirect.swift
+│   │   │               │   │   │   ├── STPIntentActionVerifyWithMicrodeposits.swift
+│   │   │               │   │   │   ├── STPIntentActionWeChatPayRedirectToApp.swift
+│   │   │               │   │   │   ├── STPMandateCustomerAcceptanceParams.swift
+│   │   │               │   │   │   ├── STPMandateDataParams.swift
+│   │   │               │   │   │   ├── STPMandateOnlineParams.swift
+│   │   │               │   │   │   └── STPPaymentMethodOptions.swift
+│   │   │               │   │   ├── Sources
+│   │   │               │   │   │   ├── STPSource.swift
+│   │   │               │   │   │   ├── STPSourceEnums.swift
+│   │   │               │   │   │   ├── STPSourceOwner.swift
+│   │   │               │   │   │   ├── STPSourceParams.swift
+│   │   │               │   │   │   ├── STPSourceProtocol.swift
+│   │   │               │   │   │   ├── STPSourceReceiver.swift
+│   │   │               │   │   │   ├── STPSourceRedirect.swift
+│   │   │               │   │   │   ├── STPSourceVerification.swift
+│   │   │               │   │   │   └── Types
+│   │   │               │   │   │       ├── STPBankAccount.swift
+│   │   │               │   │   │       ├── STPBankAccountParams.swift
+│   │   │               │   │   │       ├── STPCard.swift
+│   │   │               │   │   │       ├── STPCardParams.swift
+│   │   │               │   │   │       ├── STPKlarnaLineItem.swift
+│   │   │               │   │   │       ├── STPSourceCardDetails.swift
+│   │   │               │   │   │       ├── STPSourceKlarnaDetails.swift
+│   │   │               │   │   │       ├── STPSourceSEPADebitDetails.swift
+│   │   │               │   │   │       └── STPSourceWeChatPayDetails.swift
+│   │   │               │   │   ├── STPAddress.swift
+│   │   │               │   │   ├── STPAPIResponseDecodable.swift
+│   │   │               │   │   ├── STPCardBrand.swift
+│   │   │               │   │   ├── STPConnectAccountAddress.swift
+│   │   │               │   │   ├── STPConnectAccountCompanyParams.swift
+│   │   │               │   │   ├── STPConnectAccountIndividualParams.swift
+│   │   │               │   │   ├── STPConnectAccountParams.swift
+│   │   │               │   │   ├── STPContactField.swift
+│   │   │               │   │   ├── STPCustomer.swift
+│   │   │               │   │   ├── STPFile.swift
+│   │   │               │   │   ├── STPFormEncodable.swift
+│   │   │               │   │   ├── STPFPXBankBrand.swift
+│   │   │               │   │   ├── STPiDEALBank.swift
+│   │   │               │   │   ├── STPIssuingCardPin.swift
+│   │   │               │   │   ├── STPRadarSession.swift
+│   │   │               │   │   └── STPToken.swift
+│   │   │               │   ├── STPAPIClient+ApplePay.swift
+│   │   │               │   ├── STPAPIClient+LinkAccountSession.swift
+│   │   │               │   ├── STPAPIClient+Payments.swift
+│   │   │               │   ├── STPAPIClient+Radar.swift
+│   │   │               │   └── STPRedirectContext.swift
+│   │   │               ├── Categories
+│   │   │               │   └── Enums+CustomStringConvertible.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── STPBankAccountCollector.swift
+│   │   │               │   ├── STPBINController.swift
+│   │   │               │   ├── STPBlocks.swift
+│   │   │               │   ├── STPCardValidator.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   ├── STPPaymentConfirmation+SwiftUI.swift
+│   │   │               │   ├── StripePayments+Export.swift
+│   │   │               │   └── StripePaymentsBundleLocator.swift
+│   │   │               ├── Internal
+│   │   │               │   ├── Analytics
+│   │   │               │   │   ├── Analytic+Payments.swift
+│   │   │               │   │   └── STPAnalyticsClient+Payments.swift
+│   │   │               │   ├── API Bindings
+│   │   │               │   │   ├── APIRequest.swift
+│   │   │               │   │   ├── STP3DS2AuthenticateResponse.swift
+│   │   │               │   │   ├── STPEmptyStripeResponse.swift
+│   │   │               │   │   ├── STPFormEncoder.swift
+│   │   │               │   │   ├── STPIntentActionUseStripeSDK.swift
+│   │   │               │   │   ├── STPInternalAPIResponseDecodable.swift
+│   │   │               │   │   ├── STPPaymentMethodListDeserializer.swift
+│   │   │               │   │   └── STPSourcePoller.swift
+│   │   │               │   ├── Categories
+│   │   │               │   │   ├── NSArray+Stripe.swift
+│   │   │               │   │   ├── NSDecimalNumber+Stripe_Currency.swift
+│   │   │               │   │   ├── NSDictionary+Stripe.swift
+│   │   │               │   │   ├── NSString+Stripe.swift
+│   │   │               │   │   └── STPAPIClient+PaymentsCore.swift
+│   │   │               │   ├── Helpers
+│   │   │               │   │   └── ConnectionsSDKAvailability.swift
+│   │   │               │   └── STPPaymentHandlerActionParams.swift
+│   │   │               └── PaymentHandler
+│   │   │                   ├── STPAuthenticationContext.swift
+│   │   │                   ├── STPPaymentHandler.swift
+│   │   │                   ├── STPThreeDSButtonCustomization.swift
+│   │   │                   ├── STPThreeDSCustomizationSettings.swift
+│   │   │                   ├── STPThreeDSFooterCustomization.swift
+│   │   │                   ├── STPThreeDSLabelCustomization.swift
+│   │   │                   ├── STPThreeDSNavigationBarCustomization.swift
+│   │   │                   ├── STPThreeDSSelectionCustomization.swift
+│   │   │                   ├── STPThreeDSTextFieldCustomization.swift
+│   │   │                   └── STPThreeDSUICustomization.swift
+│   │   ├── StripePaymentSheet
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   ├── StripePayments
+│   │   │   └── StripePaymentSheet
+│   │   │       └── StripePaymentSheet
+│   │   │           ├── Resources
+│   │   │           │   ├── JSON
+│   │   │           │   │   └── form_specs.json
+│   │   │           │   ├── Localizations
+│   │   │           │   │   ├── bg-BG.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ca-ES.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── cs-CZ.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── da.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── de.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── el-GR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en-GB.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es-419.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── et-EE.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fil.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr-CA.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hu.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── id.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── it.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ja.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ko.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lt-LT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lv-LV.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ms-MY.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── mt.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nb.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nl.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nn-NO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pl-PL.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-BR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-PT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ro-RO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ru.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sk-SK.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sl-SI.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sv.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tk.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── vi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hans.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hant.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   └── zh-HK.lproj
+│   │   │           │   │       └── Localizable.strings
+│   │   │           │   └── StripePaymentSheet.xcassets
+│   │   │           │       ├── affirm_mark.imageset
+│   │   │           │       │   ├── affirm_mark_dark.svg
+│   │   │           │       │   ├── affirm_mark.svg
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── afterpay_icon_info.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   └── info.svg
+│   │   │           │       ├── afterpay_mark.imageset
+│   │   │           │       │   ├── afterpay_mark_dark.svg
+│   │   │           │       │   ├── afterpay_mark.svg
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── apple_pay_mark.imageset
+│   │   │           │       │   ├── applePay.svg
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── Carousel
+│   │   │           │       │   ├── carousel_applepay.imageset
+│   │   │           │       │   │   ├── applePayDark.svg
+│   │   │           │       │   │   ├── carousel_applepay.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── carousel_card_amex.imageset
+│   │   │           │       │   │   ├── americanExpressDark.svg
+│   │   │           │       │   │   ├── americanExpressLight.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── carousel_card_cartes_bancaires.imageset
+│   │   │           │       │   │   ├── cartesBancairesDark.svg
+│   │   │           │       │   │   ├── cartesBancairesLight.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── carousel_card_diners.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── dinersClubDark.svg
+│   │   │           │       │   │   └── dinersClubLight.svg
+│   │   │           │       │   ├── carousel_card_discover.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── discoverDark.svg
+│   │   │           │       │   │   └── discoverLight.svg
+│   │   │           │       │   ├── carousel_card_jcb.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── jcbDark.svg
+│   │   │           │       │   │   └── jcbLight.svg
+│   │   │           │       │   ├── carousel_card_mastercard.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── mastercardDark.svg
+│   │   │           │       │   │   └── mastercardLight.svg
+│   │   │           │       │   ├── carousel_card_unionpay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── unionPayDark.svg
+│   │   │           │       │   │   └── unionPayLight.svg
+│   │   │           │       │   ├── carousel_card_unknown.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── unknownDark.svg
+│   │   │           │       │   │   └── unknownLight.svg
+│   │   │           │       │   ├── carousel_card_visa.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── visaDark.svg
+│   │   │           │       │   │   └── visaLight.svg
+│   │   │           │       │   ├── carousel_link.imageset
+│   │   │           │       │   │   ├── carousel_link.svg
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── linkDark.svg
+│   │   │           │       │   ├── carousel_sepa.imageset
+│   │   │           │       │   │   ├── carousel_sepa.svg
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── sepaDark.svg
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── clearpay_mark.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── vector (15).svg
+│   │   │           │       │   └── vector (16).svg
+│   │   │           │       ├── Contents.json
+│   │   │           │       ├── Link
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── icon-pm-link.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (2).svg
+│   │   │           │       │   ├── InstantDebitIcons
+│   │   │           │       │   │   ├── bank_icon_boa.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--boa.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_capitalone.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--capitalone.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_citibank.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--citibank.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_compass.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--compass.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_default.imageset
+│   │   │           │       │   │   │   ├── bank_icon_default.png
+│   │   │           │       │   │   │   ├── bank_icon_default@2x.png
+│   │   │           │       │   │   │   ├── bank_icon_default@3x.png
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_morganchase.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--morganchase.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_nfcu.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--navyfederal.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_pnc.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--pnc.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_stripe.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--stripe.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_suntrust.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--suntrust.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_svb.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--svb.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_td.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--td.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_usaa.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--usaa.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_usbank.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--usbank.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   ├── bank_icon_wellsfargo.imageset
+│   │   │           │       │   │   │   ├── BrandIcon--wellsfargo.svg
+│   │   │           │       │   │   │   └── Contents.json
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── link_arrow.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector.svg
+│   │   │           │       │   └── link_logo.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── vector (1).svg
+│   │   │           │       ├── Mandates
+│   │   │           │       │   ├── bacsdd_logo.imageset
+│   │   │           │       │   │   ├── bacsdd_logo.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── PaymentMethods
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── icon-pm-affirm.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-affirm.svg
+│   │   │           │       │   ├── icon-pm-afterpay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-afterpay-mod.svg
+│   │   │           │       │   ├── icon-pm-alipay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-alipay-mod.svg
+│   │   │           │       │   ├── icon-pm-aubecsdebit.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-bank.svg
+│   │   │           │       │   ├── icon-pm-bancontact.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-bancontact-mod.svg
+│   │   │           │       │   ├── icon-pm-bank.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-bank.svg
+│   │   │           │       │   ├── icon-pm-blik.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-blik-color.svg
+│   │   │           │       │   ├── icon-pm-boleto.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-boleto.svg
+│   │   │           │       │   ├── icon-pm-card.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-card.svg
+│   │   │           │       │   ├── icon-pm-cashapp.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-cash-app-color.png
+│   │   │           │       │   ├── icon-pm-eps.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-eps-mod.svg
+│   │   │           │       │   ├── icon-pm-giropay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-giropay-mod.svg
+│   │   │           │       │   ├── icon-pm-ideal.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-ideal-mod.svg
+│   │   │           │       │   ├── icon-pm-klarna.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-klarna-mod.svg
+│   │   │           │       │   ├── icon-pm-konbini.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-konbini-color.svg
+│   │   │           │       │   ├── icon-pm-oxxo.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-oxxo-mod.svg
+│   │   │           │       │   ├── icon-pm-p24.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-p24-mod.svg
+│   │   │           │       │   ├── icon-pm-paypal.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── icon-pm-paypal-color-dark.svg
+│   │   │           │       │   │   └── icon-pm-paypal-color.svg
+│   │   │           │       │   ├── icon-pm-revolutpay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── icon-pm-revolutpay_dark@3x.png
+│   │   │           │       │   │   └── icon-pm-revolutpay@3x.png
+│   │   │           │       │   ├── icon-pm-sepa.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-sepa-mod.svg
+│   │   │           │       │   ├── icon-pm-swish.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-pm-swish@3x.png
+│   │   │           │       │   └── icon-pm-upi.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── icon-pm-upi-color.svg
+│   │   │           │       ├── PaymentSheet
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── icon_checkmark.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon_checkmark.pdf
+│   │   │           │       │   ├── icon_chevron_left_standalone.imageset
+│   │   │           │       │   │   ├── chevronLeft.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── icon_chevron_left.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon_chevron_left.pdf
+│   │   │           │       │   ├── icon_edit.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon_edit.pdf
+│   │   │           │       │   ├── icon_lock.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon_lock.pdf
+│   │   │           │       │   ├── icon_plus.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon_plus.pdf
+│   │   │           │       │   ├── icon_x_standalone.imageset
+│   │   │           │       │   │   ├── cancel.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   └── icon_x.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── icon_x.pdf
+│   │   │           │       └── polling_error_icon.imageset
+│   │   │           │           ├── Contents.json
+│   │   │           │           ├── polling_error_icon.png
+│   │   │           │           ├── polling_error_icon@2x.png
+│   │   │           │           └── polling_error_icon@3x.png
+│   │   │           └── Source
+│   │   │               ├── Analytics
+│   │   │               │   ├── AnalyticsHelper.swift
+│   │   │               │   ├── STPAnalyticsClient+Address.swift
+│   │   │               │   ├── STPAnalyticsClient+CustomerSheet.swift
+│   │   │               │   └── STPAnalyticsClient+LUXE.swift
+│   │   │               ├── Categories
+│   │   │               │   ├── Data+SHA256.swift
+│   │   │               │   ├── NSAttributedString+Stripe.swift
+│   │   │               │   ├── STPPaymentMethod+PaymentSheet.swift
+│   │   │               │   ├── STPPaymentMethodParams+PaymentSheet.swift
+│   │   │               │   ├── String+Localized.swift
+│   │   │               │   ├── String+StripePaymentSheet.swift
+│   │   │               │   └── UIApplication+StripePaymentSheet.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── BoolReference.swift
+│   │   │               │   ├── Images.swift
+│   │   │               │   ├── IntentStatusPoller.swift
+│   │   │               │   ├── PaymentSheetLinkAccount.swift
+│   │   │               │   ├── STPCameraView.swift
+│   │   │               │   ├── STPCardScanner.swift
+│   │   │               │   ├── STPImageLibrary.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   ├── STPStringUtils.swift
+│   │   │               │   ├── StripePaymentSheet+Exports.swift
+│   │   │               │   └── StripePaymentSheetBundleLocator.swift
+│   │   │               ├── Internal
+│   │   │               │   ├── API Bindings
+│   │   │               │   │   ├── Link
+│   │   │               │   │   │   ├── ConsumerSession.swift
+│   │   │               │   │   │   ├── ConsumerSession+LookupResponse.swift
+│   │   │               │   │   │   ├── ConsumerSession+PublishableKey.swift
+│   │   │               │   │   │   ├── CookieStore
+│   │   │               │   │   │   │   ├── LinkCookieStore.swift
+│   │   │               │   │   │   │   ├── LinkInMemoryCookieStore.swift
+│   │   │               │   │   │   │   └── LinkSecureCookieStore.swift
+│   │   │               │   │   │   ├── PaymentDetails.swift
+│   │   │               │   │   │   ├── STPAPIClient+Link.swift
+│   │   │               │   │   │   └── VerificationSession.swift
+│   │   │               │   │   ├── STPAPIClient+PaymentSheet.swift
+│   │   │               │   │   ├── v1:elements:sessions
+│   │   │               │   │   │   ├── ExternalPaymentMethod.swift
+│   │   │               │   │   │   ├── STPCardBrandChoice.swift
+│   │   │               │   │   │   └── STPElementsSession.swift
+│   │   │               │   │   └── VO
+│   │   │               │   │       └── CardExpiryDate.swift
+│   │   │               │   ├── Basic UI
+│   │   │               │   │   └── SeparatorLabel.swift
+│   │   │               │   └── Link
+│   │   │               │       ├── ACH
+│   │   │               │       │   └── InstantDebitsOnlyFinancialConnectionsAuthManager.swift
+│   │   │               │       ├── Controllers
+│   │   │               │       │   └── PayWithLinkWebController.swift
+│   │   │               │       ├── Elements
+│   │   │               │       │   ├── InlineSignup
+│   │   │               │       │   │   ├── LinkInlineSignupElement.swift
+│   │   │               │       │   │   ├── LinkInlineSignupView-CheckboxElement.swift
+│   │   │               │       │   │   └── LinkInlineSignupView.swift
+│   │   │               │       │   └── LinkEmailElement.swift
+│   │   │               │       ├── Extensions
+│   │   │               │       │   ├── FormElement+Link.swift
+│   │   │               │       │   ├── Intent+Link.swift
+│   │   │               │       │   ├── STPAnalyticsClient+Link.swift
+│   │   │               │       │   └── UIColor+Link.swift
+│   │   │               │       ├── LinkUI.swift
+│   │   │               │       ├── Services
+│   │   │               │       │   └── LinkAccountService.swift
+│   │   │               │       ├── Utils
+│   │   │               │       │   ├── LinkPopupURLParser.swift
+│   │   │               │       │   ├── LinkURLGenerator.swift
+│   │   │               │       │   ├── Locale+Link.swift
+│   │   │               │       │   └── OperationDebouncer.swift
+│   │   │               │       ├── Verification
+│   │   │               │       │   ├── LinkAccountContext.swift
+│   │   │               │       │   └── LinkCookieKey.swift
+│   │   │               │       ├── ViewModels
+│   │   │               │       │   └── LinkInlineSignupViewModel.swift
+│   │   │               │       └── Views
+│   │   │               │           ├── LinkLegalTermsView.swift
+│   │   │               │           └── LinkMoreInfoView.swift
+│   │   │               └── PaymentSheet
+│   │   │                   ├── AddressViewController
+│   │   │                   │   ├── AddressViewController.swift
+│   │   │                   │   └── AddressViewController+Configuration.swift
+│   │   │                   ├── BottomSheet
+│   │   │                   │   ├── BottomSheetPresentable.swift
+│   │   │                   │   ├── BottomSheetPresentationAnimator.swift
+│   │   │                   │   ├── BottomSheetPresentationController.swift
+│   │   │                   │   ├── BottomSheetTransitioningDelegate.swift
+│   │   │                   │   └── UIViewController+BottomSheet.swift
+│   │   │                   ├── CustomerAdapter
+│   │   │                   │   ├── CustomerAdapter.swift
+│   │   │                   │   ├── CustomerPaymentOption.swift
+│   │   │                   │   └── UserDefaults+StripePaymentSheet.swift
+│   │   │                   ├── CustomerSheet
+│   │   │                   │   ├── CustomerAddPaymentMethodViewController.swift
+│   │   │                   │   ├── CustomerSavedPaymentMethodsCollectionViewController.swift
+│   │   │                   │   ├── CustomerSavedPaymentMethodsViewController.swift
+│   │   │                   │   ├── CustomerSheet.swift
+│   │   │                   │   ├── CustomerSheet+API.swift
+│   │   │                   │   ├── CustomerSheet+PaymentMethodAvailability.swift
+│   │   │                   │   ├── CustomerSheet+SwiftUI.swift
+│   │   │                   │   ├── CustomerSheetConfiguration.swift
+│   │   │                   │   └── CustomerSheetError.swift
+│   │   │                   ├── Elements
+│   │   │                   │   ├── CardSectionWithScanner
+│   │   │                   │   │   ├── CardSectionWithScannerElement.swift
+│   │   │                   │   │   ├── CardSectionWithScannerView.swift
+│   │   │                   │   │   └── CVCRecollectionElement.swift
+│   │   │                   │   ├── ConnectionsElement.swift
+│   │   │                   │   ├── LinkEnabledPaymentMethodElement.swift
+│   │   │                   │   ├── PaymentMethodElement
+│   │   │                   │   │   ├── PaymentMethodElement.swift
+│   │   │                   │   │   └── PaymentMethodElementWrapper.swift
+│   │   │                   │   ├── SimpleMandateElement.swift
+│   │   │                   │   └── TextField
+│   │   │                   │       ├── TextFieldElement+Card.swift
+│   │   │                   │       └── TextFieldElement+IBAN.swift
+│   │   │                   ├── Error+PaymentSheet.swift
+│   │   │                   ├── Intent.swift
+│   │   │                   ├── IntentConfirmParams.swift
+│   │   │                   ├── KlarnaHelper.swift
+│   │   │                   ├── Link
+│   │   │                   │   ├── LinkPaymentController.swift
+│   │   │                   │   ├── PaymentSheet-LinkConfirmOption.swift
+│   │   │                   │   └── PayWithLinkController.swift
+│   │   │                   ├── New Payment Method Screen
+│   │   │                   │   ├── AddPaymentMethodViewController.swift
+│   │   │                   │   ├── PaymentMethodTypeCollectionView.swift
+│   │   │                   │   └── WalletHeaderView.swift
+│   │   │                   ├── PaymentMethodType.swift
+│   │   │                   ├── PaymentOption+Images.swift
+│   │   │                   ├── PaymentSheet.swift
+│   │   │                   ├── PaymentSheet+API.swift
+│   │   │                   ├── PaymentSheet+DeferredAPI.swift
+│   │   │                   ├── PaymentSheet+PaymentMethodAvailability.swift
+│   │   │                   ├── PaymentSheet+SwiftUI.swift
+│   │   │                   ├── PaymentSheetAppearance.swift
+│   │   │                   ├── PaymentSheetConfiguration.swift
+│   │   │                   ├── PaymentSheetDeferredValidator.swift
+│   │   │                   ├── PaymentSheetError.swift
+│   │   │                   ├── PaymentSheetFlowController.swift
+│   │   │                   ├── PaymentSheetFormFactory
+│   │   │                   │   ├── FormSpec
+│   │   │                   │   │   ├── FormSpec.swift
+│   │   │                   │   │   ├── FormSpecPaymentHandler.swift
+│   │   │                   │   │   └── FormSpecProvider.swift
+│   │   │                   │   ├── PaymentSheetFormFactory.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+BLIK.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+Boleto.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+Card.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+FormSpec.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+OXXO.swift
+│   │   │                   │   ├── PaymentSheetFormFactory+UPI.swift
+│   │   │                   │   └── PaymentSheetFormFactoryConfig.swift
+│   │   │                   ├── PaymentSheetIntentConfiguration.swift
+│   │   │                   ├── PaymentSheetLoader.swift
+│   │   │                   ├── Saved Payment Method Screen
+│   │   │                   │   ├── SavedPaymentMethodCollectionView.swift
+│   │   │                   │   └── SavedPaymentOptionsViewController.swift
+│   │   │                   ├── STPAnalyticsClient+PaymentSheet.swift
+│   │   │                   ├── STPApplePayContext+PaymentSheet.swift
+│   │   │                   ├── STPPaymentIntentShippingDetailsParams+PaymentSheet.swift
+│   │   │                   ├── USBankAccount
+│   │   │                   │   ├── BankAccountInfoView.swift
+│   │   │                   │   └── USBankAccountPaymentMethodElement.swift
+│   │   │                   ├── ViewControllers
+│   │   │                   │   ├── AutoComplete
+│   │   │                   │   │   ├── AddressSearchResult.swift
+│   │   │                   │   │   ├── AutoCompleteViewController.swift
+│   │   │                   │   │   └── String+AutoComplete.swift
+│   │   │                   │   ├── BottomSheet3DS2ViewController.swift
+│   │   │                   │   ├── BottomSheetViewController.swift
+│   │   │                   │   ├── CVCReconfirmationViewController.swift
+│   │   │                   │   ├── LoadingViewController.swift
+│   │   │                   │   ├── PaymentSheetFlowControllerViewController.swift
+│   │   │                   │   ├── PaymentSheetViewController.swift
+│   │   │                   │   ├── PollingViewController.swift
+│   │   │                   │   ├── PollingViewModel.swift
+│   │   │                   │   ├── PreConfirmationViewController.swift
+│   │   │                   │   ├── SepaMandateViewController.swift
+│   │   │                   │   └── UpdateCardViewController.swift
+│   │   │                   └── Views
+│   │   │                       ├── AffirmCopyLabel.swift
+│   │   │                       ├── AfterpayPriceBreakdownView.swift
+│   │   │                       ├── Appearance+FontScaling.swift
+│   │   │                       ├── AUBECSMandate.swift
+│   │   │                       ├── BacsDDMandateView.swift
+│   │   │                       ├── CardScanButton.swift
+│   │   │                       ├── CardScanningView.swift
+│   │   │                       ├── CircularButton.swift
+│   │   │                       ├── ConfirmButton.swift
+│   │   │                       ├── ManualEntryButton.swift
+│   │   │                       ├── PaymentMethodInformationView.swift
+│   │   │                       ├── PaymentSheetUIKitAdditions.swift
+│   │   │                       ├── PayWithLinkButton.swift
+│   │   │                       ├── RotatingCardBrandsView.swift
+│   │   │                       ├── ShadowedRoundedRectangleView.swift
+│   │   │                       ├── SheetNavigationBar.swift
+│   │   │                       ├── SheetNavigationButton.swift
+│   │   │                       ├── SimpleMandateTextView.swift
+│   │   │                       └── TestModeView.swift
+│   │   ├── StripePaymentsUI
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   ├── StripePayments
+│   │   │   └── StripePaymentsUI
+│   │   │       └── StripePaymentsUI
+│   │   │           ├── Resources
+│   │   │           │   ├── JSON
+│   │   │           │   │   └── au_becs_bsb.json
+│   │   │           │   ├── Localizations
+│   │   │           │   │   ├── bg-BG.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ca-ES.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── cs-CZ.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── da.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── de.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── el-GR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en-GB.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es-419.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── et-EE.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fil.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr-CA.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hu.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── id.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── it.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ja.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ko.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lt-LT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lv-LV.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ms-MY.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── mt.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nb.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nl.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nn-NO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pl-PL.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-BR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-PT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ro-RO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ru.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sk-SK.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sl-SI.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sv.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tk.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── vi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hans.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hant.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   └── zh-HK.lproj
+│   │   │           │   │       └── Localizable.strings
+│   │   │           │   └── StripePaymentsUI.xcassets
+│   │   │           │       ├── BECS
+│   │   │           │       │   ├── anz.imageset
+│   │   │           │       │   │   ├── anz.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── bankofmelbourne.imageset
+│   │   │           │       │   │   ├── bankofmelbourne.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── banksa.imageset
+│   │   │           │       │   │   ├── banksa.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── bankwest.imageset
+│   │   │           │       │   │   ├── bankwest.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── boq.imageset
+│   │   │           │       │   │   ├── boq.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── cba.imageset
+│   │   │           │       │   │   ├── cba.pdf
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── nab.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── nab.pdf
+│   │   │           │       │   ├── stgeorges.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stgeorges.pdf
+│   │   │           │       │   ├── stripe.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stripe.pdf
+│   │   │           │       │   ├── suncorpmetway.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── suncorpmetway.pdf
+│   │   │           │       │   └── westpac.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── westpac.pdf
+│   │   │           │       ├── Cards
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_card_amex_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (6).svg
+│   │   │           │       │   ├── stp_card_amex.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-amex.svg
+│   │   │           │       │   ├── stp_card_applepay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_card_applepay.png
+│   │   │           │       │   │   ├── stp_card_applepay@2x.png
+│   │   │           │       │   │   └── stp_card_applepay@3x.png
+│   │   │           │       │   ├── stp_card_cartes_bancaires_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (12).svg
+│   │   │           │       │   ├── stp_card_cartes_bancaires.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-cartebancaire.svg
+│   │   │           │       │   ├── stp_card_cbc.imageset
+│   │   │           │       │   │   ├── cbcDark.svg
+│   │   │           │       │   │   ├── cbcLight.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── stp_card_cvc_amex.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── cvcAmexDark.svg
+│   │   │           │       │   │   └── cvcAmexLight.svg
+│   │   │           │       │   ├── stp_card_cvc.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── cvcDark.svg
+│   │   │           │       │   │   └── cvcLight.svg
+│   │   │           │       │   ├── stp_card_diners_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── Diners Club-bw.svg
+│   │   │           │       │   ├── stp_card_diners.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-diners-club.svg
+│   │   │           │       │   ├── stp_card_discover_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (8).svg
+│   │   │           │       │   ├── stp_card_discover.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-discover.svg
+│   │   │           │       │   ├── stp_card_error.imageset
+│   │   │           │       │   │   ├── cardError.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── stp_card_jcb_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (9).svg
+│   │   │           │       │   ├── stp_card_jcb.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-jcb.svg
+│   │   │           │       │   ├── stp_card_maestro.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-maestro.svg
+│   │   │           │       │   ├── stp_card_mastercard_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   ├── stp_card_mastercard_template.png
+│   │   │           │       │   │   ├── stp_card_mastercard_template@2x.png
+│   │   │           │       │   │   └── stp_card_mastercard_template@3x.png
+│   │   │           │       │   ├── stp_card_mastercard.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-mastercard.svg
+│   │   │           │       │   ├── stp_card_unionpay_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (7).svg
+│   │   │           │       │   ├── stp_card_unionpay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── icon-card-unionpay.svg
+│   │   │           │       │   ├── stp_card_unknown.imageset
+│   │   │           │       │   │   ├── cardDark.svg
+│   │   │           │       │   │   ├── cardLight.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── stp_card_visa_template.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── vector (11).svg
+│   │   │           │       │   └── stp_card_visa.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── icon-card-visa.svg
+│   │   │           │       ├── CardsNoPadding
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── stp_card_unpadded_amex.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_amex.svg
+│   │   │           │       │   ├── stp_card_unpadded_cartes_bancaires.imageset
+│   │   │           │       │   │   ├── cartesBancairesNoPadding.svg
+│   │   │           │       │   │   └── Contents.json
+│   │   │           │       │   ├── stp_card_unpadded_diners_club.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_diners_club.svg
+│   │   │           │       │   ├── stp_card_unpadded_discover.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_discover.svg
+│   │   │           │       │   ├── stp_card_unpadded_jcb.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_jcb.svg
+│   │   │           │       │   ├── stp_card_unpadded_maestro.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_maestro.svg
+│   │   │           │       │   ├── stp_card_unpadded_mastercard.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_mastercard.svg
+│   │   │           │       │   ├── stp_card_unpadded_unionpay.imageset
+│   │   │           │       │   │   ├── Contents.json
+│   │   │           │       │   │   └── stp_card_unpadded_unionpay.svg
+│   │   │           │       │   └── stp_card_unpadded_visa.imageset
+│   │   │           │       │       ├── Contents.json
+│   │   │           │       │       └── visaNoPadding.svg
+│   │   │           │       ├── Contents.json
+│   │   │           │       └── stp_icon_bank.imageset
+│   │   │           │           ├── Contents.json
+│   │   │           │           └── icon-pm-bank-color.svg
+│   │   │           └── Source
+│   │   │               ├── Categories
+│   │   │               │   └── Enums+CustomStringConvertible.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── CardElementConfigService.swift
+│   │   │               │   ├── STPBECSDebitAccountNumberValidator.swift
+│   │   │               │   ├── STPBSBNumberValidator.swift
+│   │   │               │   ├── STPCBCController.swift
+│   │   │               │   ├── STPImageLibrary.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   ├── STPPhoneNumberValidator.swift
+│   │   │               │   ├── STPPostalCodeValidator.swift
+│   │   │               │   ├── STPPromise.swift
+│   │   │               │   ├── STPStringUtils.swift
+│   │   │               │   ├── String+Localized.swift
+│   │   │               │   ├── StripePayments+Export.swift
+│   │   │               │   └── StripePaymentsBundleLocator.swift
+│   │   │               ├── Internal
+│   │   │               │   ├── Categories
+│   │   │               │   │   ├── NSAttributedString+Stripe.swift
+│   │   │               │   │   ├── STPCardBrand+PaymentsUI.swift
+│   │   │               │   │   └── UIButton+Stripe.swift
+│   │   │               │   └── UI
+│   │   │               │       ├── Elements
+│   │   │               │       │   └── DropDownFieldElement+CardBrand.swift
+│   │   │               │       └── Views
+│   │   │               │           ├── CardBrandView.swift
+│   │   │               │           ├── DynamicImageView+Unknown.swift
+│   │   │               │           ├── Inputs
+│   │   │               │           │   ├── Card
+│   │   │               │           │   │   ├── STPCardCVCInputTextField.swift
+│   │   │               │           │   │   ├── STPCardCVCInputTextFieldFormatter.swift
+│   │   │               │           │   │   ├── STPCardCVCInputTextFieldValidator.swift
+│   │   │               │           │   │   ├── STPCardExpiryInputTextField.swift
+│   │   │               │           │   │   ├── STPCardExpiryInputTextFieldFormatter.swift
+│   │   │               │           │   │   ├── STPCardExpiryInputTextFieldValidator.swift
+│   │   │               │           │   │   ├── STPCardNumberInputTextField.swift
+│   │   │               │           │   │   ├── STPCardNumberInputTextFieldFormatter.swift
+│   │   │               │           │   │   ├── STPCardNumberInputTextFieldValidator.swift
+│   │   │               │           │   │   ├── STPPostalCodeInputTextField.swift
+│   │   │               │           │   │   ├── STPPostalCodeInputTextFieldFormatter.swift
+│   │   │               │           │   │   └── STPPostalCodeInputTextFieldValidator.swift
+│   │   │               │           │   ├── STPCountryPickerInputField.swift
+│   │   │               │           │   ├── STPGenericInputPickerField.swift
+│   │   │               │           │   ├── STPGenericInputTextField.swift
+│   │   │               │           │   ├── STPInputTextField.swift
+│   │   │               │           │   ├── STPInputTextFieldFormatter.swift
+│   │   │               │           │   ├── STPInputTextFieldValidator.swift
+│   │   │               │           │   └── STPNumericDigitInputTextFormatter.swift
+│   │   │               │           ├── STPAUBECSFormViewModel.swift
+│   │   │               │           ├── STPCardLoadingIndicator.swift
+│   │   │               │           ├── STPFormTextField.swift
+│   │   │               │           ├── STPLabeledFormTextFieldView.swift
+│   │   │               │           ├── STPLabeledMultiFormTextFieldView.swift
+│   │   │               │           ├── STPPaymentCardTextFieldViewModel.swift
+│   │   │               │           ├── STPValidatedTextField.swift
+│   │   │               │           └── STPViewWithSeparator.swift
+│   │   │               └── UI Components
+│   │   │                   ├── PaymentMethodMessagingView.swift
+│   │   │                   ├── PaymentMethodMessagingView+Configuration.swift
+│   │   │                   ├── STPAUBECSDebitFormView.swift
+│   │   │                   ├── STPCardFormView.swift
+│   │   │                   ├── STPCardFormView+SwiftUI.swift
+│   │   │                   ├── STPFloatingPlaceholderTextField.swift
+│   │   │                   ├── STPFormTextFieldContainer.swift
+│   │   │                   ├── STPFormView.swift
+│   │   │                   ├── STPMultiFormTextField.swift
+│   │   │                   ├── STPPaymentCardTextField.swift
+│   │   │                   └── STPPaymentCardTextField+SwiftUI.swift
+│   │   ├── StripeUICore
+│   │   │   ├── LICENSE
+│   │   │   ├── README.md
+│   │   │   ├── Stripe
+│   │   │   └── StripeUICore
+│   │   │       └── StripeUICore
+│   │   │           ├── Resources
+│   │   │           │   ├── JSON
+│   │   │           │   │   ├── au_becs_bsb.json
+│   │   │           │   │   └── localized_address_data.json
+│   │   │           │   ├── Localizations
+│   │   │           │   │   ├── bg-BG.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ca-ES.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── cs-CZ.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── da.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── de.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── el-GR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en-GB.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── en.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es-419.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── es.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── et-EE.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fil.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr-CA.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── fr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── hu.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── id.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── it.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ja.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ko.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lt-LT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── lv-LV.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ms-MY.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── mt.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nb.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nl.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── nn-NO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pl-PL.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-BR.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── pt-PT.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ro-RO.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── ru.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sk-SK.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sl-SI.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── sv.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── tr.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── vi.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hans.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   ├── zh-Hant.lproj
+│   │   │           │   │   │   └── Localizable.strings
+│   │   │           │   │   └── zh-HK.lproj
+│   │   │           │   │       └── Localizable.strings
+│   │   │           │   └── StripeUICore.xcassets
+│   │   │           │       ├── brand_stripe.imageset
+│   │   │           │       │   ├── brand_stripe.svg
+│   │   │           │       │   └── Contents.json
+│   │   │           │       ├── Contents.json
+│   │   │           │       ├── form_error_icon.imageset
+│   │   │           │       │   ├── Contents.json
+│   │   │           │       │   ├── form_error_icon_dark.pdf
+│   │   │           │       │   └── form_error_icon.pdf
+│   │   │           │       ├── icon_chevron_down.imageset
+│   │   │           │       │   ├── chevronDown.pdf
+│   │   │           │       │   └── Contents.json
+│   │   │           │       └── icon_clear.imageset
+│   │   │           │           ├── Contents.json
+│   │   │           │           └── icon_clear.svg
+│   │   │           └── Source
+│   │   │               ├── Categories
+│   │   │               │   ├── CALayer+StripeUICore.swift
+│   │   │               │   ├── Enums+CustomStringConvertible.swift
+│   │   │               │   ├── Locale+StripeUICore.swift
+│   │   │               │   ├── NSAttributedString+StripeUICore.swift
+│   │   │               │   ├── NSDirectionalEdgeInsets+StripeUICore.swift
+│   │   │               │   ├── UIBarButtonItem+StripeUICore.swift
+│   │   │               │   ├── UIButton+StripeUICore.swift
+│   │   │               │   ├── UIColor+StripeUICore.swift
+│   │   │               │   ├── UIFont+StripeUICore.swift
+│   │   │               │   ├── UIKeyboardType+StripeUICore.swift
+│   │   │               │   ├── UISpringTimingParameters+StripeUICore.swift
+│   │   │               │   ├── UIStackView+StripeUICore.swift
+│   │   │               │   ├── UITraitCollection+StripeUICore.swift
+│   │   │               │   ├── UIView+StripeUICore.swift
+│   │   │               │   ├── UIViewController+StripeUICore.swift
+│   │   │               │   └── UIWindow+StripeUICore.swift
+│   │   │               ├── Controls
+│   │   │               │   ├── ActivityIndicator.swift
+│   │   │               │   ├── Button.swift
+│   │   │               │   ├── OneTimeCodeTextField-TextStorage.swift
+│   │   │               │   └── OneTimeCodeTextField.swift
+│   │   │               ├── Elements
+│   │   │               │   ├── Checkbox
+│   │   │               │   │   ├── CheckboxButton.swift
+│   │   │               │   │   └── CheckboxElement.swift
+│   │   │               │   ├── ContainerElement.swift
+│   │   │               │   ├── DateFieldElement.swift
+│   │   │               │   ├── DropdownFieldElement.swift
+│   │   │               │   ├── Element.swift
+│   │   │               │   ├── ElementsUI.swift
+│   │   │               │   ├── Factories
+│   │   │               │   │   ├── Address
+│   │   │               │   │   │   ├── AddressSectionElement.swift
+│   │   │               │   │   │   ├── AddressSectionElement+DummyAddressLine.swift
+│   │   │               │   │   │   ├── AddressSpec.swift
+│   │   │               │   │   │   ├── AddressSpec+ElementFactory.swift
+│   │   │               │   │   │   └── AddressSpecProvider.swift
+│   │   │               │   │   ├── BSB
+│   │   │               │   │   │   └── BSBNumberProvider.swift
+│   │   │               │   │   ├── DropdownFieldElement+AddressFactory.swift
+│   │   │               │   │   ├── IDNumberTextFieldConfiguration.swift
+│   │   │               │   │   ├── TextFieldElement+AccountFactory.swift
+│   │   │               │   │   ├── TextFieldElement+AddressFactory.swift
+│   │   │               │   │   └── TextFieldElement+Factory.swift
+│   │   │               │   ├── Form
+│   │   │               │   │   ├── FormElement.swift
+│   │   │               │   │   └── FormView.swift
+│   │   │               │   ├── PhoneNumber
+│   │   │               │   │   └── PhoneNumberElement.swift
+│   │   │               │   ├── PickerField
+│   │   │               │   │   ├── PickerFieldView.swift
+│   │   │               │   │   └── PickerTextField.swift
+│   │   │               │   ├── Section
+│   │   │               │   │   ├── SectionContainerView.swift
+│   │   │               │   │   ├── SectionElement.swift
+│   │   │               │   │   ├── SectionElement+MultiElementRow.swift
+│   │   │               │   │   └── SectionView.swift
+│   │   │               │   ├── StaticElement.swift
+│   │   │               │   ├── TextField
+│   │   │               │   │   ├── FloatingPlaceholderTextFieldView.swift
+│   │   │               │   │   ├── TextFieldElement.swift
+│   │   │               │   │   ├── TextFieldElement+Validation.swift
+│   │   │               │   │   ├── TextFieldElementConfiguration.swift
+│   │   │               │   │   ├── TextFieldFormatter.swift
+│   │   │               │   │   └── TextFieldView.swift
+│   │   │               │   └── TextOrDropdownElement.swift
+│   │   │               ├── Events.swift
+│   │   │               ├── Helpers
+│   │   │               │   ├── CompatibleColor.swift
+│   │   │               │   ├── ImageMaker.swift
+│   │   │               │   ├── InputFormColors.swift
+│   │   │               │   ├── RegionCodeProvider.swift
+│   │   │               │   ├── StackViewWithSeparator.swift
+│   │   │               │   ├── STPLocalizedString.swift
+│   │   │               │   ├── String+CountryEmoji.swift
+│   │   │               │   ├── String+Localized.swift
+│   │   │               │   ├── String+RegionCodeProvider.swift
+│   │   │               │   └── StripeUICoreBundleLocator.swift
+│   │   │               ├── Image.swift
+│   │   │               ├── Validators
+│   │   │               │   ├── BankRoutingNumber.swift
+│   │   │               │   ├── PhoneNumber.swift
+│   │   │               │   ├── STPBlikCodeValidator.swift
+│   │   │               │   ├── STPEmailAddressValidator.swift
+│   │   │               │   └── STPVPANumberValidator.swift
+│   │   │               └── Views
+│   │   │                   ├── DoneButtonToolbar.swift
+│   │   │                   ├── DynamicHeightContainerView.swift
+│   │   │                   ├── DynamicImageView.swift
+│   │   │                   └── LinkOpeningTextView.swift
+│   │   └── Target Support Files
+│   │       ├── app_links
+│   │       │   ├── app_links-dummy.m
+│   │       │   ├── app_links-Info.plist
+│   │       │   ├── app_links-prefix.pch
+│   │       │   ├── app_links-umbrella.h
+│   │       │   ├── app_links.debug.xcconfig
+│   │       │   ├── app_links.modulemap
+│   │       │   ├── app_links.release.xcconfig
+│   │       │   └── ResourceBundle-app_links_ios_privacy-app_links-Info.plist
+│   │       ├── Flutter
+│   │       │   ├── Flutter.debug.xcconfig
+│   │       │   └── Flutter.release.xcconfig
+│   │       ├── path_provider_foundation
+│   │       │   ├── path_provider_foundation-dummy.m
+│   │       │   ├── path_provider_foundation-Info.plist
+│   │       │   ├── path_provider_foundation-prefix.pch
+│   │       │   ├── path_provider_foundation-umbrella.h
+│   │       │   ├── path_provider_foundation.debug.xcconfig
+│   │       │   ├── path_provider_foundation.modulemap
+│   │       │   ├── path_provider_foundation.release.xcconfig
+│   │       │   └── ResourceBundle-path_provider_foundation_privacy-path_provider_foundation-Info.plist
+│   │       ├── Pods-Runner
+│   │       │   ├── Pods-Runner-acknowledgements.markdown
+│   │       │   ├── Pods-Runner-acknowledgements.plist
+│   │       │   ├── Pods-Runner-dummy.m
+│   │       │   ├── Pods-Runner-frameworks-Debug-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Debug-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks.sh
+│   │       │   ├── Pods-Runner-Info.plist
+│   │       │   ├── Pods-Runner-umbrella.h
+│   │       │   ├── Pods-Runner.debug.xcconfig
+│   │       │   ├── Pods-Runner.modulemap
+│   │       │   ├── Pods-Runner.profile.xcconfig
+│   │       │   └── Pods-Runner.release.xcconfig
+│   │       ├── Pods-RunnerTests
+│   │       │   ├── Pods-RunnerTests-acknowledgements.markdown
+│   │       │   ├── Pods-RunnerTests-acknowledgements.plist
+│   │       │   ├── Pods-RunnerTests-dummy.m
+│   │       │   ├── Pods-RunnerTests-Info.plist
+│   │       │   ├── Pods-RunnerTests-umbrella.h
+│   │       │   ├── Pods-RunnerTests.debug.xcconfig
+│   │       │   ├── Pods-RunnerTests.modulemap
+│   │       │   ├── Pods-RunnerTests.profile.xcconfig
+│   │       │   └── Pods-RunnerTests.release.xcconfig
+│   │       ├── shared_preferences_foundation
+│   │       │   ├── ResourceBundle-shared_preferences_foundation_privacy-shared_preferences_foundation-Info.plist
+│   │       │   ├── shared_preferences_foundation-dummy.m
+│   │       │   ├── shared_preferences_foundation-Info.plist
+│   │       │   ├── shared_preferences_foundation-prefix.pch
+│   │       │   ├── shared_preferences_foundation-umbrella.h
+│   │       │   ├── shared_preferences_foundation.debug.xcconfig
+│   │       │   ├── shared_preferences_foundation.modulemap
+│   │       │   └── shared_preferences_foundation.release.xcconfig
+│   │       ├── sign_in_with_apple
+│   │       │   ├── sign_in_with_apple-dummy.m
+│   │       │   ├── sign_in_with_apple-Info.plist
+│   │       │   ├── sign_in_with_apple-prefix.pch
+│   │       │   ├── sign_in_with_apple-umbrella.h
+│   │       │   ├── sign_in_with_apple.debug.xcconfig
+│   │       │   ├── sign_in_with_apple.modulemap
+│   │       │   └── sign_in_with_apple.release.xcconfig
+│   │       ├── Stripe
+│   │       │   ├── ResourceBundle-Stripe-Stripe-Info.plist
+│   │       │   ├── Stripe-dummy.m
+│   │       │   ├── Stripe-Info.plist
+│   │       │   ├── Stripe-prefix.pch
+│   │       │   ├── Stripe-umbrella.h
+│   │       │   ├── Stripe.debug.xcconfig
+│   │       │   ├── Stripe.modulemap
+│   │       │   └── Stripe.release.xcconfig
+│   │       ├── stripe_ios
+│   │       │   ├── stripe_ios-dummy.m
+│   │       │   ├── stripe_ios-Info.plist
+│   │       │   ├── stripe_ios-prefix.pch
+│   │       │   ├── stripe_ios-umbrella.h
+│   │       │   ├── stripe_ios.debug.xcconfig
+│   │       │   ├── stripe_ios.modulemap
+│   │       │   └── stripe_ios.release.xcconfig
+│   │       ├── StripeApplePay
+│   │       │   ├── StripeApplePay-dummy.m
+│   │       │   ├── StripeApplePay-Info.plist
+│   │       │   ├── StripeApplePay-prefix.pch
+│   │       │   ├── StripeApplePay-umbrella.h
+│   │       │   ├── StripeApplePay.debug.xcconfig
+│   │       │   ├── StripeApplePay.modulemap
+│   │       │   └── StripeApplePay.release.xcconfig
+│   │       ├── StripeCore
+│   │       │   ├── ResourceBundle-StripeCore-StripeCore-Info.plist
+│   │       │   ├── StripeCore-dummy.m
+│   │       │   ├── StripeCore-Info.plist
+│   │       │   ├── StripeCore-prefix.pch
+│   │       │   ├── StripeCore-umbrella.h
+│   │       │   ├── StripeCore.debug.xcconfig
+│   │       │   ├── StripeCore.modulemap
+│   │       │   └── StripeCore.release.xcconfig
+│   │       ├── StripeFinancialConnections
+│   │       │   ├── ResourceBundle-StripeFinancialConnections-StripeFinancialConnections-Info.plist
+│   │       │   ├── StripeFinancialConnections-dummy.m
+│   │       │   ├── StripeFinancialConnections-Info.plist
+│   │       │   ├── StripeFinancialConnections-prefix.pch
+│   │       │   ├── StripeFinancialConnections-umbrella.h
+│   │       │   ├── StripeFinancialConnections.debug.xcconfig
+│   │       │   ├── StripeFinancialConnections.modulemap
+│   │       │   └── StripeFinancialConnections.release.xcconfig
+│   │       ├── StripePayments
+│   │       │   ├── ResourceBundle-Stripe3DS2-StripePayments-Info.plist
+│   │       │   ├── ResourceBundle-StripePayments-StripePayments-Info.plist
+│   │       │   ├── StripePayments-dummy.m
+│   │       │   ├── StripePayments-Info.plist
+│   │       │   ├── StripePayments-prefix.pch
+│   │       │   ├── StripePayments-umbrella.h
+│   │       │   ├── StripePayments.debug.xcconfig
+│   │       │   ├── StripePayments.modulemap
+│   │       │   └── StripePayments.release.xcconfig
+│   │       ├── StripePaymentSheet
+│   │       │   ├── ResourceBundle-StripePaymentSheet-StripePaymentSheet-Info.plist
+│   │       │   ├── StripePaymentSheet-dummy.m
+│   │       │   ├── StripePaymentSheet-Info.plist
+│   │       │   ├── StripePaymentSheet-prefix.pch
+│   │       │   ├── StripePaymentSheet-umbrella.h
+│   │       │   ├── StripePaymentSheet.debug.xcconfig
+│   │       │   ├── StripePaymentSheet.modulemap
+│   │       │   └── StripePaymentSheet.release.xcconfig
+│   │       ├── StripePaymentsUI
+│   │       │   ├── ResourceBundle-StripePaymentsUI-StripePaymentsUI-Info.plist
+│   │       │   ├── StripePaymentsUI-dummy.m
+│   │       │   ├── StripePaymentsUI-Info.plist
+│   │       │   ├── StripePaymentsUI-prefix.pch
+│   │       │   ├── StripePaymentsUI-umbrella.h
+│   │       │   ├── StripePaymentsUI.debug.xcconfig
+│   │       │   ├── StripePaymentsUI.modulemap
+│   │       │   └── StripePaymentsUI.release.xcconfig
+│   │       ├── StripeUICore
+│   │       │   ├── ResourceBundle-StripeUICore-StripeUICore-Info.plist
+│   │       │   ├── StripeUICore-dummy.m
+│   │       │   ├── StripeUICore-Info.plist
+│   │       │   ├── StripeUICore-prefix.pch
+│   │       │   ├── StripeUICore-umbrella.h
+│   │       │   ├── StripeUICore.debug.xcconfig
+│   │       │   ├── StripeUICore.modulemap
+│   │       │   └── StripeUICore.release.xcconfig
+│   │       ├── url_launcher_ios
+│   │       │   ├── ResourceBundle-url_launcher_ios_privacy-url_launcher_ios-Info.plist
+│   │       │   ├── url_launcher_ios-dummy.m
+│   │       │   ├── url_launcher_ios-Info.plist
+│   │       │   ├── url_launcher_ios-prefix.pch
+│   │       │   ├── url_launcher_ios-umbrella.h
+│   │       │   ├── url_launcher_ios.debug.xcconfig
+│   │       │   ├── url_launcher_ios.modulemap
+│   │       │   └── url_launcher_ios.release.xcconfig
+│   │       └── webview_flutter_wkwebview
+│   │           ├── ResourceBundle-webview_flutter_wkwebview_privacy-webview_flutter_wkwebview-Info.plist
+│   │           ├── webview_flutter_wkwebview-dummy.m
+│   │           ├── webview_flutter_wkwebview-Info.plist
+│   │           ├── webview_flutter_wkwebview-prefix.pch
+│   │           ├── webview_flutter_wkwebview-umbrella.h
+│   │           ├── webview_flutter_wkwebview.debug.xcconfig
+│   │           ├── webview_flutter_wkwebview.modulemap
+│   │           └── webview_flutter_wkwebview.release.xcconfig
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   ├── AppIcon.appiconset
+│   │   │   │   ├── Contents.json
+│   │   │   │   ├── Icon-App-1024x1024@1x.png
+│   │   │   │   ├── Icon-App-20x20@1x.png
+│   │   │   │   ├── Icon-App-20x20@2x.png
+│   │   │   │   ├── Icon-App-20x20@3x.png
+│   │   │   │   ├── Icon-App-29x29@1x.png
+│   │   │   │   ├── Icon-App-29x29@2x.png
+│   │   │   │   ├── Icon-App-29x29@3x.png
+│   │   │   │   ├── Icon-App-40x40@1x.png
+│   │   │   │   ├── Icon-App-40x40@2x.png
+│   │   │   │   ├── Icon-App-40x40@3x.png
+│   │   │   │   ├── Icon-App-50x50@1x.png
+│   │   │   │   ├── Icon-App-50x50@2x.png
+│   │   │   │   ├── Icon-App-57x57@1x.png
+│   │   │   │   ├── Icon-App-57x57@2x.png
+│   │   │   │   ├── Icon-App-60x60@2x.png
+│   │   │   │   ├── Icon-App-60x60@3x.png
+│   │   │   │   ├── Icon-App-72x72@1x.png
+│   │   │   │   ├── Icon-App-72x72@2x.png
+│   │   │   │   ├── Icon-App-76x76@1x.png
+│   │   │   │   ├── Icon-App-76x76@2x.png
+│   │   │   │   └── Icon-App-83.5x83.5@2x.png
+│   │   │   └── LaunchImage.imageset
+│   │   │       ├── Contents.json
+│   │   │       ├── LaunchImage.png
+│   │   │       ├── LaunchImage@2x.png
+│   │   │       ├── LaunchImage@3x.png
+│   │   │       └── README.md
+│   │   ├── Base.lproj
+│   │   │   ├── LaunchScreen.storyboard
+│   │   │   └── Main.storyboard
+│   │   ├── GeneratedPluginRegistrant.h
+│   │   ├── GeneratedPluginRegistrant.m
+│   │   ├── GoogleService-Info.plist
+│   │   ├── Info.plist
+│   │   └── Runner-Bridging-Header.h
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   ├── contents.xcworkspacedata
+│   │   │   ├── xcshareddata
+│   │   │   │   ├── IDEWorkspaceChecks.plist
+│   │   │   │   ├── swiftpm
+│   │   │   │   │   └── configuration
+│   │   │   │   └── WorkspaceSettings.xcsettings
+│   │   │   └── xcuserdata
+│   │   │       └── shereeemorrison.xcuserdatad
+│   │   │           └── UserInterfaceState.xcuserstate
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   │           └── Runner.xcscheme
+│   ├── Runner.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   │   ├── IDEWorkspaceChecks.plist
+│   │   │   ├── swiftpm
+│   │   │   │   └── configuration
+│   │   │   └── WorkspaceSettings.xcsettings
+│   │   └── xcuserdata
+│   │       └── shereeemorrison.xcuserdatad
+│   │           └── UserInterfaceState.xcuserstate
+│   └── RunnerTests
+│       └── RunnerTests.swift
+├── lib
+│   ├── archive
+│   │   ├── address_provider_Provider.dart
+│   │   ├── appLayout_autoroute.dart
+│   │   ├── backup_app_router.dart
+│   │   ├── cart_service.dart
+│   │   ├── category_block_item.dart
+│   │   ├── category_block_list.dart
+│   │   ├── category_dropdown.dart
+│   │   ├── custom_colors_extension.dart
+│   │   ├── modals
+│   │   │   ├── loginmodal.dart
+│   │   │   ├── paymentmodal.dart
+│   │   │   └── registrationmodal.dart
+│   │   ├── order_provider_Provider.dart
+│   │   ├── product_card.dart
+│   │   ├── route.dart
+│   │   ├── route.gr.dart
+│   │   ├── shop_page.dart
+│   │   ├── shop_provider_Provider.dart
+│   │   ├── small_product_tile.dart
+│   │   ├── theme_provider_Provider.dart
+│   │   ├── user_provider_Provider.dart
+│   │   ├── welcome_header.dart
+│   │   └── wishlist_service.dart
+│   ├── components
+│   │   ├── address_widgets
+│   │   │   ├── address_action_buttons.dart
+│   │   │   ├── address_contact_info.dart
+│   │   │   ├── address_form.dart
+│   │   │   ├── address_info_card.dart
+│   │   │   ├── address_search_field.dart
+│   │   │   ├── address_selector.dart
+│   │   │   ├── address_type_toggle.dart
+│   │   │   └── contact_info_form.dart
+│   │   ├── auth
+│   │   │   ├── auth_modal.dart
+│   │   │   ├── checkout_auth_adapter.dart
+│   │   │   ├── checkout_auth_options.dart
+│   │   │   ├── login_form.dart
+│   │   │   └── register_form.dart
+│   │   ├── buttons
+│   │   │   ├── auth_button.dart
+│   │   │   ├── custom_button.dart
+│   │   │   ├── return_button.dart
+│   │   │   ├── shopping_buttons.dart
+│   │   │   └── social_login_button.dart
+│   │   ├── cards
+│   │   │   ├── cart_item_card.dart
+│   │   │   ├── category_card.dart
+│   │   │   ├── order_info_card.dart
+│   │   │   ├── shop_product_card.dart
+│   │   │   └── wishlist_item_card.dart
+│   │   ├── cart_widgets
+│   │   │   └── add_to_cart_section.dart
+│   │   ├── category_widgets
+│   │   │   ├── category_chips.dart
+│   │   │   ├── category_item.dart
+│   │   │   └── category_list.dart
+│   │   ├── checkout
+│   │   │   ├── bag_tab.dart
+│   │   │   ├── checkout_button.dart
+│   │   │   ├── custom_payment_form.dart
+│   │   │   ├── order_payment_option.dart
+│   │   │   ├── payment_tab.dart
+│   │   │   └── shipping_tab.dart
+│   │   ├── common_widgets
+│   │   │   ├── custom_textfield.dart
+│   │   │   ├── empty_state.dart
+│   │   │   ├── featured_carousel.dart
+│   │   │   ├── featured_grid.dart
+│   │   │   ├── info_item.dart
+│   │   │   ├── profile_header.dart
+│   │   │   ├── search_bar.dart
+│   │   │   ├── social_login_row.dart
+│   │   │   └── theme_toggle.dart
+│   │   ├── home_widgets
+│   │   │   ├── hero_section.dart
+│   │   │   ├── newsletter_section.dart
+│   │   │   └── our_story_section.dart
+│   │   ├── order_widgets
+│   │   │   ├── order_address_card.dart
+│   │   │   ├── order_cost_summary.dart
+│   │   │   ├── order_history_table.dart
+│   │   │   ├── order_item_tile.dart
+│   │   │   ├── order_payment.option.dart
+│   │   │   ├── order_product_item.dart
+│   │   │   ├── order_status_badge.dart
+│   │   │   └── order_summary.dart
+│   │   └── product_widgets
+│   │       ├── color_selector.dart
+│   │       ├── main_product_image.dart
+│   │       ├── modal_size_selector.dart
+│   │       ├── product_details_section.dart
+│   │       ├── product_grid_item.dart
+│   │       ├── product_horizontal_list.dart
+│   │       ├── product_page_size_selector.dart
+│   │       └── quantity_selector.dart
+│   ├── config
+│   │   └── api_keys.dart
+│   ├── layouts
+│   │   └── appLayout.dart
+│   ├── main.dart
+│   ├── models
+│   │   ├── address_model.dart
+│   │   ├── category_model.dart
+│   │   ├── order_item_model.dart
+│   │   ├── order_model.dart
+│   │   ├── products_model.dart
+│   │   └── user_model.dart
+│   ├── pages
+│   │   ├── account
+│   │   │   ├── account_page.dart
+│   │   │   ├── logged_in_view.dart
+│   │   │   └── logged_out_view.dart
+│   │   ├── cart_page.dart
+│   │   ├── categories_page.dart
+│   │   ├── checkout_page.dart
+│   │   ├── home_page.dart
+│   │   ├── intro_screen.dart
+│   │   ├── order_confirmation_page.dart
+│   │   ├── order_details_page.dart
+│   │   ├── order_summary_page.dart
+│   │   ├── product_detail_page.dart
+│   │   ├── shop_accessories_page.dart
+│   │   ├── shop_men_page.dart
+│   │   ├── shop_women_page.dart
+│   │   └── wishlist_page.dart
+│   ├── providers
+│   │   ├── address_provider.dart
+│   │   ├── category_provider.dart
+│   │   ├── checkout_provider.dart
+│   │   ├── home_provider.dart
+│   │   ├── order_provider.dart
+│   │   ├── payment_provider.dart
+│   │   ├── product_provider.dart
+│   │   ├── shop_provider.dart
+│   │   ├── supabase_auth_provider.dart
+│   │   ├── theme_provider.dart
+│   │   └── user_provider.dart
+│   ├── routes
+│   │   └── app_router.dart
+│   ├── services
+│   │   ├── address_service.dart
+│   │   ├── category_service.dart
+│   │   ├── checkout_user_service.dart
+│   │   ├── database_diagnostic.dart
+│   │   ├── dialog_service.dart
+│   │   ├── home_service.dart
+│   │   ├── mapbox_service.dart
+│   │   ├── newsletter_service.dart
+│   │   ├── order_creator_service.dart
+│   │   ├── order_query_service.dart
+│   │   ├── order_return_service.dart
+│   │   ├── order_service.dart
+│   │   ├── payment_service.dart
+│   │   ├── product_service.dart
+│   │   ├── shop_service.dart
+│   │   └── user_service.dart
+│   ├── supabase
+│   │   └── supabase_config.dart
+│   ├── themes
+│   │   ├── custom_colors.dart
+│   │   ├── dark_mode.dart
+│   │   ├── light_mode.dart
+│   │   └── theme.dart
+│   └── utils
+│       ├── address_helper.dart
+│       ├── dialog_helpers.dart
+│       ├── format_helpers.dart
+│       ├── image_helpers.dart
+│       ├── list_helpers.dart
+│       ├── order_calculator.dart
+│       ├── order_confirmation_helper.dart
+│       ├── order_helpers.dart
+│       ├── page_helpers.dart
+│       ├── payment_service_helper.dart
+│       ├── payment_tab_ui_helper.dart
+│       ├── payment_ui_helper.dart
+│       ├── product_helpers.dart
+│       ├── shipping_tab_ui_helper.dart
+│       └── ui_helpers.dart
+├── linux
+│   ├── CMakeLists.txt
+│   ├── flutter
+│   │   ├── CMakeLists.txt
+│   │   ├── ephemeral
+│   │   ├── generated_plugin_registrant.cc
+│   │   ├── generated_plugin_registrant.h
+│   │   └── generated_plugins.cmake
+│   └── runner
+│       ├── CMakeLists.txt
+│       ├── main.cc
+│       ├── my_application.cc
+│       └── my_application.h
+├── macos
+│   ├── Flutter
+│   │   ├── ephemeral
+│   │   │   ├── flutter_export_environment.sh
+│   │   │   └── Flutter-Generated.xcconfig
+│   │   ├── Flutter-Debug.xcconfig
+│   │   ├── Flutter-Release.xcconfig
+│   │   └── GeneratedPluginRegistrant.swift
+│   ├── Podfile
+│   ├── Podfile.lock
+│   ├── Pods
+│   │   ├── Headers
+│   │   ├── Local Podspecs
+│   │   │   ├── app_links.podspec.json
+│   │   │   ├── FlutterMacOS.podspec.json
+│   │   │   ├── path_provider_foundation.podspec.json
+│   │   │   ├── shared_preferences_foundation.podspec.json
+│   │   │   ├── sign_in_with_apple.podspec.json
+│   │   │   ├── url_launcher_macos.podspec.json
+│   │   │   └── webview_flutter_wkwebview.podspec.json
+│   │   ├── Pods.xcodeproj
+│   │   │   ├── project.pbxproj
+│   │   │   └── xcuserdata
+│   │   │       └── shereeemorrison.xcuserdatad
+│   │   │           └── xcschemes
+│   │   │               ├── app_links-app_links_macos_privacy.xcscheme
+│   │   │               ├── app_links.xcscheme
+│   │   │               ├── FlutterMacOS.xcscheme
+│   │   │               ├── path_provider_foundation-path_provider_foundation_privacy.xcscheme
+│   │   │               ├── path_provider_foundation.xcscheme
+│   │   │               ├── Pods-Runner.xcscheme
+│   │   │               ├── Pods-RunnerTests.xcscheme
+│   │   │               ├── shared_preferences_foundation-shared_preferences_foundation_privacy.xcscheme
+│   │   │               ├── shared_preferences_foundation.xcscheme
+│   │   │               ├── sign_in_with_apple.xcscheme
+│   │   │               ├── url_launcher_macos-url_launcher_macos_privacy.xcscheme
+│   │   │               ├── url_launcher_macos.xcscheme
+│   │   │               ├── webview_flutter_wkwebview-webview_flutter_wkwebview_privacy.xcscheme
+│   │   │               ├── webview_flutter_wkwebview.xcscheme
+│   │   │               └── xcschememanagement.plist
+│   │   └── Target Support Files
+│   │       ├── app_links
+│   │       │   ├── app_links-dummy.m
+│   │       │   ├── app_links-Info.plist
+│   │       │   ├── app_links-prefix.pch
+│   │       │   ├── app_links-umbrella.h
+│   │       │   ├── app_links.debug.xcconfig
+│   │       │   ├── app_links.modulemap
+│   │       │   ├── app_links.release.xcconfig
+│   │       │   └── ResourceBundle-app_links_macos_privacy-app_links-Info.plist
+│   │       ├── FlutterMacOS
+│   │       │   ├── FlutterMacOS.debug.xcconfig
+│   │       │   └── FlutterMacOS.release.xcconfig
+│   │       ├── path_provider_foundation
+│   │       │   ├── path_provider_foundation-dummy.m
+│   │       │   ├── path_provider_foundation-Info.plist
+│   │       │   ├── path_provider_foundation-prefix.pch
+│   │       │   ├── path_provider_foundation-umbrella.h
+│   │       │   ├── path_provider_foundation.debug.xcconfig
+│   │       │   ├── path_provider_foundation.modulemap
+│   │       │   ├── path_provider_foundation.release.xcconfig
+│   │       │   └── ResourceBundle-path_provider_foundation_privacy-path_provider_foundation-Info.plist
+│   │       ├── Pods-Runner
+│   │       │   ├── Pods-Runner-acknowledgements.markdown
+│   │       │   ├── Pods-Runner-acknowledgements.plist
+│   │       │   ├── Pods-Runner-dummy.m
+│   │       │   ├── Pods-Runner-frameworks-Debug-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Debug-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks.sh
+│   │       │   ├── Pods-Runner-Info.plist
+│   │       │   ├── Pods-Runner-umbrella.h
+│   │       │   ├── Pods-Runner.debug.xcconfig
+│   │       │   ├── Pods-Runner.modulemap
+│   │       │   ├── Pods-Runner.profile.xcconfig
+│   │       │   └── Pods-Runner.release.xcconfig
+│   │       ├── Pods-RunnerTests
+│   │       │   ├── Pods-RunnerTests-acknowledgements.markdown
+│   │       │   ├── Pods-RunnerTests-acknowledgements.plist
+│   │       │   ├── Pods-RunnerTests-dummy.m
+│   │       │   ├── Pods-RunnerTests-Info.plist
+│   │       │   ├── Pods-RunnerTests-umbrella.h
+│   │       │   ├── Pods-RunnerTests.debug.xcconfig
+│   │       │   ├── Pods-RunnerTests.modulemap
+│   │       │   ├── Pods-RunnerTests.profile.xcconfig
+│   │       │   └── Pods-RunnerTests.release.xcconfig
+│   │       ├── shared_preferences_foundation
+│   │       │   ├── ResourceBundle-shared_preferences_foundation_privacy-shared_preferences_foundation-Info.plist
+│   │       │   ├── shared_preferences_foundation-dummy.m
+│   │       │   ├── shared_preferences_foundation-Info.plist
+│   │       │   ├── shared_preferences_foundation-prefix.pch
+│   │       │   ├── shared_preferences_foundation-umbrella.h
+│   │       │   ├── shared_preferences_foundation.debug.xcconfig
+│   │       │   ├── shared_preferences_foundation.modulemap
+│   │       │   └── shared_preferences_foundation.release.xcconfig
+│   │       ├── sign_in_with_apple
+│   │       │   ├── sign_in_with_apple-dummy.m
+│   │       │   ├── sign_in_with_apple-Info.plist
+│   │       │   ├── sign_in_with_apple-prefix.pch
+│   │       │   ├── sign_in_with_apple-umbrella.h
+│   │       │   ├── sign_in_with_apple.debug.xcconfig
+│   │       │   ├── sign_in_with_apple.modulemap
+│   │       │   └── sign_in_with_apple.release.xcconfig
+│   │       ├── url_launcher_macos
+│   │       │   ├── ResourceBundle-url_launcher_macos_privacy-url_launcher_macos-Info.plist
+│   │       │   ├── url_launcher_macos-dummy.m
+│   │       │   ├── url_launcher_macos-Info.plist
+│   │       │   ├── url_launcher_macos-prefix.pch
+│   │       │   ├── url_launcher_macos-umbrella.h
+│   │       │   ├── url_launcher_macos.debug.xcconfig
+│   │       │   ├── url_launcher_macos.modulemap
+│   │       │   └── url_launcher_macos.release.xcconfig
+│   │       └── webview_flutter_wkwebview
+│   │           ├── ResourceBundle-webview_flutter_wkwebview_privacy-webview_flutter_wkwebview-Info.plist
+│   │           ├── webview_flutter_wkwebview-dummy.m
+│   │           ├── webview_flutter_wkwebview-Info.plist
+│   │           ├── webview_flutter_wkwebview-prefix.pch
+│   │           ├── webview_flutter_wkwebview-umbrella.h
+│   │           ├── webview_flutter_wkwebview.debug.xcconfig
+│   │           ├── webview_flutter_wkwebview.modulemap
+│   │           └── webview_flutter_wkwebview.release.xcconfig
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   └── AppIcon.appiconset
+│   │   │       ├── app_icon_1024.png
+│   │   │       ├── app_icon_128.png
+│   │   │       ├── app_icon_16.png
+│   │   │       ├── app_icon_256.png
+│   │   │       ├── app_icon_32.png
+│   │   │       ├── app_icon_512.png
+│   │   │       ├── app_icon_64.png
+│   │   │       └── Contents.json
+│   │   ├── Base.lproj
+│   │   │   └── MainMenu.xib
+│   │   ├── Configs
+│   │   │   ├── AppInfo.xcconfig
+│   │   │   ├── Debug.xcconfig
+│   │   │   ├── Release.xcconfig
+│   │   │   └── Warnings.xcconfig
+│   │   ├── DebugProfile.entitlements
+│   │   ├── GoogleService-Info.plist
+│   │   ├── Info.plist
+│   │   ├── MainFlutterWindow.swift
+│   │   └── Release.entitlements
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   └── xcshareddata
+│   │   │       ├── IDEWorkspaceChecks.plist
+│   │   │       └── swiftpm
+│   │   │           └── configuration
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   │           └── Runner.xcscheme
+│   ├── Runner.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   └── xcshareddata
+│   │       ├── IDEWorkspaceChecks.plist
+│   │       └── swiftpm
+│   │           └── configuration
+│   └── RunnerTests
+│       └── RunnerTests.swift
+├── pubspec.lock
+├── pubspec.yaml
+├── README.md
+├── structure.txt
+├── supabase
+│   └── functions
+│       └── create-payment-intent
+│           └── index.ts
+├── test
+│   └── widget_test.dart
+├── web
+│   ├── favicon.png
+│   ├── icons
+│   │   ├── Icon-192.png
+│   │   ├── Icon-512.png
+│   │   ├── Icon-maskable-192.png
+│   │   └── Icon-maskable-512.png
+│   ├── index.html
+│   └── manifest.json
+└── windows
+    ├── CMakeLists.txt
+    ├── flutter
+    │   ├── CMakeLists.txt
+    │   ├── ephemeral
+    │   ├── generated_plugin_registrant.cc
+    │   ├── generated_plugin_registrant.h
+    │   └── generated_plugins.cmake
+    └── runner
+        ├── CMakeLists.txt
+        ├── flutter_window.cpp
+        ├── flutter_window.h
+        ├── main.cpp
+        ├── resource.h
+        ├── resources
+        │   └── app_icon.ico
+        ├── runner.exe.manifest
+        ├── Runner.rc
+        ├── utils.cpp
+        ├── utils.h
+        ├── win32_window.cpp
+        └── win32_window.h
+
+858 directories, 2406 files

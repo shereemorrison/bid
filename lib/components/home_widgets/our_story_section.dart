@@ -18,6 +18,7 @@ class OurStorySection extends StatelessWidget {
     required this.onReadMorePressed,
   }) : super(key: key);
 
+  // TODO - work out where to put this text, probably shouldn't be hard coded in
   @override
   Widget build(BuildContext context) {
     return Container(

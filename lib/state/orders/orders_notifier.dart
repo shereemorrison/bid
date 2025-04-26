@@ -1,24 +1,30 @@
+import 'package:bid/providers.dart';
 import 'package:bid/respositories/order_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../base/base_notifier.dart';
 import 'orders_state.dart';
 import 'package:bid/models/order_model.dart';
 
-class OrdersNotifier extends StateNotifier<OrdersState> {
+class OrdersNotifier extends BaseNotifier<OrdersState> {
   final OrderRepository _orderRepository;
+  final Ref _ref;
 
-  OrdersNotifier({required OrderRepository orderRepository})
-      : _orderRepository = orderRepository,
+  OrdersNotifier({
+    required OrderRepository orderRepository,
+    required Ref ref,
+  }) : _orderRepository = orderRepository,
+        _ref = ref,
         super(OrdersState.initial());
 
   Future<void> fetchUserOrders(String authId) async {
     print('OrdersNotifier: Fetching orders for auth ID $authId');
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       // First, inspect the database to understand what we're working with
       await _orderRepository.inspectDatabase();
 
-      // Get raw order data
+      // Get raw order data - pass the authId to the repository
       final rawOrders = await _orderRepository.getUserOrders(authId);
       print('OrdersNotifier: Found ${rawOrders.length} raw orders');
 
@@ -26,8 +32,8 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
         print('OrdersNotifier: No orders found for auth ID $authId');
         state = state.copyWith(
           orders: [],
-          isLoading: false,
         );
+        endLoading();
         return;
       }
 
@@ -38,6 +44,7 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
           return Order.fromJson(orderData);
         } catch (e) {
           print('OrdersNotifier: Error converting order: $e');
+          print('OrdersNotifier: Order data: $orderData');
           return null;
         }
       }).where((order) => order != null).cast<Order>().toList();
@@ -46,19 +53,15 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
 
       state = state.copyWith(
         orders: orders,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      print('OrdersNotifier: Error fetching orders: $e');
-      state = state.copyWith(
-        error: 'Failed to fetch orders: $e',
-        isLoading: false,
-      );
+      handleError('fetching orders', e);
     }
   }
 
   Future<void> fetchOrderDetails(String orderId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       // Get detailed order data including items
@@ -69,31 +72,21 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
           final order = Order.fromJson(orderData);
           state = state.copyWith(
             selectedOrder: order,
-            isLoading: false,
           );
+          endLoading();
         } catch (e) {
-          print('OrdersNotifier: Error parsing order details: $e');
-          state = state.copyWith(
-            error: 'Failed to parse order details: $e',
-            isLoading: false,
-          );
+          handleError('parsing order details', e);
         }
       } else {
-        state = state.copyWith(
-          error: 'Order not found',
-          isLoading: false,
-        );
+        handleError('fetching order details', 'Order not found');
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to fetch order details: $e',
-        isLoading: false,
-      );
+      handleError('fetching order details', e);
     }
   }
 
   Future<bool> initiateReturn(String orderId, List<String> itemIds) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final success = await _orderRepository.initiateReturn(orderId, itemIds);
@@ -103,22 +96,47 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
         await fetchOrderDetails(orderId);
         return true;
       } else {
-        state = state.copyWith(
-          error: 'Failed to initiate return',
-          isLoading: false,
-        );
+        handleError('initiating return', 'Failed to initiate return');
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Error initiating return: $e',
-        isLoading: false,
-      );
+      handleError('initiating return', e);
       return false;
+    }
+  }
+
+  Future<void> fetchGuestOrdersByEmail(String email) async {
+    startLoading();
+
+    try {
+      final guestOrderService = _ref.read(guestOrderServiceProvider);
+      final guestOrders = await guestOrderService.getGuestOrdersByEmail(email);
+
+      // Convert to Order objects and update state
+      final orders = guestOrders.map((orderData) {
+        try {
+          return Order.fromJson(orderData);
+        } catch (e) {
+          print('Error converting guest order: $e');
+          return null;
+        }
+      }).where((order) => order != null).cast<Order>().toList();
+
+      state = state.copyWith(
+        guestOrders: orders,
+      );
+      endLoading();
+    } catch (e) {
+      handleError('fetching guest orders', e);
     }
   }
 
   void clearSelectedOrder() {
     state = state.copyWith(clearSelectedOrder: true);
+  }
+
+  void clearOrders() {
+    state = OrdersState.initial();
+    print('Orders state reset to initial');
   }
 }

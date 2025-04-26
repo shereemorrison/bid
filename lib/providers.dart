@@ -4,11 +4,20 @@ import 'package:bid/respositories/order_repository.dart' as repo;
 import 'package:bid/respositories/payment_repository.dart';
 import 'package:bid/respositories/product_repository.dart';
 import 'package:bid/respositories/user_repository.dart';
+import 'package:bid/services/app_state_coordinator.dart';
+import 'package:bid/services/database_diagnostic.dart';
+import 'package:bid/services/guest_order_service.dart';
+import 'package:bid/services/mapbox_service.dart';
+import 'package:bid/services/payment_service.dart';
 import 'package:bid/state/theme/theme_notifier.dart';
 import 'package:bid/themes/dark_mode.dart';
 import 'package:bid/themes/light_mode.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// Use an alias for Riverpod to avoid conflicts with Supabase's Provider
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import 'package:uuid/uuid.dart';
 
 // State Notifiers
 import 'state/auth/auth_notifier.dart';
@@ -29,78 +38,157 @@ import 'state/products/products_state.dart';
 // Models
 import 'models/user_model.dart';
 import 'models/product_model.dart';
-import 'models/category_model.dart';
+import 'models/category_model.dart' as app_category;
 import 'models/order_model.dart';
 import 'models/address_model.dart';
 import 'models/payment_method_model.dart';
 
+// Change the guestUserIdProvider to not include the "guest-" prefix
+final guestUserIdProvider = riverpod.StateProvider<String>((ref) {
+  return const Uuid().v4();  // Initialize with a valid UUID by default
+});
+
+// Function to initialize or retrieve the guest user ID
+Future<String> initializeGuestUserId() async {
+  final prefs = await SharedPreferences.getInstance();
+  String guestUserId = prefs.getString('guest_user_id') ?? '';
+
+  if (guestUserId.isEmpty) {
+    // Generate a new UUID for the guest user (without prefix)
+    guestUserId = const Uuid().v4();
+    await prefs.setString('guest_user_id', guestUserId);
+    print('Created new guest user ID: $guestUserId');
+  } else {
+    print('Using existing guest user ID: $guestUserId');
+  }
+
+  return guestUserId;
+}
+
+// Supabase client provider
+final supabaseClientProvider = riverpod.Provider<SupabaseClient>((ref) {
+  return Supabase.instance.client;
+});
+
+// Database diagnostic provider
+final databaseDiagnosticProvider = riverpod.Provider<DatabaseDiagnostic>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return DatabaseDiagnostic(client);
+});
+
+// App State Coordinator provider
+final appStateCoordinatorProvider = riverpod.Provider<AppStateCoordinator>((ref) {
+  return AppStateCoordinator(ref);
+});
+
+// Payment Service provider
+final paymentServiceProvider = riverpod.Provider<PaymentService>((ref) {
+  return PaymentService(ref);
+});
+
+// Mapbox Service provider
+final mapboxServiceProvider = riverpod.Provider<MapboxService>((ref) {
+  // Replace with your actual Mapbox API key
+  const apiKey = 'your_mapbox_api_key';
+  return MapboxService(apiKey: apiKey);
+});
+
+// Guest Order Service provider
+final guestOrderServiceProvider = riverpod.Provider<GuestOrderService>((ref) {
+  final userRepository = ref.watch(userRepositoryProvider);
+  final addressRepository = ref.watch(addressRepositoryProvider);
+  final orderRepository = ref.watch(orderRepositoryProvider);
+
+  return GuestOrderService(
+    userRepository: userRepository,
+    addressRepository: addressRepository,
+    orderRepository: orderRepository,
+  );
+});
+
 // Repository Providers
-final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepository();
+final userRepositoryProvider = riverpod.Provider<UserRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return UserRepository(client: client);
 });
 
-final orderRepositoryProvider = Provider<repo.OrderRepository>((ref) {
-  return repo.OrderRepository();
+final orderRepositoryProvider = riverpod.Provider<repo.OrderRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return repo.OrderRepository(client: client);
 });
 
-final addressRepositoryProvider = Provider<AddressRepository>((ref) {
-  return AddressRepository();
+final addressRepositoryProvider = riverpod.Provider<AddressRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return AddressRepository(client: client);
 });
 
-final paymentRepositoryProvider = Provider<PaymentRepository>((ref) {
-  return PaymentRepository();
+final paymentRepositoryProvider = riverpod.Provider<PaymentRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return PaymentRepository(client: client);
 });
 
-final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {
-  return CategoryRepository();
+final categoryRepositoryProvider = riverpod.Provider<CategoryRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return CategoryRepository(client: client);
 });
 
-final productRepositoryProvider = Provider<ProductRepository>((ref) {
-  return ProductRepository();
+final productRepositoryProvider = riverpod.Provider<ProductRepository>((ref) {
+  final client = ref.watch(supabaseClientProvider);
+  return ProductRepository(client: client);
 });
 
 // Theme notifier provider
-final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeState>((ref) {
+final themeNotifierProvider = riverpod.StateNotifierProvider<ThemeNotifier, ThemeState>((ref) {
   return ThemeNotifier();
 });
 
 // Provider to easily access isDarkMode state
-final isDarkModeProvider = Provider<bool>((ref) {
+final isDarkModeProvider = riverpod.Provider<bool>((ref) {
   return ref.watch(themeNotifierProvider).isDarkMode;
 });
 
 // Provider for the current ThemeData
-final themeProvider = Provider<ThemeData>((ref) {
+final themeProvider = riverpod.Provider<ThemeData>((ref) {
   final isDarkMode = ref.watch(isDarkModeProvider);
   return isDarkMode ? darkMode : lightMode;
 });
 
 // Main state notifier providers
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(userRepository: ref.watch(userRepositoryProvider));
+final authProvider = riverpod.StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  return AuthNotifier(
+    userRepository: ref.watch(userRepositoryProvider),
+    ref: ref,
+    stateCoordinator: ref.watch(appStateCoordinatorProvider),
+  );
 });
 
-final cartProvider = StateNotifierProvider<CartNotifier, CartState>((ref) {
-  return CartNotifier();
+final cartProvider = riverpod.StateNotifierProvider<CartNotifier, CartState>((ref) {
+  return CartNotifier(ref);
 });
 
-final wishlistProvider = StateNotifierProvider<WishlistNotifier, WishlistState>((ref) {
+final wishlistProvider = riverpod.StateNotifierProvider<WishlistNotifier, WishlistState>((ref) {
   return WishlistNotifier();
 });
 
-final checkoutProvider = StateNotifierProvider<CheckoutNotifier, CheckoutState>((ref) {
-  return CheckoutNotifier(orderRepository: ref.watch(orderRepositoryProvider));
+final checkoutProvider = riverpod.StateNotifierProvider<CheckoutNotifier, CheckoutState>((ref) {
+  return CheckoutNotifier(
+    orderRepository: ref.watch(orderRepositoryProvider),
+    guestOrderService: ref.watch(guestOrderServiceProvider),
+  );
 });
 
-final ordersProvider = StateNotifierProvider<OrdersNotifier, OrdersState>((ref) {
-  return OrdersNotifier(orderRepository: ref.watch(orderRepositoryProvider));
+final ordersProvider = riverpod.StateNotifierProvider<OrdersNotifier, OrdersState>((ref) {
+  return OrdersNotifier(
+    orderRepository: ref.watch(orderRepositoryProvider),
+    ref: ref,
+  );
 });
 
-final addressProvider = StateNotifierProvider<AddressNotifier, AddressState>((ref) {
+final addressProvider = riverpod.StateNotifierProvider<AddressNotifier, AddressState>((ref) {
   return AddressNotifier(addressRepository: ref.watch(addressRepositoryProvider));
 });
 
-final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
+final productsProvider = riverpod.StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
   return ProductsNotifier(
     productRepository: ref.watch(productRepositoryProvider),
     categoryRepository: ref.watch(categoryRepositoryProvider),
@@ -110,161 +198,123 @@ final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>(
 // Convenience Providers for common state access
 
 // Auth convenience providers
-final isLoggedInProvider = Provider<bool>((ref) {
+final isLoggedInProvider = riverpod.Provider<bool>((ref) {
   return ref.watch(authProvider).isLoggedIn;
 });
 
-final userIdProvider = Provider<String?>((ref) {
-  return ref.watch(authProvider).userId;
+// Update the userIdProvider to handle guest users correctly
+final userIdProvider = riverpod.Provider<String>((ref) {
+  // Return the authenticated user ID if logged in, otherwise return the guest user ID
+  final authState = ref.watch(authProvider);
+  if (authState.isLoggedIn && authState.userId != null) {
+    return authState.userId!;
+  }
+
+  // For guest users, use the UUID from guestUserIdProvider
+  final guestId = ref.watch(guestUserIdProvider);
+  print('Using guest user ID: $guestId');
+  return guestId;
 });
 
-final userDataProvider = Provider<UserData?>((ref) {
+final userDataProvider = riverpod.Provider<UserData?>((ref) {
   return ref.watch(authProvider).userData;
 });
 
-final authLoadingProvider = Provider<bool>((ref) {
+final authLoadingProvider = riverpod.Provider<bool>((ref) {
   return ref.watch(authProvider).isLoading;
 });
 
-final authErrorProvider = Provider<String?>((ref) {
+final authErrorProvider = riverpod.Provider<String?>((ref) {
   return ref.watch(authProvider).error;
 });
 
 // Address convenience providers
-final userAddressesProvider = Provider<List<Address>>((ref) {
+final userAddressesProvider = riverpod.Provider<List<Address>>((ref) {
   return ref.watch(addressProvider).addresses;
 });
 
-final selectedAddressProvider = Provider<Address?>((ref) {
+final selectedAddressProvider = riverpod.Provider<Address?>((ref) {
   return ref.watch(addressProvider).selectedAddress;
 });
 
-final effectiveAddressProvider = Provider<Address?>((ref) {
+final effectiveAddressProvider = riverpod.Provider<Address?>((ref) {
   return ref.watch(selectedAddressProvider);
 });
 
 // Cart convenience providers
-final cartItemsProvider = Provider<List<CartItem>>((ref) {
+final cartItemsProvider = riverpod.Provider<List<CartItem>>((ref) {
   return ref.watch(cartProvider).items;
 });
 
-final cartSubtotalProvider = Provider<double>((ref) {
+final cartSubtotalProvider = riverpod.Provider<double>((ref) {
   return ref.watch(cartProvider).subtotal;
 });
 
-final cartItemCountProvider = Provider<int>((ref) {
+final cartItemCountProvider = riverpod.Provider<int>((ref) {
   return ref.watch(cartProvider).itemCount;
 });
 
-final cartLoadingProvider = Provider<bool>((ref) {
+final cartLoadingProvider = riverpod.Provider<bool>((ref) {
   return ref.watch(cartProvider).isLoading;
 });
 
-final cartErrorProvider = Provider<String?>((ref) {
+final cartErrorProvider = riverpod.Provider<String?>((ref) {
   return ref.watch(cartProvider).error;
 });
 
 // Wishlist convenience providers
-final wishlistItemsProvider = Provider<List<String>>((ref) {
-  return ref.watch(wishlistProvider).productIds;
-});
-
-final isInWishlistProvider = Provider.family<bool, String>((ref, productId) {
+final isInWishlistProvider = riverpod.Provider.family<bool, String>((ref, productId) {
   return ref.watch(wishlistProvider).productIds.contains(productId);
 });
 
 // Checkout convenience providers
-final checkoutStepProvider = Provider<CheckoutStep>((ref) {
+final checkoutStepProvider = riverpod.Provider<CheckoutStep>((ref) {
   return ref.watch(checkoutProvider).currentStep;
 });
 
-final checkoutItemsProvider = Provider<List<CartItem>>((ref) {
-  return ref.watch(checkoutProvider).items;
-});
-
-final checkoutShippingAddressProvider = Provider<Address?>((ref) {
-  return ref.watch(checkoutProvider).shippingAddress;
-});
-
-final checkoutPaymentMethodProvider = Provider<PaymentMethod?>((ref) {
-  return ref.watch(checkoutProvider).paymentMethod;
-});
-
-final checkoutOrderIdProvider = Provider<String?>((ref) {
-  return ref.watch(checkoutProvider).orderId;
-});
-
-final checkoutTotalProvider = Provider<double>((ref) {
-  return ref.watch(checkoutProvider).total;
-});
-
-// Orders convenience providers
-final userOrdersProvider = Provider<List<Order>>((ref) {
-  return ref.watch(ordersProvider).orders;
-});
-
-final selectedOrderProvider = Provider<Order?>((ref) {
-  return ref.watch(ordersProvider).selectedOrder;
-});
-
-final ordersLoadingProvider = Provider<bool>((ref) {
-  return ref.watch(ordersProvider).isLoading;
-});
-
-final ordersErrorProvider = Provider<String?>((ref) {
-  return ref.watch(ordersProvider).error;
+final checkoutCompleteProvider = riverpod.StateProvider<bool>((ref) {
+  return false;
 });
 
 // Products convenience providers
-final allProductsProvider = Provider<List<Product>>((ref) {
-  return ref.watch(productsProvider).products;
-});
-
-final featuredProductsProvider = Provider<List<Product>>((ref) {
-  return ref.watch(productsProvider).featuredProducts;
-});
-
-final mostWantedProductsProvider = Provider<List<Product>>((ref) {
-  return ref.watch(productsProvider).mostWantedProducts;
-});
-
-final categoriesProvider = Provider<List<Category>>((ref) {
+final categoriesProvider = riverpod.Provider<List<app_category.Category>>((ref) {
   return ref.watch(productsProvider).categories;
 });
 
-final selectedProductProvider = Provider<Product?>((ref) {
-  return ref.watch(productsProvider).selectedProduct;
+final allProductsProvider = riverpod.Provider<List<Product>>((ref) {
+  return ref.watch(productsProvider).products;
 });
 
-final selectedCategoryProvider = Provider<Category?>((ref) {
+final selectedCategoryProvider = riverpod.Provider<app_category.Category?>((ref) {
   return ref.watch(productsProvider).selectedCategory;
 });
 
-final productsLoadingProvider = Provider<bool>((ref) {
+final productsLoadingProvider = riverpod.Provider<bool>((ref) {
   return ref.watch(productsProvider).isLoading;
 });
 
-final productsErrorProvider = Provider<String?>((ref) {
+final productsErrorProvider = riverpod.Provider<String?>((ref) {
   return ref.watch(productsProvider).error;
 });
 
-// Checkout Auth State enum
-enum CheckoutAuthState {
-  options,
-  login,
-  register,
-  createAccountFromGuest,
-  guestCheckout,
-  completed
-}
+// Orders convenience providers
+final userOrdersProvider = riverpod.Provider<List<Order>>((ref) {
+  return ref.watch(ordersProvider).orders;
+});
 
-enum CheckoutAuthOption {
-  login,
-  register,
-  guest
-}
+final selectedOrderProvider = riverpod.Provider<Order?>((ref) {
+  return ref.watch(ordersProvider).selectedOrder;
+});
 
-// Checkout Auth State provider
-final checkoutAuthStateProvider = StateProvider<CheckoutAuthState>((ref) {
-  return CheckoutAuthState.options;
+final ordersLoadingProvider = riverpod.Provider<bool>((ref) {
+  return ref.watch(ordersProvider).isLoading;
+});
+
+final ordersErrorProvider = riverpod.Provider<String?>((ref) {
+  return ref.watch(ordersProvider).error;
+});
+
+// Wishlist convenience providers
+final wishlistItemsProvider = riverpod.Provider<List<String>>((ref) {
+  return ref.watch(wishlistProvider).productIds;
 });

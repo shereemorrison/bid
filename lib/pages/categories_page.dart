@@ -2,10 +2,10 @@
 import 'package:bid/components/category_widgets/category_item.dart';
 import 'package:bid/components/category_widgets/category_list.dart';
 import 'package:bid/components/common_widgets/search_bar.dart';
+import 'package:bid/models/category_model.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../models/category_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoriesPage extends ConsumerStatefulWidget {

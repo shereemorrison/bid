@@ -5,7 +5,6 @@ import 'package:bid/utils/page_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class ShopAccessoriesPage extends ConsumerStatefulWidget {
   const ShopAccessoriesPage({super.key});
 

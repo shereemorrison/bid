@@ -7,7 +7,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 class PaymentRepository extends BaseRepository {
   PaymentRepository({SupabaseClient? client}) : super(client: client);
 
-  // Initialize Stripe - call this in your app initialization
+  // Initialize Stripe - called in main.dart
   static Future<void> initStripe() async {
     Stripe.publishableKey = 'pk_test_51RG63pBLQQ4dypXtam2LgVa0Z7eqbR2EKEekCIp8iy7X4iiuRP1lGfMMAfsdwqKrsqyUez6Nal6XVeccP9Feug0U00RY0YG5ZI';
     await Stripe.instance.applySettings();
@@ -31,7 +31,7 @@ class PaymentRepository extends BaseRepository {
 
       print('Edge Function response: ${response.data}');
 
-      // Handle the response data correctly
+      // Handle response data
       Map<String, dynamic> paymentIntentData;
 
       if (response.data is Map) {
@@ -45,7 +45,7 @@ class PaymentRepository extends BaseRepository {
         throw Exception('Unexpected response format: ${response.data.runtimeType}');
       }
 
-      // Validate the response contains a client secret
+      // Validate response contains client secret
       if (!paymentIntentData.containsKey('clientSecret')) {
         print('Response does not contain clientSecret: $paymentIntentData');
         throw Exception('Invalid response from payment service: missing client secret');
@@ -65,7 +65,7 @@ class PaymentRepository extends BaseRepository {
     required String currency,
   }) async {
     try {
-      // Call your payment processing logic here
+      // Payment processing logic
       final response = await client.functions.invoke(
         'process-payment',
         body: {

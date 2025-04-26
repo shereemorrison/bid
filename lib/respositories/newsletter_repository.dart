@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 class NewsletterRepository extends BaseRepository {
   NewsletterRepository({SupabaseClient? client}) : super(client: client);
 
-  /// Subscribe an email to the newsletter
+  // Subscribe an email to the newsletter
   Future<bool> subscribeToNewsletter(String email, {String? userId}) async {
     try {
       // Check if already subscribed
@@ -49,7 +49,7 @@ class NewsletterRepository extends BaseRepository {
     }
   }
 
-  /// Unsubscribe an email from the newsletter
+  // Unsubscribe an email from the newsletter
   Future<bool> unsubscribeFromNewsletter(String email) async {
     try {
       await client
@@ -63,7 +63,7 @@ class NewsletterRepository extends BaseRepository {
     }
   }
 
-  /// Update the user_id for an existing newsletter subscription
+  // Update the user_id for an existing newsletter subscription
   Future<bool> updateNewsletterUserId(String email, String userId) async {
     try {
       final existing = await client

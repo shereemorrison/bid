@@ -1,20 +1,47 @@
 import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:convert';
+import '../base/base_notifier.dart';
 import 'cart_state.dart';
 
-class CartNotifier extends StateNotifier<CartState> {
-  CartNotifier() : super(CartState.initial()) {
-    // Load cart from local storage on initialization
+class CartNotifier extends BaseNotifier<CartState> {
+  final Ref _ref;
+
+  CartNotifier(this._ref) : super(CartState.initial()) {
+    // Load cart from local storage on initialisation
     _loadCart();
   }
 
+  String _getCurrentUserId() {
+    // Get current user ID from Supabase, or use the guest ID if not logged in
+    final currentUser = Supabase.instance.client.auth.currentUser;
+    if (currentUser != null) {
+      return currentUser.id;
+    }
+
+    // Use the guest user ID from the provider
+    try {
+      final guestUserId = _ref.read(guestUserIdProvider);
+      return guestUserId;
+    } catch (e) {
+      print('Error reading guest user ID: $e');
+      return 'guest';
+    }
+  }
+
   Future<void> _loadCart() async {
-    state = state.copyWith(isLoading: true);
+    startLoading();
 
     try {
       final prefs = await SharedPreferences.getInstance();
+      final userId = _getCurrentUserId();
+      final cartKey = 'cart_$userId';
+
+      print('Loading cart for user: $userId with key: $cartKey');
+
       final cartJson = prefs.getString('cart');
 
       if (cartJson != null) {
@@ -23,33 +50,33 @@ class CartNotifier extends StateNotifier<CartState> {
 
         state = state.copyWith(
           items: items,
-          isLoading: false,
           clearError: true,
         );
+        endLoading();
       } else {
         state = state.copyWith(
           items: [],
-          isLoading: false,
           clearError: true,
         );
+        endLoading();
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load cart: $e',
-        isLoading: false,
-      );
+      handleError('loading cart', e);
     }
   }
 
   Future<void> _saveCart() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      final userId = _getCurrentUserId();
+      final cartKey = 'cart_$userId';
+
+      print('Saving cart for user: $userId with key: $cartKey');
+
       final cartJson = jsonEncode(state.items.map((item) => item.toJson()).toList());
       await prefs.setString('cart', cartJson);
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to save cart: $e',
-      );
+      handleError('saving cart', e);
     }
   }
 
@@ -126,5 +153,9 @@ class CartNotifier extends StateNotifier<CartState> {
     }
 
     return true;
+  }
+
+  Future<void> refreshCart() async {
+    await _loadCart();
   }
 }

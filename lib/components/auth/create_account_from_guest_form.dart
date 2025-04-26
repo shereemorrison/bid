@@ -4,12 +4,8 @@ import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// A specialized form for converting guest users to registered users
-///
-/// This form:
-/// - Pre-fills data from the guest checkout
-/// - Creates an account without losing checkout progress
-/// - Provides a streamlined experience for guest-to-registered conversion
+// Form for converting guest users to registered users
+
 class CreateAccountFromGuestForm extends ConsumerStatefulWidget {
   final String initialFirstName;
   final String initialLastName;
@@ -46,7 +42,7 @@ ConsumerState<CreateAccountFromGuestForm> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with pre-filled data
+    // Initialise controllers with pre-filled data
     firstNameController = TextEditingController(text: widget.initialFirstName);
     lastNameController = TextEditingController(text: widget.initialLastName);
     emailController = TextEditingController(text: widget.initialEmail);
@@ -73,22 +69,22 @@ ConsumerState<CreateAccountFromGuestForm> {
     });
 
     try {
-      // Get the guest to registered converter
+      // Get the auth notifier
       final authNotifier = ref.read(authProvider.notifier);
 
+      // Use the same signUp method as other forms, with all parameters
       await authNotifier.signUp(
         emailController.text.trim(),
         passwordController.text.trim(),
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
       );
 
-      if (ref.read(isLoggedInProvider)) {
+      // Update profile for newsletter subscriptions
+      if (ref.read(isLoggedInProvider) && _subscribeToNewsletter) {
         await authNotifier.updateProfile({
-          'first_name': firstNameController.text.trim(),
-          'last_name': lastNameController.text.trim(),
           'subscribe_newsletter': _subscribeToNewsletter,
         });
-      } else {
-        throw Exception("Failed to create account");
       }
 
       if (mounted) {
@@ -150,8 +146,7 @@ ConsumerState<CreateAccountFromGuestForm> {
 
                 const SizedBox(height: 30),
 
-                // Form fields (similar to RegisterForm but pre-filled)
-                // First name and last name
+                // Form should be pre-filled
                 Row(
                   children: [
                     Expanded(

@@ -82,8 +82,6 @@ class _AddressFormState extends ConsumerState<AddressForm> {
           _phoneController.text = userData.phone ?? '';
           _emailController.text = userData.email;
         }
-
-        // Default country to Australia
         _countryController.text = 'Australia';
       });
     }
@@ -147,13 +145,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
       final isLoggedIn = ref.read(isLoggedInProvider);
-      final userData = ref.read(userDataProvider);
-
-      // Get userId if logged in, otherwise use a temporary ID
-      String userId = 'guest-${const Uuid().v4()}';
-      if (isLoggedIn && userData != null) {
-        userId = userData.userId;
-      }
+      String userId = ref.read(userIdProvider);
+      print('AddressForm: Using user ID: $userId');
 
       // Create or update the address model
       final address = widget.addressToEdit != null
@@ -194,10 +187,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         updatedAt: DateTime.now(),
       );
 
-      // Call the onSave callback
       widget.onSave(address);
-
-      // Return to previous screen
       Navigator.pop(context);
     }
   }
@@ -261,8 +251,6 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
                 const SizedBox(height: 24),
 
-
-                // Set as default - only show for logged in users
                 if (isLoggedIn)
                   Row(
                     children: [

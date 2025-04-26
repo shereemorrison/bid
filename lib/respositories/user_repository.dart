@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:bid/models/address_model.dart';
 import 'package:bid/models/user_model.dart';
 import 'package:bid/respositories/base_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 
 class UserRepository extends BaseRepository {
@@ -15,7 +15,6 @@ class UserRepository extends BaseRepository {
     print("UserRepository: isLoggedIn=$result");
     return result;
   }
-
 
   // Get current user ID
   String? get currentUserId => client.auth.currentUser?.id;
@@ -29,8 +28,7 @@ class UserRepository extends BaseRepository {
   }
 
   // Sign up with email and password
-  Future<AuthResponse> signUpWithEmail(
-      String email,
+  Future<AuthResponse> signUpWithEmail(String email,
       String password, {
         String? firstName,
         String? lastName,
@@ -51,7 +49,6 @@ class UserRepository extends BaseRepository {
         phone: phone,
       );
     }
-
     return response;
   }
 
@@ -199,7 +196,8 @@ class UserRepository extends BaseRepository {
   }
 
   // Update user profile
-  Future<bool> updateUserProfile(String userId, Map<String, dynamic> data) async {
+  Future<bool> updateUserProfile(String userId,
+      Map<String, dynamic> data) async {
     try {
       await client
           .from('users')
@@ -253,6 +251,97 @@ class UserRepository extends BaseRepository {
       return await updateUserProfile(userId, profileData);
     } catch (e) {
       print('Error converting guest to registered user: $e');
+      return false;
+    }
+  }
+
+  // Guest users
+  Future<UserData> createGuestUser({
+    required String email,
+    String? firstName,
+    String? lastName,
+    String? phone,
+  }) async {
+    try {
+      print("Creating guest user record for email: $email");
+
+      // Generate UUIDs for user_id and auth_id
+      final userId = const Uuid().v4();
+      final authId = const Uuid().v4();
+
+      // Insert the guest user
+      final response = await client.from('users').insert({
+        'email': email,
+        'first_name': firstName ?? 'Guest',
+        'last_name': lastName ?? 'User',
+        'phone': phone ?? '',
+        'is_registered': false,
+        'is_guest': true,
+        'created_at': DateTime.now().toIso8601String(),
+        'last_login': DateTime.now().toIso8601String(),
+        'auth_id': authId,
+        'user_id': userId,
+        'user_type': 'guest',
+      }).select().single();
+
+      print("Guest user created with ID: $userId");
+
+      // Return the created user
+      return UserData.fromJson(response);
+    } catch (e) {
+      print('Error creating guest user: $e');
+      throw e;
+    }
+  }
+
+// Finde users by email and type (guest or registered)
+  Future<List<UserData>> getUsersByEmail(String email,
+      {String? userType}) async {
+    try {
+      var query = client.from('users').select().eq('email', email);
+
+      if (userType != null) {
+        query = query.eq('user_type', userType);
+      }
+
+      final response = await query;
+
+      return (response as List).map((data) => UserData.fromJson(data)).toList();
+    } catch (e) {
+      print('Error finding users by email: $e');
+      return [];
+    }
+  }
+
+// Get user by ID
+  Future<UserData?> getUserById(String userId) async {
+    try {
+      final response = await client
+          .from('users')
+          .select()
+          .eq('user_id', userId)
+          .maybeSingle();
+
+      if (response == null) return null;
+      return UserData.fromJson(response);
+    } catch (e) {
+      print('Error getting user by ID: $e');
+      return null;
+    }
+  }
+
+// Mark guest user as converted
+  Future<bool> markGuestUserConverted(String guestUserId,
+      String registeredUserId) async {
+    try {
+      await client.from('users').update({
+        'converted_to_user_id': registeredUserId,
+        'updated_at': DateTime.now().toIso8601String(),
+      }).eq('user_id', guestUserId);
+
+      return true;
+    } catch (e) {
+      print('Error marking guest user as converted: $e');
       return false;
     }
   }

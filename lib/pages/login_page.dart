@@ -44,7 +44,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
 
     try {
-      // Use the new AuthService instead of AuthManager
       final response = await ref.read(userRepositoryProvider).signInWithEmail(
         _emailController.text.trim(),
         _passwordController.text.trim(),

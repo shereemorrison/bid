@@ -1,20 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:convert';
+import '../base/base_notifier.dart';
 import 'wishlist_state.dart';
 
-class WishlistNotifier extends StateNotifier<WishlistState> {
+class WishlistNotifier extends BaseNotifier<WishlistState> {
   WishlistNotifier() : super(WishlistState.initial()) {
     // Load wishlist from local storage on initialization
     _loadWishlist();
   }
 
+  String _getCurrentUserId() {
+    // Get the current user ID from Supabase, or use 'guest' if not logged in
+    final currentUser = Supabase.instance.client.auth.currentUser;
+    return currentUser?.id ?? 'guest';
+  }
+
   Future<void> _loadWishlist() async {
-    state = state.copyWith(isLoading: true);
+    startLoading();
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final wishlistJson = prefs.getString('wishlist');
+      final userId = _getCurrentUserId();
+      final wishlistKey = 'wishlist_$userId';
+
+      print('Loading wishlist for user: $userId with key: $wishlistKey');
+      final wishlistJson = prefs.getString(wishlistKey);
 
       if (wishlistJson != null) {
         final wishlistData = jsonDecode(wishlistJson) as List;
@@ -22,33 +34,30 @@ class WishlistNotifier extends StateNotifier<WishlistState> {
 
         state = state.copyWith(
           productIds: productIds.cast<String>(),
-          isLoading: false,
           clearError: true,
         );
+        endLoading();
       } else {
         state = state.copyWith(
           productIds: [],
-          isLoading: false,
           clearError: true,
         );
+        endLoading();
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to load wishlist: $e',
-        isLoading: false,
-      );
+      handleError('loading wishlist', e);
     }
   }
 
   Future<void> _saveWishlist() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      final userId = _getCurrentUserId();
+      final wishlistKey = 'wishlist_$userId';
       final wishlistJson = jsonEncode(state.productIds);
-      await prefs.setString('wishlist', wishlistJson);
+      await prefs.setString(wishlistKey, wishlistJson);
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to save wishlist: $e',
-      );
+      handleError('saving wishlist', e);
     }
   }
 
@@ -83,5 +92,9 @@ class WishlistNotifier extends StateNotifier<WishlistState> {
 
   bool isInWishlist(String productId) {
     return state.productIds.contains(productId);
+  }
+
+  Future<void> refreshWishlist() async {
+    await _loadWishlist();
   }
 }

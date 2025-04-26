@@ -25,10 +25,9 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   }
 
   void _addToCart(Product product) {
-    // Use your existing addToCart method that takes a Product directly
     ref.read(cartProvider.notifier).addToCart(product);
   }
-
+//TODO - Implement fetching wishlist from supabase
   @override
   Widget build(BuildContext context) {
     // Get wishlist product IDs

@@ -1,17 +1,27 @@
+import 'package:bid/providers.dart';
 import 'package:bid/respositories/user_repository.dart';
+import 'package:bid/services/app_state_coordinator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../base/base_notifier.dart';
 import 'auth_state.dart';
 
-class AuthNotifier extends StateNotifier<AuthState> {
+class AuthNotifier extends BaseNotifier<AuthState> {
   final UserRepository _userRepository;
+  final Ref _ref;
+  final AppStateCoordinator _stateCoordinator;
 
-  AuthNotifier({required UserRepository userRepository})
-      : _userRepository = userRepository,
+  AuthNotifier({
+    required UserRepository userRepository,
+    required Ref ref,
+    required AppStateCoordinator stateCoordinator,
+  }) : _userRepository = userRepository,
+        _ref = ref,
+        _stateCoordinator = stateCoordinator,
         super(AuthState.initial()) {
     // Initialize auth state
     print("AuthNotifier: Initializing");
     _initAuthState();
-
     _setupAuthListener();
   }
 
@@ -46,18 +56,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
         print("AuthNotifier: Not logged in, setting isLoading=false");
         state = state.copyWith(
           isLoggedIn: false,
-          isLoading: false,  // This is crucial
+          isLoading: false,
           userData: null,
           userId: null,
         );
       }
     } catch (e) {
       print("AuthNotifier: Error in _initAuthState: $e");
-      // Make sure to set isLoading to false even if there's an error
-      state = state.copyWith(
-        isLoading: false,
-        error: "Error initializing auth: $e",
-      );
+      handleError('initializing auth', e);
     }
   }
 
@@ -71,10 +77,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       await _loadUserData(userId);
+
+      // Use the state coordinator to handle sign in
+      await _stateCoordinator.handleUserSignIn(userId);
     }
   }
 
-  void _handleSignOut() {
+  Future<void> _handleSignOut() async {
+    // Use the state coordinator to handle sign out
+    await _stateCoordinator.handleUserSignOut();
+
     state = state.copyWith(
       isLoggedIn: false,
       isLoading: false,
@@ -100,32 +112,25 @@ class AuthNotifier extends StateNotifier<AuthState> {
       print("AuthNotifier: isLoading set to false after loading user data");
     } catch (e) {
       print("AuthNotifier: Error loading user data: $e");
-      state = state.copyWith(
-        error: 'Failed to load user data: $e',
-        isLoading: false,
-      );
+      handleError('loading user data', e);
     }
   }
 
   Future<void> signIn(String email, String password) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final response = await _userRepository.signInWithEmail(email, password);
 
-      if (response.user != null) {
-        // Auth state listener will handle the rest
-      } else {
+      if (response.user == null) {
         state = state.copyWith(
           error: 'Sign in failed',
           isLoading: false,
         );
       }
+      // Auth state listener will handle the rest if successful
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString(),
-        isLoading: false,
-      );
+      handleError('signing in', e);
     }
   }
 
@@ -134,7 +139,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     String? lastName,
     String? phone,
   }) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final response = await _userRepository.signUpWithEmail(
@@ -146,8 +151,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       if (response.user != null) {
-        // IMPORTANT: Add a small delay to ensure the database has time to update
-        // before we try to load the user data
+        // Delay to ensure the database has time to update before loading user data
         await Future.delayed(Duration(milliseconds: 500));
 
         // Force refresh user data instead of waiting for auth state listener
@@ -159,31 +163,35 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString(),
-        isLoading: false,
-      );
+      handleError('signing up', e);
     }
   }
 
   Future<void> signOut() async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
+      // Use the state coordinator to reset app state
+      await _stateCoordinator.resetAppState();
+
+      // Sign out from Supabase
       await _userRepository.signOut();
-      // Auth state listener will handle the rest
+
+      // Explicitly set the state to logged out and not loading
+      state = AuthState.initial().copyWith(isLoading: false);
+
+      print("AuthNotifier: Sign out complete, isLoading=${state.isLoading}, isLoggedIn=${state.isLoggedIn}");
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString(),
-        isLoading: false,
-      );
+      handleError('signing out', e);
+      // Even if there's an error, make sure we're not stuck in loading state
+      state = state.copyWith(isLoading: false);
     }
   }
 
   Future<void> updateProfile(Map<String, dynamic> data) async {
     if (state.userId == null) return;
 
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final success = await _userRepository.updateUserProfile(state.userId!, data);
@@ -197,29 +205,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString(),
-        isLoading: false,
-      );
+      handleError('updating profile', e);
     }
   }
 
   Future<void> resetPassword(String email) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       await _userRepository.resetPassword(email);
-
-      state = state.copyWith(
-        isLoading: false,
-      );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: e.toString(),
-        isLoading: false,
-      );
+      handleError('resetting password', e);
     }
   }
+
   Future<void> refreshUserData() async {
     final userId = _userRepository.currentUserId;
     if (userId != null) {

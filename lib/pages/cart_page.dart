@@ -1,7 +1,6 @@
 
 import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/components/order_widgets/order_summary.dart';
-import 'package:bid/models/product_model.dart';
 import 'package:bid/providers.dart';
 import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';

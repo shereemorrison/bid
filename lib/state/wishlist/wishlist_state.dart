@@ -1,16 +1,28 @@
 import 'package:flutter/foundation.dart';
+import '../base/base_state.dart';
 
 @immutable
-class WishlistState {
+class WishlistState extends BaseState {
   final List<String> productIds;
-  final bool isLoading;
-  final String? error;
 
   const WishlistState({
     this.productIds = const [],
-    this.isLoading = false,
-    this.error,
-  });
+    bool isLoading = false,
+    String? error,
+  }) : super(isLoading: isLoading, error: error);
+
+  @override
+  WishlistState copyWithBase({
+    bool? isLoading,
+    String? error,
+    bool clearError = false,
+  }) {
+    return WishlistState(
+      productIds: productIds,
+      isLoading: isLoading ?? this.isLoading,
+      error: clearError ? null : error ?? this.error,
+    );
+  }
 
   WishlistState copyWith({
     List<String>? productIds,

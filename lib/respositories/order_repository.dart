@@ -8,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class OrderRepository extends BaseRepository {
   OrderRepository({SupabaseClient? client}) : super(client: client);
 
-  // Get user orders - cleaned up version that works
+  // Get user orders
   Future<List<Map<String, dynamic>>> getUserOrders(String authId) async {
     try {
       print('OrderRepository: Fetching orders for auth ID: $authId');
@@ -20,8 +20,18 @@ class OrderRepository extends BaseRepository {
           .eq('auth_id', authId)
           .single();
 
+      if (userResponse == null) {
+        print('OrderRepository: No user found for auth ID: $authId');
+        return [];
+      }
+
       final userIdForQuery = userResponse['user_id'];
       print('OrderRepository: Using user_id for query: $userIdForQuery');
+
+      if (userIdForQuery == null) {
+        print('OrderRepository: user_id is null for auth ID: $authId');
+        return [];
+      }
 
       // Get orders with basic info
       final dynamic rawResponse = await client
@@ -33,23 +43,37 @@ class OrderRepository extends BaseRepository {
           .eq('user_id', userIdForQuery)
           .order('placed_at', ascending: false);
 
+      if (rawResponse == null) {
+        print('OrderRepository: No orders found for user_id: $userIdForQuery');
+        return [];
+      }
+
       // Convert response to the correct type
-      final List<Map<String, dynamic>> response = List<Map<String, dynamic>>.from(
-          (rawResponse as List).map((item) => Map<String, dynamic>.from(item as Map))
+      final List<Map<String, dynamic>> response = List<
+          Map<String, dynamic>>.from(
+          (rawResponse as List).map((item) =>
+          Map<String, dynamic>.from(item as Map))
       );
 
       print('OrderRepository: Found ${response.length} orders');
+
+      // Add user_id to each order if it's missing
+      for (var order in response) {
+        if (!order.containsKey('user_id') || order['user_id'] == null) {
+          order['user_id'] = userIdForQuery;
+        }
+      }
+
       return response;
     } catch (e) {
       print('OrderRepository: Error fetching orders: $e');
-      return []; // Return empty list instead of rethrowing
+      return []; // Return empty list on error
     }
   }
 
   // Create a new order
   Future<String?> createOrder(Order order) async {
     try {
-      // First create the order
       final orderData = order.toJson();
       final orderResponse = await client
           .from('orders')
@@ -59,8 +83,9 @@ class OrderRepository extends BaseRepository {
 
       final orderId = orderResponse['order_id'];
 
-      // Then create order items
-      final orderItems = order.items.map((item) => {
+      // Create order items
+      final orderItems = order.items.map((item) =>
+      {
         'order_id': orderId,
         'product_id': item.productId,
         'quantity': item.quantity,
@@ -93,21 +118,28 @@ class OrderRepository extends BaseRepository {
   }) async {
     try {
       // Create order items from cart items
-      final orderItems = products.map((item) => OrderItem(
-        itemId: DateTime.now().millisecondsSinceEpoch.toString() + '_' + item.productId,
-        productId: item.productId,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        imageUrl: item.imageUrl,
-      )).toList();
+      final orderItems = products.map((item) =>
+          OrderItem(
+            itemId: DateTime
+                .now()
+                .millisecondsSinceEpoch
+                .toString() + '_' + item.productId,
+            productId: item.productId,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            imageUrl: item.imageUrl,
+          )).toList();
 
       // Convert shipping address to JSON for storage
       final shippingAddressJson = shippingAddress.toJson();
 
       // Create the order object using your existing Order model
       final order = Order(
-        orderId: DateTime.now().millisecondsSinceEpoch.toString(),
+        orderId: DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString(),
         userId: userId,
         orderDate: DateTime.now(),
         status: 'PENDING',
@@ -174,7 +206,8 @@ class OrderRepository extends BaseRepository {
       final List<Map<String, dynamic>> processedItems = [];
 
       if (orderItemsResponse != null && orderItemsResponse is List) {
-        print('OrderRepository: Found ${orderItemsResponse.length} order items');
+        print(
+            'OrderRepository: Found ${orderItemsResponse.length} order items');
 
         for (var rawItem in orderItemsResponse) {
           // Ensure item is a Map<String, dynamic>
@@ -269,7 +302,7 @@ class OrderRepository extends BaseRepository {
     }
   }
 
-  // Basic database inspection for troubleshooting
+  // Debugging
   Future<void> inspectDatabase() async {
     try {
       print('OrderRepository: Inspecting database...');
@@ -299,6 +332,145 @@ class OrderRepository extends BaseRepository {
       print('OrderRepository: Sample order items: $orderItems');
     } catch (e) {
       print('OrderRepository: Error inspecting database: $e');
+    }
+  }
+  //Guest orders
+  Future<String?> createGuestOrder({
+    required String? userId,
+    required String guestEmail,
+    required List<OrderItem> items,
+    required Map<String, dynamic> shippingAddress,
+    required double subtotal,
+    required double tax,
+    required double shipping,
+    required double total,
+    required String paymentMethod,
+    String? paymentIntentId,
+  }) async {
+    try {
+      // Generate an order number
+      final orderNumber = 'ORD-${DateTime
+          .now()
+          .year}${DateTime
+          .now()
+          .month
+          .toString()
+          .padLeft(2, '0')}${DateTime
+          .now()
+          .day
+          .toString()
+          .padLeft(2, '0')}-${(DateTime
+          .now()
+          .millisecondsSinceEpoch % 1000000).toString().padLeft(6, '0')}';
+
+      // Create the order
+      final orderData = {
+        'user_id': userId, // Can be null for completely guest checkout
+        'guest_email': guestEmail, // Store email for lookup
+        'order_number': orderNumber,
+        'status': 'PENDING',
+        'subtotal': subtotal.toString(),
+        'tax_amount': tax.toString(),
+        'shipping_amount': shipping.toString(),
+        'discount_amount': '0.00',
+        'total_amount': total.toString(),
+        'shipping_method': 'Standard',
+        'placed_at': DateTime.now().toIso8601String(),
+        'updated_at': DateTime.now().toIso8601String(),
+        'payment_intent_id': paymentIntentId,
+        'metadata': {
+          'shipping_address': shippingAddress,
+          'is_guest_order': true,
+        },
+      };
+
+      final orderResponse = await client
+          .from('orders')
+          .insert(orderData)
+          .select('order_id')
+          .single();
+
+      final orderId = orderResponse['order_id'];
+
+      // Create order items
+      final orderItems = items.map((item) =>
+      {
+        'order_id': orderId,
+        'product_id': item.productId,
+        'variant_id': null,
+        // Add if you have this
+        'product_name': item.name,
+        'variant_name': null,
+        // Add if you have this
+        'sku': 'SKU-${item.productId.substring(0, 8)}',
+        'quantity': item.quantity,
+        'unit_price': item.price.toString(),
+        'subtotal': (item.price * item.quantity).toString(),
+        'discount_amount': '0.00',
+        'tax_amount': (item.price * item.quantity * 0.1).toString(),
+        // Assuming 10% tax
+        'total': (item.price * item.quantity * 1.1).toString(),
+        // Price + tax
+      }).toList();
+
+      await client.from('order_items').insert(orderItems);
+
+      return orderId;
+    } catch (e) {
+      print('Error creating guest order: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getOrdersByUserId(String userId) async {
+    try {
+      final response = await client
+          .from('orders')
+          .select('''
+          *,
+          order_items(*)
+        ''')
+          .eq('user_id', userId);
+
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      print('Error getting orders by user ID: $e');
+      return [];
+    }
+  }
+
+  Future<Map<String, dynamic>?> getOrderById(String orderId) async {
+    try {
+      final response = await client
+          .from('orders')
+          .select('''
+          *,
+          order_items(*)
+        ''')
+          .eq('order_id', orderId)
+          .maybeSingle();
+
+      return response != null ? Map<String, dynamic>.from(response) : null;
+    } catch (e) {
+      print('Error getting order by ID: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateOrderUserId(String orderId, String newUserId) async {
+    try {
+      await client
+          .from('orders')
+          .update({
+        'user_id': newUserId,
+        'updated_at': DateTime.now().toIso8601String(),
+      })
+          .eq('order_id', orderId);
+
+      return true;
+    } catch (e) {
+      print('Error updating order user ID: $e');
+      return false;
     }
   }
 }

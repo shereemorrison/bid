@@ -35,6 +35,40 @@ class Address {
     this.updatedAt,
   });
 
+  Address copyWith({
+    String? id,
+    String? userId,
+    String? firstName,
+    String? lastName,
+    String? streetAddress,
+    String? apartment,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? phone,
+    String? email,
+    bool? isDefault,
+    String? addressType,
+  }) {
+    return Address(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      streetAddress: streetAddress ?? this.streetAddress,
+      apartment: apartment ?? this.apartment,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      postalCode: postalCode ?? this.postalCode,
+      country: country ?? this.country,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      isDefault: isDefault ?? this.isDefault,
+      addressType: addressType ?? this.addressType,
+    );
+  }
+
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       id: json['address_id'] ?? json['id'],

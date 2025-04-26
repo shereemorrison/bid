@@ -1,12 +1,13 @@
+import 'package:bid/components/buttons/auth_button.dart';
+import 'package:bid/components/common_widgets/info_item.dart';
+import 'package:bid/components/common_widgets/profile_header.dart';
+import 'package:bid/components/order_widgets/order_history_table.dart';
+import 'package:bid/models/order_model.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../components/buttons/auth_button.dart';
-import '../../components/common_widgets/info_item.dart';
-import '../../components/common_widgets/profile_header.dart';
-import '../../components/order_widgets/order_history_table.dart';
-import '../../models/order_model.dart'; // Import your Order model
+
 
 class LoggedInView extends ConsumerWidget {
   const LoggedInView({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class LoggedInView extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     // Fetch orders if needed
-    if (orders == null && !isOrderLoading) {
+    if (orders.isEmpty && !isOrderLoading) {
       final authUserId = ref.read(userIdProvider);
       if (authUserId != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -120,7 +121,7 @@ class LoggedInView extends ConsumerWidget {
     );
   }
 
-  Widget _buildOrdersSection(BuildContext context, List<dynamic>? orders, bool isLoading, String? error) {
+  Widget _buildOrdersSection(BuildContext context, List<Order> orders, bool isLoading, String? error) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,13 +138,13 @@ class LoggedInView extends ConsumerWidget {
           const Center(child: CircularProgressIndicator())
         else if (error != null)
           Text('Error: $error')
-        else if (orders == null || orders.isEmpty)
+        else if (orders.isEmpty)
             InfoItem(label: 'Order ID', value: 'No recent orders')
           else
             Builder(builder: (context) {
               try {
                 return OrderHistoryTable(
-                  orders: orders.take(5).map((order) => order as Order).toList(),
+                  orders: orders.take(5).toList(),
                   onViewDetails: (orderId) {
                     // Navigate to order details page
                     context.push('/account/order/$orderId');

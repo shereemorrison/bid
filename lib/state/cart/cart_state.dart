@@ -1,22 +1,34 @@
+import 'package:bid/models/product_model.dart';
 import 'package:flutter/foundation.dart';
-import '../../models/product_model.dart';
+import '../base/base_state.dart';
 
 @immutable
-class CartState {
+class CartState extends BaseState {
   final List<CartItem> items;
-  final bool isLoading;
-  final String? error;
 
   const CartState({
     this.items = const [],
-    this.isLoading = false,
-    this.error,
-  });
+    bool isLoading = false,
+    String? error,
+  }) : super(isLoading: isLoading, error: error);
 
   double get subtotal => items.fold(
       0, (sum, item) => sum + (item.price * item.quantity));
 
   int get itemCount => items.fold(0, (sum, item) => sum + item.quantity);
+
+  @override
+  CartState copyWithBase({
+    bool? isLoading,
+    String? error,
+    bool clearError = false,
+  }) {
+    return CartState(
+      items: items,
+      isLoading: isLoading ?? this.isLoading,
+      error: clearError ? null : error ?? this.error,
+    );
+  }
 
   CartState copyWith({
     List<CartItem>? items,
@@ -50,7 +62,6 @@ class CartItem {
   final Map<String, dynamic>? options;
   String? get selectedSize => options?['size'] as String?;
 
-  // Transient field that won't be serialized
   final Product? _productRef;
 
   CartItem({
@@ -64,7 +75,7 @@ class CartItem {
     Product? productRef,
   }) : _productRef = productRef;
 
-  // Getter that provides access to the product reference or creates a minimal one if needed
+  // Getter that provides access to the product reference
   Product get product {
     // Return the stored reference if available
     if (_productRef != null) return _productRef!;
@@ -128,7 +139,6 @@ class CartItem {
       'quantity': quantity,
       'imageUrl': imageUrl,
       'options': options,
-      // We don't serialize _productRef
     };
   }
 
@@ -141,7 +151,6 @@ class CartItem {
       quantity: json['quantity'],
       imageUrl: json['imageUrl'],
       options: json['options'],
-      // productRef is null when deserializing
     );
   }
 }

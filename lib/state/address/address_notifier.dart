@@ -1,9 +1,10 @@
 import 'package:bid/models/address_model.dart';
 import 'package:bid/respositories/address_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../base/base_notifier.dart';
 import 'address_state.dart';
 
-class AddressNotifier extends StateNotifier<AddressState> {
+class AddressNotifier extends BaseNotifier<AddressState> {
   final AddressRepository _addressRepository;
 
   AddressNotifier({required AddressRepository addressRepository})
@@ -11,9 +12,20 @@ class AddressNotifier extends StateNotifier<AddressState> {
         super(AddressState.initial());
 
   Future<void> fetchUserAddresses(String userId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
+      // Check for empty user ID
+      if (userId.isEmpty) {
+        print('AddressNotifier: Empty user ID provided');
+        state = state.copyWith(
+          addresses: [],
+          selectedAddress: null,
+        );
+        endLoading();
+        return;
+      }
+
       final addresses = await _addressRepository.getUserAddresses(userId);
 
       // Find default address
@@ -28,20 +40,27 @@ class AddressNotifier extends StateNotifier<AddressState> {
       state = state.copyWith(
         addresses: addresses,
         selectedAddress: defaultAddress,
-        isLoading: false,
       );
+      endLoading();
     } catch (e) {
-      state = state.copyWith(
-        error: 'Failed to fetch addresses: $e',
-        isLoading: false,
-      );
+      handleError('fetching addresses', e);
     }
   }
 
   Future<bool> addAddress(Address address) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
+      // Check for empty user ID
+      if (address.userId.isEmpty) {
+        print('AddressNotifier: Empty user ID in address');
+        state = state.copyWith(
+          error: 'Invalid user ID',
+          isLoading: false,
+        );
+        return false;
+      }
+
       final success = await _addressRepository.addAddress(address);
 
       if (success) {
@@ -56,16 +75,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Error adding address: $e',
-        isLoading: false,
-      );
+      handleError('adding address', e);
       return false;
     }
   }
 
   Future<bool> updateAddress(Address address) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final success = await _addressRepository.updateAddress(address);
@@ -82,16 +98,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Error updating address: $e',
-        isLoading: false,
-      );
+      handleError('updating address', e);
       return false;
     }
   }
 
   Future<bool> deleteAddress(String addressId, String userId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final success = await _addressRepository.deleteAddress(addressId);
@@ -108,16 +121,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Error deleting address: $e',
-        isLoading: false,
-      );
+      handleError('deleting address', e);
       return false;
     }
   }
 
   Future<bool> setDefaultAddress(String userId, String addressId) async {
-    state = state.copyWith(isLoading: true, clearError: true);
+    startLoading();
 
     try {
       final success = await _addressRepository.setDefaultAddress(userId, addressId);
@@ -134,15 +144,22 @@ class AddressNotifier extends StateNotifier<AddressState> {
         return false;
       }
     } catch (e) {
-      state = state.copyWith(
-        error: 'Error setting default address: $e',
-        isLoading: false,
-      );
+      handleError('setting default address', e);
       return false;
     }
   }
 
   void selectAddress(Address address) {
     state = state.copyWith(selectedAddress: address);
+  }
+
+  void clearAddresses() {
+    state = state.copyWith(
+      addresses: [],
+      selectedAddress: null,
+      isLoading: false,
+      error: null,
+    );
+    print('Address state cleared');
   }
 }

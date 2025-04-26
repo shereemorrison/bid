@@ -1,14 +1,13 @@
-import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/checkout_page.dart' hide checkoutCompleteProvider;
 import 'package:bid/providers.dart';
+import 'package:bid/utils/format_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../utils/format_helpers.dart';
 
 class OrderConfirmationHelper {
   // Clear cart and checkout state
   static void clearCartAndCheckoutState(WidgetRef ref) {
     try {
-      // Use clearCart() method instead of trying to set state directly
       ref.read(cartProvider.notifier).clearCart();
     } catch (e) {
       print('Error clearing cart: $e');

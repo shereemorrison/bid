@@ -1,13 +1,13 @@
+import 'package:bid/components/buttons/shopping_buttons.dart';
+import 'package:bid/components/cart_widgets/empty_state.dart';
 import 'package:bid/providers.dart';
+import 'package:bid/utils/order_confirmation_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../components/buttons/shopping_buttons.dart';
-import '../components/cart_widgets/empty_state.dart';
-import '../utils/order_confirmation_helper.dart';
 
-// Create a simple state provider for order details
+// State provider for order details
 final orderDetailsProvider = StateProvider.family<Map<String, dynamic>?, String?>((ref, orderId) => null);
 
 class OrderConfirmationPage extends ConsumerStatefulWidget {
@@ -42,7 +42,6 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
 
   @override
   void dispose() {
-    // Make sure we don't have any lingering state
     if (!_hasNavigatedAway) {
       try {
         ref.read(cartProvider.notifier).clearCart();
@@ -120,14 +119,13 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
 
   // Navigate back to home and ensure cart is cleared
   void _navigateToHome() {
-    // Clear the cart again just to be sure
     try {
       ref.read(cartProvider.notifier).clearCart();
     } catch (e) {
       print('Error clearing cart: $e');
     }
 
-    // Set flag to prevent double-clearing in dispose
+    // Prevent double-clearing in dispose
     _hasNavigatedAway = true;
 
     // Navigate to home page using the root navigator
@@ -157,6 +155,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
 
     final isLoggedIn = ref.watch(isLoggedInProvider);
 
+    // TODO
     return WillPopScope(
       // Prevent back navigation with hardware back button
       onWillPop: () async {

@@ -1,0 +1,158 @@
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
+import 'package:bid/themes/custom_colors.dart';
+import 'package:bid/utils/format_helpers.dart';
+import 'package:bid/utils/image_helpers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'modal_size_selector.dart';
+
+class ProductGridItem extends ConsumerWidget {
+  final Product product;
+
+  const ProductGridItem({
+    super.key,
+    required this.product,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final isInWishlist = ref.watch(isInWishlistProvider(product.id));
+
+    return GestureDetector(
+        onTap: () {
+          // Navigate to product detail page
+          context.push('/shop/product', extra: product);
+        },
+
+        child: Card(
+          color: colorScheme.surface,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Product Image
+              Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(0)),
+                      child: buildProductImage(
+                          context, product.imageUrl, product.imagePath),
+                    ),
+                  ),
+
+                  // Wishlist Icon
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      width: 25,
+                      height: 25,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          isInWishlist ? Icons.favorite : Icons.favorite_border, 
+                          color: Colors.white,
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () {
+                          if (isInWishlist) {
+                            ref.read(wishlistProvider.notifier).removeFromWishlist(product.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.name} removed from wishlist'),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          } else {
+                            ref.read(wishlistProvider.notifier).addToWishlist(product.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.name} added to wishlist'),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        },
+                        constraints: const BoxConstraints.tightFor(
+                            width: 25, height: 25),
+                        padding: EdgeInsets.zero,
+                        iconSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // Product Details
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    //Product Info
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            product.name,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.textPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                          Text(
+                            formatPrice(product.price),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.accent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Add to Cart Icon
+                    Container(
+                      width: 25,
+                      height: 25,
+                      margin: const EdgeInsets.only(right: 0, top: 8),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.shopping_bag_outlined,
+                          color: colorScheme.primary,
+                          size: 20,
+                        ),
+                        onPressed: () => showSizeSelectorModal(context, product, ref),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 25, height: 25),
+                        padding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+    );
+  }
+}

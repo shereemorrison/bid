@@ -60,7 +60,6 @@ class _NewsletterSectionState extends State<NewsletterSection> {
         _emailController.clear();
         widget.onSubscriptionComplete?.call(true, 'Successfully subscribed to newsletter!');
 
-        // Use the DialogService instead of SnackBar
         DialogService.showNewsletterSubscriptionDialog(context, email);
       } else {
         widget.onSubscriptionComplete?.call(false, 'Failed to subscribe. Please try again.');

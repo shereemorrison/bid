@@ -1,11 +1,10 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/models/products_model.dart';
-import 'package:bid/services/dialog_service.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/utils/cart_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bid/providers/shop_provider.dart';
 
-void showSizeSelectorModal(BuildContext context, Product product, WidgetRef ref, Shop shop) {
+void showSizeSelectorModal(BuildContext context, Product product, WidgetRef ref) {
   final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL',];
   String? selectedSize;
   final colorScheme = Theme.of(context).colorScheme;
@@ -87,11 +86,14 @@ void showSizeSelectorModal(BuildContext context, Product product, WidgetRef ref,
                   width: double.infinity,
                   child: AddToCartButton(
                     onTap: selectedSize == null ? null : () {
-                      // Add to cart with selected size
-                      final productWithSize = product.copyWith(
-                        selectedSize: selectedSize,
+                      // Use addToCartWithFeedback inside a function
+                      addToCartWithFeedback(
+                        context,
+                        ref,
+                        product,
+                        size: selectedSize,
+                        // No quantity parameter needed here
                       );
-                      shop.addToCartWithFeedback(context, productWithSize);
 
                       Navigator.pop(context);
                     },

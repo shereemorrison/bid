@@ -1,6 +1,6 @@
 
-import 'package:bid/models/products_model.dart';
-import 'package:bid/providers/shop_provider.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/image_helpers.dart';
@@ -20,7 +20,7 @@ class ProductGridItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shop = ref.watch(shopProvider);
+    final isInWishlist = ref.watch(isInWishlistProvider(product.id));
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -69,8 +69,25 @@ class ProductGridItem extends ConsumerWidget {
                           Icons.favorite_border, color: Colors.white,),
                         color: Theme.of(context).primaryColor,
                         onPressed: () {
-                          shop.addToWishlistWithFeedback(context, product);
+                          if (isInWishlist) {
+                            ref.read(wishlistProvider.notifier).removeFromWishlist(product.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.name} removed from wishlist'),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          } else {
+                            ref.read(wishlistProvider.notifier).addToWishlist(product.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.name} added to wishlist'),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
                         },
+
                         constraints: const BoxConstraints.tightFor(
                             width: 25, height: 25),
                         padding: EdgeInsets.zero,
@@ -125,7 +142,7 @@ class ProductGridItem extends ConsumerWidget {
                           color: colorScheme.primary,
                           size: 20,
                         ),
-                        onPressed: () => showSizeSelectorModal(context, product, ref, shop),
+                        onPressed: () => showSizeSelectorModal(context, product, ref),
                         constraints: const BoxConstraints.tightFor(
                             width: 25, height: 25),
                         padding: EdgeInsets.zero,

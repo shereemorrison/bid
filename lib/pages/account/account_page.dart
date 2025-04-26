@@ -1,9 +1,7 @@
 
 import 'package:bid/pages/account/logged_in_view.dart';
 import 'package:bid/pages/account/logged_out_view.dart';
-import 'package:bid/providers/order_provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/providers/user_provider.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,24 +26,17 @@ class _AccountPageState extends ConsumerState<AccountPage> {
   void _fetchUserDataIfNeeded() {
     final isLoggedIn = ref.read(isLoggedInProvider);
     final userData = ref.read(userDataProvider);
-    final isLoading = ref.read(userLoadingProvider);
-    final authUserId = ref.read(authUserIdProvider);
-
-    if (isLoggedIn && userData == null && !isLoading && authUserId != null) {
-      print('Fetching user data for ID: $authUserId');
-      ref.read(userNotifierProvider.notifier).updateUserData(authUserId);
-    }
+    final authUserId = ref.read(userIdProvider);
   }
 
   void _fetchOrdersIfNeeded() {
     final isLoggedIn = ref.read(isLoggedInProvider);
-    final orders = ref.read(ordersProvider);
-    final isLoading = ref.read(orderLoadingProvider);
-    final authUserId = ref.read(authUserIdProvider);
+    final userData = ref.read(userDataProvider);
+    final authUserId = ref.read(userIdProvider);
 
-    if (isLoggedIn && orders == null && !isLoading && authUserId != null) {
-      print('Fetching orders for user ID: $authUserId');
-      ref.read(orderNotifierProvider.notifier).fetchUserOrders(authUserId);
+    if (isLoggedIn && userData == null && authUserId != null) {
+      print('Fetching user data for ID: $authUserId');
+      ref.read(ordersProvider.notifier).fetchUserOrders(authUserId);
     }
   }
 
@@ -53,7 +44,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
   Widget build(BuildContext context) {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final userData = ref.watch(userDataProvider);
-    final isLoading = ref.watch(userLoadingProvider);
+    final isLoading = ref.watch(authLoadingProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -61,7 +52,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
           ? const Center(child: CircularProgressIndicator())
           : !isLoggedIn
           ? const LoggedOutView()
-          : LoggedInView(userData: userData),
+          : LoggedInView(),
     );
   }
 }

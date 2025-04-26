@@ -64,27 +64,20 @@ class MapboxService {
       final locationPart = addressParts[1];
 
       // Extract city and state
-      // The format is typically "City State Postcode"
-      // Remove the postal code first
       final locationWithoutPostcode = locationPart.replaceAll(postalCodeRegex, '').trim();
 
       // Split by spaces to separate city and state
       final locationComponents = locationWithoutPostcode.split(' ');
 
       if (locationComponents.length > 1) {
-        // Last word is likely the state
         state = locationComponents.last;
-
-        // Everything before the state is the city
         city = locationComponents.sublist(0, locationComponents.length - 1).join(' ');
       } else {
-        // If there's only one component, assume it's the city
         city = locationWithoutPostcode;
       }
     }
 
     if (addressParts.length >= 3) {
-      // Third part is the country
       country = addressParts[2];
     }
 

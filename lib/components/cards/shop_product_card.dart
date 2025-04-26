@@ -1,6 +1,7 @@
 import 'package:bid/components/buttons/shopping_buttons.dart';
-import 'package:bid/models/products_model.dart';
-import 'package:bid/providers/shop_provider.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
+import 'package:bid/services/dialog_service.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,8 @@ class ShopProductCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final shop = ref.watch(shopProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
+    final wishlistNotifier = ref.read(wishlistProvider.notifier);
 
 
     // Adjust dimensions based on size
@@ -82,7 +84,10 @@ class ShopProductCard extends ConsumerWidget {
                     Expanded(
                       child: BaseStyledButton(
                         text: "ADD",
-                        onTap: () => shop.addToCartWithFeedback(context, product),
+                        onTap: () {
+                          cartNotifier.addToCart(product);
+                          DialogService.showAddToCartDialog(context, product);
+                        },
                         height: 30,
                         fontSize: fontSize - 2,
                       ),
@@ -91,7 +96,10 @@ class ShopProductCard extends ConsumerWidget {
 
                     // Add to Wishlist Button (icon button)
                     CustomIconButton(icon: Icons.favorite_border,
-                      onTap: () => shop.addToWishlistWithFeedback(context, product),
+                      onTap: () {
+                        wishlistNotifier.addToWishlist(product.id);
+                        DialogService.showAddToWishlistDialog(context, product);
+                      },
                       size: 30,
                       iconSize: 16,
                     ),

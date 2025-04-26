@@ -1,13 +1,10 @@
 
-import 'package:bid/components/common_widgets/empty_state.dart';
-import 'package:bid/models/products_model.dart';
-import 'package:bid/services/shop_service.dart';
+import 'package:bid/components/cart_widgets/empty_state.dart';
+import 'package:bid/models/product_model.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/utils/list_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
-import 'package:bid/archive/wishlist_service.dart';
-import 'package:bid/providers/shop_provider.dart';
 
 class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
@@ -17,15 +14,36 @@ class WishlistPage extends ConsumerStatefulWidget {
 }
 
 class _WishlistPageState extends ConsumerState<WishlistPage> {
-  final ShopService _shopService = ShopService();
+  void _removeFromWishlist(Product product) {
+    ref.read(wishlistProvider.notifier).removeFromWishlist(product.id);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${product.name} removed from wishlist'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
+  void _addToCart(Product product) {
+    ref.read(cartProvider.notifier).addToCart(product);
+  }
+//TODO - Implement fetching wishlist from supabase
   @override
   Widget build(BuildContext context) {
-    final wishlist = ref.watch(shopProvider).wishlist;
+    // Get wishlist product IDs
+    final wishlistProductIds = ref.watch(wishlistItemsProvider);
+
+    // Get all products
+    final allProducts = ref.watch(allProductsProvider);
+
+    // Filter products that are in the wishlist
+    final List<Product> wishlistProducts = allProducts
+        .where((product) => wishlistProductIds.contains(product.id))
+        .toList();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: wishlist.isEmpty
+      body: wishlistProducts.isEmpty
           ? const EmptyState(
         icon: Icons.favorite_border,
         title: "Your wishlist is empty",
@@ -33,9 +51,9 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
       )
       // Use the list helper
           : buildWishlistItemsList(
-        wishlist.cast<Product>(),
-            (item) => _shopService.removeFromWishlist(context, item, ref),
-            (item) => _shopService.addToCart(context, item, ref),
+        wishlistProducts,
+            (item) => _removeFromWishlist(item),
+            (item) => _addToCart(item),
       ),
     );
   }

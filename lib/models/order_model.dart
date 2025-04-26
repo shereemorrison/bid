@@ -1,6 +1,5 @@
 
 import 'package:bid/utils/order_calculator.dart';
-
 import 'order_item_model.dart';
 
 class Order {
@@ -10,15 +9,16 @@ class Order {
   final String status;
   final Map<String, dynamic>? orderStatus;
   final double taxAmount;
-  final double shipping_amount;
-  final double discount_amount;
+  final double shippingAmount;
+  final double discountAmount;
   final double totalAmount;
   final String? shippingMethod;
   final String? trackingNumber;
   final DateTime? shippedAt;
   final DateTime? deliveredAt;
-
   final List<OrderItem> items;
+  final Map<String, dynamic>? shippingAddress;
+  final String? paymentMethod;
 
   Order({
     required this.orderId,
@@ -27,15 +27,39 @@ class Order {
     this.orderStatus,
     required this.status,
     required this.taxAmount,
-    required this.shipping_amount,
-    required this.discount_amount,
+    required this.shippingAmount,
+    required this.discountAmount,
     required this.totalAmount,
     this.shippingMethod,
     this.trackingNumber,
     this.shippedAt,
     this.deliveredAt,
     required this.items,
+    this.shippingAddress,
+    this.paymentMethod,
+
+
   });
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'order_id': orderId,
+      'user_id': userId,
+      'order_date': orderDate.toIso8601String(),
+      'status': status,
+      'tax_amount': taxAmount,
+      'shipping_amount': shippingAmount,
+      'discount_amount': discountAmount,
+      'total_amount': totalAmount,
+      'shipping_method': shippingMethod,
+      'tracking_number': trackingNumber,
+      'shipped_at': shippedAt?.toIso8601String(),
+      'delivered_at': deliveredAt?.toIso8601String(),
+      'shipping_address': shippingAddress,
+      'payment_method': paymentMethod,
+    };
+  }
 
   double get subtotal => OrderCalculator.calculateSubtotal(items);
 
@@ -43,11 +67,37 @@ class Order {
   double get calculatedTotal => OrderCalculator.calculateTotal(
     subtotal: subtotal,
     taxAmount: taxAmount,
-    shippingAmount: shipping_amount,
-    discountAmount: discount_amount,
+    shippingAmount: shippingAmount,
+    discountAmount: discountAmount,
   );
 
   bool get isTotalValid => (calculatedTotal - totalAmount).abs() < 0.01;
+
+  bool get isReturnEligible {
+
+    // Order must be delivered to be eligible for return
+    if (status != 'DELIVERED') return false;
+
+    // If there's no delivery date, we'll still allow returns if status is DELIVERED
+    if (deliveredAt == null) return true;
+
+    // Check if it's within the return window (30 days)
+    final returnWindowDays = 30;
+    final now = DateTime.now();
+    final returnDeadline = deliveredAt!.add(Duration(days: returnWindowDays));
+
+    return now.isBefore(returnDeadline);
+  }
+
+  // Check if an item is eligible for return
+  bool isItemReturnEligible(OrderItem item) {
+    // First check if the order itself is eligible
+    if (!isReturnEligible) return false;
+
+    // Check if the item is returnable and not already returned/pending
+    return item.isReturnable ?? true && !item.isReturned && !item.isReturnPending;
+  }
+
 
   void validateTotals() {
     if (!isTotalValid) {
@@ -56,7 +106,7 @@ class Order {
       //print('Calculated total: $calculatedTotal');
 
       // Check if there might be an undocumented discount
-      if (discount_amount == 0 && calculatedTotal > totalAmount) {
+      if (discountAmount == 0 && calculatedTotal > totalAmount) {
         final possibleDiscount = calculatedTotal - totalAmount;
         //print('Possible undocumented discount: $possibleDiscount');
       }
@@ -65,9 +115,9 @@ class Order {
 
 
   factory Order.fromJson(Map<String, dynamic> json) {
-    print('Order data: $json');
-    print('Status: ${json['status']}');
-    print('Order status: ${json['order_status']}');
+    // print('Order data: $json');
+    // print('Status: ${json['status']}');
+    // print('Order status: ${json['order_status']}');
     // Handle the case where status might be null
     String statusName = 'Unknown';
     if (json['status'] != null && json['status'] is String) {
@@ -124,13 +174,15 @@ class Order {
       orderStatus: json['order_status'],
       totalAmount: parseDouble(json['total_amount']),
       taxAmount: parseDouble(json['tax_amount']),
-      shipping_amount: parseDouble(json['shipping_amount']),
-      discount_amount: parseDouble(json['discount_amount']),
+      shippingAmount: parseDouble(json['shipping_amount']),
+      discountAmount: parseDouble(json['discount_amount']),
       shippingMethod: json['shipping_method'],
       trackingNumber: json['tracking_number'],
       shippedAt: parseDate(json['shipped_at']),
       deliveredAt: parseDate(json['delivered_at']),
       items: orderItems,
+      shippingAddress: json['shipping_address'],
+      paymentMethod: json['payment_method'],
     );
   }
 }

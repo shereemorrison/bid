@@ -1,5 +1,4 @@
 
-
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/utils/product_helpers.dart';
 import 'package:flutter/material.dart';

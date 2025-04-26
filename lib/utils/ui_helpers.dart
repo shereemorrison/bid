@@ -1,7 +1,6 @@
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
 
-// Remove underscore to make it public
 Widget buildAttributeTag(String text, BuildContext context) {
   final colorScheme = Theme.of(context).colorScheme;
 
@@ -11,8 +10,6 @@ Widget buildAttributeTag(String text, BuildContext context) {
       vertical: 4,
     ),
     decoration: BoxDecoration(
-      // Make sure this property exists in your ColorScheme extension
-      // If not, use colorScheme.outline instead
       border: Border.all(color: colorScheme.outline),
       borderRadius: BorderRadius.circular(0),
     ),

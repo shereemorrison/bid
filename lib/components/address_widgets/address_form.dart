@@ -4,16 +4,15 @@ import 'package:bid/components/address_widgets/address_type_toggle.dart';
 import 'package:bid/components/address_widgets/contact_info_form.dart';
 import 'package:bid/config/api_keys.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/providers/user_provider.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/services/mapbox_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
-  final AddressModel? addressToEdit;
-  final Function(AddressModel) onSave;
+  final Address? addressToEdit;
+  final Function(Address) onSave;
 
   const AddressForm({
     Key? key,
@@ -76,14 +75,13 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       // Pre-fill with user data if available
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final userData = ref.read(userDataProvider);
+
         if (userData != null) {
           _firstNameController.text = userData.firstName ?? '';
           _lastNameController.text = userData.lastName ?? '';
           _phoneController.text = userData.phone ?? '';
           _emailController.text = userData.email;
         }
-
-        // Default country to Australia
         _countryController.text = 'Australia';
       });
     }
@@ -147,18 +145,13 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   void _saveAddress() {
     if (_formKey.currentState!.validate()) {
       final isLoggedIn = ref.read(isLoggedInProvider);
-      final userData = ref.read(userDataProvider);
-
-      // Get userId if logged in, otherwise use a temporary ID
-      String userId = 'guest-${const Uuid().v4()}';
-      if (isLoggedIn && userData != null) {
-        userId = userData.userId;
-      }
+      String userId = ref.read(userIdProvider);
+      print('AddressForm: Using user ID: $userId');
 
       // Create or update the address model
       final address = widget.addressToEdit != null
-          ? AddressModel(
-        addressId: widget.addressToEdit!.addressId,
+          ? Address(
+        id: widget.addressToEdit!.id,
         userId: userId,
         addressType: _addressType,
         isDefault: _isDefault,
@@ -175,8 +168,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         createdAt: widget.addressToEdit!.createdAt,
         updatedAt: DateTime.now(),
       )
-          : AddressModel(
-        addressId: const Uuid().v4(),
+          : Address(
+        id: const Uuid().v4(),
         userId: userId,
         addressType: _addressType,
         isDefault: _isDefault,
@@ -194,10 +187,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         updatedAt: DateTime.now(),
       );
 
-      // Call the onSave callback
       widget.onSave(address);
-
-      // Return to previous screen
       Navigator.pop(context);
     }
   }
@@ -261,8 +251,6 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
                 const SizedBox(height: 24),
 
-
-                // Set as default - only show for logged in users
                 if (isLoggedIn)
                   Row(
                     children: [

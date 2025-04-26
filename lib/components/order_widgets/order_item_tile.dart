@@ -63,7 +63,7 @@ class OrderItemTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.productName,
+                    item.name,
                     style: textTheme.bodyLarge?.copyWith(
                       color: colorScheme.textPrimary,
                       fontWeight: FontWeight.w500,

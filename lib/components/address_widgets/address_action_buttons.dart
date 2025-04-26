@@ -1,10 +1,10 @@
-// components/address_widgets/address_action_buttons.dart
+
 import 'package:bid/models/address_model.dart';
 import 'package:flutter/material.dart';
 
 class AddressActionButtons extends StatelessWidget {
-  final AddressModel? selectedAddress;
-  final Function(AddressModel?) onEditAddress;
+  final Address? selectedAddress;
+  final Function(Address?) onEditAddress;
   final Function() onAddNewAddress;
 
   const AddressActionButtons({

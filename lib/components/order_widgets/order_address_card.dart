@@ -2,7 +2,7 @@ import 'package:bid/models/address_model.dart';
 import 'package:flutter/material.dart';
 
 class OrderAddressCard extends StatelessWidget {
-  final AddressModel? address;
+  final Address? address;
   final VoidCallback onTap;
 
   const OrderAddressCard({

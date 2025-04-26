@@ -1,9 +1,9 @@
+
 import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/common_widgets/profile_header.dart';
 import 'package:bid/components/common_widgets/social_login_row.dart';
-import 'package:bid/modals/loginmodal.dart';
-import 'package:bid/modals/registrationmodal.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoggedOutView extends StatelessWidget {
   const LoggedOutView({Key? key}) : super(key: key);
@@ -26,47 +26,21 @@ class LoggedOutView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
+          const SizedBox(height: 20),
+
           AuthButton(
             text: "Login",
-            onTap: () => _showLoginModal(context),
+            onTap: () => context.push('/account/login'),
           ),
           const SizedBox(height: 15),
           AuthButton(
             text: "Sign Up",
-            onTap: () => _showRegistrationModal(context),
+            onTap: () => context.push('/account/register'),
           ),
           const SizedBox(height: 15),
           const SocialLoginRow(),
         ],
       ),
-    );
-  }
-
-  void _showLoginModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return LoginPage(
-          onTap: () {
-            Navigator.pop(context);
-            _showRegistrationModal(context);
-          },
-        );
-      },
-    );
-  }
-
-  void _showRegistrationModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return RegistrationPage(
-          onTap: () {
-            Navigator.pop(context);
-            _showLoginModal(context);
-          },
-        );
-      },
     );
   }
 }

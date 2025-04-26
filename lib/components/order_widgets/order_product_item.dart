@@ -1,6 +1,6 @@
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/models/products_model.dart';
+import 'package:bid/models/product_model.dart';
 import 'package:bid/utils/image_helpers.dart';
 import 'package:bid/utils/ui_helpers.dart';
 import 'package:bid/utils/format_helpers.dart';

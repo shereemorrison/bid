@@ -2,28 +2,32 @@ import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/common_widgets/info_item.dart';
 import 'package:bid/components/common_widgets/profile_header.dart';
 import 'package:bid/components/order_widgets/order_history_table.dart';
-import 'package:bid/models/user_model.dart';
-import 'package:bid/providers/order_provider.dart';
-import 'package:bid/providers/supabase_auth_provider.dart';
-import 'package:bid/providers/user_provider.dart';
+import 'package:bid/models/order_model.dart';
+import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 
 class LoggedInView extends ConsumerWidget {
-  final UserModel? userData;
-
-  const LoggedInView({
-    Key? key,
-    required this.userData,
-  }) : super(key: key);
+  const LoggedInView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userData = ref.watch(userDataProvider);
+    final orders = ref.watch(userOrdersProvider);
+    final isOrderLoading = ref.watch(ordersLoadingProvider);
+    final orderError = ref.watch(ordersErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    // If userData is null, show a loading indicator
-    if (userData == null) {
-      return const Center(child: CircularProgressIndicator());
+    // Fetch orders if needed
+    if (orders.isEmpty && !isOrderLoading) {
+      final authUserId = ref.read(userIdProvider);
+      if (authUserId != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref.read(ordersProvider.notifier).fetchUserOrders(authUserId);
+        });
+      }
     }
 
     return SingleChildScrollView(
@@ -37,7 +41,7 @@ class LoggedInView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Section with user name and email
-                _buildUserHeader(context, userData!, colorScheme),
+                _buildUserHeader(context, userData, colorScheme),
 
                 const SizedBox(height: 40),
 
@@ -51,15 +55,15 @@ class LoggedInView extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                InfoItem(label: 'First Name', value: userData!.firstName ?? 'Not set'),
-                InfoItem(label: 'Last Name', value: userData!.lastName ?? 'Not set'),
-                InfoItem(label: 'Phone', value: userData!.phone ?? 'Not set'),
-                InfoItem(label: 'Address', value: userData!.formattedAddress),
+                InfoItem(label: 'First Name', value: userData?.firstName ?? 'Not set'),
+                InfoItem(label: 'Last Name', value: userData?.lastName ?? 'Not set'),
+                InfoItem(label: 'Phone', value: userData?.phone ?? 'Not set'),
+                InfoItem(label: 'Email', value: userData!.email),
 
                 const SizedBox(height: 10),
 
                 // Orders
-                _buildOrdersSection(context,ref),
+                _buildOrdersSection(context, orders, isOrderLoading, orderError),
 
                 const SizedBox(height: 40),
 
@@ -76,7 +80,11 @@ class LoggedInView extends ConsumerWidget {
     );
   }
 
-  Widget _buildUserHeader(BuildContext context, UserModel userData, ColorScheme colorScheme) {
+  Widget _buildUserHeader(BuildContext context, dynamic userData, ColorScheme colorScheme) {
+    final fullName = userData.firstName != null && userData.lastName != null
+        ? "${userData.firstName} ${userData.lastName}"
+        : userData.email;
+
     return Row(
       children: [
         Container(
@@ -93,7 +101,7 @@ class LoggedInView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              userData.fullName,
+              fullName,
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -113,11 +121,7 @@ class LoggedInView extends ConsumerWidget {
     );
   }
 
-  Widget _buildOrdersSection(BuildContext context, WidgetRef ref) {
-    final orders = ref.watch(ordersProvider);
-    final isLoading = ref.watch(orderLoadingProvider);
-    final error = ref.watch(orderErrorProvider);
-
+  Widget _buildOrdersSection(BuildContext context, List<Order> orders, bool isLoading, String? error) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -134,23 +138,38 @@ class LoggedInView extends ConsumerWidget {
           const Center(child: CircularProgressIndicator())
         else if (error != null)
           Text('Error: $error')
-        else if (orders == null || orders.isEmpty)
+        else if (orders.isEmpty)
             InfoItem(label: 'Order ID', value: 'No recent orders')
           else
-            OrderHistoryTable(
-              orders: orders.take(5).toList(), // Show last 5 orders
-              onViewDetails: (orderId) {
-                // Navigate to order details page
-                print('View details for order: $orderId');
-              },
-            ),
+            Builder(builder: (context) {
+              try {
+                return OrderHistoryTable(
+                  orders: orders.take(5).toList(),
+                  onViewDetails: (orderId) {
+                    // Navigate to order details page
+                    context.push('/account/order/$orderId');
+                  },
+                );
+              } catch (e) {
+                return Text('Error displaying orders: $e');
+              }
+            }),
       ],
     );
   }
 
   void _handleSignOut(BuildContext context, WidgetRef ref) async {
-    await ref.read(authNotifierProvider.notifier).signOut();
-    ref.read(userNotifierProvider.notifier).clearUserData();
-    ref.read(orderNotifierProvider.notifier).clearOrders();
+    try {
+      print('Signing out...');
+
+      // Get the auth service
+      await ref.read(authProvider.notifier).signOut();
+
+      print('Sign out complete');
+
+      // No need to invalidate providers here - the AuthService handles state updates
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 }

@@ -15,12 +15,18 @@ final paymentServiceProvider = riverpod.Provider<PaymentRepository>((ref) {
 });
 
 final effectiveAddressProvider = riverpod.Provider<app_models.Address?>((ref) {
+  final checkoutState = ref.watch(checkoutProvider);
+  if (checkoutState.shippingAddress != null) {
+    return checkoutState.shippingAddress;
+  }
   return ref.watch(selectedAddressProvider);
 });
 
 final checkoutCompleteProvider = riverpod.StateProvider<bool>((ref) {
   return false;
 });
+
+final orderConfirmationIdProvider = riverpod.StateProvider<String?>((ref) => null);
 
 class PaymentTab extends riverpod.ConsumerStatefulWidget {
   final double amount;
@@ -42,10 +48,41 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
   CardFieldInputDetails? _cardFieldInputDetails;
   final TextEditingController _nameController = TextEditingController(text: 'Test User');
   bool _isNavigating = false;
+  bool _shouldNavigate = false;
+  String? _orderId;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Check if cart is empty
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkCartEmpty();
+    });
+  }
+
+  // If cart is empty and redirect if needed
+  void _checkCartEmpty() {
+    final cartState = ref.read(cartProvider);
+    if (cartState.items.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/cart');
+      });
+    }
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
+    if (_shouldNavigate && _orderId != null) {
+      ref.read(orderConfirmationIdProvider.notifier).state = _orderId;
+
+      // Navigation from parent widget after this is disposed
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(checkoutCompleteProvider.notifier).state = true;
+      });
+    }
+
     super.dispose();
   }
 
@@ -173,8 +210,15 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
         print('Creating order in Supabase with payment intent ID: $paymentIntentId');
 
         try {
+          final userId = selectedAddress.userId;
+          print('PaymentTab: Using user ID from provider: $userId');
+
+          // Debug the address user ID vs the current user ID
+          print('PaymentTab: Address user ID: ${selectedAddress.userId}');
+          print('PaymentTab: Current user ID: $userId');
+
           final orderData = {
-            'user_id': selectedAddress.userId,
+            'user_id': userId,
             'payment_intent_id': paymentIntentId,
             'status': 'PENDING',
             'subtotal': subtotal,
@@ -239,6 +283,16 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
 
           // Reset checkout state
           ref.read(checkoutProvider.notifier).reset();
+
+          // Store the order ID for navigation after this widget is disposed
+          _orderId = orderId;
+          _shouldNavigate = true;
+
+          // Set the order ID in the provider for the parent to handle navigation
+          ref.read(orderConfirmationIdProvider.notifier).state = orderId;
+
+          // Signal to the parent that checkout is complete
+          ref.read(checkoutCompleteProvider.notifier).state = true;
 
           // Mark checkout as complete
           try {
@@ -370,8 +424,8 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: Colors.grey),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,7 +435,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: colorScheme.primary,
+                          color: colorScheme.secondary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -393,7 +447,7 @@ class _PaymentTabState extends riverpod.ConsumerState<PaymentTab> {
                             formatPrice(widget.amount), // Use imported formatPrice
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: colorScheme.primary,
+                              color: colorScheme.secondary,
                             ),
                           ),
                         ],

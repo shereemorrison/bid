@@ -4,6 +4,7 @@ import 'package:bid/providers.dart';
 import 'package:bid/utils/shipping_tab_ui_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class ShippingTab extends ConsumerStatefulWidget {
@@ -34,18 +35,73 @@ class _ShippingTabState extends ConsumerState<ShippingTab> with AutomaticKeepAli
       // Clear existing address data when the tab is created
       ref.read(addressProvider.notifier).clearAddresses();
 
-      // Then load addresses if user is logged in
-      final userId = ref.read(userIdProvider);
-      if (userId != null && !userId.startsWith('guest-')) {
-        ref.read(addressProvider.notifier).fetchUserAddresses(userId);
+      Future<void> _loadUserAddresses(String authId) async {
+        try {
+          // Query the users table to get the database user_id from auth_id
+          final userResponse = await Supabase.instance.client
+              .from('users')
+              .select('user_id')
+              .eq('auth_id', authId)
+              .maybeSingle();
+
+          if (userResponse != null) {
+            final databaseUserId = userResponse['user_id'];
+            print('ShippingTab: Found database user_id: $databaseUserId for auth_id: $authId');
+
+            // Now fetch addresses using the database user_id
+            ref.read(addressProvider.notifier).fetchUserAddresses(databaseUserId);
+          } else {
+            print('ShippingTab: No user found for auth_id: $authId');
+          }
+        } catch (e) {
+          print('ShippingTab: Error loading user addresses: $e');
+        }
       }
+
+      // Load addresses for logged in users
+      final isLoggedIn = ref.read(isLoggedInProvider);
+      if (isLoggedIn) {
+        // Get the database user ID, not the auth ID
+        final authUserId = ref.read(userIdProvider);
+        if (authUserId != null) {
+          // Get the database user_id from the auth_id
+          _loadUserAddresses(authUserId);
+        }
+      } else {
+        // For guest users, use the guest ID directly
+        final guestId = ref.read(guestUserIdProvider);
+        if (guestId.isNotEmpty) {
+          ref.read(addressProvider.notifier).fetchUserAddresses(guestId);
+        }
+      }
+
+      // Check if cart is empty
+      _checkCartEmpty();
     });
   }
 
+  // If cart is empty and redirect if needed
+  void _checkCartEmpty() {
+    final cartState = ref.read(cartProvider);
+    if (cartState.items.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/cart', (route) => false);
+      });
+    }
+  }
+
   void _handleAddressSelected(dynamic address) {
-    setState(() {
-      _showAddressSelector = false;
-    });
+    if (mounted) {
+      setState(() {
+        _showAddressSelector = false;
+      });
+
+      if (address is Address) {
+        ref.read(checkoutProvider.notifier).setShippingAddress(address);
+        print('ShippingTab: Address selected and set in checkout provider');
+      }
+    }
   }
 
   void _handleAddressCardTap() {
@@ -88,10 +144,12 @@ class _ShippingTabState extends ConsumerState<ShippingTab> with AutomaticKeepAli
         );
 
         // For guest users, log the user ID
-        print('ShippingTab: Processing address for user ID: ${addressToSave.userId}');
+        print('ShippingTab: Processing address for user ID: ${addressToSave
+            .userId}');
 
         // Save address to Supabase - this will now create the user if needed
-        final addressSaved = await addressRepository.addAddress(addressToSave);
+        final addressSaved = await addressRepository.addAddress(
+            addressToSave);
         if (!addressSaved) {
           throw Exception('Failed to save shipping address');
         }
@@ -131,7 +189,18 @@ class _ShippingTabState extends ConsumerState<ShippingTab> with AutomaticKeepAli
   Widget build(BuildContext context) {
     super.build(context);
     final selectedAddress = ref.watch(effectiveAddressProvider);
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme
+        .of(context)
+        .colorScheme;
+
+    // Check if cart is empty on each build
+    final cartState = ref.watch(cartProvider);
+    if (cartState.items.isEmpty) {
+      // Return a minimal widget while we redirect
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return Column(
       children: [

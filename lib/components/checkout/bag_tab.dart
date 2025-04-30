@@ -24,14 +24,17 @@ class _BagTabState extends ConsumerState<BagTab> {
   Widget build(BuildContext context) {
     final cartItems = ref.watch(cartItemsProvider);
     final isLoggedIn = ref.watch(authProvider);
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme
+        .of(context)
+        .colorScheme;
 
-    if (cartItems.isEmpty) {
-      return _buildEmptyCart(colorScheme);
-    }
+    // if (cartItems.isEmpty) {
+    //   return _buildEmptyCart(colorScheme);
+    // }
 
     // Convert CartItems to Products for the OrderCalculator
-    final List<Product> products = cartItems.map((item) => _convertCartItemToProduct(item)).toList();
+    final List<Product> products = cartItems.map((item) =>
+        _convertCartItemToProduct(item)).toList();
 
     // Calculate totals using the converted list
     final double subtotal = OrderCalculator.calculateProductSubtotal(products);
@@ -69,7 +72,8 @@ class _BagTabState extends ConsumerState<BagTab> {
                 ...cartItems.map((item) =>
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: OrderProductItem(product: _convertCartItemToProduct(item)),
+                      child: OrderProductItem(
+                          product: _convertCartItemToProduct(item)),
                     )
                 ).toList(),
 
@@ -104,7 +108,8 @@ class _BagTabState extends ConsumerState<BagTab> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: widget.onProceed, // Directly proceed without auth check
+              onPressed: widget.onProceed,
+              // Directly proceed without auth check
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.primary,
                 foregroundColor: colorScheme.onPrimary,
@@ -138,68 +143,72 @@ class _BagTabState extends ConsumerState<BagTab> {
       id: item.productId,
       name: item.name,
       price: item.price,
-      description: '', // Default empty description
-      categoryId: '', // Default empty categoryId
-      isActive: true, // Default to active
-      createdAt: DateTime.now(), // Default to current time
+      description: '',
+      // Default empty description
+      categoryId: '',
+      // Default empty categoryId
+      isActive: true,
+      // Default to active
+      createdAt: DateTime.now(),
+      // Default to current time
       imageUrl: item.imageUrl ?? '',
       quantity: item.quantity,
       selectedSize: selectedSize,
     );
   }
-
-  // Build empty cart view
-  Widget _buildEmptyCart(ColorScheme colorScheme) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.shopping_cart_outlined,
-            size: 80,
-            color: colorScheme.primary.withOpacity(0.5),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Your cart is empty',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.primary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Add items to your cart to begin checkout',
-            style: TextStyle(
-              fontSize: 16,
-              color: colorScheme.onSurface.withOpacity(0.7),
-            ),
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to shop
-              Navigator.of(context).pushNamedAndRemoveUntil('/shop', (route) => false);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: colorScheme.primary,
-              foregroundColor: colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-            ),
-            child: const Text(
-              'SHOP NOW',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
+
+//   // Build empty cart view
+//   Widget _buildEmptyCart(ColorScheme colorScheme) {
+//     return Center(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Icon(
+//             Icons.shopping_cart_outlined,
+//             size: 80,
+//             color: colorScheme.primary.withOpacity(0.5),
+//           ),
+//           const SizedBox(height: 16),
+//           Text(
+//             'Your cart is empty',
+//             style: TextStyle(
+//               fontSize: 20,
+//               fontWeight: FontWeight.bold,
+//               color: colorScheme.primary,
+//             ),
+//           ),
+//           const SizedBox(height: 8),
+//           Text(
+//             'Add items to your cart to begin checkout',
+//             style: TextStyle(
+//               fontSize: 16,
+//               color: colorScheme.onSurface.withOpacity(0.7),
+//             ),
+//           ),
+//           const SizedBox(height: 24),
+//           ElevatedButton(
+//             onPressed: () {
+//               // Navigate to shop
+//               Navigator.of(context).pushNamedAndRemoveUntil('/shop', (route) => false);
+//             },
+//             style: ElevatedButton.styleFrom(
+//               backgroundColor: colorScheme.primary,
+//               foregroundColor: colorScheme.onPrimary,
+//               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(0),
+//               ),
+//             ),
+//             child: const Text(
+//               'SHOP NOW',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.bold,
+//                 letterSpacing: 1.0,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }

@@ -4,10 +4,13 @@ import 'package:bid/components/address_widgets/address_type_toggle.dart';
 import 'package:bid/components/address_widgets/contact_info_form.dart';
 import 'package:bid/config/api_keys.dart';
 import 'package:bid/models/address_model.dart';
+import 'package:bid/pages/checkout_page.dart';
 import 'package:bid/providers.dart';
 import 'package:bid/services/mapbox_service.dart';
+import 'package:bid/state/checkout/checkout_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
@@ -187,8 +190,28 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         updatedAt: DateTime.now(),
       );
 
+      ref.read(checkoutProvider.notifier).setShippingAddress(address);
+
+      // Guest checkout
+      if (!isLoggedIn) {
+        ref.read(isGuestCheckoutProvider.notifier).state = true;
+
+        ref.read(checkoutProvider.notifier).initCheckout(
+            ref.read(cartItemsProvider),
+            isGuestCheckout: true,
+            guestEmail: _emailController.text // Pass the email from the form
+        );
+      }
+
+      if(mounted) {
+        context.go('/cart/checkout');
+      }
       widget.onSave(address);
-      Navigator.pop(context);
+
+      // Debug logging
+      print('AddressForm: Setting guest checkout to true');
+      print('AddressForm: Setting shipping address: ${address.streetAddress}, ${address.city}');
+      print('AddressForm: Navigating to /cart/checkout');
     }
   }
 

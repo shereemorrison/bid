@@ -74,10 +74,10 @@ class _CheckoutRegisterViewState extends ConsumerState<CheckoutRegisterView> {
     try {
       final authNotifier = ref.read(authProvider.notifier);
 
-      // Check if converting from guest checkout
-      final isGuestCheckout = widget.initialData != null &&
-          widget.initialData!.containsKey('isGuestCheckout') &&
-          widget.initialData!['isGuestCheckout'] == true;
+      // // Check if converting from guest checkout
+      // final isGuestCheckout = widget.initialData != null &&
+      //     widget.initialData!.containsKey('isGuestCheckout') &&
+      //     widget.initialData!['isGuestCheckout'] == true;
 
       await authNotifier.signUp(
         _emailController.text.trim(),

@@ -61,12 +61,14 @@ class MyApp extends ConsumerWidget {
     final guestId = ref.read(guestUserIdProvider);
     print('App started with guest user ID: $guestId');
 
+    final isDarkMode = ref.watch(isDarkModeProvider);
+
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'B.I.D.',
         theme: lightMode,
         darkTheme: darkMode,
-        themeMode: ThemeMode.dark,
+        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
         routerConfig: goRouter,
       );
   }

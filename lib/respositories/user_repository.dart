@@ -84,7 +84,7 @@ class UserRepository extends BaseRepository {
         return;
       }
 
-      // Generate a user ID (similar to your old implementation)
+      // Generate a user ID
       final random = Random();
       final userId = random.nextInt(100000) + 1;
 

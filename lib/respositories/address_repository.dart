@@ -54,21 +54,15 @@ class AddressRepository extends BaseRepository {
     }
   }
 
-  // Create a user directly in the database - updated to match your schema
-  Future<String> createGuestUser() async {
+  // Create a user directly in the database
+  Future<String> createGuestUser(String guestUserId, String userEmail) async {
     try {
-      print('AddressRepository: Creating guest user');
-
-      // Generate data for a new user
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final randomSuffix = const Uuid().v4().substring(0, 8);
-      final guestEmail = 'guest_${timestamp}_${randomSuffix}@example.com';
-      final userId = const Uuid().v4();
+      print('AddressRepository: Creating guest user with email: $userEmail');
 
       // Create the user data - using is_registered=false for guest users
       final userData = {
-        'user_id': userId,
-        'email': guestEmail,
+        'user_id': guestUserId,
+        'email': userEmail,
         'user_type': 'guest',
         'is_registered': false,  // This identifies a guest user
         'created_at': DateTime.now().toIso8601String(),
@@ -85,8 +79,8 @@ class AddressRepository extends BaseRepository {
 
         // If direct insert fails, try using the RPC function
         final result = await client.rpc('create_guest_user', params: {
-          'p_user_id': userId,
-          'p_email': guestEmail,
+          'p_user_id': guestUserId,
+          'p_email': userEmail,
           'p_is_registered': false,
         });
 
@@ -100,7 +94,7 @@ class AddressRepository extends BaseRepository {
       final verifyUser = await client
           .from('users')
           .select('user_id')
-          .eq('user_id', userId)
+          .eq('user_id', guestUserId)
           .maybeSingle();
 
       if (verifyUser == null) {
@@ -109,7 +103,7 @@ class AddressRepository extends BaseRepository {
       }
 
       print('AddressRepository: Verified user creation: ${verifyUser['user_id']}');
-      return userId;
+      return guestUserId;
     } catch (e) {
       print('AddressRepository: Error creating user directly: $e');
       throw Exception('Failed to create user: $e');
@@ -120,6 +114,7 @@ class AddressRepository extends BaseRepository {
   Future<bool> addAddress(Address address) async {
     try {
       String userId = address.userId;
+      String? userEmail = address.email;
 
       // Check for empty user ID
       if (userId.isEmpty) {
@@ -140,8 +135,13 @@ class AddressRepository extends BaseRepository {
       if (userExists == null) {
         print('AddressRepository: User does not exist, creating guest user first');
         try {
+          // Check if email is null or empty
+          if (userEmail == null || userEmail.isEmpty) {
+            print('AddressRepository: No email provided for guest user');
+            return false;
+          }
           // Create a new guest user and get its ID
-          userId = await createGuestUser();
+          userId = await createGuestUser(userId, userEmail);
           print('AddressRepository: Created new guest user with ID: $userId');
         } catch (e) {
           print('AddressRepository: Failed to create guest user: $e');

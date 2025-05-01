@@ -3,6 +3,7 @@ import 'package:bid/models/address_model.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AddressSelector extends ConsumerStatefulWidget {
   final Function(Address) onAddressSelected;
@@ -36,25 +37,20 @@ class _AddressSelectorState extends ConsumerState<AddressSelector> {
   }
 
   void _navigateToAddressForm({Address? addressToEdit}) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddressForm(
-          addressToEdit: addressToEdit,
-          onSave: (address) {
-            final addressNotifier = ref.read(addressProvider.notifier);
+    final addressNotifier = ref.read(addressProvider.notifier);
+    final onAddressSelected = widget.onAddressSelected;
 
-            if (address.userId.startsWith('guest-') || addressToEdit != null) {
-              addressNotifier.updateAddress(address);
-            } else {
-              addressNotifier.addAddress(address);
-            }
-
-            widget.onAddressSelected(address);
-          },
-        ),
-      ),
-    );
+    context.go('/address-form', extra: {
+      'addressToEdit': addressToEdit,
+      'onSave': (address) {
+        if (addressToEdit != null) {
+          addressNotifier.updateAddress(address);
+        } else {
+          addressNotifier.addAddress(address);
+        }
+        onAddressSelected(address);
+      },
+    });
   }
 
   @override

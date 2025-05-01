@@ -6,6 +6,7 @@ import 'package:bid/utils/order_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bid/components/checkout/bag_tab.dart';
+import 'package:go_router/go_router.dart';
 
 
 // Provider to track the current checkout step
@@ -13,6 +14,7 @@ final checkoutStepProvider = StateProvider<int>((ref) => 0);
 
 // Provider to track if checkout is complete
 final checkoutCompleteProvider = StateProvider<bool>((ref) => false);
+final isGuestCheckoutProvider = StateProvider<bool>((ref) => false);
 
 class CheckoutPage extends ConsumerStatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -36,7 +38,9 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
       final currentStep = ref.read(checkoutStepProvider);
       if (currentStep != _currentIndex) {
         _tabController.animateTo(currentStep);
-        _currentIndex = currentStep;
+        setState(() {
+          _currentIndex = currentStep;
+        });
       }
 
       // Reset checkout complete flag when page loads
@@ -51,11 +55,10 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
   }
 
   void _checkAuthStatus() {
-    // Use the new AuthService
+    final isGuestCheckout = ref.read(isGuestCheckoutProvider);
     final isLoggedIn = ref.read(isLoggedInProvider);
 
-
-    if (!isLoggedIn) {
+    if (!isLoggedIn && !isGuestCheckout) {
       setState(() {
         _showAuthFlow = true;
       });
@@ -65,7 +68,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
       if (authUserId != null) {
         ref.read(checkoutProvider.notifier).initCheckout(
           ref.read(cartItemsProvider),
-          isGuestCheckout: false,
+          isGuestCheckout: !isLoggedIn,
         );
       }
     }
@@ -131,11 +134,31 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isCheckoutComplete = ref.watch(checkoutCompleteProvider);
+    final orderId = ref.watch(orderConfirmationIdProvider);
+
+    // Check if cart is empty - if so, redirect to cart page
+    if (cartState.items.isEmpty) {
+      // Post-frame callback to navigate back to cart page
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/cart');
+      });
+
+      // Loading indicator while redirecting
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     // If checkout is complete, reset to first tab
     if (isCheckoutComplete) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _resetCheckout();
+        context.go('/order-confirmation?order_id=$orderId');
+
+        // Reset the order ID and checkout complete flag
+        ref.read(orderConfirmationIdProvider.notifier).state = null;
+        ref.read(checkoutCompleteProvider.notifier).state = false;
       });
     }
 
@@ -211,7 +234,6 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> with SingleTickerPr
           ShippingTab(
             onProceed: () {
               // Save shipping info to session
-              // This would be implemented in your ShippingTab
               setState(() {
                 _currentIndex = 2;
               });

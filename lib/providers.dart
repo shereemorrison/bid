@@ -43,9 +43,8 @@ import 'models/order_model.dart';
 import 'models/address_model.dart';
 import 'models/payment_method_model.dart';
 
-// Change the guestUserIdProvider to not include the "guest-" prefix
 final guestUserIdProvider = riverpod.StateProvider<String>((ref) {
-  return const Uuid().v4();  // Initialize with a valid UUID by default
+  return const Uuid().v4();
 });
 
 // Function to initialize or retrieve the guest user ID
@@ -238,6 +237,10 @@ final selectedAddressProvider = riverpod.Provider<Address?>((ref) {
 });
 
 final effectiveAddressProvider = riverpod.Provider<Address?>((ref) {
+  final checkoutState = ref.watch(checkoutProvider);
+  if (checkoutState.shippingAddress != null) {
+    return checkoutState.shippingAddress;
+  };
   return ref.watch(selectedAddressProvider);
 });
 

@@ -1,3 +1,5 @@
+import 'package:bid/components/address_widgets/address_form.dart';
+import 'package:bid/models/address_model.dart';
 import 'package:bid/pages/checkout_page.dart';
 import 'package:bid/pages/guest_order_details_page.dart';
 import 'package:bid/pages/guest_orders_page.dart';
@@ -57,6 +59,24 @@ final goRouter = GoRouter(
         return NoTransitionPage(
           key: state.pageKey,
           child: OrderConfirmationPage(orderId: orderId),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: '/address-form',
+      name: 'address_form',
+      pageBuilder: (context, state) {
+        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>? ?? {};
+        final Address? addressToEdit = extra['addressToEdit'] as Address?;
+        final Function(Address)? onSave = extra['onSave'] as Function(Address)?;
+
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: AddressForm(
+            addressToEdit: addressToEdit,
+            onSave: onSave ?? ((_) {}),
+          ),
         );
       },
     ),

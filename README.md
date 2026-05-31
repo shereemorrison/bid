@@ -1,12 +1,20 @@
 # B.I.D. Apparel
 Description: Clothing app built with Flutter
+
 Backend: Supabase
+
 Payment Processing: Stripe
+
 Analytics: Supabase
+
 Push Notifications: Supabase
+
 AR: TBC (Proposed Blender/Spark AR Studio/Reality Composer)
+
 Social Media Integration: Facebook SDK, Instagram API, Twitter API
+
 Project Management: Jira
+
 Address Autofill: Mapbox
 
 ## Screenshots

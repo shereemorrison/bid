@@ -78,7 +78,8 @@ class CartItem {
   // Getter that provides access to the product reference
   Product get product {
     // Return the stored reference if available
-    if (_productRef != null) return _productRef!;
+    final ref = _productRef;
+    if (ref != null) return ref;
 
     // Otherwise create a minimal product from the stored data
     return Product(

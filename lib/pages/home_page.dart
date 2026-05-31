@@ -1,288 +1,158 @@
 import 'package:bid/components/category_widgets/category_chips.dart';
 import 'package:bid/components/common_widgets/featured_carousel.dart';
-import 'package:bid/components/common_widgets/featured_grid.dart';
 import 'package:bid/components/home_widgets/hero_section.dart';
 import 'package:bid/components/home_widgets/newsletter_section.dart';
 import 'package:bid/components/home_widgets/our_story_section.dart';
+import 'package:bid/components/product_widgets/product_horizontal_list.dart';
 import 'package:bid/models/category_model.dart';
-import 'package:bid/models/product_model.dart';
 import 'package:bid/providers.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:bid/utils/image_helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:bid/components/product_widgets/product_horizontal_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final homeLoadingProvider = StateProvider<bool>((ref) => true);
 final currentPageProvider = StateProvider<int>((ref) => 0);
 
-// Provider for featured products
-final featuredProductsProvider = FutureProvider<List<Product>>((ref) async {
-  final productRepo = ref.read(productRepositoryProvider);
-  return await productRepo.getFeaturedProducts();
-});
-
-// Provider for most wanted products
-final mostWantedProductsProvider = FutureProvider<List<Product>>((ref) async {
-  final productRepo = ref.read(productRepositoryProvider);
-  return await productRepo.getMostWantedProducts();
-});
-
-// Provider for categories
-final categoriesProvider = FutureProvider<List<Category>>((ref) async {
-  final categoryRepo = ref.read(categoryRepositoryProvider);
-  return await categoryRepo.getAllCategories();
-});
-
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  final TextEditingController _emailController = TextEditingController();
   String? _selectedCategoryId = 'all';
-  bool _disposed = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadInitialData();
-    }); // Load data when page initializes
+      ref.read(productsProvider.notifier).loadInitialData();
+    });
   }
 
-  Future<void> _loadInitialData() async {
-    ref
-        .read(homeLoadingProvider.notifier)
-        .state = true;
-
-    // Loading of data through the providers
-    await Future.wait([
-      ref.read(featuredProductsProvider.future),
-      ref.read(mostWantedProductsProvider.future),
-      ref.read(categoriesProvider.future),
-    ]);
-
-    if (!mounted) return;
-    ref
-        .read(homeLoadingProvider.notifier)
-        .state = false;
-  }
-
-
-  @override
-  void dispose() {
-    _disposed = true;
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  // Handle category selection - navigate to category page
   void _handleCategorySelected(Category category) {
     if (category.id == 'all') {
-      setState(() {
-        _selectedCategoryId = category.id;
-      });
+      setState(() => _selectedCategoryId = category.id);
     } else {
-      _navigateToCategory(category);
+      context.push('/shop/${category.slug}');
     }
-  }
-
-  void _navigateToCategory(Category category) {
-    final path = '/shop/${category.slug}';
-    final currentSelectedId = _selectedCategoryId;
-    context.push(path);
   }
 
   @override
   Widget build(BuildContext context) {
-    final featuredProductsAsync = ref.watch(featuredProductsProvider);
-    final mostWantedProductsAsync = ref.watch(mostWantedProductsProvider);
-    final categoriesAsync = ref.watch(categoriesProvider);
-    final isLoading = ref.watch(homeLoadingProvider);
+    final productsState = ref.watch(productsProvider);
+    final collectionPreview = ref.watch(collectionPreviewProductsProvider);
+    final mostWantedProducts = ref.watch(mostWantedProductsProvider);
+    final categories = ref.watch(categoriesProvider);
     final currentPage = ref.watch(currentPageProvider);
 
-    // Extract data from async values
-    final featuredProducts = featuredProductsAsync.value ?? [];
-    final mostWantedProducts = mostWantedProductsAsync.value ?? [];
-    final categories = categoriesAsync.value ?? [];
-
-
-    // Create allCategories list with "ALL" category
-    final allCategory = Category(
-      id: 'all',
-      name: 'ALL',
-      slug: 'all',
-    );
-
-    final List<Category> allCategories = [allCategory, ...categories];
-
-    // Filter products based on selected category
-    List<dynamic> filteredProducts = featuredProducts;
-    if (_selectedCategoryId != null && _selectedCategoryId != 'all') {
-      filteredProducts = featuredProducts
-          .where((product) => product.categoryId == _selectedCategoryId)
-          .toList();
+    if (productsState.isLoading && collectionPreview.isEmpty) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
+    final displayMostWanted = mostWantedProducts.isNotEmpty
+        ? mostWantedProducts
+        : collectionPreview.take(8).toList();
+
+    final allCategory = Category(id: 'all', name: 'ALL', slug: 'all');
+    final allCategories = [allCategory, ...categories];
+
+    final displayCollectionProducts =
+        _selectedCategoryId != null && _selectedCategoryId != 'all'
+            ? collectionPreview
+                .where((p) => p.categoryId == _selectedCategoryId)
+                .toList()
+            : collectionPreview;
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
-        child: isLoading
-            ? const Center(
-            child: CircularProgressIndicator()) // Show loading indicator
-            : SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Hero Section with training image
               HeroSection(
                 imageUrl: getHeroImageUrl(),
-                userName: "",
-                onShopNowPressed: () {
-                  // Handle shop now button press
-                },
+                userName: '',
+                onShopNowPressed: () {},
               ),
-
               const SizedBox(height: 30),
-
-              // Categories and Products Section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'COLLECTIONS',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.textPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-
                     const SizedBox(height: 20),
-
-                    // Category Chips
                     CategoryChips(
                       categories: allCategories,
                       selectedCategoryId: _selectedCategoryId,
                       onCategorySelected: _handleCategorySelected,
                     ),
-
                     const SizedBox(height: 20),
-
-                    // Product Grid using featured products
-                    if (featuredProducts.isNotEmpty)
-                      ProductGrid(
-                        products: filteredProducts,
+                    if (displayCollectionProducts.isNotEmpty)
+                      ProductHorizontalList(
+                        products: displayCollectionProducts.take(4).toList(),
                         getImageUrl: getSupabaseImageUrl,
-                        onProductTap: (product) {
-                          if (product != null) {
-                            context.push('/shop/product', extra: product);
-                          }
-                        },
                       )
                     else
                       const Center(
                         child: Text(
-                          'No featured products available',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                          ),
+                          'No products available',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 30),
-
-              //Featured Carousel
-              if (featuredProducts.isNotEmpty)
-                FeaturedCarousel(
-                  products: featuredProducts,
-                  getImageUrl: getSupabaseImageUrl,
-                  getCollectionImageUrl: getCollectionImageUrl,
-                  onPageChanged: (index) {
-                    ref
-                        .read(currentPageProvider.notifier)
-                        .state = index;
-                  },
-                  currentPage: currentPage,
-                ),
-
+              FeaturedCarousel(
+                getImageUrl: getSupabaseImageUrl,
+                getCollectionImageUrl: getCollectionImageUrl,
+                onPageChanged: (index) {
+                  ref.read(currentPageProvider.notifier).state = index;
+                },
+                currentPage: currentPage,
+              ),
               const SizedBox(height: 40),
-
-              // Most Wanted Section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'MOST WANTED',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.textPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // Product Horizontal List
-                    if (mostWantedProducts.isNotEmpty)
+                    if (displayMostWanted.isNotEmpty)
                       ProductHorizontalList(
-                        products: mostWantedProducts,
+                        products: displayMostWanted,
                         getImageUrl: getSupabaseImageUrl,
                       ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 30),
-
-              // Our Story
               OurStorySection(
                 imageUrl: getOurStoryImageUrl(),
-                onReadMorePressed: () {
-                  // Handle read more button press
-                },
+                onReadMorePressed: () {},
               ),
-
               const SizedBox(height: 15),
-
-              // Newsletter Section
-              NewsletterSection(
-                onSubscriptionComplete: (success, message) {
-                  if (success) {} else {
-                    print('Newsletter subscription failed: $message');
-                  }
-                },
-              ),
-
+              const NewsletterSection(),
               const SizedBox(height: 30),
             ],
           ),
@@ -291,4 +161,3 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 }
-

@@ -1,28 +1,28 @@
-
-import 'package:bid/respositories/newsletter_repository.dart';
+import 'package:bid/providers.dart';
 import 'package:bid/services/dialog_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class NewsletterSection extends StatefulWidget {
+class NewsletterSection extends ConsumerStatefulWidget {
   final String title;
   final String subtitle;
   final Function(bool success, String message)? onSubscriptionComplete;
 
   const NewsletterSection({
-    Key? key,
-    this.title = "JOIN THE JOURNEY",
-    this.subtitle = "Subscribe to our newsletter and be the first to know about new collections, exclusive offers, and urban inspiration.",
+    super.key,
+    this.title = 'JOIN THE JOURNEY',
+    this.subtitle =
+        'Subscribe to our newsletter and be the first to know about new collections, exclusive offers, and urban inspiration.',
     this.onSubscriptionComplete,
-  }) : super(key: key);
+  });
 
   @override
-  State<NewsletterSection> createState() => _NewsletterSectionState();
+  ConsumerState<NewsletterSection> createState() => _NewsletterSectionState();
 }
 
-class _NewsletterSectionState extends State<NewsletterSection> {
+class _NewsletterSectionState extends ConsumerState<NewsletterSection> {
   final TextEditingController _emailController = TextEditingController();
-  final NewsletterRepository _newsletterRepository = NewsletterRepository();
   bool _isLoading = false;
 
   @override
@@ -34,46 +34,47 @@ class _NewsletterSectionState extends State<NewsletterSection> {
   Future<void> _handleSubscribe() async {
     final email = _emailController.text.trim();
 
-    if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-      widget.onSubscriptionComplete?.call(false, 'Please enter a valid email address');
+    if (email.isEmpty ||
+        !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      widget.onSubscriptionComplete?.call(
+        false,
+        'Please enter a valid email address',
+      );
       _showSnackBar('Please enter a valid email address', isError: true);
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
-      // Get current user ID if logged in
-      String? userId;
       final user = Supabase.instance.client.auth.currentUser;
-      if (user != null) {
-        userId = user.id;
-      }
-      final success = await _newsletterRepository.subscribeToNewsletter(
-          email,
-          userId: userId
+      final repo = ref.read(newsletterRepositoryProvider);
+      final success = await repo.subscribeToNewsletter(
+        email,
+        userId: user?.id,
       );
 
       if (success) {
         _emailController.clear();
-        widget.onSubscriptionComplete?.call(true, 'Successfully subscribed to newsletter!');
-
-        DialogService.showNewsletterSubscriptionDialog(context, email);
+        widget.onSubscriptionComplete?.call(
+          true,
+          'Successfully subscribed to newsletter!',
+        );
+        if (mounted) {
+          DialogService.showNewsletterSubscriptionDialog(context, email);
+        }
       } else {
-        widget.onSubscriptionComplete?.call(false, 'Failed to subscribe. Please try again.');
+        widget.onSubscriptionComplete?.call(
+          false,
+          'Failed to subscribe. Please try again.',
+        );
         _showSnackBar('Failed to subscribe. Please try again.', isError: true);
       }
     } catch (e) {
       widget.onSubscriptionComplete?.call(false, 'An error occurred: $e');
       _showSnackBar('An error occurred: $e', isError: true);
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -90,7 +91,7 @@ class _NewsletterSectionState extends State<NewsletterSection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -100,7 +101,7 @@ class _NewsletterSectionState extends State<NewsletterSection> {
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.0,
+              letterSpacing: 1,
             ),
             textAlign: TextAlign.center,
           ),
@@ -126,12 +127,10 @@ class _NewsletterSectionState extends State<NewsletterSection> {
                     controller: _emailController,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      hintText: "Your email address",
+                      hintText: 'Your email address',
                       hintStyle: TextStyle(color: Colors.grey[600]),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                     ),
                   ),
                 ),
@@ -149,10 +148,10 @@ class _NewsletterSectionState extends State<NewsletterSection> {
                     ),
                   ),
                   child: const Text(
-                    "SUBSCRIBE",
+                    'SUBSCRIBE',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.0,
+                      letterSpacing: 1,
                     ),
                   ),
                 ),

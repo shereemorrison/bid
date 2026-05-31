@@ -16,10 +16,58 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class _CartPageState extends ConsumerState<CartPage> {
+  void _showCheckoutOptions() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Checkout options',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.push('/account/login?redirect=/cart/checkout');
+                  },
+                  child: const Text('Log in to checkout'),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.push('/cart/checkout');
+                  },
+                  child: const Text('Checkout as guest'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Reset checkout state when entering cart page - delay to avoid modifying providers during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      resetCheckoutStateFromWidget(ref);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final cart = ref.watch(cartItemsProvider);
+    final isLoggedIn = ref.watch(isLoggedInProvider);
     double totalAmount = cart.fold(
         0.0, (sum, item) => sum + (item.price * item.quantity));
 
@@ -42,7 +90,11 @@ class _CartPageState extends ConsumerState<CartPage> {
           OrderSummary(
             totalAmount: totalAmount,
             onCheckout: () {
-              context.push('/cart/checkout');
+              if (isLoggedIn) {
+                context.push('/cart/checkout');
+              } else {
+                _showCheckoutOptions();
+              }
             },
           ),
         ],

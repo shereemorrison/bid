@@ -1,6 +1,4 @@
 import 'package:bid/models/product_model.dart';
-import 'package:bid/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:convert';
@@ -8,59 +6,45 @@ import '../base/base_notifier.dart';
 import 'cart_state.dart';
 
 class CartNotifier extends BaseNotifier<CartState> {
-  final Ref _ref;
+  static const _guestCartKey = 'cart_guest';
 
-  CartNotifier(this._ref) : super(CartState.initial()) {
-    // Load cart from local storage on initialisation
+  CartNotifier() : super(CartState.initial()) {
     _loadCart();
   }
 
-  String _getCurrentUserId() {
-    // Get current user ID from Supabase, or use the guest ID if not logged in
-    final currentUser = Supabase.instance.client.auth.currentUser;
-    if (currentUser != null) {
-      return currentUser.id;
-    }
+  int _loadGeneration = 0;
 
-    // Use the guest user ID from the provider
-    try {
-      final guestUserId = _ref.read(guestUserIdProvider);
-      return guestUserId;
-    } catch (e) {
-      print('Error reading guest user ID: $e');
-      return 'guest';
-    }
+  String? _getCurrentUserId() {
+    return Supabase.instance.client.auth.currentUser?.id;
+  }
+
+  String _cartStorageKey(String? userId) {
+    return userId != null ? 'cart_$userId' : _guestCartKey;
   }
 
   Future<void> _loadCart() async {
+    final generation = ++_loadGeneration;
     startLoading();
 
     try {
-      final prefs = await SharedPreferences.getInstance();
       final userId = _getCurrentUserId();
-      final cartKey = 'cart_$userId';
+      final prefs = await SharedPreferences.getInstance();
+      final cartJson = prefs.getString(_cartStorageKey(userId));
 
-      print('Loading cart for user: $userId with key: $cartKey');
-
-      final cartJson = prefs.getString('cart');
+      if (generation != _loadGeneration) return;
 
       if (cartJson != null) {
         final cartData = jsonDecode(cartJson) as List;
-        final items = cartData.map((item) => CartItem.fromJson(item)).toList();
-
-        state = state.copyWith(
-          items: items,
-          clearError: true,
-        );
-        endLoading();
+        final items =
+            cartData.map((item) => CartItem.fromJson(item)).toList();
+        state = state.copyWith(items: items, clearError: true);
       } else {
-        state = state.copyWith(
-          items: [],
-          clearError: true,
-        );
-        endLoading();
+        state = state.copyWith(items: [], clearError: true);
       }
+
+      endLoading();
     } catch (e) {
+      if (generation != _loadGeneration) return;
       handleError('loading cart', e);
     }
   }
@@ -68,44 +52,35 @@ class CartNotifier extends BaseNotifier<CartState> {
   Future<void> _saveCart() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final userId = _getCurrentUserId();
-      final cartKey = 'cart_$userId';
-
-      print('Saving cart for user: $userId with key: $cartKey');
-
-      final cartJson = jsonEncode(state.items.map((item) => item.toJson()).toList());
-      await prefs.setString('cart', cartJson);
+      final cartKey = _cartStorageKey(_getCurrentUserId());
+      final cartJson =
+          jsonEncode(state.items.map((item) => item.toJson()).toList());
+      await prefs.setString(cartKey, cartJson);
     } catch (e) {
       handleError('saving cart', e);
     }
   }
 
   void addToCart(Product product, {int quantity = 1, Map<String, dynamic>? options}) {
-    // Check if product already exists in cart
     final existingIndex = state.items.indexWhere((item) =>
-    item.productId == product.id &&
-        _optionsMatch(item.options, options));
+        item.productId == product.id && _optionsMatch(item.options, options));
 
     if (existingIndex >= 0) {
-      // Update quantity of existing item
       final existingItem = state.items[existingIndex];
       final updatedItem = existingItem.copyWith(
         quantity: existingItem.quantity + quantity,
-        productRef: product, // Update the product reference
+        productRef: product,
       );
 
       final updatedItems = [...state.items];
       updatedItems[existingIndex] = updatedItem;
-
       state = state.copyWith(items: updatedItems);
     } else {
-      // Add new item
       final newItem = CartItem.fromProduct(
         product,
         quantity: quantity,
         options: options,
       );
-
       state = state.copyWith(items: [...state.items, newItem]);
     }
 
@@ -130,7 +105,8 @@ class CartNotifier extends BaseNotifier<CartState> {
   }
 
   void removeFromCart(String itemId) {
-    final updatedItems = state.items.where((item) => item.id != itemId).toList();
+    final updatedItems =
+        state.items.where((item) => item.id != itemId).toList();
     state = state.copyWith(items: updatedItems);
     _saveCart();
   }
@@ -140,10 +116,30 @@ class CartNotifier extends BaseNotifier<CartState> {
     _saveCart();
   }
 
-  bool _optionsMatch(Map<String, dynamic>? options1, Map<String, dynamic>? options2) {
+  /// Clears cart memory and storage when the user signs out.
+  Future<void> resetOnSignOut() async {
+    _loadGeneration++;
+    final userId = _getCurrentUserId();
+
+    state = CartState.initial();
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (userId != null) {
+        await prefs.remove('cart_$userId');
+      }
+      await prefs.remove(_guestCartKey);
+    } catch (e) {
+      handleError('resetting cart on sign out', e);
+    }
+  }
+
+  bool _optionsMatch(
+    Map<String, dynamic>? options1,
+    Map<String, dynamic>? options2,
+  ) {
     if (options1 == null && options2 == null) return true;
     if (options1 == null || options2 == null) return false;
-
     if (options1.length != options2.length) return false;
 
     for (final key in options1.keys) {
@@ -151,8 +147,68 @@ class CartNotifier extends BaseNotifier<CartState> {
         return false;
       }
     }
-
     return true;
+  }
+
+  /// Keeps in-memory / guest-cart items when the user signs in during checkout.
+  Future<void> mergeGuestCartOnSignIn() async {
+    final userId = _getCurrentUserId();
+    if (userId == null) return;
+
+    final generation = _loadGeneration;
+
+    final inMemoryItems = List<CartItem>.from(state.items);
+    final prefs = await SharedPreferences.getInstance();
+    final guestJson = prefs.getString(_guestCartKey);
+    final userJson = prefs.getString('cart_$userId');
+
+    List<CartItem> merged = [];
+
+    if (userJson != null) {
+      merged = (jsonDecode(userJson) as List)
+          .map((item) => CartItem.fromJson(item))
+          .toList();
+    }
+
+    if (guestJson != null) {
+      final guestItems = (jsonDecode(guestJson) as List)
+          .map((item) => CartItem.fromJson(item))
+          .toList();
+      merged = _mergeItemLists(merged, guestItems);
+    }
+
+    if (inMemoryItems.isNotEmpty) {
+      merged = _mergeItemLists(merged, inMemoryItems);
+    }
+
+    if (generation != _loadGeneration) return;
+
+    state = state.copyWith(items: merged, clearError: true);
+    await prefs.setString('cart_$userId',
+        jsonEncode(merged.map((item) => item.toJson()).toList()));
+    await prefs.remove(_guestCartKey);
+  }
+
+  List<CartItem> _mergeItemLists(List<CartItem> base, List<CartItem> incoming) {
+    final merged = List<CartItem>.from(base);
+
+    for (final item in incoming) {
+      final index = merged.indexWhere(
+        (existing) =>
+            existing.productId == item.productId &&
+            _optionsMatch(existing.options, item.options),
+      );
+
+      if (index >= 0) {
+        merged[index] = merged[index].copyWith(
+          quantity: merged[index].quantity + item.quantity,
+        );
+      } else {
+        merged.add(item);
+      }
+    }
+
+    return merged;
   }
 
   Future<void> refreshCart() async {

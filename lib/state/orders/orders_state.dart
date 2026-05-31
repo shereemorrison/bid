@@ -5,12 +5,10 @@ import '../base/base_state.dart';
 @immutable
 class OrdersState extends BaseState {
   final List<Order> orders;
-  final List<Order> guestOrders;
   final Order? selectedOrder;
 
   const OrdersState({
     this.orders = const [],
-    this.guestOrders = const [],
     this.selectedOrder,
     bool isLoading = false,
     String? error,
@@ -24,7 +22,6 @@ class OrdersState extends BaseState {
   }) {
     return OrdersState(
       orders: orders,
-      guestOrders: guestOrders,
       selectedOrder: selectedOrder,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : error ?? this.error,
@@ -33,7 +30,6 @@ class OrdersState extends BaseState {
 
   OrdersState copyWith({
     List<Order>? orders,
-    List<Order>? guestOrders,
     Order? selectedOrder,
     bool? isLoading,
     String? error,
@@ -42,7 +38,6 @@ class OrdersState extends BaseState {
   }) {
     return OrdersState(
       orders: orders ?? this.orders,
-      guestOrders: guestOrders ?? this.guestOrders,
       selectedOrder: clearSelectedOrder ? null : selectedOrder ?? this.selectedOrder,
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : error ?? this.error,
@@ -52,7 +47,6 @@ class OrdersState extends BaseState {
   factory OrdersState.initial() {
     return const OrdersState(
       orders: [],
-      guestOrders: [],
       selectedOrder: null,
       isLoading: false,
       error: null,

@@ -7,6 +7,7 @@ import '../base/base_state.dart';
 class ProductsState extends BaseState {
   final List<Product> products;
   final List<Product> featuredProducts;
+  final List<Product> collectionPreviewProducts;
   final List<Product> mostWantedProducts;
   final List<app_category.Category> categories;
   final Product? selectedProduct;
@@ -15,6 +16,7 @@ class ProductsState extends BaseState {
   const ProductsState({
     this.products = const [],
     this.featuredProducts = const [],
+    this.collectionPreviewProducts = const [],
     this.mostWantedProducts = const [],
     this.categories = const [],
     this.selectedProduct,
@@ -32,6 +34,7 @@ class ProductsState extends BaseState {
     return ProductsState(
       products: products,
       featuredProducts: featuredProducts,
+      collectionPreviewProducts: collectionPreviewProducts,
       mostWantedProducts: mostWantedProducts,
       categories: categories,
       selectedProduct: selectedProduct,
@@ -44,6 +47,7 @@ class ProductsState extends BaseState {
   ProductsState copyWith({
     List<Product>? products,
     List<Product>? featuredProducts,
+    List<Product>? collectionPreviewProducts,
     List<Product>? mostWantedProducts,
     List<app_category.Category>? categories,
     Product? selectedProduct,
@@ -57,6 +61,8 @@ class ProductsState extends BaseState {
     return ProductsState(
       products: products ?? this.products,
       featuredProducts: featuredProducts ?? this.featuredProducts,
+      collectionPreviewProducts:
+          collectionPreviewProducts ?? this.collectionPreviewProducts,
       mostWantedProducts: mostWantedProducts ?? this.mostWantedProducts,
       categories: categories ?? this.categories,
       selectedProduct: clearSelectedProduct ? null : selectedProduct ?? this.selectedProduct,
@@ -70,6 +76,7 @@ class ProductsState extends BaseState {
     return const ProductsState(
       products: [],
       featuredProducts: [],
+      collectionPreviewProducts: [],
       mostWantedProducts: [],
       categories: [],
       selectedProduct: null,

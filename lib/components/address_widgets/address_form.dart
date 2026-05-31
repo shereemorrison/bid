@@ -1,27 +1,18 @@
-
 import 'package:bid/components/address_widgets/address_contact_info.dart';
 import 'package:bid/components/address_widgets/address_type_toggle.dart';
 import 'package:bid/components/address_widgets/contact_info_form.dart';
-import 'package:bid/config/api_keys.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/pages/checkout_page.dart';
 import 'package:bid/providers.dart';
-import 'package:bid/services/mapbox_service.dart';
-import 'package:bid/state/checkout/checkout_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
   final Address? addressToEdit;
   final Function(Address) onSave;
 
-  const AddressForm({
-    Key? key,
-    this.addressToEdit,
-    required this.onSave,
-  }) : super(key: key);
+  const AddressForm({Key? key, this.addressToEdit, required this.onSave})
+      : super(key: key);
 
   @override
   ConsumerState<AddressForm> createState() => _AddressFormState();
@@ -29,8 +20,6 @@ class AddressForm extends ConsumerStatefulWidget {
 
 class _AddressFormState extends ConsumerState<AddressForm> {
   final _formKey = GlobalKey<FormState>();
-
-  // Form controllers
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -42,24 +31,15 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   final _postalCodeController = TextEditingController();
   final _countryController = TextEditingController();
 
-  // Form values
   String _addressType = 'shipping';
   bool _isDefault = true;
-
-  // Search results
   List<Map<String, dynamic>> _searchResults = [];
   bool _isSearching = false;
-
-  // Mapbox API key
-  final String _mapboxApiKey = ApiKeys.mapboxApiKey;
-  late MapboxService _mapboxService;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    _mapboxService = MapboxService(apiKey: _mapboxApiKey);
-
-    // Pre-fill form if editing
     if (widget.addressToEdit != null) {
       final address = widget.addressToEdit!;
       _firstNameController.text = address.firstName ?? '';
@@ -75,10 +55,8 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       _addressType = address.addressType;
       _isDefault = address.isDefault;
     } else {
-      // Pre-fill with user data if available
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final userData = ref.read(userDataProvider);
-
         if (userData != null) {
           _firstNameController.text = userData.firstName ?? '';
           _lastNameController.text = userData.lastName ?? '';
@@ -107,24 +85,20 @@ class _AddressFormState extends ConsumerState<AddressForm> {
 
   Future<void> _searchAddress(String query) async {
     if (query.length < 3) {
-      setState(() {
-        _searchResults = [];
-      });
+      setState(() => _searchResults = []);
       return;
     }
 
-    setState(() {
-      _isSearching = true;
-    });
+    setState(() => _isSearching = true);
 
     try {
-      final results = await _mapboxService.searchAddress(query);
+      final mapbox = ref.read(mapboxServiceProvider);
+      final results = await mapbox.searchAddress(query);
       setState(() {
         _searchResults = results;
         _isSearching = false;
       });
     } catch (e) {
-      print('Error searching for address: $e');
       setState(() {
         _searchResults = [];
         _isSearching = false;
@@ -133,28 +107,57 @@ class _AddressFormState extends ConsumerState<AddressForm> {
   }
 
   void _selectPlace(Map<String, dynamic> place) {
-    final addressComponents = _mapboxService.parseAddressComponents(place);
-
+    final components =
+        ref.read(mapboxServiceProvider).parseAddressComponents(place);
     setState(() {
-      _streetAddressController.text = addressComponents['street'] ?? '';
-      _cityController.text = addressComponents['city'] ?? '';
-      _stateController.text = addressComponents['state'] ?? '';
-      _postalCodeController.text = addressComponents['postalCode'] ?? '';
-      _countryController.text = addressComponents['country'] ?? '';
+      _streetAddressController.text = components['street'] ?? '';
+      _cityController.text = components['city'] ?? '';
+      _stateController.text = components['state'] ?? '';
+      _postalCodeController.text = components['postalCode'] ?? '';
+      _countryController.text = components['country'] ?? '';
       _searchResults = [];
     });
   }
 
-  void _saveAddress() {
-    if (_formKey.currentState!.validate()) {
-      final isLoggedIn = ref.read(isLoggedInProvider);
-      String userId = ref.read(userIdProvider);
-      print('AddressForm: Using user ID: $userId');
+  Future<void> _saveAddress() async {
+    if (!_formKey.currentState!.validate() || _isSaving) return;
 
-      // Create or update the address model
-      final address = widget.addressToEdit != null
-          ? Address(
-        id: widget.addressToEdit!.id,
+    setState(() => _isSaving = true);
+
+    try {
+      final isLoggedIn = ref.read(isLoggedInProvider);
+      final addressRepository = ref.read(addressRepositoryProvider);
+      String? userId;
+
+      if (isLoggedIn) {
+        await ref.read(authProvider.notifier).refreshUserData();
+        userId = ref.read(userDataProvider)?.userId;
+      }
+
+      if (!isLoggedIn) {
+        final userRepository = ref.read(userRepositoryProvider);
+        final normalizedEmail = _emailController.text.trim().toLowerCase();
+        final guestProfile = await userRepository.ensureGuestProfile(
+          email: normalizedEmail,
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          phone: _phoneController.text.trim(),
+        );
+        userId = guestProfile.userId;
+        ref.read(sessionProvider.notifier).setGuestUserId(userId);
+      }
+
+      if (userId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unable to save address')),
+        );
+        setState(() => _isSaving = false);
+        return;
+      }
+
+      // Create address object
+      final address = Address(
+        id: widget.addressToEdit?.id ?? const Uuid().v4(),
         userId: userId,
         addressType: _addressType,
         isDefault: _isDefault,
@@ -163,64 +166,60 @@ class _AddressFormState extends ConsumerState<AddressForm> {
         phone: _phoneController.text,
         email: _emailController.text,
         streetAddress: _streetAddressController.text,
-        apartment: _apartmentController.text,
+        apartment: _apartmentController.text.isEmpty ? null : _apartmentController.text,
         city: _cityController.text,
         state: _stateController.text,
         postalCode: _postalCodeController.text,
         country: _countryController.text,
-        createdAt: widget.addressToEdit!.createdAt,
-        updatedAt: DateTime.now(),
-      )
-          : Address(
-        id: const Uuid().v4(),
-        userId: userId,
-        addressType: _addressType,
-        isDefault: _isDefault,
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        phone: _phoneController.text,
-        email: _emailController.text,
-        streetAddress: _streetAddressController.text,
-        apartment: _apartmentController.text,
-        city: _cityController.text,
-        state: _stateController.text,
-        postalCode: _postalCodeController.text,
-        country: _countryController.text,
-        createdAt: DateTime.now(),
+        createdAt: widget.addressToEdit?.createdAt ?? DateTime.now(),
         updatedAt: DateTime.now(),
       );
 
-      ref.read(checkoutProvider.notifier).setShippingAddress(address);
-
-      // Guest checkout
-      if (!isLoggedIn) {
-        ref.read(isGuestCheckoutProvider.notifier).state = true;
-
-        ref.read(checkoutProvider.notifier).initCheckout(
-            ref.read(cartItemsProvider),
-            isGuestCheckout: true,
-            guestEmail: _emailController.text // Pass the email from the form
-        );
+      final saved = await addressRepository.saveAddress(address);
+      if (!saved) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to save address')),
+          );
+        }
+        setState(() => _isSaving = false);
+        return;
       }
 
-      if(mounted) {
-        context.go('/cart/checkout');
+      if (isLoggedIn) {
+        final userRepository = ref.read(userRepositoryProvider);
+        final authId = userRepository.currentUserId;
+        if (authId != null) {
+          await userRepository.updateUserProfile(authId, {
+            'first_name': address.firstName,
+            'last_name': address.lastName,
+            'phone': address.phone,
+          });
+          await ref.read(authProvider.notifier).refreshUserData();
+        }
       }
+
       widget.onSave(address);
-
-      // Debug logging
-      print('AddressForm: Setting guest checkout to true');
-      print('AddressForm: Setting shipping address: ${address.streetAddress}, ${address.city}');
-      print('AddressForm: Navigating to /cart/checkout');
+      if (mounted) {
+        Navigator.of(context).pop(address);
+      }
+    } catch (e) {
+      print('Error saving address: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e.toString()}')),
+        );
+        setState(() => _isSaving = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.addressToEdit != null ? 'Edit Address' : 'Add Address'),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -229,29 +228,18 @@ class _AddressFormState extends ConsumerState<AddressForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Address type selection
                 AddressTypeSelector(
                   selectedType: _addressType,
-                  onTypeSelected: (type) {
-                    setState(() {
-                      _addressType = type;
-                    });
-                  },
+                  onTypeSelected: (type) => setState(() => _addressType = type),
                 ),
-
                 const SizedBox(height: 24),
-
-                // Contact Information
                 ContactInfoForm(
                   firstNameController: _firstNameController,
                   lastNameController: _lastNameController,
                   phoneController: _phoneController,
                   emailController: _emailController,
                 ),
-
                 const SizedBox(height: 24),
-
-                // Address Information
                 AddressInfoForm(
                   streetAddressController: _streetAddressController,
                   apartmentController: _apartmentController,
@@ -262,53 +250,21 @@ class _AddressFormState extends ConsumerState<AddressForm> {
                   isSearching: _isSearching,
                   searchResults: _searchResults,
                   onSearch: _searchAddress,
-                  onClear: () {
-                    setState(() {
-                      _streetAddressController.clear();
-                      _searchResults = [];
-                    });
-                  },
+                  onClear: () => setState(() {
+                    _streetAddressController.clear();
+                    _searchResults = [];
+                  }),
                   onSelectPlace: _selectPlace,
-                  mapboxApiKey: _mapboxApiKey,
                 ),
-
                 const SizedBox(height: 24),
-
-                if (isLoggedIn)
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isDefault,
-                        onChanged: (value) {
-                          setState(() {
-                            _isDefault = value ?? false;
-                          });
-                        },
-                      ),
-                      Text(
-                        'Set as default ${_addressType == 'shipping' ? 'shipping' : 'billing'} address',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
+                ElevatedButton(
+                  onPressed: _isSaving ? null : _saveAddress,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
                   ),
-
-                const SizedBox(height: 24),
-
-                // Save button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _saveAddress,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorScheme.primary,
-                      foregroundColor: colorScheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Text(
-                      widget.addressToEdit != null ? 'UPDATE ADDRESS' : 'SAVE ADDRESS',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  child: _isSaving
+                      ? const CircularProgressIndicator()
+                      : const Text('Save Address'),
                 ),
               ],
             ),

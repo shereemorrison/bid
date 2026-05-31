@@ -44,31 +44,42 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
 
     try {
-      final response = await ref.read(userRepositoryProvider).signInWithEmail(
+      await ref.read(authProvider.notifier).signIn(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
 
       if (!mounted) return;
 
-      if (response.user != null) {
-        if (widget.onLoginSuccess != null) {
-          widget.onLoginSuccess!();
-        } else if (widget.redirectPath != null) {
-          context.go(widget.redirectPath!);
-        } else {
-          context.go('/account');
-        }
-      } else {
+      final authState = ref.read(authProvider);
+      if (authState.error != null) {
+        setState(() {
+          _errorMessage = authState.error;
+        });
+        return;
+      }
+
+      if (!authState.isLoggedIn || authState.userData == null) {
         setState(() {
           _errorMessage = 'Login failed. Please try again.';
         });
+        return;
+      }
+
+      if (widget.onLoginSuccess != null) {
+        widget.onLoginSuccess!();
+      } else if (widget.redirectPath != null) {
+        context.go(widget.redirectPath!);
+      } else {
+        context.go('/account');
       }
     } catch (e) {
       if (!mounted) return;
 
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString().contains('Invalid login credentials')
+            ? 'Invalid email or password.'
+            : 'Login failed. Please try again.';
       });
     } finally {
       if (mounted) {

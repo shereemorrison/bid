@@ -1,4 +1,4 @@
-import 'package:bid/components/buttons/custom_button.dart';
+import 'package:bid/components/buttons/auth_button.dart';
 import 'package:bid/components/common_widgets/custom_textfield.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
@@ -287,7 +287,7 @@ ConsumerState<CreateAccountFromGuestForm> {
                 // Create account button
                 _isLoading
                     ? CircularProgressIndicator()
-                    : MyButton(
+                    : AuthButton(
                   onTap: createAccount,
                   text: "Create Account & Continue",
                 ),

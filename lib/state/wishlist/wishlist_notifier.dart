@@ -11,39 +11,50 @@ class WishlistNotifier extends BaseNotifier<WishlistState> {
     _loadWishlist();
   }
 
-  String _getCurrentUserId() {
-    // Get the current user ID from Supabase, or use 'guest' if not logged in
+  String? _getCurrentUserId() {
+    // Get the current user ID from Supabase, return null if not logged in
     final currentUser = Supabase.instance.client.auth.currentUser;
-    return currentUser?.id ?? 'guest';
+    return currentUser?.id;
   }
 
   Future<void> _loadWishlist() async {
     startLoading();
 
     try {
-      final prefs = await SharedPreferences.getInstance();
       final userId = _getCurrentUserId();
-      final wishlistKey = 'wishlist_$userId';
+      
+      if (userId != null) {
+        // User is logged in, load their wishlist from storage
+        final prefs = await SharedPreferences.getInstance();
+        final wishlistKey = 'wishlist_$userId';
+        
+        print('Loading wishlist for logged-in user: $userId with key: $wishlistKey');
+        final wishlistJson = prefs.getString(wishlistKey);
 
-      print('Loading wishlist for user: $userId with key: $wishlistKey');
-      final wishlistJson = prefs.getString(wishlistKey);
+        if (wishlistJson != null) {
+          final wishlistData = jsonDecode(wishlistJson) as List;
+          final productIds = wishlistData.map((item) => item.toString()).toList();
 
-      if (wishlistJson != null) {
-        final wishlistData = jsonDecode(wishlistJson) as List;
-        final productIds = wishlistData.map((item) => item.toString()).toList();
-
-        state = state.copyWith(
-          productIds: productIds.cast<String>(),
-          clearError: true,
-        );
-        endLoading();
+          state = state.copyWith(
+            productIds: productIds.cast<String>(),
+            clearError: true,
+          );
+        } else {
+          state = state.copyWith(
+            productIds: [],
+            clearError: true,
+          );
+        }
       } else {
+        // User is not logged in, start with empty wishlist (no persistence)
+        print('No user logged in, starting with empty wishlist');
         state = state.copyWith(
           productIds: [],
           clearError: true,
         );
-        endLoading();
       }
+      
+      endLoading();
     } catch (e) {
       handleError('loading wishlist', e);
     }
@@ -51,11 +62,20 @@ class WishlistNotifier extends BaseNotifier<WishlistState> {
 
   Future<void> _saveWishlist() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final userId = _getCurrentUserId();
-      final wishlistKey = 'wishlist_$userId';
-      final wishlistJson = jsonEncode(state.productIds);
-      await prefs.setString(wishlistKey, wishlistJson);
+      
+      if (userId != null) {
+        // User is logged in, save their wishlist to storage
+        final prefs = await SharedPreferences.getInstance();
+        final wishlistKey = 'wishlist_$userId';
+        
+        print('Saving wishlist for logged-in user: $userId with key: $wishlistKey');
+        final wishlistJson = jsonEncode(state.productIds);
+        await prefs.setString(wishlistKey, wishlistJson);
+      } else {
+        // User is not logged in, don't save wishlist (it's just in memory)
+        print('No user logged in, wishlist not saved (in memory only)');
+      }
     } catch (e) {
       handleError('saving wishlist', e);
     }

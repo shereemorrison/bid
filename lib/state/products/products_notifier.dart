@@ -1,36 +1,28 @@
-import 'package:bid/respositories/category_repository.dart';
-import 'package:bid/respositories/product_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:bid/repositories/product_repository.dart';
 import '../base/base_notifier.dart';
 import 'products_state.dart';
 
 class ProductsNotifier extends BaseNotifier<ProductsState> {
-  final ProductRepository _productRepository;
-  final CategoryRepository _categoryRepository;
+  final ProductRepository _catalog;
 
-  ProductsNotifier({
-    required ProductRepository productRepository,
-    required CategoryRepository categoryRepository,
-  })  : _productRepository = productRepository,
-        _categoryRepository = categoryRepository,
+  ProductsNotifier({required ProductRepository catalog})
+      : _catalog = catalog,
         super(ProductsState.initial());
 
   Future<void> loadInitialData() async {
     startLoading();
 
     try {
-      // Load categories
-      final categories = await _categoryRepository.getAllCategories();
-
-      // Load featured products
-      final featuredProducts = await _productRepository.getFeaturedProducts();
-
-      // Load most wanted products
-      final mostWantedProducts = await _productRepository.getMostWantedProducts();
+      final categories = await _catalog.getAllCategories();
+      final featuredProducts = await _catalog.getFeaturedProducts();
+      final collectionPreviewProducts =
+          await _catalog.getCollectionPreviewProducts();
+      final mostWantedProducts = await _catalog.getMostWantedProducts();
 
       state = state.copyWith(
         categories: categories,
         featuredProducts: featuredProducts,
+        collectionPreviewProducts: collectionPreviewProducts,
         mostWantedProducts: mostWantedProducts,
       );
       endLoading();
@@ -43,11 +35,8 @@ class ProductsNotifier extends BaseNotifier<ProductsState> {
     startLoading();
 
     try {
-      final products = await _productRepository.getAllProducts();
-
-      state = state.copyWith(
-        products: products,
-      );
+      final products = await _catalog.getAllProducts();
+      state = state.copyWith(products: products);
       endLoading();
     } catch (e) {
       handleError('loading products', e);
@@ -58,8 +47,8 @@ class ProductsNotifier extends BaseNotifier<ProductsState> {
     startLoading();
 
     try {
-      final products = await _productRepository.getProductsByCategory(categoryId);
-      final category = await _categoryRepository.getCategoryById(categoryId);
+      final products = await _catalog.getProductsByCategory(categoryId);
+      final category = await _catalog.getCategoryById(categoryId);
 
       state = state.copyWith(
         products: products,
@@ -75,11 +64,10 @@ class ProductsNotifier extends BaseNotifier<ProductsState> {
     startLoading();
 
     try {
-      final category = await _categoryRepository.getCategoryBySlug(slug);
+      final category = await _catalog.getCategoryBySlug(slug);
 
       if (category != null) {
-        final products = await _productRepository.getProductsByCategorySlug(slug);
-
+        final products = await _catalog.getProductsByCategorySlug(slug);
         state = state.copyWith(
           products: products,
           selectedCategory: category,
@@ -97,12 +85,10 @@ class ProductsNotifier extends BaseNotifier<ProductsState> {
     startLoading();
 
     try {
-      final product = await _productRepository.getProductDetails(productId);
+      final product = await _catalog.getProductDetails(productId);
 
       if (product != null) {
-        state = state.copyWith(
-          selectedProduct: product,
-        );
+        state = state.copyWith(selectedProduct: product);
         endLoading();
       } else {
         handleError('loading product details', 'Product not found');
@@ -121,11 +107,8 @@ class ProductsNotifier extends BaseNotifier<ProductsState> {
     startLoading();
 
     try {
-      final products = await _productRepository.searchProducts(query);
-
-      state = state.copyWith(
-        products: products,
-      );
+      final products = await _catalog.searchProducts(query);
+      state = state.copyWith(products: products);
       endLoading();
     } catch (e) {
       handleError('searching products', e);

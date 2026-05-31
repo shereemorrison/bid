@@ -14,7 +14,6 @@ ThemeData lightMode = ThemeData(
     onSecondary: Colors.white,
   ),
 
-
   textTheme: TextTheme(
     // Large titles
     displayLarge: GoogleFonts.montserrat(
@@ -75,13 +74,8 @@ ThemeData lightMode = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       textStyle: GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
@@ -95,13 +89,8 @@ ThemeData lightMode = ThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.black,
       side: const BorderSide(color: Colors.black),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       textStyle: GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
@@ -145,18 +134,16 @@ ThemeData lightMode = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(0),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
   ),
 
   // Card theme
-  cardTheme: CardTheme(
-    color: Colors.white,
-    elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(0),
-      side: BorderSide(color: Colors.grey.shade200),
-    ),
-  ),
+  // cardTheme: CardTheme(
+  //   color: Colors.white,
+  //   elevation: 0,
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadius.circular(0),
+  //     side: BorderSide(color: Colors.grey.shade200),
+  //   ),
+  // ),
 );

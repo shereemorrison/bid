@@ -28,19 +28,59 @@ String getSupabaseImageUrl(String imagePath) {
 
 // Special image methods from the old HomeService
 String getHeroImageUrl() {
-  return getSupabaseImageUrl('products/accessories/training.jpg');
+  return getSupabaseImageUrl('products/training.jpg');
 }
 
 String getOurStoryImageUrl() {
-  return getSupabaseImageUrl('products/accessories/wraps.jpg');
+  return getSupabaseImageUrl('products/wraps.jpg');
 }
 
+/// Set to `true` after running `scripts/upload_collection_banners.py --preset categories`.
+const bool kUseCollectionBannerImages = false;
+
+/// Set to `true` after running `scripts/upload_collection_banners.py --preset seasonal`.
+const bool kUseSeasonalBannerImages = false;
+
+/// Carousel banners: Winter / Holiday / Essentials.
 String getCollectionImageUrl(int index) {
-  final collections = ['winter', 'holiday', 'essentials'];
-  if (index >= 0 && index < collections.length) {
-    return getSupabaseImageUrl('collections/${collections[index]}.jpg');
+  const banners = [
+    'collections/winter.jpg',
+    'collections/holiday.jpg',
+    'collections/essentials.jpg',
+  ];
+  const fallbacks = [
+    'products/BIDHoodie2.jpg',
+    'products/BIDSweater2.jpg',
+    'products/tshirt3.jpg',
+  ];
+
+  final paths = kUseSeasonalBannerImages ? banners : fallbacks;
+  if (index >= 0 && index < paths.length) {
+    return getSupabaseImageUrl(paths[index]);
   }
   return '';
+}
+
+/// COLLECTIONS section tiles: Men / Women / Accessories / Sale.
+String getCategoryTileImageUrl(String slug) {
+  const banners = {
+    'men': 'collections/men.jpg',
+    'women': 'collections/women.jpg',
+    'accessories': 'collections/accessories.jpg',
+    'sale': 'collections/sale.jpg',
+  };
+  const fallbacks = {
+    'men': 'products/BIDHoodie.jpg',
+    'women': 'products/womanlightgreyhoodie.jpg',
+    'accessories': 'products/bluebag.jpg',
+    'sale': 'products/greytshirt.jpg',
+  };
+
+  final path = kUseCollectionBannerImages
+      ? banners[slug]
+      : fallbacks[slug];
+  if (path == null) return '';
+  return getSupabaseImageUrl(path);
 }
 
 Widget buildProductImage(BuildContext context, String imageUrl, String imagePath) {

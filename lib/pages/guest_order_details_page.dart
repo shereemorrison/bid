@@ -1,4 +1,5 @@
 
+import 'package:bid/components/order_widgets/order_cost_summary.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -167,11 +168,14 @@ class GuestOrderDetailsPage extends ConsumerWidget {
                           ),
                         )).toList(),
                         const Divider(),
-                        _buildOrderSummaryRow('Subtotal', order['total_amount'] - order['tax_amount'] - order['shipping_amount']),
-                        _buildOrderSummaryRow('Tax', order['tax_amount']),
-                        _buildOrderSummaryRow('Shipping', order['shipping_amount']),
-                        const SizedBox(height: 8),
-                        _buildOrderSummaryRow('Total', order['total_amount'], isTotal: true),
+                        OrderCostSummary(
+                          itemsTotal: order['total_amount'] -
+                              order['tax_amount'] -
+                              order['shipping_amount'],
+                          shipping: order['shipping_amount'],
+                          tax: order['tax_amount'],
+                          total: order['total_amount'],
+                        ),
                       ],
                     ),
                   ),
@@ -290,31 +294,6 @@ class GuestOrderDetailsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildOrderSummaryRow(String label, double amount, {bool isTotal = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontSize: isTotal ? 16 : 14,
-            ),
-          ),
-          Text(
-            '\$${amount.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontSize: isTotal ? 16 : 14,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Color _getStatusColor(String status) {
     switch (status.toUpperCase()) {
       case 'PENDING':
@@ -333,8 +312,7 @@ class GuestOrderDetailsPage extends ConsumerWidget {
   }
 
   void _convertOrderToUserAccount(BuildContext context, WidgetRef ref, Map<String, dynamic> order) {
-    final userId = ref.read(userIdProvider);
-
+    final userId = ref.read(currentUserIdProvider);
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -368,7 +346,7 @@ class GuestOrderDetailsPage extends ConsumerWidget {
               );
 
               // Convert the order
-              final success = await ref.read(checkoutProvider.notifier).convertGuestOrderToUserOrder(
+              final success = await ref.read(guestOrderServiceProvider).convertGuestOrderToUserOrder(
                 order['order_id'],
                 userId,
               );
@@ -390,7 +368,8 @@ class GuestOrderDetailsPage extends ConsumerWidget {
 
               // Refresh the page if successful
               if (success) {
-                ref.refresh(guestOrderProvider(orderId));
+                ref.invalidate(guestOrderProvider(orderId));
+                // Force rebuild by invalidating the provider
               }
             },
             child: const Text('Add to My Account'),

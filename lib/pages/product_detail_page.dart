@@ -45,9 +45,6 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
     // Check if the product's category is an accessory category
     try {
-      // Get products by category to check if it exists
-      final categoryProducts = await productRepository.getProductsByCategory(categoryId);
-
       // Determine if it's an accessory based on category ID
       final result = categoryId.toLowerCase().contains('accessory') ||
           categoryId.toLowerCase().contains('accessories');

@@ -3,32 +3,22 @@ import 'package:bid/components/common_widgets/info_item.dart';
 import 'package:bid/components/common_widgets/profile_header.dart';
 import 'package:bid/components/order_widgets/order_history_table.dart';
 import 'package:bid/models/order_model.dart';
+import 'package:bid/models/user_model.dart';
 import 'package:bid/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-
 class LoggedInView extends ConsumerWidget {
-  const LoggedInView({Key? key}) : super(key: key);
+  const LoggedInView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userData = ref.watch(userDataProvider);
+    final userData = ref.watch(userDataProvider)!;
     final orders = ref.watch(userOrdersProvider);
     final isOrderLoading = ref.watch(ordersLoadingProvider);
     final orderError = ref.watch(ordersErrorProvider);
     final colorScheme = Theme.of(context).colorScheme;
-
-    // Fetch orders if needed
-    if (orders.isEmpty && !isOrderLoading) {
-      final authUserId = ref.read(userIdProvider);
-      if (authUserId != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(ordersProvider.notifier).fetchUserOrders(authUserId);
-        });
-      }
-    }
 
     return SingleChildScrollView(
       child: Column(
@@ -36,16 +26,12 @@ class LoggedInView extends ConsumerWidget {
           const ProfileHeader(),
           const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Section with user name and email
                 _buildUserHeader(context, userData, colorScheme),
-
                 const SizedBox(height: 40),
-
-                // Personal Information
                 Text(
                   'Personal Information',
                   style: TextStyle(
@@ -55,19 +41,31 @@ class LoggedInView extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                InfoItem(label: 'First Name', value: userData?.firstName ?? 'Not set'),
-                InfoItem(label: 'Last Name', value: userData?.lastName ?? 'Not set'),
-                InfoItem(label: 'Phone', value: userData?.phone ?? 'Not set'),
-                InfoItem(label: 'Email', value: userData!.email),
-
+                InfoItem(
+                  label: 'First Name',
+                  value: userData.firstName ?? 'Not set',
+                ),
+                InfoItem(
+                  label: 'Last Name',
+                  value: userData.lastName ?? 'Not set',
+                ),
+                InfoItem(
+                  label: 'Phone',
+                  value: userData.phone ?? 'Not set',
+                ),
+                InfoItem(label: 'Email', value: userData.email),
+                InfoItem(
+                  label: 'Address',
+                  value: userData.formattedAddress,
+                ),
                 const SizedBox(height: 10),
-
-                // Orders
-                _buildOrdersSection(context, orders, isOrderLoading, orderError),
-
+                _buildOrdersSection(
+                  context,
+                  orders,
+                  isOrderLoading,
+                  orderError,
+                ),
                 const SizedBox(height: 40),
-
-                // Sign Out Button
                 AuthButton(
                   text: 'Sign Out',
                   onTap: () => _handleSignOut(context, ref),
@@ -80,48 +78,48 @@ class LoggedInView extends ConsumerWidget {
     );
   }
 
-  Widget _buildUserHeader(BuildContext context, dynamic userData, ColorScheme colorScheme) {
-    final fullName = userData.firstName != null && userData.lastName != null
-        ? "${userData.firstName} ${userData.lastName}"
-        : userData.email;
-
+  Widget _buildUserHeader(
+    BuildContext context,
+    UserData userData,
+    ColorScheme colorScheme,
+  ) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          child: Center(
-            child: Icon(
-              Icons.person,
-              size: 40,
-              color: colorScheme.primary,
-            ),
-          ),
-        ),
+        Icon(Icons.person, size: 40, color: colorScheme.primary),
         const SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              fullName,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userData.fullName,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              userData.email,
-              style: TextStyle(
-                color: colorScheme.primary,
-                fontSize: 14,
+              const SizedBox(height: 4),
+              Text(
+                userData.email,
+                style: TextStyle(
+                  color: colorScheme.primary,
+                  fontSize: 14,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildOrdersSection(BuildContext context, List<Order> orders, bool isLoading, String? error) {
+  Widget _buildOrdersSection(
+    BuildContext context,
+    List<Order> orders,
+    bool isLoading,
+    String? error,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,43 +131,35 @@ class LoggedInView extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-
         if (isLoading)
           const Center(child: CircularProgressIndicator())
         else if (error != null)
           Text('Error: $error')
         else if (orders.isEmpty)
-            InfoItem(label: 'Order ID', value: 'No recent orders')
-          else
-            Builder(builder: (context) {
-              try {
-                return OrderHistoryTable(
-                  orders: orders.take(5).toList(),
-                  onViewDetails: (orderId) {
-                    // Navigate to order details page
-                    context.push('/account/order/$orderId');
-                  },
-                );
-              } catch (e) {
-                return Text('Error displaying orders: $e');
-              }
-            }),
+          const InfoItem(label: 'Order ID', value: 'No recent orders')
+        else
+          OrderHistoryTable(
+            orders: orders.take(5).toList(),
+            onViewDetails: (orderId) {
+              context.push('/account/order/$orderId');
+            },
+          ),
       ],
     );
   }
 
-  void _handleSignOut(BuildContext context, WidgetRef ref) async {
+  Future<void> _handleSignOut(BuildContext context, WidgetRef ref) async {
     try {
-      print('Signing out...');
-
-      // Get the auth service
       await ref.read(authProvider.notifier).signOut();
-
-      print('Sign out complete');
-
-      // No need to invalidate providers here - the AuthService handles state updates
+      if (context.mounted) {
+        context.go('/');
+      }
     } catch (e) {
-      print('Error signing out: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign out failed: $e')),
+        );
+      }
     }
   }
 }

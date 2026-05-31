@@ -1,7 +1,4 @@
 import 'package:bid/models/address_model.dart';
-import 'package:bid/respositories/address_repository.dart';
-import 'package:bid/respositories/order_repository.dart';
-import 'package:bid/respositories/user_repository.dart';
 import 'package:bid/services/base_service.dart';
 import 'package:bid/state/cart/cart_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,17 +6,7 @@ import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
 class GuestOrderService extends BaseService {
-  final UserRepository _userRepository;
-  final AddressRepository _addressRepository;
-  final OrderRepository _orderRepository;
-
-  GuestOrderService({
-    required UserRepository userRepository,
-    required AddressRepository addressRepository,
-    required OrderRepository orderRepository,
-  })  : _userRepository = userRepository,
-        _addressRepository = addressRepository,
-        _orderRepository = orderRepository;
+  GuestOrderService();
 
   // Save a guest order to local storage
   Future<Map<String, dynamic>> saveGuestOrder({

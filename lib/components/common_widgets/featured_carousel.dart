@@ -1,29 +1,67 @@
-import 'dart:math' as Math;
-import 'package:bid/models/product_model.dart';
 import 'package:bid/themes/custom_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:bid/models/product_model.dart';
 
-class FeaturedCarousel extends StatelessWidget {
+class FeaturedCarousel extends StatefulWidget {
   final String Function(int) getCollectionImageUrl;
   final Function(int) onPageChanged;
   final int currentPage;
   final String Function(String) getImageUrl;
   final List<String> collections;
+  final List<String> collectionSlugs;
   final List<Product> products;
 
-  FeaturedCarousel({
+  const FeaturedCarousel({
     super.key,
     required this.getCollectionImageUrl,
     required this.onPageChanged,
     required this.currentPage,
     required this.getImageUrl,
     this.collections = const ['Winter', 'Holiday', 'Essentials'],
+    this.collectionSlugs = const [],
     this.products = const [],
   });
 
   @override
+  State<FeaturedCarousel> createState() => _FeaturedCarouselState();
+}
+
+class _FeaturedCarouselState extends State<FeaturedCarousel> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      viewportFraction: 1,
+      initialPage: widget.currentPage,
+    );
+  }
+
+  @override
+  void didUpdateWidget(FeaturedCarousel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentPage != widget.currentPage &&
+        _pageController.hasClients &&
+        _pageController.page?.round() != widget.currentPage) {
+      _pageController.animateToPage(
+        widget.currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final int itemCount = Math.min(products.length, collections.length);
+    final itemCount = widget.collections.length;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -31,110 +69,114 @@ class FeaturedCarousel extends StatelessWidget {
         SizedBox(
           height: 400,
           child: PageView.builder(
-            controller: PageController(viewportFraction: 1),
+            controller: _pageController,
             itemCount: itemCount,
-            onPageChanged: onPageChanged,
+            onPageChanged: widget.onPageChanged,
             itemBuilder: (context, index) {
-              return _buildProductCarouselItem(products[index], index, context);
+              final product =
+                  index < widget.products.length ? widget.products[index] : null;
+              return _buildCarouselItem(context, index, product);
             },
           ),
         ),
-
-        // Carousel indicator dots
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(itemCount, (index) =>
-              Container(
-                width: 8,
-                height: 8,
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: currentPage == index
-                      ? colorScheme.accent
-                      : colorScheme.textSecondary,
-                ),
+          children: List.generate(
+            itemCount,
+            (index) => Container(
+              width: 8,
+              height: 8,
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: widget.currentPage == index
+                    ? colorScheme.accent
+                    : colorScheme.textSecondary,
               ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildProductCarouselItem(Product product, int index,
-      BuildContext context) {
-    // Get the image URL
-
-    final String collectionName = index < collections.length
-        ? collections[index]
+  Widget _buildCarouselItem(BuildContext context, int index, Product? product) {
+    final collectionName = index < widget.collections.length
+        ? widget.collections[index]
         : 'Collection ${index + 1}';
+    final slug = index < widget.collectionSlugs.length &&
+            widget.collectionSlugs[index].isNotEmpty
+        ? widget.collectionSlugs[index]
+        : null;
 
-    // ignore: unnecessary_null_comparison
-    final String collectionImage = getCollectionImageUrl != null
-        ? getCollectionImageUrl(index)
-        : '';
-
+    final collectionImage = widget.getCollectionImageUrl(index);
     final String imageUrl = collectionImage.isNotEmpty
         ? collectionImage
-        : getImageUrl(product.imageUrl);
+        : product != null
+            ? widget.getImageUrl(product.imageUrl)
+            : '';
 
-    final textTheme = Theme.of(context).textTheme;
-    const Color titleColor = Colors.white;
-    const Color descriptionColor = Color(0xDDFFFFFF);
-    const Color buttonTextColor = Colors.white;
-    const Color buttonBorderColor = Colors.white;
+    const titleColor = Colors.white;
+    const descriptionColor = Color(0xDDFFFFFF);
+    const buttonBorderColor = Colors.white;
 
     return Container(
       height: 400,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        image: DecorationImage(
-          image: NetworkImage(imageUrl),
-          fit: BoxFit.cover,
-          onError: (exception, stackTrace) {
-            print('Error loading image: $exception');
-          },
-        ),
+        color: Theme.of(context).colorScheme.cardBackground,
+        image: imageUrl.isNotEmpty
+            ? DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              )
+            : null,
       ),
       child: Stack(
         children: [
+          if (imageUrl.isEmpty)
+            Center(
+              child: Icon(
+                Icons.image_not_supported,
+                size: 48,
+                color: Theme.of(context).colorScheme.textSecondary,
+              ),
+            ),
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
               padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(0)
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     collectionName,
-                    style: textTheme.headlineSmall?.copyWith(
-                      color: titleColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: titleColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     'Shop the latest collection',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: descriptionColor,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: descriptionColor,
+                        ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 10),
-
                   GestureDetector(
                     onTap: () {
-                      // Handle button tap
-                      print('Shop Now button tapped for ${collectionName}');
-                      // TODO - Add navigation
+                      if (slug != null) {
+                        context.push('/shop/$slug');
+                      } else {
+                        context.push('/shop');
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -148,9 +190,9 @@ class FeaturedCarousel extends StatelessWidget {
                       child: Text(
                         'SHOP NOW',
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: buttonTextColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+                              color: titleColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ),
                   ),
@@ -163,4 +205,3 @@ class FeaturedCarousel extends StatelessWidget {
     );
   }
 }
-

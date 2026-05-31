@@ -29,7 +29,7 @@ class InfoItem extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
               value,

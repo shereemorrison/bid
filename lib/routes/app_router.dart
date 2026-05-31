@@ -1,6 +1,6 @@
 import 'package:bid/components/address_widgets/address_form.dart';
 import 'package:bid/models/address_model.dart';
-import 'package:bid/pages/checkout_page.dart';
+import 'package:bid/pages/simple_checkout_page.dart';
 import 'package:bid/pages/guest_order_details_page.dart';
 import 'package:bid/pages/guest_orders_page.dart';
 import 'package:bid/pages/login_page.dart';
@@ -15,9 +15,7 @@ import 'package:bid/pages/account/account_page.dart';
 import 'package:bid/pages/cart_page.dart';
 import 'package:bid/pages/categories_page.dart';
 import 'package:bid/pages/wishlist_page.dart';
-import 'package:bid/pages/shop_men_page.dart';
-import 'package:bid/pages/shop_women_page.dart';
-import 'package:bid/pages/shop_accessories_page.dart';
+import 'package:bid/pages/shop_page.dart';
 import 'package:bid/pages/product_detail_page.dart';
 import '../layouts/appLayout.dart';
 
@@ -184,17 +182,22 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'men',
                   name: 'shop_men',
-                  builder: (context, state) => const ShopMenPage(),
+                  builder: (context, state) => const ShopPage(categorySlug: 'men'),
                 ),
                 GoRoute(
                   path: 'women',
                   name: 'shop_women',
-                  builder: (context, state) => const ShopWomenPage(),
+                  builder: (context, state) => const ShopPage(categorySlug: 'women'),
                 ),
                 GoRoute(
                   path: 'accessories',
                   name: 'shop_accessories',
-                  builder: (context, state) => const ShopAccessoriesPage(),
+                  builder: (context, state) => const ShopPage(categorySlug: 'accessories'),
+                ),
+                GoRoute(
+                  path: 'sale',
+                  name: 'shop_sale',
+                  builder: (context, state) => const ShopPage(categorySlug: 'sale'),
                 ),
                 GoRoute(
                   path: 'product',
@@ -223,9 +226,9 @@ final goRouter = GoRouter(
                   ),
               routes: [
                 GoRoute(
-                  path: 'checkout', // Fixed: Removed leading slash
+                  path: 'checkout',
                   name: 'checkout',
-                  builder: (context, state) => const CheckoutPage(),
+                  builder: (context, state) => const SimpleCheckoutPage(),
                 ),
 
               ],

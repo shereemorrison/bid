@@ -107,8 +107,8 @@ class Order {
 
       // Check if there might be an undocumented discount
       if (discountAmount == 0 && calculatedTotal > totalAmount) {
-        final possibleDiscount = calculatedTotal - totalAmount;
-        //print('Possible undocumented discount: $possibleDiscount');
+        // Possible discount detected but not stored
+        //print('Possible undocumented discount: ${calculatedTotal - totalAmount}');
       }
     }
   }
@@ -169,7 +169,11 @@ class Order {
     return Order(
       orderId: json['order_id'] ?? 'Unknown',
       userId: json['user_id']?.toString() ?? 'Unknown',
-      orderDate: json['order_date'] != null ? DateTime.parse(json['order_date']) : DateTime.now(),
+      orderDate: json['placed_at'] != null
+          ? DateTime.parse(json['placed_at'])
+          : json['order_date'] != null
+              ? DateTime.parse(json['order_date'])
+              : DateTime.now(),
       status: statusName,
       orderStatus: json['order_status'],
       totalAmount: parseDouble(json['total_amount']),

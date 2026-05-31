@@ -1,35 +1,26 @@
-import 'package:bid/providers.dart';
-import 'package:bid/respositories/order_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:bid/repositories/order_repository.dart';
 import '../base/base_notifier.dart';
 import 'orders_state.dart';
 import 'package:bid/models/order_model.dart';
 
 class OrdersNotifier extends BaseNotifier<OrdersState> {
   final OrderRepository _orderRepository;
-  final Ref _ref;
 
   OrdersNotifier({
     required OrderRepository orderRepository,
-    required Ref ref,
   }) : _orderRepository = orderRepository,
-        _ref = ref,
         super(OrdersState.initial());
 
-  Future<void> fetchUserOrders(String authId) async {
-    print('OrdersNotifier: Fetching orders for auth ID $authId');
+  Future<void> fetchUserOrders(String userId) async {
+    print('OrdersNotifier: Fetching orders for user_id $userId');
     startLoading();
 
     try {
-      // First, inspect the database to understand what we're working with
-      await _orderRepository.inspectDatabase();
-
-      // Get raw order data - pass the authId to the repository
-      final rawOrders = await _orderRepository.getUserOrders(authId);
+      final rawOrders = await _orderRepository.getUserOrders(userId);
       print('OrdersNotifier: Found ${rawOrders.length} raw orders');
 
       if (rawOrders.isEmpty) {
-        print('OrdersNotifier: No orders found for auth ID $authId');
+        print('OrdersNotifier: No orders found for user_id $userId');
         state = state.copyWith(
           orders: [],
         );
@@ -62,6 +53,7 @@ class OrdersNotifier extends BaseNotifier<OrdersState> {
 
   Future<void> fetchOrderDetails(String orderId) async {
     startLoading();
+    state = state.copyWith(clearSelectedOrder: true, clearError: true);
 
     try {
       // Get detailed order data including items
@@ -102,32 +94,6 @@ class OrdersNotifier extends BaseNotifier<OrdersState> {
     } catch (e) {
       handleError('initiating return', e);
       return false;
-    }
-  }
-
-  Future<void> fetchGuestOrdersByEmail(String email) async {
-    startLoading();
-
-    try {
-      final guestOrderService = _ref.read(guestOrderServiceProvider);
-      final guestOrders = await guestOrderService.getGuestOrdersByEmail(email);
-
-      // Convert to Order objects and update state
-      final orders = guestOrders.map((orderData) {
-        try {
-          return Order.fromJson(orderData);
-        } catch (e) {
-          print('Error converting guest order: $e');
-          return null;
-        }
-      }).where((order) => order != null).cast<Order>().toList();
-
-      state = state.copyWith(
-        guestOrders: orders,
-      );
-      endLoading();
-    } catch (e) {
-      handleError('fetching guest orders', e);
     }
   }
 

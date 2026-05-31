@@ -1,4 +1,3 @@
-
 import 'package:bid/pages/account/logged_in_view.dart';
 import 'package:bid/pages/account/logged_out_view.dart';
 import 'package:bid/providers.dart';
@@ -13,46 +12,70 @@ class AccountPage extends ConsumerStatefulWidget {
 }
 
 class _AccountPageState extends ConsumerState<AccountPage> {
+  bool _ordersRequested = false;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchUserDataIfNeeded();
-      _fetchOrdersIfNeeded();
     });
   }
 
   void _fetchUserDataIfNeeded() {
-    final isLoggedIn = ref.read(isLoggedInProvider);
-    final userData = ref.read(userDataProvider);
-    final authUserId = ref.read(userIdProvider);
-  }
-
-  void _fetchOrdersIfNeeded() {
-    final isLoggedIn = ref.read(isLoggedInProvider);
-    final userData = ref.read(userDataProvider);
-    final authUserId = ref.read(userIdProvider);
-
-    if (isLoggedIn && userData == null && authUserId != null) {
-      print('Fetching user data for ID: $authUserId');
-      ref.read(ordersProvider.notifier).fetchUserOrders(authUserId);
-    }
+    if (!ref.read(isLoggedInProvider)) return;
+    ref.read(authProvider.notifier).refreshUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final userData = ref.watch(userDataProvider);
-    final isLoading = ref.watch(authLoadingProvider);
-    final colorScheme = Theme.of(context).colorScheme;
+    final authState = ref.watch(authProvider);
 
-    return Scaffold(
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : !isLoggedIn
-          ? const LoggedOutView()
-          : LoggedInView(),
-    );
+    if (authState.userData != null && !_ordersRequested) {
+      _ordersRequested = true;
+      final userId = authState.userData!.userId;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(ordersProvider.notifier).fetchUserOrders(userId);
+      });
+    }
+
+    if (authState.isLoading && authState.userData == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (!authState.isLoggedIn) {
+      return const Scaffold(body: LoggedOutView());
+    }
+
+    if (authState.userData == null) {
+      return Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  authState.error ?? 'Could not load your profile.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(authProvider.notifier).refreshUserData();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return const Scaffold(body: LoggedInView());
   }
 }

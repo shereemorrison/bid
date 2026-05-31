@@ -1,33 +1,31 @@
-import 'package:bid/providers.dart';
-import 'package:bid/respositories/user_repository.dart';
-import 'package:bid/services/app_state_coordinator.dart';
+import 'package:bid/core/providers/cart_providers.dart';
+import 'package:bid/core/providers/checkout_helpers.dart';
+import 'package:bid/core/providers/orders_providers.dart';
+import 'package:bid/core/providers/session_providers.dart';
+import 'package:bid/core/providers/wishlist_providers.dart';
+import 'package:bid/repositories/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../base/base_notifier.dart';
 import 'auth_state.dart';
 
 class AuthNotifier extends BaseNotifier<AuthState> {
   final UserRepository _userRepository;
   final Ref _ref;
-  final AppStateCoordinator _stateCoordinator;
+  bool _isSigningOut = false;
 
   AuthNotifier({
     required UserRepository userRepository,
     required Ref ref,
-    required AppStateCoordinator stateCoordinator,
-  }) : _userRepository = userRepository,
+  })  : _userRepository = userRepository,
         _ref = ref,
-        _stateCoordinator = stateCoordinator,
         super(AuthState.initial()) {
-    // Initialize auth state
-    print("AuthNotifier: Initializing");
     _initAuthState();
     _setupAuthListener();
   }
 
   void _setupAuthListener() {
     _userRepository.authStateChanges().listen((isLoggedIn) {
-      print("AuthNotifier: Auth state changed, isLoggedIn=$isLoggedIn");
+      if (_isSigningOut) return;
       if (isLoggedIn) {
         _handleSignIn();
       } else {
@@ -37,23 +35,14 @@ class AuthNotifier extends BaseNotifier<AuthState> {
   }
 
   Future<void> _initAuthState() async {
-    print("AuthNotifier: _initAuthState called");
     final isLoggedIn = _userRepository.isLoggedIn;
     final userId = _userRepository.currentUserId;
 
-    print("AuthNotifier: isLoggedIn=$isLoggedIn, userId=$userId");
-
     try {
       if (isLoggedIn && userId != null) {
-        state = state.copyWith(
-          isLoggedIn: true,
-          userId: userId,
-          isLoading: true,
-        );
-
+        state = state.copyWith(isLoggedIn: true, isLoading: true);
         await _loadUserData(userId);
       } else {
-        print("AuthNotifier: Not logged in, setting isLoading=false");
         state = state.copyWith(
           isLoggedIn: false,
           isLoading: false,
@@ -62,30 +51,25 @@ class AuthNotifier extends BaseNotifier<AuthState> {
         );
       }
     } catch (e) {
-      print("AuthNotifier: Error in _initAuthState: $e");
       handleError('initializing auth', e);
     }
   }
 
   Future<void> _handleSignIn() async {
-    final userId = _userRepository.currentUserId;
-    if (userId != null) {
-      state = state.copyWith(
-        isLoggedIn: true,
-        userId: userId,
-        isLoading: true,
-      );
+    final authId = _userRepository.currentUserId;
+    if (authId == null) return;
 
-      await _loadUserData(userId);
+    state = state.copyWith(isLoading: true);
+    await _loadUserData(authId);
 
-      // Use the state coordinator to handle sign in
-      await _stateCoordinator.handleUserSignIn(userId);
+    final dbUserId = state.userData?.userId;
+    if (dbUserId != null) {
+      await _onUserSignedIn(dbUserId);
     }
   }
 
   Future<void> _handleSignOut() async {
-    // Use the state coordinator to handle sign out
-    await _stateCoordinator.handleUserSignOut();
+    await _resetAppState();
 
     state = state.copyWith(
       isLoggedIn: false,
@@ -95,25 +79,45 @@ class AuthNotifier extends BaseNotifier<AuthState> {
     );
   }
 
-  Future<void> _loadUserData(String userId) async {
-    print("AuthNotifier: Loading user data for $userId");
+  Future<void> _loadUserData(String authId) async {
     try {
-      final userData = await _userRepository.getUserProfile(userId);
-      print("AuthNotifier: User data loaded: ${userData != null}");
-      if (userData != null) {
-        print("AuthNotifier: First name: ${userData.firstName}, Last name: ${userData.lastName}");
-      }
+      final userData = await _userRepository.getOrCreateUserForAuthSession();
 
       state = state.copyWith(
         userData: userData,
+        userId: userData?.userId,
+        isLoggedIn: _userRepository.isLoggedIn,
         isLoading: false,
-        clearError: true,
+        error: userData == null ? 'Could not load your account profile.' : null,
+        clearError: userData != null,
       );
-      print("AuthNotifier: isLoading set to false after loading user data");
     } catch (e) {
-      print("AuthNotifier: Error loading user data: $e");
       handleError('loading user data', e);
     }
+  }
+
+  Future<void> _onUserSignedIn(String userId) async {
+    final guestUserId = _ref.read(sessionProvider).guestUserId;
+    if (guestUserId != null && guestUserId != userId) {
+      await _userRepository.mergeGuestProfileIntoRegistered(
+        guestUserId: guestUserId,
+        registeredUserId: userId,
+      );
+      await refreshUserData();
+    }
+
+    await _ref.read(cartProvider.notifier).mergeGuestCartOnSignIn();
+    await _ref.read(wishlistProvider.notifier).refreshWishlist();
+    await _ref.read(ordersProvider.notifier).fetchUserOrders(userId);
+    _ref.read(sessionProvider.notifier).clearGuestState();
+  }
+
+  Future<void> _resetAppState() async {
+    await _ref.read(cartProvider.notifier).resetOnSignOut();
+    _ref.read(ordersProvider.notifier).clearOrders();
+    _ref.read(wishlistProvider.notifier).clearWishlist();
+    _ref.read(sessionProvider.notifier).clearGuestState();
+    resetCheckoutState(_ref);
   }
 
   Future<void> signIn(String email, String password) async {
@@ -124,13 +128,41 @@ class AuthNotifier extends BaseNotifier<AuthState> {
 
       if (response.user == null) {
         state = state.copyWith(
-          error: 'Sign in failed',
+          error: 'Invalid email or password.',
           isLoading: false,
+          isLoggedIn: false,
         );
+        return;
       }
-      // Auth state listener will handle the rest if successful
+
+      final userData = await _userRepository.getOrCreateUserForAuthSession();
+      if (userData == null) {
+        state = state.copyWith(
+          error: 'Signed in, but your profile could not be loaded.',
+          isLoading: false,
+          isLoggedIn: false,
+        );
+        return;
+      }
+
+      state = state.copyWith(
+        isLoggedIn: true,
+        userData: userData,
+        userId: userData.userId,
+        isLoading: false,
+        clearError: true,
+      );
+
+      await _onUserSignedIn(userData.userId);
     } catch (e) {
-      handleError('signing in', e);
+      final message = e.toString().contains('Invalid login credentials')
+          ? 'Invalid email or password.'
+          : 'Sign in failed: $e';
+      state = state.copyWith(
+        error: message,
+        isLoading: false,
+        isLoggedIn: false,
+      );
     }
   }
 
@@ -151,16 +183,10 @@ class AuthNotifier extends BaseNotifier<AuthState> {
       );
 
       if (response.user != null) {
-        // Delay to ensure the database has time to update before loading user data
-        await Future.delayed(Duration(milliseconds: 500));
-
-        // Force refresh user data instead of waiting for auth state listener
+        await Future.delayed(const Duration(milliseconds: 500));
         await _loadUserData(response.user!.id);
       } else {
-        state = state.copyWith(
-          error: 'Sign up failed',
-          isLoading: false,
-        );
+        state = state.copyWith(error: 'Sign up failed', isLoading: false);
       }
     } catch (e) {
       handleError('signing up', e);
@@ -168,36 +194,35 @@ class AuthNotifier extends BaseNotifier<AuthState> {
   }
 
   Future<void> signOut() async {
-    startLoading();
+    _isSigningOut = true;
 
     try {
-      // Use the state coordinator to reset app state
-      await _stateCoordinator.resetAppState();
-
-      // Sign out from Supabase
+      await _resetAppState();
       await _userRepository.signOut();
-
-      // Explicitly set the state to logged out and not loading
-      state = AuthState.initial().copyWith(isLoading: false);
-
-      print("AuthNotifier: Sign out complete, isLoading=${state.isLoading}, isLoggedIn=${state.isLoggedIn}");
     } catch (e) {
-      handleError('signing out', e);
-      // Even if there's an error, make sure we're not stuck in loading state
-      state = state.copyWith(isLoading: false);
+      // Still clear local state on error
+    } finally {
+      _isSigningOut = false;
+      state = const AuthState(
+        isLoggedIn: false,
+        isLoading: false,
+        userData: null,
+        userId: null,
+      );
     }
   }
 
   Future<void> updateProfile(Map<String, dynamic> data) async {
-    if (state.userId == null) return;
+    final authId = _userRepository.currentUserId;
+    if (authId == null) return;
 
     startLoading();
 
     try {
-      final success = await _userRepository.updateUserProfile(state.userId!, data);
+      final success = await _userRepository.updateUserProfile(authId, data);
 
       if (success) {
-        await _loadUserData(state.userId!);
+        await _loadUserData(authId);
       } else {
         state = state.copyWith(
           error: 'Failed to update profile',
@@ -221,10 +246,12 @@ class AuthNotifier extends BaseNotifier<AuthState> {
   }
 
   Future<void> refreshUserData() async {
-    final userId = _userRepository.currentUserId;
-    if (userId != null) {
+    final authId = _userRepository.currentUserId;
+    if (authId == null) return;
+
+    if (state.userData == null) {
       state = state.copyWith(isLoading: true);
-      await _loadUserData(userId);
     }
+    await _loadUserData(authId);
   }
 }

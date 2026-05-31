@@ -13,10 +13,9 @@ class AddressInfoForm extends StatelessWidget {
   final Function(String) onSearch;
   final Function() onClear;
   final Function(Map<String, dynamic>) onSelectPlace;
-  final String mapboxApiKey;
 
   const AddressInfoForm({
-    Key? key,
+    super.key,
     required this.streetAddressController,
     required this.apartmentController,
     required this.cityController,
@@ -28,8 +27,7 @@ class AddressInfoForm extends StatelessWidget {
     required this.onSearch,
     required this.onClear,
     required this.onSelectPlace,
-    required this.mapboxApiKey,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +55,6 @@ class AddressInfoForm extends StatelessWidget {
           onClear: onClear,
           onSelectPlace: onSelectPlace,
         ),
-
-        // API key warning
-        if (mapboxApiKey == 'YOUR_MAPBOX_PUBLIC_TOKEN')
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'To enable address autocomplete, please add your Mapbox API key.',
-              style: TextStyle(
-                color: colorScheme.error,
-                fontSize: 12,
-              ),
-            ),
-          ),
 
         const SizedBox(height: 16),
 

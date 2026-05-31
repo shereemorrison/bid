@@ -44,7 +44,9 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
   void dispose() {
     if (!_hasNavigatedAway) {
       try {
-        ref.read(cartProvider.notifier).clearCart();
+        // Store provider reference before dispose to avoid unsafe ancestor lookup
+        final cartNotifier = ref.read(cartProvider.notifier);
+        cartNotifier.clearCart();
       } catch (e) {
         print('Error clearing cart in dispose: $e');
       }
@@ -215,7 +217,7 @@ class _OrderConfirmationPageState extends ConsumerState<OrderConfirmationPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Your order #${widget.orderId != null ? widget.orderId!.substring(0, 8) : 'N/A'} has been placed successfully.',
+              'Your order #${widget.orderId != null && widget.orderId!.length >= 8 ? widget.orderId!.substring(0, 8) : widget.orderId ?? 'N/A'} has been placed successfully.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: colorScheme.onSurface),
             ),

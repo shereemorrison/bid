@@ -10,7 +10,6 @@ ThemeData darkMode = ThemeData(
     primary: Colors.white,
     secondary: Colors.white,
     onSecondary: Colors.black,
-
   ),
 
   textTheme: TextTheme(
@@ -36,22 +35,13 @@ ThemeData darkMode = ThemeData(
     ),
 
     // Regular body text
-    bodyLarge: GoogleFonts.montserrat(
-      fontSize: 16,
-      letterSpacing: 0.5,
-    ),
+    bodyLarge: GoogleFonts.montserrat(fontSize: 16, letterSpacing: 0.5),
 
     // Smaller body text
-    bodyMedium: GoogleFonts.montserrat(
-      fontSize: 14,
-      letterSpacing: 0.5,
-    ),
+    bodyMedium: GoogleFonts.montserrat(fontSize: 14, letterSpacing: 0.5),
 
     // Small labels
-    bodySmall: GoogleFonts.montserrat(
-      fontSize: 12,
-      letterSpacing: 0.5,
-    ),
+    bodySmall: GoogleFonts.montserrat(fontSize: 12, letterSpacing: 0.5),
   ),
 
   // AppBar theme
@@ -67,13 +57,8 @@ ThemeData darkMode = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       textStyle: GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
@@ -87,13 +72,8 @@ ThemeData darkMode = ThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.white,
       side: const BorderSide(color: Colors.white),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       textStyle: GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.bold,
@@ -137,17 +117,15 @@ ThemeData darkMode = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(0),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
   ),
 
   // Card theme
-  cardTheme: CardTheme(
-    color: Colors.grey.shade900,
-    elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(0),
-    ),
-  ),
+  // cardTheme: CardTheme(
+  //   color: Colors.grey.shade900,
+  //   elevation: 0,
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadius.circular(0),
+  //   ),
+  // ),
 );

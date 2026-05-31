@@ -30,17 +30,9 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
-
-    List<Address> addressList = [];
-    if (json['addresses'] != null && json['addresses'] is List) {
-      addressList = (json['addresses'] as List)
-          .map((addr) => Address.fromJson(addr))
-          .toList();
-    }
-
     return UserData(
       userId: json['user_id'] ?? json['id'],
-      authId: json['auth_id'],
+      authId: json['auth_id'] ?? '',
       email: json['email'],
       firstName: json['first_name'],
       lastName: json['last_name'],

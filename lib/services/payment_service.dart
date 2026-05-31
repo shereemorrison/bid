@@ -1,18 +1,17 @@
+import 'package:bid/core/providers/cart_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' hide Address;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/address_model.dart';
-import '../respositories/payment_repository.dart';
+import '../repositories/payment_repository.dart';
 import '../services/base_service.dart';
-import '../state/cart/cart_state.dart';
 import '../utils/order_calculator.dart';
-import '../providers.dart';
 
 class PaymentService extends BaseService {
   final Ref _ref;
   final PaymentRepository _paymentRepository;
 
-  PaymentService(this._ref) : _paymentRepository = _ref.read(paymentRepositoryProvider);
+  PaymentService(this._ref, this._paymentRepository);
 
   Future<Map<String, dynamic>> processPayment({
     required String cardHolderName,

@@ -11,14 +11,13 @@ import 'package:bid/utils/order_helpers.dart';
 import 'package:bid/utils/format_helpers.dart';
 import 'package:bid/components/buttons/shopping_buttons.dart';
 
-
 class OrderDetailsPage extends ConsumerStatefulWidget {
   final String orderId;
 
   const OrderDetailsPage({
-    Key? key,
+    super.key,
     required this.orderId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<OrderDetailsPage> createState() => _OrderDetailsPageState();
@@ -31,13 +30,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch order details when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(ordersProvider.notifier).fetchOrderDetails(widget.orderId);
     });
   }
 
-  // Toggle item selection for return
   void _toggleItemSelection(String itemId) {
     setState(() {
       if (_selectedItemsForReturn.contains(itemId)) {
@@ -48,107 +45,101 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     });
   }
 
-  // Submit return request to Supabase
   Future<void> _submitReturn() async {
     if (_selectedItemsForReturn.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select at least one item to return')),
+        const SnackBar(
+          content: Text('Please select at least one item to return'),
+        ),
       );
       return;
     }
 
-    setState(() {
-      _isSubmittingReturn = true;
-    });
+    setState(() => _isSubmittingReturn = true);
 
     try {
-      // Submit return request to Supabase
-      await ref.read(ordersProvider.notifier).initiateReturn(widget.orderId, _selectedItemsForReturn.toList());
+      await ref
+          .read(ordersProvider.notifier)
+          .initiateReturn(widget.orderId, _selectedItemsForReturn.toList());
 
-      // Show success message
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Return request submitted successfully')),
       );
 
-      // Refresh order details to show updated status
       ref.read(ordersProvider.notifier).fetchOrderDetails(widget.orderId);
-
-      // Clear selection
-      setState(() {
-        _selectedItemsForReturn = {};
-      });
+      setState(() => _selectedItemsForReturn = {});
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to submit return: $e')),
       );
     } finally {
-      setState(() {
-        _isSubmittingReturn = false;
-      });
+      if (mounted) setState(() => _isSubmittingReturn = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(ordersLoadingProvider);
-    final error = ref.watch(ordersErrorProvider);
-    final selectedOrder = ref.watch(selectedOrderProvider);
+    final ordersState = ref.watch(ordersProvider);
+    final selectedOrder = ordersState.selectedOrder;
+    final isLoading = ordersState.isLoading && selectedOrder == null;
+    final error = ordersState.error;
 
     if (isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      return const Center(child: CircularProgressIndicator());
+    }
 
-          if (error != null) {
-            return EmptyState(
-              icon: Icons.error_outline,
-              title: 'Error Loading Order',
-              subtitle: error,
-            );
-          }
+    if (error != null && selectedOrder == null) {
+      return EmptyState(
+        icon: Icons.error_outline,
+        title: 'Error Loading Order',
+        subtitle: error,
+      );
+    }
 
-          if (selectedOrder == null) {
-            return const EmptyState(
-              icon: Icons.shopping_bag_outlined,
-              title: 'Order Not Found',
-              subtitle: 'We couldn\'t find the order you\'re looking for',
-            );
-          }
+    if (selectedOrder == null) {
+      return const EmptyState(
+        icon: Icons.shopping_bag_outlined,
+        title: 'Order Not Found',
+        subtitle: 'We couldn\'t find the order you\'re looking for',
+      );
+    }
 
-          // Check if order is eligible for returns
-          final bool isReturnEligible = isOrderReturnEligible(selectedOrder);
+    final isReturnEligible = isOrderReturnEligible(selectedOrder);
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildOrderHeader(context, selectedOrder),
-                  const SizedBox(height: 24),
-                  _buildOrderItems(context, selectedOrder, isReturnEligible),
-                  const SizedBox(height: 24),
-                  OrderCostSummary(
-                    itemsTotal: selectedOrder.subtotal,
-                    shipping: selectedOrder.shippingAmount,
-                    tax: selectedOrder.taxAmount,
-                    total: selectedOrder.totalAmount,
-                  ),
-                  const SizedBox(height: 24),
-                  if (isReturnEligible && _selectedItemsForReturn.isNotEmpty)
-                    SizedBox(
-                      width: double.infinity,
-                      child: BaseStyledButton(
-                        text: "INITIATE RETURN",
-                        onTap: _isSubmittingReturn ? null : _submitReturn,
-                        height: 50,
-                        fontSize: 16,
-                      ),
-                    ),
-                ],
-              ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildOrderHeader(context, selectedOrder),
+            const SizedBox(height: 24),
+            _buildOrderItems(context, selectedOrder, isReturnEligible),
+            const SizedBox(height: 24),
+            OrderCostSummary(
+              itemsTotal: selectedOrder.subtotal,
+              shipping: selectedOrder.shippingAmount,
+              tax: selectedOrder.taxAmount,
+              total: selectedOrder.totalAmount,
             ),
-          );
-        }
+            const SizedBox(height: 24),
+            if (isReturnEligible && _selectedItemsForReturn.isNotEmpty)
+              SizedBox(
+                width: double.infinity,
+                child: BaseStyledButton(
+                  text: 'INITIATE RETURN',
+                  onTap: _isSubmittingReturn ? null : _submitReturn,
+                  height: 50,
+                  fontSize: 16,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildOrderHeader(BuildContext context, Order order) {
     return Column(
@@ -157,12 +148,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              formatOrderId(order.orderId),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+            Expanded(
+              child: Text(
+                formatOrderId(order.orderId),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
             StatusBadge(status: order.status),
@@ -171,34 +164,38 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         const SizedBox(height: 16),
         OrderInfoCard(
           text: 'Placed on ${formatDate(order.orderDate)}',
-          onTap: () {}, // No action needed for this info card
+          onTap: () {},
         ),
         if (order.shippedAt != null) ...[
           const SizedBox(height: 8),
           OrderInfoCard(
             text: 'Shipped on ${formatDate(order.shippedAt!)}',
-            onTap: () {}, // No action needed for this info card
+            onTap: () {},
           ),
         ],
         if (order.deliveredAt != null) ...[
           const SizedBox(height: 8),
           OrderInfoCard(
             text: 'Delivered on ${formatDate(order.deliveredAt!)}',
-            onTap: () {}, // No action needed for this info card
+            onTap: () {},
           ),
         ],
         if (order.trackingNumber != null) ...[
           const SizedBox(height: 8),
           OrderInfoCard(
             text: 'Tracking: ${order.trackingNumber!}',
-            onTap: () {}, // Could open tracking website in the future
+            onTap: () {},
           ),
         ],
       ],
     );
   }
 
-  Widget _buildOrderItems(BuildContext context, Order order, bool isReturnEligible) {
+  Widget _buildOrderItems(
+    BuildContext context,
+    Order order,
+    bool isReturnEligible,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -211,12 +208,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           ),
         ),
         const SizedBox(height: 16),
-        ...order.items.map((item) => OrderItemTile(
-          item: item,
-          isReturnEligible: isReturnEligible,
-          isSelected: _selectedItemsForReturn.contains(item.itemId),
-          onToggleSelection: _toggleItemSelection,
-        )),
+        ...order.items.map(
+          (item) => OrderItemTile(
+            item: item,
+            isReturnEligible: isReturnEligible,
+            isSelected: _selectedItemsForReturn.contains(item.itemId),
+            onToggleSelection: _toggleItemSelection,
+          ),
+        ),
       ],
     );
   }
